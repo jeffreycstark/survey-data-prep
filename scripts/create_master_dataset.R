@@ -60,7 +60,7 @@ for (spec_file in spec_files) {
   
   tryCatch({
     # Load spec
-    spec_path <- here("src/config/harmonize", paste0(spec_file, ".yml"))
+    spec_path <- here("src/config/abs/harmonize", paste0(spec_file, ".yml"))
     spec <- read_yaml(spec_path)
     num_vars <- length(spec$variables)
     

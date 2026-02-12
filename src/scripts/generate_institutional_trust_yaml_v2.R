@@ -212,7 +212,7 @@ for (f in sort(yaml_files)) {
 }
 
 cat("\n=== NEXT STEPS ===\n")
-cat("1. Review each YAML file in src/config/harmonize/trust_*.yml\n")
+cat("1. Review each YAML file in src/config/abs/harmonize/trust_*.yml\n")
 cat("2. Verify scale information (min/max values, reversed flags)\n")
 cat("3. Fill in 'id' fields with appropriate identifiers\n")
 cat("4. Select appropriate 'harmonize' method for each institution\n")

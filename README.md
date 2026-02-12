@@ -50,16 +50,18 @@ Output: `data/processed/abs_econdev_authpref.rds`
 ## Structure
 
 ```
-src/           R/Python code (codebook tools, harmonization engine, utilities)
-src/config/    YAML harmonization specifications (27 spec files)
-data/raw/      Original survey microdata
-data/processed/ Harmonized output datasets
-outputs/       Validation reports, per-wave master files
-scripts/       Pipeline orchestration
+src/              R/Python code (codebook tools, harmonization engine, utilities)
+src/config/abs/   ABS YAML harmonization specs (27 spec files)
+src/config/wvs/   WVS YAML harmonization specs (planned)
+data/abs/raw/     ABS survey microdata (waves 1-6)
+data/wvs/raw/     WVS survey microdata (waves 6-7)
+data/processed/   Harmonized output datasets
+outputs/          Validation reports, per-wave master files
+scripts/          Pipeline orchestration
 ```
 
 ## YAML-Driven Harmonization
 
-Each variable is defined in a YAML spec (`src/config/harmonize/*.yml`) that maps source variable names, recoding rules, and scale directions across waves. The codebook tools automate spec generation with scale detection and reversal detection.
+Each survey has its own set of YAML specs (`src/config/{survey}/harmonize/*.yml`) mapping source variable names, recoding rules, and scale directions across waves. The harmonization engine is shared; only the YAML specs differ per survey. The codebook tools automate spec generation with scale detection and reversal detection.
 
 See `CLAUDE.md` for detailed pipeline documentation.

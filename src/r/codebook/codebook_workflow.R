@@ -225,7 +225,7 @@ analyze_search_results <- function(search_results, concept = "concept") {
 #' Creates files: output_dir/economy.yml, output_dir/politics.yml, etc.
 #'
 #' @export
-batch_generate_yaml <- function(search_results_list, output_dir = "src/config/harmonize") {
+batch_generate_yaml <- function(search_results_list, output_dir = "src/config/abs/harmonize") {
 
   # Create directory if needed
   if (!dir.exists(output_dir)) {

@@ -58,7 +58,7 @@ for (spec_file in spec_files) {
   cat("Processing:", spec_file, "\n")
   
   # Load spec
-  spec_path <- here("src/config/harmonize", paste0(spec_file, ".yml"))
+  spec_path <- here("src/config/abs/harmonize", paste0(spec_file, ".yml"))
   spec <- read_yaml(spec_path)
 
   # Process each variable in spec (v2 format uses list with id field)

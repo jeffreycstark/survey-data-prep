@@ -57,7 +57,7 @@ spec_files <- c(
 
 specs <- list()
 for (file in spec_files) {
-  spec_path <- here("src/config/harmonize", paste0(file, ".yml"))
+  spec_path <- here("src/config/abs/harmonize", paste0(file, ".yml"))
   specs[[file]] <- read_yaml(spec_path)
   cat("✓ Loaded:", file, "\n")
 }

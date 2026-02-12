@@ -120,7 +120,7 @@ cat(yaml_str)
 # ==============================================================================
 
 cat("\n\n=== SAVING TO FILE ===\n")
-output_file <- "src/config/harmonize/democracy_satisfaction.yml"
+output_file <- "src/config/abs/harmonize/democracy_satisfaction.yml"
 writeLines(yaml_str, output_file)
 cat(sprintf("✅ YAML template saved to: %s\n", output_file))
 cat("\nNext steps:\n")

@@ -1,18 +1,20 @@
 # survey-data-prep — Claude Navigation Guide
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, planned)
-**Status**: ABS pipeline complete (330 variables, 6 waves, 110,721 respondents)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Russian survey (TBD)
+**Status**: ABS pipeline complete (330 variables, 6 waves, 110,721 respondents); WVS pipeline planned
 
 ---
 
 ## Project Purpose
 
 This repo houses reusable survey data harmonization infrastructure:
-- YAML-driven variable specifications
+- YAML-driven variable specifications (separate spec sets per survey)
 - Automated scale detection, reversal detection, and recoding
 - Multi-wave data loading, harmonization, and validation
 - Codebook search and analysis tools
+
+Each survey (ABS, WVS, etc.) has its own data directory, YAML specs, and pipeline cycle.
 
 It is **not** a paper repo. Papers that consume the harmonized data live in separate repositories.
 
@@ -29,7 +31,7 @@ src/
 │   │   ├── test_codebook.R
 │   │   └── *.md                # Documentation
 │   │
-│   ├── harmonize/              # Harmonization engine
+│   ├── harmonize/              # Harmonization engine (shared)
 │   │   ├── harmonize.R
 │   │   ├── validate_spec.R
 │   │   └── report_harmonization.R
@@ -52,8 +54,12 @@ src/
 │   └── models/                 # Statistical models
 │
 ├── config/
-│   ├── harmonize/              # Harmonization YAML specs (27 files)
-│   └── harmonize_validated/    # Validated/finalized specs
+│   ├── abs/                    # ABS-specific config
+│   │   ├── harmonize/          # ABS YAML specs (27 files)
+│   │   └── harmonize_validated/
+│   └── wvs/                    # WVS-specific config (planned)
+│       ├── harmonize/
+│       └── harmonize_validated/
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -63,10 +69,14 @@ src/
 └── scripts/                    # Pipeline orchestration
 
 data/
-├── raw/                        # Original survey data
-│   ├── wave1/ ... wave6/       # ABS waves
-│   ├── wvs_wave6/, wvs_wave7/  # WVS waves
-│   └── README.md
+├── abs/                        # Asian Barometer Survey
+│   └── raw/
+│       ├── wave1/ ... wave6/   # ABS waves (SPSS .sav)
+│       └── README.md
+├── wvs/                        # World Values Survey
+│   └── raw/
+│       ├── wave6/, wave7/      # WVS waves (parquet)
+├── external/                   # External datasets (V-Dem, COVID, etc.)
 ├── interim/                    # Intermediate processing
 └── processed/                  # Final harmonized datasets
 
@@ -83,7 +93,7 @@ outputs/
 ## Data Processing Pipeline
 
 ```
-Raw Survey Data (data/raw/)
+Raw Survey Data (data/{survey}/raw/)
            ↓
     Load & Parse (src/r/survey/load_data.R)
            ↓
@@ -91,11 +101,11 @@ Raw Survey Data (data/raw/)
            ↓
   Generate YAML (src/r/codebook/codebook_workflow.R)
            ↓
-  User Reviews YAML (src/config/harmonize/*.yml)
+  User Reviews YAML (src/config/{survey}/harmonize/*.yml)
            ↓
-  Harmonize Data (src/r/harmonize/harmonize.R)
+  Harmonize Data (src/r/harmonize/harmonize.R)        ← shared engine
            ↓
-  Validate Results (src/r/harmonize/validate_spec.R)
+  Validate Results (src/r/harmonize/validate_spec.R)  ← shared engine
            ↓
 Harmonized Output (data/processed/)
            ↓
@@ -120,7 +130,7 @@ source("src/r/codebook/codebook_workflow.R")
 results <- extract_matches("search term", w1, w2, w3, w4, w5, w6)
 yaml_str <- generate_codebook_yaml(results, concept = "concept_name")
 cat(yaml_str)
-writeLines(yaml_str, "src/config/harmonize/concept_name.yml")
+writeLines(yaml_str, "src/config/abs/harmonize/concept_name.yml")  # or wvs/
 ```
 
 ### Batch Process Multiple Concepts
@@ -130,7 +140,7 @@ results_list <- list(
   economy = extract_matches("economic condition", w1, w2, w3, w4, w5, w6),
   politics = extract_matches("trust government", w1, w2, w3, w4, w5, w6)
 )
-batch_generate_yaml(results_list, output_dir = "src/config/harmonize/")
+batch_generate_yaml(results_list, output_dir = "src/config/abs/harmonize/")  # or wvs/
 ```
 
 ---

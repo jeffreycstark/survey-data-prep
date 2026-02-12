@@ -37,27 +37,27 @@ cat("📊 Loading wave data...\n")
 
 # Wave 1
 cat("  W1: Loading Wave1_20170906.sav... ")
-w1 <- read_sav("data/raw/wave1/Wave1_20170906.sav")
+w1 <- read_sav("data/abs/raw/wave1/Wave1_20170906.sav")
 cat(sprintf("✓ (%s rows, %s cols)\n", nrow(w1), ncol(w1)))
 
 # Wave 2
 cat("  W2: Loading Wave2_20250609.sav... ")
-w2 <- read_sav("data/raw/wave2/Wave2_20250609.sav")
+w2 <- read_sav("data/abs/raw/wave2/Wave2_20250609.sav")
 cat(sprintf("✓ (%s rows, %s cols)\n", nrow(w2), ncol(w2)))
 
 # Wave 3
 cat("  W3: Loading ABS3 merge20250609.sav... ")
-w3 <- read_sav("data/raw/wave3/ABS3 merge20250609.sav")
+w3 <- read_sav("data/abs/raw/wave3/ABS3 merge20250609.sav")
 cat(sprintf("✓ (%s rows, %s cols)\n", nrow(w3), ncol(w3)))
 
 # Wave 4
 cat("  W4: Loading W4_v15_merged20250609_release.sav... ")
-w4 <- read_sav("data/raw/wave4/W4_v15_merged20250609_release.sav")
+w4 <- read_sav("data/abs/raw/wave4/W4_v15_merged20250609_release.sav")
 cat(sprintf("✓ (%s rows, %s cols)\n", nrow(w4), ncol(w4)))
 
 # Wave 5
 cat("  W5: Loading 20230505_W5_merge_15.sav... ")
-w5 <- read_sav("data/raw/wave5/20230505_W5_merge_15.sav")
+w5 <- read_sav("data/abs/raw/wave5/20230505_W5_merge_15.sav")
 cat(sprintf("✓ (%s rows, %s cols)\n", nrow(w5), ncol(w5)))
 
 # Wave 6
@@ -73,7 +73,7 @@ waves <- list(w1 = w1, w2 = w2, w3 = w3, w4 = w4, w5 = w5, w6 = w6)
 # ==============================================================================
 
 cat("📋 Loading YAML specification...\n")
-spec <- read_yaml("src/config/harmonize/democracy_satisfaction.yml")
+spec <- read_yaml("src/config/abs/harmonize/democracy_satisfaction.yml")
 cat("✅ YAML specification loaded\n\n")
 
 # ==============================================================================
@@ -91,7 +91,7 @@ validation_result <- tryCatch({
 })
 
 if (!validation_result) {
-  cat("⚠️  Specification has errors. Please review src/config/harmonize/democracy_satisfaction.yml\n")
+  cat("⚠️  Specification has errors. Please review src/config/abs/harmonize/democracy_satisfaction.yml\n")
   quit(status = 1)
 }
 
@@ -158,7 +158,7 @@ sink(summary_file)
 cat("DEMOCRACY SATISFACTION HARMONIZATION SUMMARY\n")
 cat(paste0("=", strrep("=", 78), "\n\n"))
 cat(sprintf("Date: %s\n", format(Sys.time(), "%Y-%m-%d %H:%M:%S")))
-cat(sprintf("Spec file: src/config/harmonize/democracy_satisfaction.yml\n\n"))
+cat(sprintf("Spec file: src/config/abs/harmonize/democracy_satisfaction.yml\n\n"))
 
 cat("VARIABLES HARMONIZED:\n")
 for (var_id in names(harmonized)) {

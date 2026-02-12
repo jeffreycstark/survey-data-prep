@@ -62,7 +62,7 @@ apply_missing <- function(x, missing_codes) {
 #' @examples
 #' \dontrun{
 #' # Load YAML spec and wave data
-#' spec <- yaml::read_yaml("src/config/harmonize/economy.yml")
+#' spec <- yaml::read_yaml("src/config/abs/harmonize/economy.yml")
 #' waves <- list(
 #'   w1 = readRDS("data/processed/w1.rds"),
 #'   w2 = readRDS("data/processed/w2.rds")

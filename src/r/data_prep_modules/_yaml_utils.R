@@ -4,7 +4,7 @@
 #'
 #' @param config_dir Directory containing YAML specs
 #' @return Character vector of YAML file paths
-list_yaml_specs <- function(config_dir = here::here("src/config/harmonize_validated")) {
+list_yaml_specs <- function(config_dir = here::here("src/config/abs/harmonize_validated")) {
   files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
 
   # Exclude template and documentation files

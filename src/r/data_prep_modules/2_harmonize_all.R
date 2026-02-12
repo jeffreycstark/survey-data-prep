@@ -1,7 +1,7 @@
 # 2_harmonize_all.R
 # Mass harmonization phase - process all YAML specs
 #
-# Reads all YAML configurations from src/config/harmonize_validated/
+# Reads all YAML configurations from src/config/abs/harmonize_validated/
 # Applies harmonize_variable() to each variable
 # Returns harmonized data organized by concept
 

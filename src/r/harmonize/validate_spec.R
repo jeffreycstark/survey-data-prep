@@ -316,7 +316,7 @@ validate_phrases <- function(spec, waves, verbose = TRUE) {
 #'
 #' @export
 validate_all_specs <- function(waves,
-                               config_dir = "src/config/harmonize_validated",
+                               config_dir = "src/config/abs/harmonize_validated",
                                verbose = TRUE) {
 
   yaml_files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)

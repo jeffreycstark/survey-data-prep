@@ -77,8 +77,8 @@ save_data <- function(data, filename, data_type = "processed") {
 #' Load survey waves 1-6 for codebook analysis
 #' 
 #' Loads all 6 survey waves from .sav files for cross-wave variable analysis.
-#' Waves 1-5: data/raw/wave{n}/ (auto-detects .sav file)
-#' Wave 6: data/raw/wave6/W6_Cambodia_Release_20240819.sav
+#' Waves 1-5: data/abs/raw/wave{n}/ (auto-detects .sav file)
+#' Wave 6: data/abs/raw/wave6/W6_Cambodia_Release_20240819.sav
 #' 
 #' @return Named list with w1, w2, w3, w4, w5, w6 data frames
 #' @details
@@ -99,7 +99,7 @@ load_survey_waves <- function() {
   waves <- list()
   
   for (wave_num in 1:5) {
-    wave_dir <- here::here("data", "raw", paste0("wave", wave_num))
+    wave_dir <- here::here("data", "abs", "raw", paste0("wave", wave_num))
     
     # Find .sav file in wave directory
     sav_files <- list.files(wave_dir, pattern = "\\.sav$", ignore.case = TRUE)
@@ -119,7 +119,7 @@ load_survey_waves <- function() {
   }
   
   # Wave 6: Specific file (Cambodia only for codebook analysis)
-  wave6_path <- here::here("data", "raw", "wave6", "W6_Cambodia_Release_20240819.sav")
+  wave6_path <- here::here("data", "abs", "raw", "wave6", "W6_Cambodia_Release_20240819.sav")
   
   if (!file.exists(wave6_path)) {
     stop("Wave 6 file not found: ", wave6_path)
@@ -133,7 +133,7 @@ load_survey_waves <- function() {
   for (w in names(waves)) {
     cat(sprintf("%s: %d rows × %d columns\n", toupper(w), nrow(waves[[w]]), ncol(waves[[w]])))
   }
-  cat("Note: For final harmonization output, use data/processed/w6_all_countries_merged.rds\n\n")
+  cat("Note: For final harmonization output, use data/abs/processed/w6_all_countries_merged.rds\n\n")
   
   return(waves)
 }
