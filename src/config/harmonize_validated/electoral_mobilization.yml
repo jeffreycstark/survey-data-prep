@@ -1,0 +1,620 @@
+# Electoral Mobilization - Validated YAML (v2)
+# Variables measuring vote solicitation sources and influence on voting decisions
+# Wave 1 specific battery (24 items in two parallel groups)
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes (97=not applicable, 98=don't know, 99=no answer)"
+variables:
+  - id: mob_asked_clan_seniors
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by seniors in a clan or extended family"
+    type: nominal
+    source:
+      w1: q033
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*clan|senior.*vote"
+  - id: mob_asked_community_leader
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by community leaders"
+    type: nominal
+    source:
+      w1: q035
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*community|leader.*vote"
+  - id: mob_asked_employer
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by owners of the firm/unit that you work for"
+    type: nominal
+    source:
+      w1: q037
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*owner|firm.*vote"
+  # ===========================================================================
+  # GROUP 1: Vote Solicitation Sources (12 items)
+  # "Did the following personally ask you to vote for a particular candidate?"
+  # Binary: 1=No, 2=Yes
+  # ===========================================================================
+  - id: mob_asked_family
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by family member/relative"
+    type: nominal
+    source:
+      w1: q032
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*family|family.*vote"
+  - id: mob_asked_govt_known
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by government official whom you know personally"
+    type: nominal
+    source:
+      w1: q039
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*government.*know|official.*know.*vote"
+  - id: mob_asked_govt_unknown
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by government official whom you don't know"
+    type: nominal
+    source:
+      w1: q040
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*government|official.*vote"
+  - id: mob_asked_neighbor_friend
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by neighbor/friend"
+    type: nominal
+    source:
+      w1: q034
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*neighbor|friend.*vote"
+  - id: mob_asked_org_official
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by member/official of organization that you belong to"
+    type: nominal
+    source:
+      w1: q038
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*organization|member.*official.*vote"
+  - id: mob_asked_other
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by others"
+    type: nominal
+    source:
+      w1: q043
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*other"
+  - id: mob_asked_party_known
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by candidate/party activist whom you know personally"
+    type: nominal
+    source:
+      w1: q041
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*party.*know|candidate.*activist.*know"
+  - id: mob_asked_party_unknown
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by candidate/party activist whom you don't know"
+    type: nominal
+    source:
+      w1: q042
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*party|candidate.*activist.*vote"
+  - id: mob_asked_work_superior
+    concept: electoral_mobilization
+    description: "Asked to vote for a particular candidate by superior at work/school"
+    type: nominal
+    source:
+      w1: q036
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "ask.*vote.*superior|work.*school.*vote"
+  - id: mob_influence_clan_seniors
+    concept: electoral_mobilization
+    description: "Were seniors in a clan or extended family influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q045
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*clan|senior.*influential"
+  - id: mob_influence_community_leader
+    concept: electoral_mobilization
+    description: "Were community leaders influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q047
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*community|leader.*influential"
+  - id: mob_influence_employer
+    concept: electoral_mobilization
+    description: "Were owners of the firm/unit that you work for influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q049
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*owner|firm.*influential"
+  # ===========================================================================
+  # GROUP 2: Vote Influence Sources (12 items)
+  # "Was [source] influential in your vote decision?"
+  # Binary: 1=No, 2=Yes
+  # ===========================================================================
+  - id: mob_influence_family
+    concept: electoral_mobilization
+    description: "Was family member/relative influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q044
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*family"
+  - id: mob_influence_govt_known
+    concept: electoral_mobilization
+    description: "Was government official whom you know personally influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q051
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*government.*know|official.*know.*influential"
+  - id: mob_influence_govt_unknown
+    concept: electoral_mobilization
+    description: "Was government official whom you don't know influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q052
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*government|official.*influential"
+  - id: mob_influence_neighbor_friend
+    concept: electoral_mobilization
+    description: "Was neighbor/friend influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q046
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*neighbor|friend.*influential"
+  - id: mob_influence_org_official
+    concept: electoral_mobilization
+    description: "Was member/official of organization that you belong to influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q050
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*organization|member.*official.*influential"
+  - id: mob_influence_other
+    concept: electoral_mobilization
+    description: "Were others influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q055
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*other"
+  - id: mob_influence_party_known
+    concept: electoral_mobilization
+    description: "Was candidate/party activist whom you know personally influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q053
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*party.*know|candidate.*activist.*know.*influential"
+  - id: mob_influence_party_unknown
+    concept: electoral_mobilization
+    description: "Was candidate/party activist whom you don't know influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q054
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*party|candidate.*activist.*influential"
+  - id: mob_influence_work_superior
+    concept: electoral_mobilization
+    description: "Was superior at work/school influential in your vote decision?"
+    type: nominal
+    source:
+      w1: q048
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "influential.*superior|work.*school.*influential"

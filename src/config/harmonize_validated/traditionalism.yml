@@ -1,0 +1,579 @@
+# Traditionalism - Validated YAML (v2)
+# Variables measuring traditional/collectivist values, hierarchy, and fatalism
+# Scale: 1-4 (Strongly agree to Strongly disagree) - REVERSED so higher = more traditional
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: trad_accommodate_neighbor
+    concept: traditionalism
+    description: "When one has a conflict with a neighbor, the best way to deal with it is to accommodate the other person"
+    type: ordinal
+    source:
+      w1: q066
+      w2: q58
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Waves 1 and 2 - conflict avoidance/accommodation"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/accommodating"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2]
+          phrase: "conflict.*neighbor|accommodate"
+  - id: trad_avoid_conflict
+    concept: traditionalism
+    description: "Even if there is some disagreement with others, one should avoid the conflict"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # TODO: find w2 mapping
+      w3: q59
+      w4: q64
+      w5: q66
+      w6: q64
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "disagreement.*avoid|avoid.*conflict"
+  # ===========================================================================
+  # GROUP 4: Harmony / Conflict Avoidance
+  # ===========================================================================
+  - id: trad_avoid_quarrel
+    concept: traditionalism
+    description: "In a group, we should avoid open quarrel to preserve the harmony of the group"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # TODO: find w2 mapping
+      w3: q58
+      w4: q63
+      w5: q65
+      w6: q63
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "quarrel.*harmony"
+  - id: trad_defer_coworkers
+    concept: traditionalism
+    description: "A person should not insist on his own opinion if his co-workers disagree with him"
+    type: ordinal
+    source:
+      w1: q068
+      w2: q59
+      w3: q60
+      w4: q65
+      w5: q67
+      w6: q65
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "insist.*opinion|co-workers"
+  - id: trad_elder_dispute
+    concept: traditionalism
+    description: "If there is a quarrel, we should ask an elder to resolve the dispute"
+    type: ordinal
+    source:
+      w1: q071
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - deference to elders"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/elder deference"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1]
+          phrase: "elder.*dispute|quarrel.*elder"
+  # ===========================================================================
+  # GROUP 1: Collectivism / Sacrifice for Group
+  # ===========================================================================
+  - id: trad_family_first
+    concept: traditionalism
+    description: "For the sake of the family, the individual should put his personal interests second"
+    type: ordinal
+    source:
+      w1: q069
+      w2: q60
+      w3: q50
+      w4: q55
+      w5: q58
+      w6: q56
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "family.*individual"
+  # ===========================================================================
+  # GROUP 5: Fatalism / Gender Traditionalism
+  # ===========================================================================
+  - id: trad_fatalism
+    concept: traditionalism
+    description: "Wealth and poverty, success and failure are all determined by fate"
+    type: ordinal
+    source:
+      w1: q067
+      w2: null # TODO: find w2 mapping
+      w3: q61
+      w4: q66
+      w5: q68
+      w6: q66
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "fate|determined"
+  - id: trad_group_sacrifice
+    concept: traditionalism
+    description: "In a group, we should sacrifice our individual interest for the sake of the group's collective interest"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q51
+      w4: q56
+      w5: q59
+      w6: q57
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "group.*sacrifice|collective"
+  - id: trad_hierarchical_obedience
+    concept: traditionalism
+    description: "Government leaders are like the head of a family; we should all follow their decisions"
+    type: ordinal
+    source:
+      w1: q133
+      w2: q134
+      w3: q141
+      w4: q142
+      w5: q149
+      w6: q149
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree, 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/deferential to authority"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "government.*head.*family|follow.*decision"
+  # ===========================================================================
+  # GROUP 6: Nepotism / Particularism (Wave 1)
+  # ===========================================================================
+  - id: trad_hire_relatives
+    concept: traditionalism
+    description: "When hiring someone, even if a stranger is more qualified, the opportunity should still be given to relatives and friends"
+    type: ordinal
+    source:
+      w1: q065
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - particularism/nepotism attitude"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/particularist"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1]
+          phrase: "hiring.*relative|stranger.*qualified"
+  - id: trad_longterm_gains
+    concept: traditionalism
+    description: "When dealing with others, one should not be preoccupied with temporary gains and losses"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q68
+      w5: null
+      w6: null
+    note: "Wave 4 - long-term orientation value"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/long-term oriented"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "temporary gains|preoccupied"
+  # ===========================================================================
+  # GROUP 7: Long-term Orientation (Wave 4)
+  # ===========================================================================
+  - id: trad_longterm_planning
+    concept: traditionalism
+    description: "When dealing with others, one should not only focus on immediate interest but also plan for future"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q59
+      w5: null
+      w6: null
+    note: "Wave 4 - long-term orientation value"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/long-term oriented"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "immediate interest|plan.*future"
+  - id: trad_longterm_relation
+    concept: traditionalism
+    description: "When dealing with others, developing a long-term relationship is more important than securing one's immediate interest"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q53
+      w4: q58
+      w5: q61
+      w6: q59
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "long-term relationship"
+  - id: trad_male_supervisor
+    concept: traditionalism
+    description: "A man will lose face if he works under a female supervisor"
+    type: ordinal
+    source:
+      w1: q070
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - gender traditionalism"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more traditional/gender conservative"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1]
+          phrase: "female supervisor|lose face"
+  - id: trad_motherinlaw_obey
+    concept: traditionalism
+    description: "When a mother-in-law and daughter-in-law conflict, even if mother-in-law is wrong, husband should persuade wife to obey"
+    type: ordinal
+    source:
+      w1: q072
+      w2: null # TODO: find w2 mapping
+      w3: q56
+      w4: q61
+      w5: q63
+      w6: q61
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "mother-in-law"
+  - id: trad_national_sacrifice
+    concept: traditionalism
+    description: "For the sake of national interest, individual interest could be sacrificed"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q52
+      w4: q57
+      w5: q60
+      w6: q58
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "national interest"
+  # ===========================================================================
+  # GROUP 2: Filial Piety / Family Hierarchy
+  # ===========================================================================
+  - id: trad_obey_parents
+    concept: traditionalism
+    description: "Even if parents' demands are unreasonable, children still should do what they ask"
+    type: ordinal
+    source:
+      w1: q064
+      w2: q56
+      w3: q55
+      w4: q60
+      w5: q62
+      w6: q60
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "parents.*unreasonable"
+  - id: trad_son_preference
+    concept: traditionalism
+    description: "If one could have only one child, it is more preferable to have a boy than a girl"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # TODO: find w2 mapping
+      w3: q62
+      w4: q67
+      w5: q69
+      w6: q67
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "boy.*girl|prefer.*boy"
+  # ===========================================================================
+  # GROUP 3: Deference to Authority
+  # ===========================================================================
+  - id: trad_teacher_authority
+    concept: traditionalism
+    description: "Being a student, one should not question the authority of their teacher"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: q57
+      w3: q57
+      w4: q62
+      w5: q64
+      w6: q62
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "student.*teacher|question.*authority"

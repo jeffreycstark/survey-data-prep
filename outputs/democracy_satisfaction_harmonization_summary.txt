@@ -1,0 +1,58 @@
+DEMOCRACY SATISFACTION HARMONIZATION SUMMARY
+===============================================================================
+
+Date: 2026-01-07 07:41:49
+Spec file: src/config/harmonize/democracy_satisfaction.yml
+
+VARIABLES HARMONIZED:
+
+  dem_sat_national
+    Q1: democracy satisfaction (q098 → q90)
+    Q2: government satisfaction (q104 → q96)
+    Q3: household income satisfaction (se9a → SE14a)
+
+  gov_sat_national
+    Q1: democracy satisfaction (q098 → q90)
+    Q2: government satisfaction (q104 → q96)
+    Q3: household income satisfaction (se9a → SE14a)
+
+  hh_income_sat
+    Q1: democracy satisfaction (q098 → q90)
+    Q2: government satisfaction (q104 → q96)
+    Q3: household income satisfaction (se9a → SE14a)
+
+
+WAVE DATA SUMMARY:
+  w1: 12217 rows, 217 columns
+  w2: 19798 rows, 252 columns
+  w3: 19436 rows, 272 columns
+  w4: 20667 rows, 289 columns
+  w5: 26951 rows, 308 columns
+  w6: 11652 rows, 415 columns
+
+
+HARMONIZATION RESULTS:
+
+  dem_sat_national:
+    w1: n=12217, valid=11313, missing=904, mean=2.26
+    w2: n=19798, valid=17963, missing=1835, mean=2.18
+    w3: n=19436, valid=18496, missing=940, mean=2.22
+    w4: n=20667, valid=18998, missing=1669, mean=2.25
+    w5: n=26951, valid=24885, missing=2066, mean=2.22
+    w6: n=11652, valid=11314, missing=338, mean=2.25
+
+  gov_sat_national:
+    w1: n=12217, valid=8731, missing=3486, mean=2.48
+    w2: n=19798, valid=1488, missing=18310, mean=1.98
+    w3: n=19436, valid=11562, missing=7874, mean=17.55
+    w4: n=20667, valid=13011, missing=7656, mean=19.75
+    w5: n=26951, valid=17868, missing=9083, mean=19.88
+    w6: n=11652, valid=11015, missing=637, mean=2.44
+
+  hh_income_sat:
+    w1: n=12217, valid=0, missing=12217, mean=NaN
+    w2: n=19798, valid=18356, missing=1442, mean=2.22
+    w3: n=19436, valid=12140, missing=7296, mean=2.42
+    w4: n=20667, valid=10795, missing=9872, mean=2.08
+    w5: n=26951, valid=0, missing=26951, mean=NaN
+    w6: n=11652, valid=0, missing=11652, mean=NaN

@@ -1,0 +1,512 @@
+# Social Media - Validated YAML (v2)
+# Variables measuring internet usage, social media platforms, and online political engagement
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ===========================================================================
+  # GROUP 2: Internet Access (Wave 4 only)
+  # ===========================================================================
+  - id: internet_access_home
+    concept: social_media
+    description: "Do you have access to the internet at home?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q47
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "internet.*home|access.*internet"
+  - id: internet_access_mobile
+    concept: social_media
+    description: "Do you have access to the internet on your mobile phone?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q48
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "internet.*mobile|mobile.*internet"
+  # ===========================================================================
+  # GROUP 4: Internet for Political Information
+  # ===========================================================================
+  - id: internet_political_info
+    concept: social_media
+    description: "How often do you use the internet to find information about politics and government?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q51
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Sometimes"
+        4: "Often"
+    harmonize:
+      default:
+        method: r_function
+        fn: collapse_6pt_to_4pt_reverse
+        note: "W4 has 6pt scale (1=Everyday → 6=Never); collapse to 4pt and reverse"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "internet.*politic|political.*information"
+  # ===========================================================================
+  # GROUP 1: Internet Usage Frequency
+  # ===========================================================================
+  - id: news_internet
+    concept: social_media
+    description: "How often do you use the internet, either through computer, tablet or smartphone?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q66
+      w3: q45
+      w4: q49
+      w5: q49
+      w6: q50
+    scale:
+      min: 0
+      max: 9
+      labels:
+        0: "No access to internet"
+        1: "Connected all the time"
+        2: "Several hours a day"
+        3: "Half to one hour a day"
+        4: "Less than half hour a day"
+        5: "At least once a week"
+        6: "At least once a month"
+        7: "A few times a year"
+        8: "Hardly ever"
+        9: "Never"
+      note: "Lower numeric = more internet usage (0=no access is special case)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 9]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "internet"
+  # ===========================================================================
+  # GROUP 6: Political Information Source
+  # ===========================================================================
+  - id: political_info_channel
+    concept: social_media
+    description: "Most important channel for finding information about politics and government"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q52
+      w6: q53
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Television (airwaves, cable, online)"
+        2: "Newspaper (print and online)"
+        3: "Internet and social media"
+        4: "Radio (airwaves and online)"
+        5: "Face-to-face conversation"
+        6: "Others"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5, w6]
+          phrase: "channel.*information|information.*politic"
+  # ===========================================================================
+  # GROUP 5: Social Media Activities
+  # Scale: 1-4 (Never to Often) - REVERSED so higher = more frequent
+  # ===========================================================================
+  - id: sm_connect_people
+    concept: social_media
+    description: "How often do you use social media to talk to or connect with other people?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51a
+      w6: q52a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Sometimes"
+        4: "Often"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "connect.*people|talk.*people"
+  - id: sm_express_political
+    concept: social_media
+    description: "How often do you use social media to express your opinion on political issues? (frequency)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q52
+      w5: null
+      w6: q52b
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Sometimes"
+        4: "Often"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w4:
+          method: r_function
+          fn: recode_6pt_freq_to_4pt
+          note: "W4 uses 6-point frequency; collapse to 4-point"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4, w6]
+          phrase: "opinion.*politic|express.*politic"
+
+  - id: sm_express_political_binary
+    concept: social_media
+    description: "Use social media primarily to express opinion on political issues (binary)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51b
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w5]
+          phrase: "express.*politic|opinion.*politic"
+  - id: sm_organize_politics
+    concept: social_media
+    description: "How often do you use social media to organize to influence politics?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51d
+      w6: q52d
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Sometimes"
+        4: "Often"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "organize.*politic"
+  - id: sm_share_news
+    concept: social_media
+    description: "How often do you use social media to share news or information?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51c
+      w6: q52c
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Sometimes"
+        4: "Often"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "share.*news"
+  # ===========================================================================
+  # GROUP 3: Social Media Platform Usage
+  # ===========================================================================
+  - id: sm_use_any
+    concept: social_media
+    description: "Do you currently use any social media networks?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q50
+      w5: q50
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4, w5]
+          phrase: "social media"
+  - id: sm_use_facebook
+    concept: social_media
+    description: "Do you actively use Facebook?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51a_facebook
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "facebook"
+  - id: sm_use_instagram
+    concept: social_media
+    description: "Do you actively use Instagram?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51c_instagram
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "instagram"
+  - id: sm_use_messenger
+    concept: social_media
+    description: "Do you actively use Messenger?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51g_philippines_messenger
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "messenger"
+  - id: sm_use_tiktok
+    concept: social_media
+    description: "Do you actively use Tiktok?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51e_tiktok
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "tiktok"
+  - id: sm_use_twitter
+    concept: social_media
+    description: "Do you actively use Twitter?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51b_twitter
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "twitter"
+  - id: sm_use_whatsapp
+    concept: social_media
+    description: "Do you actively use Whatsapp?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51e_whatsapp
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "whatsapp"
+  - id: sm_use_youtube
+    concept: social_media
+    description: "Do you actively use Youtube?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q51a_youtube
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6]
+          phrase: "youtube"

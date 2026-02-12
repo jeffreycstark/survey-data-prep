@@ -1,0 +1,709 @@
+# Demographics - Comprehensive YAML (v2)
+# Core demographic and socioeconomic variables
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes for survey items"
+  treat_as_na_education_years:
+    codes: [-1, 90, 98, 99]
+    description: "Missing codes for years of education (90=Not applicable)"
+  # Education: 7-9 are valid levels (secondary, some university, university); 11=Other is missing
+  treat_as_na_education:
+    codes: [-1, 11, 97, 98, 99]
+    description: "Missing codes for education level (preserves valid levels 1-10)"
+  # Country/ID variables should NOT treat 7, 8, 9 as missing (those are valid country codes)
+  treat_as_na_identifiers:
+    codes: [-1, 97, 98, 99]
+    description: "Missing codes for identifiers (preserves country codes 7=Taiwan, 8=Thailand, 9=Indonesia)"
+variables:
+  - id: age
+    concept: demographics
+    description: "Age of respondent (actual age)"
+    type: continuous
+    missing:
+      use_convention: treat_as_na
+      codes: [100, 999]
+    source:
+      w1: se003a
+      w2: se3a
+      w3: se3a
+      w4: se3_2
+      w5: SE3_1
+      w6: se3_1
+    scale:
+      min: 17
+      max: 99
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [17, 99]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "age"
+  # ===========================================================================
+  # GROUP 0: Record Identifiers
+  # ===========================================================================
+  - id: country
+    concept: identifiers
+    description: "Country code (numeric)"
+    type: nominal
+    missing:
+      use_convention: treat_as_na_identifiers
+    source:
+      w1: country
+      w2: country
+      w3: country
+      w4: country
+      w5: COUNTRY
+      w6: country
+    note: "W1-W5 have numeric codes, W6 has text names mapped to codes. IMPORTANT: Uses treat_as_na_identifiers to preserve country codes 7, 8, 9 (Taiwan, Thailand, Indonesia)"
+    scale:
+      min: 1
+      max: 18
+      labels:
+        1: "Japan"
+        2: "Hong Kong"
+        3: "Korea"
+        4: "Mainland China"
+        5: "Mongolia"
+        6: "Philippines"
+        7: "Taiwan"
+        8: "Thailand"
+        9: "Indonesia"
+        10: "Singapore"
+        11: "Vietnam"
+        12: "Cambodia"
+        13: "Malaysia"
+        14: "Myanmar"
+        15: "Australia"
+        18: "India"
+      note: "Code 16-17 unused; 18=India (W5 only)"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w6:
+          method: r_function
+          fn: recode_w6_country
+          note: "Map W6 text country names to numeric codes"
+    qc:
+      valid_range: [1, 18]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "country"
+  - id: current_status_unemployed
+    concept: demographics
+    description: "What is your current status? (for non-employed)"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [90]
+    source:
+      w1: null
+      w2: null
+      w3: se9e
+      w4: se9e
+      w5: SE9E
+      w6: se9e
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Retired"
+        2: "Housewife"
+        3: "Student"
+        4: "Disabled"
+        5: "Unemployed"
+        6: "Other"
+    note: "Categories may vary slightly across waves"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: recode
+          mapping:
+            1: 1
+            2: 2
+            3: 3
+            4: 4
+            5: 5
+            6: 6
+            10: 6
+            90: null
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "current status"
+  # ===========================================================================
+  # GROUP 2: Education
+  # ===========================================================================
+  - id: education_level
+    concept: demographics
+    description: "Highest level of education completed"
+    type: ordinal
+    source:
+      w1: se005 # TODO: verify w1 variable name
+      w2: se5
+      w3: se5
+      w4: se5
+      w5: SE5
+      w6: se5
+    scale:
+      min: 1
+      max: 10
+    missing:
+      use_convention: treat_as_na_education
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "education"
+  - id: education_years
+    concept: demographics
+    description: "Years of formal education"
+    type: continuous
+    missing:
+      use_convention: treat_as_na_education_years
+    source:
+      w1: se005a # TODO: verify w1 variable name
+      w2: se5a
+      w3: se5a
+      w4: se5a
+      w5: SE5A
+      w6: se5a
+    scale:
+      min: 0
+      max: 25
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 25]
+      skip_range_check: true
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "year.*education|education.*year"
+  # ===========================================================================
+  # GROUP 3: Employment / Economic Status
+  # ===========================================================================
+  - id: employed
+    concept: demographics
+    description: "Currently employed"
+    type: nominal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # NOTE: w2 se9 is household income
+      w3: se9
+      w4: se9
+      w5: SE9
+      w6: SE9
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "employed"
+  # ===========================================================================
+  # GROUP 8: Employment Details
+  # ===========================================================================
+  - id: employment_type
+    concept: demographics
+    description: "Self-employed, family business, or outside employer?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: se9a
+      w4: se9a
+      w5: SE9A
+      w6: se9a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Self-employed/business owner"
+        2: "Working in family business"
+        3: "Working for outside employer"
+        4: "Peasant/farmer"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "self-employed|family business|employer"
+  - id: gender
+    concept: demographics
+    description: "Gender of respondent"
+    type: nominal
+    source:
+      w1: se002
+      w2: se2
+      w3: se2
+      w4: se2
+      w5: SE2
+      w6: se2
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "gender"
+  - id: hh_generations
+    concept: demographics
+    description: "Number of generations living in household"
+    type: ordinal
+    source:
+      w1: se008b
+      w2: se8b
+      w3: se8b
+      w4: se8b
+      w5: SE8B
+      w6: se8b
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "One generation"
+        2: "Two generations"
+        3: "Three generations"
+        4: "Four or more generations"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "generation"
+  # ===========================================================================
+  # GROUP 4: Income
+  # ===========================================================================
+  - id: hh_income
+    concept: demographics
+    description: "Monthly/annual household income"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: se9 # NOTE: w2 se9 is income, different from w3-w6
+      w3: null # TODO: find w3 mapping
+      w4: se14
+      w5: SE14
+      w6: SE14
+    scale:
+      min: 1
+      max: 20 # TODO: verify - income brackets vary by wave
+    harmonize:
+      default:
+        method: identity
+        note: "Income brackets may differ across waves - use with caution"
+    qc:
+      valid_range: [1, 20]
+      validate:
+        - waves: [w2, w4, w5, w6]
+          phrase: "income"
+  - id: hh_size
+    concept: demographics
+    description: "Number of people living in household"
+    type: continuous
+    source:
+      w1: se008a
+      w2: se8a
+      w3: se8a
+      w4: se8a
+      w5: SE8A
+      w6: se8a
+    scale:
+      min: 1
+      max: 20
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 20]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "people.*household|household.*members"
+  - id: idnumber
+    concept: identifiers
+    description: "Interview/respondent ID number"
+    type: nominal
+    source:
+      w1: idnumber
+      w2: idnumber
+      w3: idnumber
+      w4: idnumber
+      w5: IDnumber
+      w6: idnumber
+    harmonize:
+      default:
+        method: r_function
+        fn: no_verify
+        note: "ID numbers - pass through without range validation"
+    qc:
+      skip_range_check: true
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "id|interview|case"
+
+  - id: int_month
+    concept: identifiers
+    description: "Interview month (1-12)"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_identifiers
+    source:
+      w1: ir007_1
+      w2: ir9_1
+      w3: ir9
+      w4: month
+      w5: Month
+      w6: month
+    note: "W3 stores date as Date object - month extracted via extract_month_from_date()"
+    scale:
+      min: 1
+      max: 12
+      labels:
+        1: "January"
+        2: "February"
+        3: "March"
+        4: "April"
+        5: "May"
+        6: "June"
+        7: "July"
+        8: "August"
+        9: "September"
+        10: "October"
+        11: "November"
+        12: "December"
+    harmonize:
+      default:
+        method: identity
+      w3:
+        method: r_function
+        fn: extract_month_from_date
+        note: "W3 ir9 is a Date object - extract month component"
+    qc:
+      valid_range: [1, 12]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "month|date|interview"
+
+  - id: int_year
+    concept: identifiers
+    description: "Interview year"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_identifiers
+    source:
+      w1: ir007_3
+      w2: ir9_3
+      w3: ir9
+      w4: year
+      w5: Year
+      w6: year
+    note: "W3 stores date as Date object - year extracted via extract_year_from_date()"
+    scale:
+      min: 2001
+      max: 2025
+    harmonize:
+      default:
+        method: identity
+      w3:
+        method: r_function
+        fn: extract_year_from_date
+        note: "W3 ir9 is a Date object - extract year component"
+    qc:
+      valid_range: [2001, 2025]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "year|date|interview"
+
+  - id: main_earner
+    concept: demographics
+    description: "Are you the main earner in your household?"
+    type: nominal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # TODO: find w2 mapping
+      w3: se10
+      w4: se10
+      w5: SE10
+      w6: SE10
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "main earner"
+  # ===========================================================================
+  # GROUP 5: Marital Status & Family
+  # ===========================================================================
+  - id: marital_status
+    concept: demographics
+    description: "Marital status of respondent"
+    type: nominal
+    source:
+      w1: se004
+      w2: se4
+      w3: se4
+      w4: se4
+      w5: SE4
+      w6: se4
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Single/Never married"
+        2: "Married"
+        3: "Living together as married"
+        4: "Widowed"
+        5: "Separated"
+        6: "Divorced"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "marital"
+  # ===========================================================================
+  # GROUP 6: Religion
+  # ===========================================================================
+  - id: religion
+    concept: demographics
+    description: "Religious affiliation"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [996, 998, 999, 9998, 9999]
+    source:
+      w1: se006
+      w2: se6
+      w3: se6
+      w4: se6
+      w5: SE6
+      w6: se6
+    scale:
+      min: 1
+      max: 90
+      labels:
+        1: "Traditional/Folk religion"
+        10: "Roman Catholic"
+        20: "Protestant"
+        40: "Islam"
+        50: "Hindu"
+        60: "Buddhist"
+        75: "Shinto"
+        76: "Taoism"
+        78: "Confucianism"
+        80: "Other"
+        90: "None"
+    note: "Detailed religion codes vary by country/wave - see codebook for full list"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9999]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "religion"
+  - id: religiosity_practice
+    concept: demographics
+    description: "How often do you practice religious services or rituals?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [90]
+    source:
+      w1: se007
+      w2: se7
+      w3: se7
+      w4: se7
+      w5: SE7
+      w6: se7
+    scale:
+      min: 1
+      max: 11
+      labels:
+        1: "Several times a day"
+        2: "Once a day"
+        3: "Several times a week"
+        4: "Once a week"
+        5: "Several times a month"
+        6: "Once a month"
+        7: "Several times a year"
+        8: "Once a year"
+        9: "Less often"
+        10: "Practically never"
+        11: "No religion"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 11]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "rel.?g"
+  - id: religiosity_self
+    concept: demographics
+    description: "Would you describe yourself as religious?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [90]
+    source:
+      w1: null
+      w2: se7a
+      w3: se7a
+      w4: se7a
+      w5: SE7A
+      w6: se7a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very religious"
+        2: "Moderately religious"
+        3: "Lightly religious"
+        4: "Not religious at all"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher values = less religious"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "describe.*religious"
+  - id: seeking_employment
+    concept: demographics
+    description: "Are you currently seeking employment?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+    source:
+      w1: null
+      w2: null
+      w3: se9d
+      w4: se9d
+      w5: SE9D
+      w6: se9d
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Yes"
+        2: "No"
+        3: "Never employed"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "seeking employment"
+  # ===========================================================================
+  # GROUP 7: Social Status
+  # ===========================================================================
+  - id: subjective_social_status
+    concept: demographics
+    description: "Subjective social status (1=lowest, 10=highest)"
+    type: ordinal
+    source:
+      w1: se017
+      w2: se13
+      w3: se12
+      w4: se12
+      w5: SE12
+      w6: se12
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Lowest status"
+        10: "Highest status"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "social status|place.*family"
+  # ===========================================================================
+  # GROUP 1: Basic Demographics
+  # ===========================================================================
+  - id: urban_rural
+    concept: demographics
+    description: "Urban or rural residence"
+    type: nominal
+    source:
+      w1: level3
+      w2: level3
+      w3: level3
+      w4: level
+      w5: Level
+      w6: level
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Urban"
+        2: "Rural"
+    harmonize:
+      default:
+        method: identity
+        note: "W1-W3 coded 1=urban, 2=rural"
+      exceptions:
+        w4:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W4 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+        w5:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W5 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+        w6:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W6 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "urban|rural"

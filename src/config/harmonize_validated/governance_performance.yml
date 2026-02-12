@@ -1,0 +1,212 @@
+# Governance Performance - YAML
+# Variables measuring government delivery of outcomes (the "sausage")
+# These tap into whether government is DELIVERING regardless of process
+# Created 2025-01-10
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: elections_make_govt_responsive
+    concept: governance_performance
+    description: "How much do you feel that having elections makes the government more responsive to people's needs?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q122
+      w6: q113
+    # Verified 2025-01-10:
+    # W5-W6: 1=A good deal → 4=Not at all (high=less responsive)
+    # Target: high = more responsive
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Not much"
+        3: "Quite a lot"
+        4: "A good deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Coded 1=A good deal → 4=Not at all; reverse so high=more responsive"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "elections.*responsive"
+  # ===========================================================================
+  # GROUP 3: Government Censorship (inverse of freedom)
+  # ===========================================================================
+  - id: govt_should_censor_ideas
+    concept: governance_performance
+    description: "The government should decide whether certain ideas should be allowed to be discussed in society"
+    type: ordinal
+    source:
+      w1: q134
+      w2: q135
+      w3: q142
+      w4: q143
+      w5: q150
+      w6: q150
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+    # NOTE: Agreement = MORE authoritarian preference
+    # Keep as-is for now (high = disagreement = more pro-freedom)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree (pro-censorship)"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree (anti-censorship)"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reverse so high = more anti-censorship / pro-freedom"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "government.*decide.*ideas|ideas.*discussed"
+  - id: no_accountability_between_elections
+    concept: governance_performance
+    description: "Between elections, the people have no way of holding the government responsible"
+    type: ordinal
+    source:
+      w1: null
+      w2: q106
+      w3: q100
+      w4: q103
+      w5: q110
+      w6: q101
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+    # NOTE: This is a NEGATIVE item - agreement means LESS accountability
+    # Keep as-is (high = more disagreement = MORE perceived accountability)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree (no accountability)"
+        2: "Somewhat agree"
+        3: "Somewhat disagree"
+        4: "Strongly disagree (have accountability)"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reverse so high = MORE perceived accountability"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "between elections.*responsible|holding.*government"
+  # ===========================================================================
+  # GROUP 1: Basic Needs Provision
+  # ===========================================================================
+  - id: people_have_necessities
+    concept: governance_performance
+    description: "People have basic necessities like food, clothes, and shelter"
+    type: ordinal
+    source:
+      w1: null
+      w2: q109
+      w3: q105
+      w4: q107
+      w5: q114
+      w6: q105
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more agreement (government delivering)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Agree → 4=Disagree; reverse so high=more agreement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "basic necessities|food.*clothes.*shelter"
+  # ===========================================================================
+  # GROUP 2: Electoral Accountability
+  # ===========================================================================
+  - id: people_power_change_govt
+    concept: governance_performance
+    description: "People have the power to change a government they don't like"
+    type: ordinal
+    source:
+      w1: null
+      w2: q103
+      w3: null # Not found in extract
+      w4: q101
+      w5: null # Not found in extract
+      w6: null
+    # Verified 2025-01-10: 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Coded 1=Agree → 4=Disagree; reverse so high=more agreement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w4]
+          phrase: "power.*change.*government"
+  - id: rich_poor_treated_equally
+    concept: governance_performance
+    description: "Rich and poor people are treated equally by the government"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q104
+      w4: q106
+      w5: q113
+      w6: q104
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Agree → 4=Disagree; reverse so high=more agreement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "rich.*poor.*equal"

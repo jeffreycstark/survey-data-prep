@@ -1,0 +1,106 @@
+# Political Efficacy - Comprehensive YAML (v2)
+# Variables measuring internal and external political efficacy
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ===========================================================================
+  # GROUP 1: Internal Efficacy (belief in own ability)
+  # ===========================================================================
+  - id: efficacy_ability_participate
+    concept: political_efficacy
+    description: "I think I have the ability to participate in politics"
+    type: ordinal
+    source:
+      w1: q126
+      w2: q127
+      w3: q133
+      w4: q134
+      w5: q141
+      w6: q133
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "ability.*participate"
+  # ===========================================================================
+  # GROUP 2: External Efficacy (belief in system responsiveness)
+  # ===========================================================================
+  - id: efficacy_no_influence
+    concept: political_efficacy
+    description: "People like me don't have any influence over what the government does"
+    type: ordinal
+    source:
+      w1: q129
+      w2: null # Not asked in W2
+      w3: q135
+      w4: q136
+      w5: q143
+      w6: q135
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+      note: "NEGATIVE item - higher agreement = lower efficacy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "NOT reversed - higher = more agreement with low efficacy statement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "influence.*government|don't have.*influence"
+  - id: efficacy_politics_complicated
+    concept: political_efficacy
+    description: "Sometimes politics and government seems so complicated that a person like me can't understand"
+    type: ordinal
+    source:
+      w1: q127
+      w2: q128
+      w3: q134
+      w4: q135
+      w5: q142
+      w6: q134
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+      note: "NEGATIVE item - higher agreement = lower efficacy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "NOT reversed - higher = more agreement with low efficacy statement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "complicated.*understand|politics.*complicated"

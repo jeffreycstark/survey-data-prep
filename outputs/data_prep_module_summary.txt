@@ -1,0 +1,130 @@
+═══════════════════════════════════════════════════════════════════════════════
+DATA PREP MODULE STRUCTURE - INSTITUTIONAL TRUST
+═══════════════════════════════════════════════════════════════════════════════
+
+DIRECTORY STRUCTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+src/r/data_prep_modules/
+├── README.md                          # Module documentation
+├── 0_load_waves.R                     # Load/unload utilities
+│   ├── load_waves()                   # Load all 6 waves with labels
+│   ├── strip_haven_labels()           # Remove haven after harmonization
+│   └── extract_var()                  # Safe variable extraction
+│
+├── 1_harmonize_funs.R                 # Harmonization helpers
+│   ├── safe_reverse_4pt()             # 4-point scale reversal
+│   ├── safe_reverse_5pt()             # 5-point scale reversal
+│   ├── recode_5pt_to_4pt()            # Scale conversion
+│   ├── recode_3pt_to_4pt()            # Scale conversion
+│   ├── harmonize_direct()             # Pass-through (no change)
+│   └── validate_harmonization()       # QC validation
+│
+└── institutional_trust.R              # Main harmonization pipeline
+    ├── Load waves (6 waves, with labels)
+    ├── Read YAML config (13 variables)
+    ├── For each variable:
+    │   ├── Extract from each wave
+    │   ├── Apply harmonization method
+    │   ├── Validate NA handling
+    │   └── Stack results
+    ├── Strip haven labels
+    └── Save: data/processed/institutional_trust_harmonized.rds
+
+
+YAML CONFIGURATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+File: src/config/harmonize/institutional_trust.yml
+
+Structure: Single file with 13 variable groupings (not 13 separate files)
+
+Each variable specifies:
+  - name, id, label, concept
+  - sources: wave → variable name mappings (with validation phrases)
+  - scale: type, min/max, reversed flag
+  - harmonize: method (direct, safe_reverse_4pt, etc.)
+
+Example for CIVIL SERVICE:
+  name: trust_civil_service
+  sources:
+    - w1: q011 ("How much trust do you have in civil service?")
+    - w2: q12  ("Trust in Civil service")
+    - w3-w6: q12 (consistent question number)
+  method: direct (no transformation needed)
+
+
+HARMONIZATION WORKFLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+Step 1: Load all 6 waves from RDS files (with haven labels intact)
+        ✓ Faster than reading SPSS files
+        ✓ Labels preserved for validation
+
+Step 2: Read YAML config (13 institutional trust variables)
+
+Step 3: For each variable:
+        ✓ Extract sources from each wave
+        ✓ Apply harmonization method:
+          - direct: no change (same scale across waves)
+          - safe_reverse_4pt: reverse 1-4 scale
+          - safe_reverse_5pt: reverse 1-5 scale
+          - recode_5pt_to_4pt: convert scale sizes
+        ✓ Validate: all NA codes → NA_real_
+
+Step 4: Stack all waves vertically into single dataset
+
+Step 5: Strip haven labels (remove SPSS attributes)
+
+Step 6: Save: data/processed/institutional_trust_harmonized.rds
+
+Output dimensions:
+  - 100,311 rows (all respondents across 6 waves)
+  - 13 columns (trust_civil_service, trust_courts, ..., trust_television)
+  - Wave identifier column
+  - Source tracking (which question was used per wave)
+
+
+RUNNING THE PIPELINE:
+═══════════════════════════════════════════════════════════════════════════════
+
+# First time: Convert SPSS to RDS
+Rscript src/scripts/create_wave_rds.R
+
+# Then: Run harmonization
+Rscript src/r/data_prep_modules/institutional_trust.R
+
+# In analysis scripts:
+inst_trust <- readRDS("data/processed/institutional_trust_harmonized.rds")
+
+
+KEY DIFFERENCES FROM VERBOSE TEMPLATE:
+═══════════════════════════════════════════════════════════════════════════════
+
+OLD APPROACH:
+  ✗ 200+ YAML files (one per variable)
+  ✗ Verbose R template code
+  ✗ Generic "fill in these fields" placeholders
+  ✗ Scales and methods had to be manually selected
+
+NEW APPROACH:
+  ✓ ~15 YAML files total (one per concept area)
+  ✓ Concise R code (actual harmonization logic)
+  ✓ YAML drives what code gets executed
+  ✓ Scale/method selected upfront in config
+  ✓ Modular: reuse same functions for all variables
+  ✓ Validation: every variable checked for proper NA handling
+  ✓ Labels: stripped only after harmonization (QC benefit)
+
+
+NEXT STEPS:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Verify haven labels in waves (they're preserved in RDS files)
+2. Check actual scale ranges in data (verify 1-4 assumptions)
+3. Look for reversed scales by comparing question wording
+4. Run institutional_trust.R to generate first harmonized dataset
+5. Validate output (check value distributions)
+6. Create additional data_prep modules as needed (democracy, economy, etc.)
+
+═══════════════════════════════════════════════════════════════════════════════

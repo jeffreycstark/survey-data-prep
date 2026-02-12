@@ -1,0 +1,226 @@
+# Corruption - Comprehensive YAML (v2 - CORRECTED)
+# Variables measuring corruption perceptions, experiences, and government anti-corruption efforts
+# Corrected 2025-01-10: Fixed scale directions - W1-W2 reversed from W3-W6
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ===========================================================================
+  # GROUP 4: Corruption Comparison to Past (Wave 1 only)
+  # ===========================================================================
+  - id: corrupt_better_than_before
+    concept: corruption
+    description: "Corruption in politics and government is under control - is it better than before?"
+    type: ordinal
+    source:
+      w1: q108
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "corruption.*control|better than before"
+  # ===========================================================================
+  # GROUP 1: Corruption Perceptions
+  # ===========================================================================
+  - id: corrupt_local_govt
+    concept: corruption
+    description: "How widespread do you think corruption and bribe-taking are in your local/municipal government?"
+    type: ordinal
+    source:
+      w1: q114
+      w2: q117
+      w3: q116
+      w4: q117
+      w5: q124
+      w6: q115
+    # Verified 2025-01-10:
+    # W1, W2: 1=Almost everyone → 4=Hardly anyone (high=less corrupt)
+    # W3, W4, W5, W6: 1=Hardly anyone → 4=Almost everyone (high=more corrupt)
+    # Target: high = more corruption perceived
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Hardly anyone is involved"
+        2: "Not a lot of officials are corrupt"
+        3: "Most officials are corrupt"
+        4: "Almost everyone is corrupt"
+    harmonize:
+      default:
+        method: identity
+        note: "W3-W5 coded 1=Hardly anyone → 4=Almost everyone (high=more corrupt)"
+      exceptions:
+        w1:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W1 coded 1=Almost everyone → 4=Hardly anyone; reverse so high=more corrupt"
+        w2:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W2 coded 1=Almost everyone → 4=Hardly anyone; reverse so high=more corrupt"
+        w6:
+          method: r_function
+          fn: recode_w6_corruption
+          note: "W6 has category 5 (No one is involved) - recode 5→1, then identity"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "corruption.*local|local.*corrupt"
+  - id: corrupt_national_govt
+    concept: corruption
+    description: "How widespread do you think corruption and bribe-taking are in the national government?"
+    type: ordinal
+    source:
+      w1: q115
+      w2: q118
+      w3: q117
+      w4: q118
+      w5: q125
+      w6: q116
+    # Verified 2025-01-10:
+    # W1, W2: 1=Almost everyone → 4=Hardly anyone (high=less corrupt)
+    # W3, W4, W5, W6: 1=Hardly anyone → 4=Almost everyone (high=more corrupt)
+    # Target: high = more corruption perceived
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Hardly anyone is involved"
+        2: "Not a lot of officials are corrupt"
+        3: "Most officials are corrupt"
+        4: "Almost everyone is corrupt"
+    harmonize:
+      default:
+        method: identity
+        note: "W3-W5 coded 1=Hardly anyone → 4=Almost everyone (high=more corrupt)"
+      exceptions:
+        w1:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W1 coded 1=Almost everyone → 4=Hardly anyone; reverse so high=more corrupt"
+        w2:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W2 coded 1=Almost everyone → 4=Hardly anyone; reverse so high=more corrupt"
+        w6:
+          method: r_function
+          fn: recode_w6_corruption
+          note: "W6 has category 5 (No one is involved) - recode 5→1, then identity"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "corruption.*national|national.*corrupt"
+  # ===========================================================================
+  # GROUP 3: Corruption Experience
+  # ===========================================================================
+  - id: corrupt_witnessed
+    concept: corruption
+    description: "Have you or anyone you know personally witnessed an act of corruption or bribe-taking?"
+    type: nominal
+    source:
+      w1: q116
+      w2: q119
+      w3: q119
+      w4: q120
+      w5: q127
+      w6: q118
+    # All waves have binary yes/no core, but coding varies
+    # W1: 1=Yes, 2=No
+    # W2: 1=Witnessed, 2=Never witnessed
+    # W3: 1=Witnessed, 2=Never witnessed (also 6=No one I know)
+    # W4: 1-3=Yes variants, 4-5=No variants
+    # W5-W6: 1=Yes, 2=No
+
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes, witnessed"
+        2: "No, not witnessed"
+    harmonize:
+      default:
+        method: identity
+        note: "Most waves coded 1=Yes, 2=No"
+      exceptions:
+        w3:
+          method: r_function
+          fn: recode_w3_witnessed
+          note: "W3 has category 6 (no one I know) - recode to 2"
+        w4:
+          method: r_function
+          fn: recode_w4_witnessed
+          note: "W4 has 5 categories: 1-3→1 (witnessed), 4-5→2 (not witnessed)"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "witnessed.*corrupt|corrupt.*bribe"
+  # ===========================================================================
+  # GROUP 2: Government Anti-Corruption Efforts
+  # ===========================================================================
+  - id: govt_anticorrupt_effort
+    concept: corruption
+    description: "Is the government working to crack down on corruption / how effective?"
+    type: ordinal
+    source:
+      w1: null # Not asked (q108 is different - comparison to past)
+      w2: q120
+      w3: q118
+      w4: q119
+      w5: q126
+      w6: q117
+    # NOTE: W2 has 5-point scale (0-4), W3-W4 have 4-point (1-4), W5-W6 have different 4-point
+    # W2: 0=Doing effectively → 4=Doing nothing
+    # W3-W4: 1=Doing best → 4=Doing nothing
+    # W5-W6: 1=Very effective → 4=Not effective at all
+    # All have high = govt doing poorly
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very effective / Doing its best"
+        2: "Somewhat effective / Doing something"
+        3: "Not very effective / Not doing much"
+        4: "Not effective at all / Doing nothing"
+    harmonize:
+      default:
+        method: identity
+        note: "W3-W6 coded 1=effective → 4=ineffective (high=govt failing)"
+      exceptions:
+        w2:
+          method: r_function
+          fn: recode_w2_anticorrupt
+          note: "W2 has 5-point scale starting at 0; recode 0→1, 1→1, 2→2, 3→3, 4→4"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "crack.*down|root.*brib|effective.*corrupt"
+      notes:
+        - "W2 scale differs (5pt vs 4pt) - may lose some granularity"

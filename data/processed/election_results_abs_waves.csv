@@ -1,0 +1,73 @@
+country,election_date,election_year,abs_wave,party_name,party_name_local,votes,vote_pct,seats,ruling_coalition,coalition
+South Korea,2004-04-15,2004,W2,Uri Party,열린우리당,8145924,38.27,152,TRUE,Government
+South Korea,2004-04-15,2004,W2,Grand National Party,한나라당,7613660,35.77,121,FALSE,Opposition
+South Korea,2004-04-15,2004,W2,Democratic Labor Party,민주노동당,2773769,13.03,10,FALSE,Opposition
+South Korea,2004-04-15,2004,W2,Millennium Democratic Party,새천년민주당,1510178,7.09,9,FALSE,Opposition
+South Korea,2004-04-15,2004,W2,United Liberal Democrats,자유민주연합,600462,2.82,4,FALSE,Opposition
+South Korea,2004-04-15,2004,W2,Others/Independents,NA,642091,3.02,3,FALSE,Opposition
+South Korea,2008-04-09,2008,W3,Grand National Party,한나라당,6421654,37.37,153,TRUE,Government
+South Korea,2008-04-09,2008,W3,United Democratic Party,통합민주당,4313111,25.1,81,FALSE,Opposition
+South Korea,2008-04-09,2008,W3,Independents,NA,1391392,8.1,25,FALSE,Opposition
+South Korea,2008-04-09,2008,W3,Liberty Forward Party,자유선진당,1173452,6.83,18,FALSE,Opposition
+South Korea,2008-04-09,2008,W3,Park's Party (Pro-Park),친박연대,2258726,13.14,14,TRUE,Government
+South Korea,2008-04-09,2008,W3,Democratic Labor Party,민주노동당,973394,5.66,5,FALSE,Opposition
+South Korea,2008-04-09,2008,W3,Renewal of Korea Party,창조한국당,651980,3.79,3,FALSE,Opposition
+South Korea,2012-04-11,2012,W4,Saenuri Party (New Frontier),새누리당,9129226,42.8,152,TRUE,Government
+South Korea,2012-04-11,2012,W4,Democratic United Party,민주통합당,7775737,36.46,127,FALSE,Opposition
+South Korea,2012-04-11,2012,W4,Unified Progressive Party,통합진보당,2441077,11.45,13,FALSE,Opposition
+South Korea,2012-04-11,2012,W4,Liberty Forward Party,자유선진당,689843,3.23,10,FALSE,Opposition
+South Korea,2020-04-15,2020,W6,Democratic Party of Korea,더불어민주당,14345425,49.91,180,TRUE,Government
+South Korea,2020-04-15,2020,W6,United Future Party,미래통합당,11915277,41.45,103,FALSE,Opposition
+South Korea,2020-04-15,2020,W6,Justice Party,정의당,487519,1.69,6,FALSE,Opposition
+South Korea,2020-04-15,2020,W6,People's Party,국민의당,377861,1.31,3,FALSE,Opposition
+South Korea,2020-04-15,2020,W6,Open Democratic Party,열린민주당,490289,1.7,3,TRUE,Government
+Taiwan,2004-12-11,2004,W2,Democratic Progressive Party,民主進步黨,3471429,35.72,89,TRUE,Pan-Green
+Taiwan,2004-12-11,2004,W2,Kuomintang,中國國民黨,3190081,32.83,79,FALSE,Pan-Blue
+Taiwan,2004-12-11,2004,W2,People First Party,親民黨,1350613,13.9,34,FALSE,Pan-Blue
+Taiwan,2004-12-11,2004,W2,Taiwan Solidarity Union,台灣團結聯盟,756712,7.79,12,TRUE,Pan-Green
+Taiwan,2004-12-11,2004,W2,Non-Partisan Solidarity Union,無黨團結聯盟,NA,NA,6,FALSE,Pan-Blue
+Taiwan,2004-12-11,2004,W2,Independents,NA,NA,NA,4,FALSE,Pan-Blue
+Taiwan,2004-12-11,2004,W2,New Party,新黨,NA,NA,1,FALSE,Pan-Blue
+Taiwan,2008-01-12,2008,W3,Kuomintang,中國國民黨,5291512,53.5,81,TRUE,Pan-Green
+Taiwan,2008-01-12,2008,W3,Democratic Progressive Party,民主進步黨,3775352,38.17,27,FALSE,Pan-Blue
+Taiwan,2008-01-12,2008,W3,Non-Partisan Solidarity Union,無黨團結聯盟,239317,2.42,3,FALSE,Pan-Blue
+Taiwan,2008-01-12,2008,W3,People First Party,親民黨,28254,0.29,1,TRUE,Pan-Green
+Taiwan,2008-01-12,2008,W3,Independents,NA,NA,NA,1,FALSE,Pan-Blue
+Taiwan,2008-01-12,2008,W3,Taiwan Solidarity Union,台灣團結聯盟,93840,0.95,0,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,Democratic Progressive Party,民主進步黨,6370953,44.06,68,TRUE,Pan-Green
+Taiwan,2016-01-16,2016,W4,Kuomintang,中國國民黨,3280949,26.91,35,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,New Power Party,時代力量,744315,6.11,5,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,People First Party,親民黨,794838,6.52,3,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,Non-Partisan Solidarity Union,無黨團結聯盟,77672,0.64,1,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,Independents,NA,NA,NA,1,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,New Party,新黨,510074,4.18,0,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,Taiwan Solidarity Union,台灣團結聯盟,305675,2.51,0,FALSE,Pan-Blue
+Taiwan,2016-01-16,2016,W4,Green-Social Democratic Alliance,綠黨社會民主黨聯盟,308106,2.53,0,FALSE,Pan-Blue
+Thailand,2007-12-23,2007,W3,People's Power Party,พรรคพลังประชาชน,NA,NA,233,TRUE,Government
+Thailand,2007-12-23,2007,W3,Democrat Party,พรรคประชาธิปัตย์,NA,NA,164,FALSE,Opposition
+Thailand,2007-12-23,2007,W3,Thai Nation Party,พรรคชาติไทย,NA,NA,34,TRUE,Government
+Thailand,2007-12-23,2007,W3,For the Motherland Party,พรรคเพื่อแผ่นดิน,NA,NA,24,TRUE,Government
+Thailand,2007-12-23,2007,W3,Neutral Democratic Party,พรรคมัชฌิมาธิปไตย,NA,NA,11,TRUE,Government
+Thailand,2007-12-23,2007,W3,Thai United National Development Party,พรรครวมใจไทยชาติพัฒนา,NA,NA,9,TRUE,Government
+Thailand,2007-12-23,2007,W3,Royalist People's Party,พรรคประชาราช,NA,NA,5,FALSE,Opposition
+Thailand,2011-07-03,2011,W4,Pheu Thai Party,พรรคเพื่อไทย,15744190,45.2,265,TRUE,Government
+Thailand,2011-07-03,2011,W4,Democrat Party,พรรคประชาธิปัตย์,11433501,33,159,FALSE,Opposition
+Thailand,2011-07-03,2011,W4,Bhumjaithai Party,พรรคภูมิใจไทย,1281652,3.8,34,TRUE,Government
+Thailand,2011-07-03,2011,W4,Chartthaipattana Party,พรรคชาติไทยพัฒนา,906656,2.6,19,TRUE,Government
+Thailand,2011-07-03,2011,W4,Palang Chon Party,พรรคพลังชล,NA,NA,7,TRUE,Government
+Thailand,2011-07-03,2011,W4,Chart Pattana Puea Pandin,พรรคชาติพัฒนาเพื่อแผ่นดิน,NA,NA,7,TRUE,Government
+Thailand,2011-07-03,2011,W4,Love Thailand Party,พรรครักประเทศไทย,NA,2.8,4,FALSE,Opposition
+Thailand,2011-07-03,2011,W4,Matubhum Party,พรรคมาตุภูมิ,NA,NA,2,FALSE,Opposition
+Thailand,2011-07-03,2011,W4,New Democrat Party,NA,NA,NA,1,FALSE,Opposition
+Thailand,2011-07-03,2011,W4,Mahachon Party,NA,NA,NA,1,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Pheu Thai Party,พรรคเพื่อไทย,7920630,22.3,136,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Palang Pracharath Party,พรรคพลังประชารัฐ,8433137,23.7,116,TRUE,Government
+Thailand,2019-03-24,2019,W6,Future Forward Party,พรรคอนาคตใหม่,6265950,17.6,81,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Democrat Party,พรรคประชาธิปัตย์,3947726,11.1,52,TRUE,Government
+Thailand,2019-03-24,2019,W6,Bhumjaithai Party,พรรคภูมิใจไทย,3732883,10.5,51,TRUE,Government
+Thailand,2019-03-24,2019,W6,Thai Liberal Party,พรรคเสรีรวมไทย,826530,2.3,10,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Charthaipattana Party,พรรคชาติไทยพัฒนา,782031,2.2,10,TRUE,Government
+Thailand,2019-03-24,2019,W6,Prachachart Party,พรรคประชาชาติ,485436,1.4,7,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,New Economics Party,พรรคเศรษฐกิจใหม่,485664,1.4,6,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Puea Chat Party,พรรคเพื่อชาติ,419393,1.2,5,FALSE,Opposition
+Thailand,2019-03-24,2019,W6,Chart Pattana Party,พรรคชาติพัฒนา,252044,0.7,3,TRUE,Government

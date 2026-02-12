@@ -1,0 +1,203 @@
+# Globalization Attitudes - Validated YAML (v2)
+# Variables measuring attitudes toward cultural openness, trade, and immigration
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ===========================================================================
+  # GROUP 1: Cultural Openness
+  # ===========================================================================
+  - id: glob_cultural_defense
+    concept: globalization
+    description: "Should our country defend our way of life or learn from other countries?"
+    type: nominal
+    source:
+      w1: q142
+      w2: q144
+      w3: q151
+      w4: q151
+      w5: q156
+      w6: q156
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Defend our way of life"
+        2: "Learn from other countries"
+    harmonize:
+      default:
+        method: identity
+        note: "W5/W6 already coded as defend vs learn"
+      exceptions:
+        w1:
+          method: recode
+          mapping:
+            1: 2  # Strongly disagree -> learn
+            2: 2  # Somewhat disagree -> learn
+            3: 1  # Somewhat agree -> defend
+            4: 1  # Strongly agree -> defend
+        w2:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> defend
+            2: 1  # Somewhat agree -> defend
+            3: 2  # Somewhat disagree -> learn
+            4: 2  # Strongly disagree -> learn
+        w3:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> defend
+            2: 1  # Somewhat agree -> defend
+            3: 2  # Somewhat disagree -> learn
+            4: 2  # Strongly disagree -> learn
+        w4:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> defend
+            2: 1  # Agree -> defend
+            3: 2  # Disagree -> learn
+            4: 2  # Strongly disagree -> learn
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "way of life|defend.*culture"
+  # ===========================================================================
+  # GROUP 4: Intensity Follow-ups (Wave 5 only)
+  # ===========================================================================
+  - id: glob_cultural_defense_intensity
+    concept: globalization
+    description: "How strongly do you feel about defending way of life/learning from others?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q156a
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly"
+        2: "Not strongly"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w5]
+          phrase: "strongly|how much"
+  # ===========================================================================
+  # GROUP 3: Immigration Attitudes
+  # ===========================================================================
+  - id: glob_immigration_policy
+    concept: globalization
+    description: "Should the government increase or decrease the inflow of foreign immigrants?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q153
+      w5: q158
+      w6: q158
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Should not allow anymore"
+        2: "Reduce the inflow"
+        3: "Maintain the current inflow"
+        4: "Increase the flow"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Original: 1=increase to 4=not allow; Reversed so higher = more open"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4, w5, w6]
+          phrase: "immigra|foreign.*inflow"
+  # ===========================================================================
+  # GROUP 2: Trade Attitudes
+  # ===========================================================================
+  - id: glob_trade_protection
+    concept: globalization
+    description: "Should our country limit imports to protect workers/farmers or do more trade?"
+    type: nominal
+    source:
+      w1: null
+      w2: q146
+      w3: q152
+      w4: q152
+      w5: q157
+      w6: q157
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Limit imports to protect workers/farmers"
+        2: "Do more trade with other countries"
+    harmonize:
+      default:
+        method: identity
+        note: "W5/W6 are binary choices already"
+      exceptions:
+        w2:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> limit imports
+            2: 1  # Somewhat agree -> limit imports
+            3: 2  # Somewhat disagree -> more trade
+            4: 2  # Strongly disagree -> more trade
+        w3:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> limit imports
+            2: 1  # Agree -> limit imports
+            3: 2  # Disagree -> more trade
+            4: 2  # Strongly disagree -> more trade
+        w4:
+          method: recode
+          mapping:
+            1: 1  # Strongly agree -> limit imports
+            2: 1  # Agree -> limit imports
+            3: 2  # Disagree -> more trade
+            4: 2  # Strongly disagree -> more trade
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "import.*protect|trade.*countr"
+  - id: glob_trade_protection_intensity
+    concept: globalization
+    description: "How strongly do you feel about trade protection/openness?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q157a
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly"
+        2: "Not strongly"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w5]
+          phrase: "strongly|how much"

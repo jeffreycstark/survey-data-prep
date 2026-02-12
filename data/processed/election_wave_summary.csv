@@ -1,0 +1,11 @@
+country,abs_wave,election_year,election_date,total_seats,ruling_seats,opposition_seats,ruling_parties,largest_ruling,largest_opposition
+South Korea,W2,2004,2004-04-15,299,152,147,Uri Party,Uri Party,Grand National Party
+South Korea,W3,2008,2008-04-09,299,167,132,Grand National Party; Park's Party (Pro-Park),Grand National Party,United Democratic Party
+South Korea,W4,2012,2012-04-11,302,152,150,Saenuri Party (New Frontier),Saenuri Party (New Frontier),Democratic United Party
+South Korea,W6,2020,2020-04-15,295,183,112,Democratic Party of Korea; Open Democratic Party,Democratic Party of Korea,United Future Party
+Taiwan,W2,2004,2004-12-11,225,101,124,Democratic Progressive Party; Taiwan Solidarity Union,Democratic Progressive Party,Kuomintang
+Taiwan,W3,2008,2008-01-12,113,82,31,Kuomintang; People First Party,Kuomintang,Democratic Progressive Party
+Taiwan,W4,2016,2016-01-16,113,68,45,Democratic Progressive Party,Democratic Progressive Party,Kuomintang
+Thailand,W3,2007,2007-12-23,480,311,169,People's Power Party; Thai Nation Party; For the Motherland Party; Neutral Democratic Party; Thai United National Development Party,People's Power Party,Democrat Party
+Thailand,W4,2011,2011-07-03,499,332,167,Pheu Thai Party; Bhumjaithai Party; Chartthaipattana Party; Palang Chon Party; Chart Pattana Puea Pandin,Pheu Thai Party,Democrat Party
+Thailand,W6,2019,2019-03-24,477,232,245,Palang Pracharath Party; Democrat Party; Bhumjaithai Party; Charthaipattana Party; Chart Pattana Party,Palang Pracharath Party,Pheu Thai Party

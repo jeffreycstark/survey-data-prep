@@ -1,0 +1,6 @@
+country_name,iso_code,population_millions,deaths_per_million_2020,deaths_per_million_2021,deaths_per_million_2022,deaths_per_million_2023,gdp_growth_2020,gdp_growth_2021,gdp_growth_2022,vaccination_pct_2022,stringency_avg_2020,stringency_avg_2021,stringency_avg_2022,notes
+Indonesia,IDN,273.5,76,517,576,581,-2.1,3.7,5.3,65,68,67,15,High deaths underreported; slow vax rollout
+Thailand,THA,69.8,1,301,468,481,-6.1,1.5,2.6,75,64,43,6,Worst GDP hit; political crisis overlaid
+Philippines,PHL,109.6,80,449,573,586,-9.5,5.7,7.6,65,66,66,25,Deepest contraction then recovery; Duterte era
+Taiwan,TWN,23.9,0,0,640,786,3.4,6.6,2.4,85,19,20,18,Zero-COVID until 2022; most deaths in 2022
+Vietnam,VNM,97.3,0,313,433,433,2.9,2.6,8.0,80,57,69,23,Late wave in 2021; strong recovery

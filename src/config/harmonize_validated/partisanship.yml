@@ -1,0 +1,70 @@
+# Partisanship - Validated YAML (v2)
+# Variables measuring party identification and attachment strength
+# NOTE: party_id excluded due to country-specific codes (100s of values)
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes (note: 90 = no party attachment is valid response)"
+variables:
+  # ===========================================================================
+  # Derived: Has Party Attachment (binary)
+  # ===========================================================================
+  - id: has_party_id
+    concept: partisanship
+    description: "Does respondent identify with any political party? (derived from party_id)"
+    type: nominal
+    source:
+      w1: q062
+      w2: q54
+      w3: q47
+      w4: q53
+      w5: q56
+      w6: q54
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No party attachment"
+        1: "Has party attachment"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_has_party
+        note: "Recode: 90/1595/1597 -> 0 (no party), other valid codes -> 1 (has party)"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "closest.*party"
+  # ===========================================================================
+  # Party Closeness
+  # ===========================================================================
+  - id: party_closeness
+    concept: partisanship
+    description: "How close do you feel to that party? (Very close, somewhat close, just a little close)"
+    type: ordinal
+    source:
+      w1: q063
+      w2: q55
+      w3: q48
+      w4: q54
+      w5: q57
+      w6: q55
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Just a little close"
+        2: "Somewhat close"
+        3: "Very close"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "how close.*party|close.*feel"

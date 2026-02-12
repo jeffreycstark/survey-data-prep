@@ -1,0 +1,485 @@
+# Governance Perceptions - Validated YAML (v2)
+# Variables measuring perceptions of government functioning, accountability, equality, and rights
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ===========================================================================
+  # GROUP 3: Basic Rights / Freedoms
+  # ===========================================================================
+  - id: gov_basic_necessities
+    concept: governance
+    description: "People have basic necessities like food, clothes, and shelter"
+    type: ordinal
+    source:
+      w1: null
+      w2: q109
+      w3: q105
+      w4: q107
+      w5: q114
+      w6: q105
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "basic necessit|food.*clothes.*shelter"
+  - id: gov_courts_powerless
+    concept: governance
+    description: "When government leaders break the laws, there is nothing the court can do"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q101
+      w4: q104
+      w5: q111
+      w6: q102
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+      note: "NEGATIVE statement - higher raw = less judicial power"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "NOT reversed - higher = agree courts powerless (negative)"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "court.*nothing|leaders.*break.*law"
+  - id: gov_economic_equality
+    concept: governance
+    description: "Rich and poor people are treated equally by the government"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [5]
+    source:
+      w1: q106
+      w2: q108
+      w3: q104
+      w4: q106
+      w5: q113
+      w6: q104
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+      exceptions:
+        w1:
+          method: identity
+          note: "w1 asks 'better than before' - different scale/concept"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "rich.*poor.*equal|treated equal"
+  - id: gov_elections_make_responsive
+    concept: governance
+    description: "How much do you feel that having elections makes the government more responsive?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q122
+      w6: q113
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Not much"
+        3: "Quite a lot"
+        4: "A good deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "elections.*responsive"
+  - id: gov_elections_real_choice
+    concept: governance
+    description: "How often do elections offer voters a real choice between parties/candidates?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q114
+      w3: q111
+      w4: q113
+      w5: q119
+      w6: q110
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Rarely"
+        2: "Sometimes"
+        3: "Most of the time"
+        4: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+      exceptions:
+        w5:
+          method: recode
+          mapping:
+            1: 1
+            2: 2
+            3: 3
+            4: 4
+            5: 1
+          note: "W5 includes 5=Never; collapse into 1=Rarely"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "elections.*real choice|voters.*choice"
+  - id: gov_enforce_laws
+    concept: governance
+    description: "How capable is the government of enforcing laws and implementing policies?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q123
+      w6: q114
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all capable"
+        2: "Not capable"
+        3: "Capable"
+        4: "Very capable"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "enforcing laws|implement.*polic"
+  # ===========================================================================
+  # GROUP 2: Equality
+  # ===========================================================================
+  - id: gov_ethnic_equality
+    concept: governance
+    description: "All citizens from different ethnic communities are treated equally by the government"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q103
+      w4: q105
+      w5: q112
+      w6: q103
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "ethnic.*treated.*equal|communities.*equal"
+  - id: gov_free_to_organize
+    concept: governance
+    description: "People can join any organization they like without fear"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [5]
+    source:
+      w1: q113
+      w2: q111
+      w3: q107
+      w4: q109
+      w5: q116
+      w6: q107
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+      exceptions:
+        w1:
+          method: identity
+          note: "w1 asks 'better than before' - different scale/concept"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "join.*organization|organization.*fear"
+  # ===========================================================================
+  # GROUP 4: Government Behavior (Frequency)
+  # Scale: 1-5 (1=Always, 5=Not at all) or 1-4
+  # ===========================================================================
+  - id: gov_leaders_abuse_power
+    concept: governance
+    description: "How often do government leaders break the law or abuse their power?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q110
+      w4: q112
+      w5: q118
+      w6: q109
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Not at all"
+        2: "Rarely"
+        3: "Sometimes"
+        4: "Most of the time"
+        5: "Always"
+      note: "Higher = more abuse (negative perception)"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Reversed so higher = less abuse"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "leaders.*break.*law|abuse.*power"
+  # ===========================================================================
+  # GROUP 5: Government Capability
+  # ===========================================================================
+  - id: gov_legislature_oversight
+    concept: governance
+    description: "To what extent is the legislature capable of keeping government leaders in check?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q115
+      w3: q112
+      w4: q114
+      w5: q120
+      w6: q111
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all capable"
+        2: "Not capable"
+        3: "Capable"
+        4: "Very capable"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "legislature.*capable|legislature.*check"
+  - id: gov_no_accountability_between_elections
+    concept: governance
+    description: "Between elections, the people have no way of holding the government responsible"
+    type: ordinal
+    source:
+      w1: null
+      w2: q106
+      w3: q100
+      w4: q103
+      w5: q110
+      w6: q101
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+      note: "NEGATIVE statement - higher raw = less accountability"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "NOT reversed - higher = agree no accountability (negative)"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "between elections|no way.*holding"
+  - id: gov_opposition_opportunities
+    concept: governance
+    description: "Parties and candidates not in power have opportunities to be elected into government"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q109
+      w6: q100
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "parties.*candidates.*power|opportunit.*elected"
+  # ===========================================================================
+  # GROUP 1: Electoral Accountability
+  # Scale: 1-4 (1=Strongly agree, 4=Strongly disagree) - REVERSED
+  # ===========================================================================
+  - id: gov_remove_through_elections
+    concept: governance
+    description: "Citizens are able to remove a government they don't like through elections"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q108
+      w6: q99
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "remove.*government.*election"
+  - id: problem_govt_will_solve
+    concept: governance
+    description: "How likely is it that the government will solve the most important problem within five years?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q102a
+      w3: q97
+      w4: q100
+      w5: q107
+      w6: q98
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all likely"
+        2: "Not very likely"
+        3: "Likely"
+        4: "Very likely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "government.*solve|likely.*solve"
+  # ===========================================================================
+  # GROUP 6: Important Problems
+  # ===========================================================================
+  - id: problem_most_important
+    concept: governance
+    description: "What are the most important problems facing this country that government should address?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [998, 999]
+    source:
+      w1: null
+      w2: null
+      w3: q96
+      w4: q99
+      w5: q106
+      w6: q97
+    scale:
+      min: 1
+      max: 996
+      labels:
+        1: "Management of the economy"
+        2: "Wages, incomes and salaries"
+        3: "Unemployment"
+        4: "Poverty/destitution"
+      note: "Many category codes (including 900-series); see codebook for full list. 998/999 are missing."
+    harmonize:
+      default:
+        method: identity
+        note: "Nominal - use for frequency analysis within waves"
+    qc:
+      valid_range: [1, 996]
+      skip_range_check: true
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "important problem|problem.*facing"

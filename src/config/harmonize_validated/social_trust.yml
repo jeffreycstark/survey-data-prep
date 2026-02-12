@@ -1,0 +1,312 @@
+# Social Trust - Comprehensive YAML (v2 - CORRECTED)
+# Variables measuring generalized trust, interpersonal trust, and social networks
+# Corrected 2025-01-10: Fixed scale directions and documented W5 6pt scale issue
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: trust_acquaintances
+    concept: social_trust
+    description: "How much trust do you have in other people you interact with?"
+    type: ordinal
+    source:
+      w1: null # Not asked
+      w2: q26
+      w3: q27
+      w4: q28
+      w5: q26 # WARNING: 6pt scale
+      w6: q26
+    # Same pattern as trust_relatives
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W3, W4, W6 coded 1=Great deal → 4=None; reverse so high=trust"
+      exceptions:
+        w2:
+          method: r_function
+          fn: reverse_trust_vietnam_w2
+          note: "W2 identity for most countries; Vietnam (country=11) coded 1=Great deal → 4=None"
+        w3:
+          method: r_function
+          fn: reverse_trust_vietnam_w3
+          note: "W3 reverse for most countries; Vietnam (country=11) coded 1=None → 4=Great deal"
+        w5:
+          method: r_function
+          fn: collapse_6pt_to_4pt_reverse
+          note: "W5 has 6pt scale; collapse and reverse"
+    qc:
+      valid_range: [1, 4]
+      group_by: country
+      transformation_allow_reverse: true
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "people.*interact"
+  # ===========================================================================
+  # GROUP 1: Generalized Trust
+  # ===========================================================================
+  - id: trust_generalized_binary
+    concept: social_trust
+    description: "Would you say most people can be trusted or must be very careful in dealing with people?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [3, 6]
+    source:
+      w1: q024
+      w2: q23
+      w3: q23
+      w4: q23
+      w5: q22
+      w6: q22
+    # WARNING: W1 has 3 categories (1=Careful, 2=Trusted, 3=Both)
+    # WARNING: W5 has 3 categories (1=Trusted, 2=Careful, 3=Depends)
+    # W2 is reversed (1=Careful, 2=Trusted) vs W3-W6 (1=Trusted, 2=Careful)
+
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Most people can be trusted"
+        2: "Must be very careful"
+    harmonize:
+      default:
+        method: identity
+        note: "W3, W4, W6 coded 1=Trusted, 2=Careful"
+      exceptions:
+        w1:
+          method: recode
+          mapping:
+            1: 2
+            2: 1
+            3: null
+          note: "W1 has 3 categories: 1=Careful→2, 2=Trusted→1, 3=Both→NA"
+        w2:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W2 coded 1=Careful, 2=Trusted; reverse to match W3-W6"
+        w5:
+          method: recode
+          mapping:
+            1: 1
+            2: 2
+            3: null
+          note: "W5 has 3 categories: 1=Trusted→1, 2=Careful→2, 3=Depends→NA"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "most people.*trusted|careful.*dealing"
+      notes:
+        - "W1 and W5 have 3rd category that must be recoded to NA"
+        - "W2 scale is reversed from W3-W6"
+  - id: trust_generalized_ordinal
+    concept: social_trust
+    description: "Do you agree that most people are trustworthy?"
+    type: ordinal
+    source:
+      w1: null # Not asked
+      w2: null # Not asked
+      w3: q49
+      w4: q24
+      w5: q23
+      w6: q23
+    # Verified 2025-01-10: All waves 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Agree → 4=Disagree; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "trustworthy"
+  # ===========================================================================
+  # GROUP 3: Trust in Government (from political attitudes)
+  # ===========================================================================
+  - id: trust_govt_do_right
+    concept: social_trust
+    description: "You can generally trust the people who run our government to do what is right"
+    type: ordinal
+    source:
+      w1: q131
+      w2: q130
+      w3: q136
+      w4: q137
+      w5: q144
+      w6: q136
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Agree → 4=Disagree; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "trust.*government.*right"
+  - id: trust_neighbors
+    concept: social_trust
+    description: "How much trust do you have in your neighbors?"
+    type: ordinal
+    source:
+      w1: null # Not asked
+      w2: q25
+      w3: q26
+      w4: q27
+      w5: q25 # WARNING: 6pt scale
+      w6: q25
+    # Same pattern as trust_relatives
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W3, W4, W6 coded 1=Great deal → 4=None; reverse so high=trust"
+      exceptions:
+        w2:
+          method: r_function
+          fn: reverse_trust_vietnam_w2
+          note: "W2 identity for most countries; Vietnam (country=11) coded 1=Great deal → 4=None"
+        w3:
+          method: r_function
+          fn: reverse_trust_vietnam_w3
+          note: "W3 reverse for most countries; Vietnam (country=11) coded 1=None → 4=Great deal"
+        w5:
+          method: r_function
+          fn: collapse_6pt_to_4pt_reverse
+          note: "W5 has 6pt scale; collapse and reverse"
+    qc:
+      valid_range: [1, 4]
+      group_by: country
+      transformation_allow_reverse: true
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "neighbor"
+  # ===========================================================================
+  # GROUP 2: Trust in Different People
+  # WARNING: W5 uses 6-point scale, others use 4-point
+  # ===========================================================================
+  - id: trust_relatives
+    concept: social_trust
+    description: "How much trust do you have in your relatives?"
+    type: ordinal
+    source:
+      w1: null # Not asked
+      w2: q24
+      w3: q25
+      w4: q26
+      w5: q24 # WARNING: 6pt scale
+      w6: q24
+    # W2: 1=None → 4=Great deal (low→high)
+    # W3, W4, W6: 1=Great deal → 4=None (high→low, needs reversal)
+    # W5: 6pt 1=Trust fully → 6=Distrust fully (needs collapse + reversal)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W3, W4, W6 coded 1=Great deal → 4=None; reverse so high=trust"
+      exceptions:
+        w2:
+          method: r_function
+          fn: reverse_trust_vietnam_w2
+          note: "W2 identity for most countries; Vietnam (country=11) coded 1=Great deal → 4=None"
+        w3:
+          method: r_function
+          fn: reverse_trust_vietnam_w3
+          note: "W3 reverse for most countries; Vietnam (country=11) coded 1=None → 4=Great deal"
+        w5:
+          method: r_function
+          fn: collapse_6pt_to_4pt_reverse
+          note: "W5 has 6pt scale (1=Trust fully → 6=Distrust fully); collapse and reverse"
+    qc:
+      valid_range: [1, 4]
+      group_by: country
+      transformation_allow_reverse: true
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "trust.*relative"
+      notes:
+        - "W5 uses different 6-point scale - requires special harmonization"
+  - id: trust_strangers
+    concept: social_trust
+    description: "How much trust do you have in people you meet for the first time?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q27 # WARNING: 6pt scale
+      w6: q27
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W6 coded 1=Great deal → 4=None; reverse so high=trust"
+      exceptions:
+        w5:
+          method: r_function
+          fn: collapse_6pt_to_4pt_reverse
+          note: "W5 has 6pt scale; collapse and reverse"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "first time|strangers"

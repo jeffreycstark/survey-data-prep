@@ -1,0 +1,124 @@
+# Redistribution Attitudes - Comprehensive YAML (v2)
+# Variables measuring attitudes toward government responsibility for welfare
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: govt_resp_basic_needs
+    concept: redistribution
+    description: "Government responsibility to make sure basic necessities (food, shelter) are provided"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q160d
+      w6: q160d
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not government's responsibility at all"
+        2: "Some government responsibility"
+        3: "Most is government's responsibility"
+        4: "All government's responsibility"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "basic necessities|food.*shelter"
+  - id: govt_resp_healthcare
+    concept: redistribution
+    description: "Government responsibility to make sure everyone has access to basic medical care"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q160c
+      w6: q160c
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not government's responsibility at all"
+        2: "Some government responsibility"
+        3: "Most is government's responsibility"
+        4: "All government's responsibility"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "basic medical care|medical care"
+  - id: govt_resp_housing
+    concept: redistribution
+    description: "Government responsibility to make sure everyone has affordable housing"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q160b
+      w6: q160b
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not government's responsibility at all"
+        2: "Some government responsibility"
+        3: "Most is government's responsibility"
+        4: "All government's responsibility"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "affordable housing"
+  # ===========================================================================
+  # GROUP 1: Government Responsibility for Economic Welfare
+  # Scale: 1-4 (1=All, 4=None) - reversed so higher = more support for govt role
+  # ===========================================================================
+  - id: govt_resp_inequality
+    concept: redistribution
+    description: "Government responsibility to narrow the gap between the rich and the poor"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q160a
+      w6: q160a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not government's responsibility at all"
+        2: "Some government responsibility"
+        3: "Most is government's responsibility"
+        4: "All government's responsibility"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "narrow.*gap|rich.*poor"

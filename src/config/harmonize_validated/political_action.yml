@@ -1,0 +1,1365 @@
+# Political Action - Validated YAML (v2)
+# Variables measuring political participation, civic engagement, and voting behavior
+# NOTE: party_voted_for excluded due to country-specific codes (100s of values)
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+  treat_as_na_winning_losing:
+    codes: [-1, 0, 3, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes plus 3=not applicable/other in winner-loser items"
+variables:
+  - id: action_contact_civil_servant
+    concept: political_action
+    description: "In the past three years, contacted civil servants or officials"
+    type: ordinal
+    source:
+      w1: q073
+      w2: q79
+      w3: q65
+      w4: q70
+      w5: q71
+      w6: q69
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "civil servant|official"
+  # ===========================================================================
+  # GROUP 1: Contacting Officials / Representatives
+  # Scale: 1-5 (1=done >3 times, 5=would never do) - REVERSED so higher = more active
+  # ===========================================================================
+  - id: action_contact_elected
+    concept: political_action
+    description: "In the past three years, contacted elected officials or legislative representatives"
+    type: ordinal
+    source:
+      w1: q075
+      w2: q81
+      w3: q64
+      w4: q69
+      w5: q70
+      w6: q68
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "elected.*official|legislative.*representative"
+  # ===========================================================================
+  # GROUP 9: Wave 4 Political Contact Actions (4-Category Scale)
+  # Scale: 1=Never, 2=Once, 3=Twice, 4=Several times (or similar)
+  # ===========================================================================
+  - id: action_contact_elected_w4
+    concept: political_action
+    description: "In the past three years, have you contacted elected officials or legislative representatives?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q69a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale (cf. action_contact_elected for 5pt scale)"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "elected|representative"
+  # ===========================================================================
+  # GROUP 7: Wave 1 Political Contact Actions (Different Scale)
+  # Scale: 1=Once, 2=More than once, 9=Never done
+  # ===========================================================================
+  - id: action_contact_higher_w1
+    concept: political_action
+    description: "Contacted officials to express your opinions at higher level"
+    type: ordinal
+    source:
+      w1: q074
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale from w2+ (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+        note: "Different scale from w2+ - may need recoding for comparison"
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "contacted.*higher level"
+  - id: action_contact_higher_w4
+    concept: political_action
+    description: "In the past three years, have you contacted officials at higher levels?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q70a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "higher level"
+  - id: action_contact_influential
+    concept: political_action
+    description: "Contacted other influential people outside government (traditional/community leaders)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q84
+      w3: q66
+      w4: q71
+      w5: q72
+      w6: q70
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "influential|traditional leader|community leader"
+  - id: action_contact_influential_3cat
+    concept: political_action
+    description: "In the past three years, have you contacted other influential people outside the government?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q72
+      w5: null
+      w6: null
+    note: "Wave 4 - 3-category version"
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "More than once"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w4]
+          phrase: "influential.*outside"
+  - id: action_contact_influential_w4
+    concept: political_action
+    description: "In the past three years, have you contacted other influential people outside the government?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q72a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category version"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "influential.*outside"
+  - id: action_contact_media
+    concept: political_action
+    description: "Contacted news media"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q68
+      w4: q73
+      w5: q73
+      w6: q71
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "news media"
+  - id: action_contact_media_w1
+    concept: political_action
+    description: "Contacted media to comment on something"
+    type: ordinal
+    source:
+      w1: q078
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "contacted.*media"
+  - id: action_contact_media_w4
+    concept: political_action
+    description: "In the past three years, have you contacted news media?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q73a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "news media"
+  - id: action_contact_ngo_w1
+    concept: political_action
+    description: "Contacted non-government/civil society organizations"
+    type: ordinal
+    source:
+      w1: q077
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "non-government|civil society"
+  - id: action_contact_other_w1
+    concept: political_action
+    description: "Contacted other people [about political issues]"
+    type: ordinal
+    source:
+      w1: q080
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "contacted other people"
+  - id: action_contact_party_w1
+    concept: political_action
+    description: "Contacted political parties or other political organizations"
+    type: ordinal
+    source:
+      w1: q076
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "contacted.*political parties"
+  - id: action_contact_traditional_w4
+    concept: political_action
+    description: "In the past three years, have you contacted traditional leaders/community leaders?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q71a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "traditional|community leader"
+  # ===========================================================================
+  # GROUP 3: Protest / High-Cost Action
+  # ===========================================================================
+  - id: action_demonstration
+    concept: political_action
+    description: "Attended a demonstration or protest march"
+    type: ordinal
+    source:
+      w1: null
+      w2: q88
+      w3: q71
+      w4: q76
+      w5: q79
+      w6: q76
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "demonstration|protest"
+  - id: action_demonstration_w1
+    concept: political_action
+    description: "Demonstrated, struck, or sat-in for something"
+    type: ordinal
+    source:
+      w1: q079
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - different scale (1=once, 2=more than once, 9=never)"
+    scale:
+      min: 1
+      max: 9
+      labels:
+        1: "Once"
+        2: "More than once"
+        9: "Never done"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      validate:
+        - waves: [w1]
+          phrase: "demonstrated|struck|sat-in"
+  - id: action_demonstration_w4
+    concept: political_action
+    description: "Have you attended a demonstration or protest march?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q76a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "demonstration|protest"
+  - id: action_internet_political
+    concept: political_action
+    description: "Used internet/social media to express opinions about politics"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q76
+      w6: q73
+    note: "Wave 4 uses a different frequency scale and is handled in social_media (sm_express_political)."
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w5, w6]
+          phrase: "internet.*social media.*politic|social media.*opinion"
+  - id: action_join_cause
+    concept: political_action
+    description: "Joined a group to actively support a cause (including online)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q77
+      w6: q74
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w5, w6]
+          phrase: "join.*group|support.*cause"
+  # ===========================================================================
+  # GROUP 2: Collective Action / Petitions
+  # ===========================================================================
+  - id: action_petition
+    concept: political_action
+    description: "Signed a paper or online petition"
+    type: ordinal
+    source:
+      w1: null
+      w2: q87
+      w3: q70
+      w4: q75
+      w5: q74
+      w6: q72
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "petition"
+  - id: action_petition_w4
+    concept: political_action
+    description: "Have you got together with others to raise an issue or sign a petition?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q75a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "raise.*issue|petition"
+  - id: action_resolve_local
+    concept: political_action
+    description: "Got together with others face-to-face to resolve local problems"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q74
+      w5: q78
+      w6: q75
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w4, w5, w6]
+          phrase: "together.*local|resolve.*local"
+  - id: action_resolve_local_w4
+    concept: political_action
+    description: "Have you personally got together with others to try to resolve local problems?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q74a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category scale"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "resolve local|local problems"
+  - id: action_risky_political
+    concept: political_action
+    description: "Taken action for a political cause that put you at risk of injury"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q80
+      w6: q77
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Would never do"
+        2: "Have not done, but might"
+        3: "Have done once"
+        4: "Have done 2-3 times"
+        5: "Have done >3 times"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w5, w6]
+          phrase: "risk.*injured|political.*risk"
+  - id: action_violence_3cat
+    concept: political_action
+    description: "Have you used force or violence for a political cause?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q77
+      w5: null
+      w6: null
+    note: "Wave 4 - 3-category version"
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "More than once"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w4]
+          phrase: "force|violence"
+  - id: action_violence_w4
+    concept: political_action
+    description: "Have you used force or violence for a political cause?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q77a
+      w5: null
+      w6: null
+    note: "Wave 4 - 4-category version"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "Twice"
+        4: "Several times"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "force|violence"
+  - id: attended_campaign_rally
+    concept: political_action
+    description: "Did you attend a campaign meeting or rally in the last national election?"
+    type: nominal
+    source:
+      w1: q029
+      w2: q40
+      w3: q34
+      w4: q35
+      w5: q35
+      w6: q35
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "campaign.*rally|rally.*campaign|meeting.*rally"
+  - id: contact_mode_elected
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted elected legislative representatives"
+    type: nominal
+    source:
+      w1: q083
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*elected"
+  # ===========================================================================
+  # GROUP 8: Wave 1 Contact Mode - Alone or With Others
+  # Binary: 1=No (alone), 2=Yes (with others)
+  # ===========================================================================
+  - id: contact_mode_govt
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted government official"
+    type: nominal
+    source:
+      w1: q081
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*government"
+  - id: contact_mode_higher
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted officials at higher level"
+    type: nominal
+    source:
+      w1: q082
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*higher level"
+  - id: contact_mode_media
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted media"
+    type: nominal
+    source:
+      w1: q086
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*media"
+  - id: contact_mode_ngo
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted NGOs/civil society"
+    type: nominal
+    source:
+      w1: q085
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*non-government"
+  - id: contact_mode_other
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted other people"
+    type: nominal
+    source:
+      w1: q088
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*other people"
+  - id: contact_mode_party
+    concept: political_action
+    description: "Did you do this alone or with others? - contacted political parties"
+    type: nominal
+    source:
+      w1: q084
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - follow-up to contact actions"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No (alone)"
+        2: "Yes (with others)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "alone.*others.*political parties"
+  - id: election_free_fair
+    concept: political_action
+    description: "On the whole, how free and fair would you say the last national election was?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q43
+      w3: q37
+      w4: q38
+      w5: q38
+      w6: q38
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not free or fair"
+        2: "Free and fair, with major problems"
+        3: "Free and fair, but with minor problems"
+        4: "Completely free and fair"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "free.*fair.*election"
+  - id: helped_party_campaign
+    concept: political_action
+    description: "Did you do anything else to help out or work for a party or candidate running in the last national election?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q37
+      w5: null
+      w6: null
+    note: "Wave 4 - electoral campaign activity"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "help.*party|work.*candidate"
+  # voted_last_election_w1 removed - now combined into voted_last_election above
+  - id: helped_party_w1
+    concept: political_action
+    description: "Did you do anything else to help or show your support for a party or candidate running in the election?"
+    type: nominal
+    source:
+      w1: q031
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - cf. worked_for_candidate for w6"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1]
+          phrase: "help.*party|support.*candidate"
+  # ===========================================================================
+  # GROUP 6: Wave 1 Electoral Participation
+  # ===========================================================================
+  - id: participation_frequency
+    concept: political_action
+    description: "How frequently do you participate [in politics/public affairs]?"
+    type: ordinal
+    source:
+      w1: q022
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - general participation frequency"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Never"
+        2: "Rarely"
+        3: "Sometimes"
+        4: "Often"
+        5: "Very often"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more frequent participation"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "frequently.*participate"
+  # ===========================================================================
+  # GROUP 10: Wave 4 Electoral/Voting Behavior
+  # ===========================================================================
+  - id: persuade_others_vote
+    concept: political_action
+    description: "Did you try to persuade others to vote for a certain candidate or party?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q36
+      w5: null
+      w6: null
+    note: "Wave 4 - electoral campaign activity"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "No"
+        2: "Yes"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "persuade.*vote"
+  - id: persuaded_others_vote
+    concept: political_action
+    description: "Did you try to persuade others to vote for a certain candidate or party?"
+    type: nominal
+    source:
+      w1: q030
+      w2: q41
+      w3: q35
+      w4: q36
+      w5: q36
+      w6: q36
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "persuade.*vote"
+  # ===========================================================================
+  # GROUP 5: Electoral Experience
+  # ===========================================================================
+  - id: vote_buying_offered
+    concept: political_action
+    description: "How often were you offered something (food, cash, gift, job) in return for your vote/support?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q79
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Often"
+        2: "Sometimes"
+        3: "Never"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "offered.*something|offered.*cash|offered.*gift|candidate.*offer|vote.*support"
+  - id: voted_last_election
+    concept: political_action
+    description: "Did you vote in the last national election?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [3, 1103, 1104]
+    source:
+      w1: q027 # W1 uses different question ("participated in last election")
+      w2: q38  # W2 also has reversed scale (1=No, 2=Yes)
+      w3: q32
+      w4: q33
+      w5: q33
+      w6: q33
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    # Note: W1 and W2 have reversed original scale (1=No, 2=Yes)
+    # W3-W6 have 1=Yes, 2=No, with 0 or 3=Not eligible
+    # "Not eligible", "proxy voting" (W6: 1103, 1104) → NA
+
+    harmonize:
+      w1:
+        method: r_function
+        fn: recode_voted_w1
+        note: "W1 scale reversed (1=No→0, 2=Yes→1)"
+      w2:
+        method: r_function
+        fn: recode_voted_w1
+        note: "W2 also has reversed scale (1=No→0, 2=Yes→1)"
+      default:
+        method: r_function
+        fn: recode_voted_default
+        note: "W3-W6: 1=Yes→1, 2=No→0, not eligible/proxy→NA"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1]
+          phrase: "participated.*election"
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "vote.*national|did you vote"
+  - id: voted_winning_losing
+    concept: political_action
+    description: "Did the respondent vote for the winning or losing camp?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na_winning_losing
+    source:
+      w1: null
+      w2: q39a  # Fixed: W2 has winner/loser in q39a
+      w3: q33a  # Fixed: W3 has winner/loser in q33a
+      w4: q34a
+      w5: q34a  # Fixed: W5 has winner/loser in q34a (9,737 winners, 5,181 losers)
+      w6: q34a  # Fixed: W6 has winner/loser in q34a
+    note: "Winner/loser status across W2-W6; masked to NA if respondent did not vote or was not eligible"
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Winning camp"
+        2: "Losing camp"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_voted_winning_losing_masked
+    qc:
+      valid_range: [1, 2]
+      skip_coverage_check: true
+      skip_crosstab_check: true
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "winning|losing"
+  # ===========================================================================
+  # GROUP 4: Voting Behavior
+  # ===========================================================================
+  - id: voting_frequency
+    concept: political_action
+    description: "How often have you voted since becoming eligible?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [5]
+    source:
+      w1: null
+      w2: q90
+      w3: q73
+      w4: q78
+      w5: q81
+      w6: q78
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Hardly ever voted"
+        2: "Voted in some elections"
+        3: "Voted in most elections"
+        4: "Voted in every election"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "voted.*election"
+  - id: voting_pattern_self_description
+    concept: political_action
+    description: "Thinking of whether you voted or not since you became eligible for voting, how would you describe yourself?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q78
+      w5: null
+      w6: null
+    note: "Wave 4 - self-described voting pattern"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "I always vote"
+        2: "I vote in most elections"
+        3: "I seldom vote"
+        4: "I never vote"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Reversed so higher = more frequent voter"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "vote.*eligible|describe yourself"
+  - id: worked_for_candidate
+    concept: political_action
+    description: "Did you do anything else to help out or work for a party or candidate?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q37
+      w6: q37
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w5, w6]
+          phrase: "help.*party|work.*candidate"

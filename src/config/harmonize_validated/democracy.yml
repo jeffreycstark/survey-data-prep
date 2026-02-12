@@ -1,0 +1,744 @@
+# Democracy - Comprehensive YAML (v3 - CORRECTED)
+# Variables measuring democratic attitudes, perceptions, and satisfaction
+# Corrected 2025-01-10: Fixed scale directions for dem_sat and dem_best_form
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: dem_always_preferable
+    concept: democracy_tradeoffs
+    description: "Democracy always preferable vs. authoritarian sometimes preferable vs. doesn't matter"
+    type: nominal
+    source:
+      w1: q117
+      w2: q121
+      w3: q124
+      w4: q125
+      w5: q132
+      w6: q124
+    # NOTE: Scale directions differ across waves - see harmonize exceptions
+
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Democracy is always preferable"
+        2: "Authoritarian sometimes preferable"
+        3: "Doesn't matter what kind of regime"
+    harmonize:
+      default:
+        method: identity
+        note: "W3-W6 already coded 1=Democracy, 2=Auth, 3=Doesn't matter"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_w1_dem_preferable
+          note: "W1 coded 1=Auth, 2=Doesn't matter, 3=Democracy; remap to standard"
+        w2:
+          method: r_function
+          fn: recode_w2_dem_preferable
+          note: "W2 coded 1=Doesn't matter, 2=Auth, 3=Democracy; remap to standard"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "democracy.*preferable|authoritarian.*preferable|closest.*opinion"
+  # ===========================================================================
+  # GROUP 3: Democratic Values / Support
+  # ===========================================================================
+  - id: dem_best_form
+    concept: democracy
+    description: "Democracy may have its problems, but it is still the best form of government"
+    type: ordinal
+    source:
+      w1: null # Not asked in W1
+      w2: null # Not asked in W2
+      w3: q128
+      w4: q129
+      w5: q136
+      w6: q128
+    # Verified 2025-01-10: All W3-W6 coded 1=Strongly agree → 4=Strongly disagree
+    # Need reversal so high = pro-democracy
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Agree → 4=Disagree; reverse so high=pro-democracy"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "best form|democracy.*problem"
+  # ===========================================================================
+  # GROUP 5: Democracy Scale - Country Placement (Wave 1)
+  # ===========================================================================
+  - id: dem_country_authoritarian
+    concept: democracy
+    description: "Where would you place our country during the period of most recent authoritarian rule? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: q099
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - retrospective rating of authoritarian period"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1]
+          phrase: "authoritarian|previous.*government"
+  - id: dem_country_future
+    concept: democracy
+    description: "Where would you expect our country to be ten years from now? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: q102 # NOTE: 5 years in wave 1
+      w2: null
+      w3: q93
+      w4: q96
+      w5: q103
+      w6: q94
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "ten years from now|five|future"
+  - id: dem_country_past
+    concept: democracy
+    description: "Where would you place our country ten years ago? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q92
+      w4: q95
+      w5: q102
+      w6: q93
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "ten years ago|years ago"
+  - id: dem_country_present_govt
+    concept: democracy
+    description: "Where would you place our country under the present government? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: q100
+      w2: q96
+      w3: q91
+      w4: q94
+      w5: q101
+      w6: q92
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "place.*country|present.*government"
+  - id: dem_elections_attention
+    concept: democracy
+    description: "How much do you feel that having elections makes the government pay attention to what the people think?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q115
+      w4: q116
+      w5: null
+      w6: null
+    note: "electoral responsiveness perception"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "A little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "elections.*attention|pay attention"
+  - id: dem_equal_media_access
+    concept: democracy
+    description: "Political parties or candidates have equal access to mass media during elections"
+    type: ordinal
+    source:
+      w1: null
+      w2: q105
+      w3: q99
+      w4: q102
+      w5: null
+      w6: null
+    note: "electoral media fairness perception"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4]
+          phrase: "equal.*media|media.*election"
+  # ===========================================================================
+  # GROUP 1: Perceived Level of Democracy
+  # ===========================================================================
+  - id: dem_extent_current
+    concept: democracy
+    description: "In your opinion how much of a democracy is our country?"
+    type: ordinal
+    source:
+      w1: q100
+      w2: q94
+      w3: q90
+      w4: q93
+      w5: q100
+      w6: q91
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "how much.*democracy"
+  # ===========================================================================
+  # GROUP 4: Democratic Rights / Freedoms
+  # ===========================================================================
+  - id: dem_free_speech
+    concept: democracy
+    description: "People are free to speak what they think without fear"
+    type: ordinal
+    source:
+      w1: null # not asked
+      w2: q110
+      w3: q106
+      w4: q108
+      w5: q115
+      w6: q106
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "free to speak|speak.*fear"
+  - id: dem_india_scale
+    concept: democracy
+    description: "Where would you place India on this scale? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q123
+      w4: q124
+      w5: q131
+      w6: q123
+    note: "comparative democracy assessment for India"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "India"
+  # ===========================================================================
+  # GROUP 9: Comparative Democracy Assessment (Wave 4)
+  # Scale: 1-10 (Complete dictatorship to Complete democracy)
+  # ===========================================================================
+  - id: dem_japan_scale
+    concept: democracy
+    description: "Where would you place Japan on this scale? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q122
+      w4: q123
+      w5: q130
+      w6: q122
+    note: "comparative democracy assessment for Japan"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "Japan"
+  # ===========================================================================
+  # GROUP 8: Democratic Process Quality (Wave 4+)
+  # ===========================================================================
+  - id: dem_power_change_govt
+    concept: democracy
+    description: "People have the power to change a government they don't like"
+    type: ordinal
+    source:
+      w1: null
+      w2: q103
+      w3: null
+      w4: q101
+      w5: null
+      w6: null
+    note: "Wave 4 - democratic accountability perception"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w4]
+          phrase: "power.*change"
+  - id: dem_vs_econ
+    concept: democracy
+    description: "If you had to choose between democracy and economic development, which would you say is more important?"
+    type: ordinal
+    source:
+      w1: q119
+      w2: q123
+      w3: q126
+      w4: q127
+      w5: q134
+      w6: q126
+    # Verified 2025-01-10: All waves same coding
+    # 1=Econ definitely more, 2=Econ somewhat more, 3=Dem somewhat more, 4=Dem definitely more, 5=Both equally
+    # NOTE: 5-point scale with "both equally" as middle - may need special handling
+
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Economic development is definitely more important"
+        2: "Economic development is somewhat more important"
+        3: "Democracy is somewhat more important"
+        4: "Democracy is definitely more important"
+        5: "They are both equally important"
+    harmonize:
+      default:
+        method: identity
+        note: "All waves coded consistently; higher = more pro-democracy (except 5=neutral)"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "democracy.*economic|choose.*democracy"
+      notes:
+        - "Category 5 (both equally) is not on the democracy-economy continuum"
+        - "Consider recoding 5 to NA for ordinal analysis, or create binary/ternary version"
+  - id: dem_vs_equality
+    concept: democracy_tradeoffs
+    description: "If you had to choose between reducing economic inequality and protecting political freedom, which is more important?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q127
+      w4: q128
+      w5: q135
+      w6: q127
+    # NOTE: Raw data has "both equally" at position 5, not center
+
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Reducing inequality definitely more important"
+        2: "Reducing inequality somewhat more important"
+        3: "Both equally important"
+        4: "Political freedom somewhat more important"
+        5: "Political freedom definitely more important"
+    harmonize:
+      default:
+        method: r_function
+        fn: middle_identity_5pt
+        note: "Raw: 1=ineq def, 2=ineq somewhat, 3=free somewhat, 4=free def, 5=both; remap 5→3 to center"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "inequality.*freedom|freedom.*inequality"
+  - id: dem_want_democratic
+    concept: democracy
+    description: "To what extent would you want our country to be democratic now? (1=dictatorship, 10=democracy)"
+    type: ordinal
+    source:
+      w1: q101
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - desired level of democracy"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Complete dictatorship"
+        10: "Complete democracy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1]
+          phrase: "want.*democratic|extent.*democratic"
+  - id: democracy_efficacy
+    concept: democracy_tradeoffs
+    description: "Democracy is capable of solving society's problems vs. cannot solve"
+    type: nominal
+    source:
+      w1: q118
+      w2: q122
+      w3: q125
+      w4: q126
+      w5: q133
+      w6: q125
+    # NOTE: W1-W2 reversed from W3-W6
+
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Democracy is capable of solving problems"
+        2: "Democracy cannot solve problems"
+    harmonize:
+      default:
+        method: identity
+        note: "W3-W6 already coded 1=Capable, 2=Cannot"
+      exceptions:
+        w1:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W1 coded 1=Cannot, 2=Capable; reverse to match W3-W6"
+        w2:
+          method: r_function
+          fn: safe_reverse_2pt
+          note: "W2 coded 1=Cannot, 2=Capable; reverse to match W3-W6"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "comes closer"
+  # ===========================================================================
+  # GROUP 0: Satisfaction with Democracy (KEY VARIABLE)
+  # ===========================================================================
+  - id: democracy_satisfaction
+    concept: democracy
+    description: "On the whole, how satisfied or dissatisfied are you with the way democracy works in our country?"
+    type: ordinal
+    source:
+      w1: q098
+      w2: q93
+      w3: q89
+      w4: q92
+      w5: q99
+      w6: q90
+    # Verified 2025-01-10:
+    # W1, W2: 1=Not at all satisfied → 4=Very satisfied (low→high) ✔
+    # W3, W4, W5, W6: 1=Very satisfied → 4=Not at all (high→low) - REVERSED
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all satisfied"
+        2: "Not very satisfied"
+        3: "Fairly satisfied"
+        4: "Very satisfied"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W3-W6 coded 1=Very satisfied → 4=Not at all; reverse so high=satisfied"
+      exceptions:
+        w1:
+          method: identity
+          note: "W1 already coded 1=Not at all → 4=Very satisfied"
+        w2:
+          method: identity
+          note: "W2 already coded 1=Not at all → 4=Very satisfied"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "satisfied.*democracy|democracy.*works"
+  - id: democracy_suitability
+    concept: democracy
+    description: "Democracy is suitable for our country"
+    type: ordinal
+    source:
+      w1: q103
+      w2: q98
+      w3: q94
+      w4: q97
+      w5: q104
+      w6: q95
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not suitable at all"
+        10: "Completely suitable"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "democracy.*suitable"
+  - id: regime_corruption_better
+    concept: democracy
+    description: "Corruption in politics and government is under control - is it better than before?"
+    type: ordinal
+    source:
+      w1: q108
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "corruption.*control|better than before"
+  # ===========================================================================
+  # GROUP 7: Regime Comparison - Is Better Than Before? (Wave 1)
+  # Scale: 1-5 (Much worse to Much better)
+  # ===========================================================================
+  - id: regime_freespeech_better
+    concept: democracy
+    description: "Everyone is free to say what they think - is it better than before?"
+    type: ordinal
+    source:
+      w1: q105
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "free.*say|better than before"
+  - id: regime_inequality_better
+    concept: democracy
+    description: "The gap between the rich and the poor has narrowed - is it better than before?"
+    type: ordinal
+    source:
+      w1: q109
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "rich.*poor|gap.*narrowed|better than before"
+  - id: regime_influence_better
+    concept: democracy
+    description: "People like me can have an influence on government - is it better than before?"
+    type: ordinal
+    source:
+      w1: q107
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "influence.*government|better than before"
+  - id: regime_judiciary_better
+    concept: democracy
+    description: "Judges and courts are free from political interference - is it better than before?"
+    type: ordinal
+    source:
+      w1: q112
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - regime comparison battery"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "Much the same"
+        4: "Somewhat better"
+        5: "Much better than before"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher = more improvement perceived"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "judges.*courts|political interference|better than before"

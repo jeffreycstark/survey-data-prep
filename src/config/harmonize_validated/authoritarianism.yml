@@ -1,0 +1,619 @@
+# Authoritarianism - Validated YAML (v2)
+# Variables measuring authoritarian attitudes, regime preferences, and leader deference
+# Validated 2025-01-11: Scale directions verified against raw data
+# Convention: HIGH = more authoritarian/anti-democratic
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: antiplu_diversity_chaotic
+    concept: anti_pluralism
+    description: "If people have too many different ways of thinking, society will be chaotic"
+    type: ordinal
+    source:
+      w1: q139
+      w2: q140
+      w3: q147
+      w4: q148
+      w5: q155
+      w6: q155
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more anti-pluralist (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "different.*thinking.*chaotic|chaotic.*thinking"
+  - id: antiplu_groups_disrupt_harmony
+    concept: anti_pluralism
+    description: "Harmony of the community will be disrupted if people organize lots of groups"
+    type: ordinal
+    source:
+      w1: q135
+      w2: q136
+      w3: q143
+      w4: q144
+      w5: q151
+      w6: q151
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more anti-pluralist (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "harmony.*disrupted|groups.*harmony"
+  - id: auth_govt_censor_ideas
+    concept: authoritarianism
+    description: "The government should decide whether certain ideas should be allowed to be discussed in society"
+    type: ordinal
+    source:
+      w1: q134
+      w2: q135
+      w3: q142
+      w4: q143
+      w5: q150
+      w6: q150
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for censorship (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "government.*decide.*ideas|ideas.*discussed"
+  - id: auth_judges_defer_executive
+    concept: authoritarianism
+    description: "When judges decide important cases, they should accept the view of the executive branch"
+    type: ordinal
+    source:
+      w1: q136
+      w2: q137
+      w3: q144
+      w4: q145
+      w5: q152
+      w6: q152
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = less judicial independence (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "judges.*executive"
+  - id: demo_political_equality
+    concept: democratic_values
+    description: "People with little or no education should have as much say in politics as highly-educated people"
+    type: ordinal
+    source:
+      w1: q132
+      w2: q133
+      w3: q140
+      w4: q141
+      w5: q148
+      w6: q148
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # NOTE: This is a DEMOCRATIC item (agreeing = inclusive/egalitarian)
+    # Target: high = more democratic/inclusive
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (democratic) → 4=disagree; reverse so high=more inclusive"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "education.*say.*politics|little.*education"
+  - id: democrit_citizens_not_ready
+    concept: democracy_critique
+    description: "The citizens in our country are not prepared for a democratic system"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q171
+      w6: q171
+    # Verified 2025-01-11:
+    # W5/W6: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more critical of democracy readiness (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "citizens.*prepared|prepared.*democratic"
+  - id: democrit_econ_over_democracy
+    concept: democracy_critique
+    description: "As long as a government can solve economic problems, it does not matter if it is democratic"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q173
+      w6: null # TODO: verify W6 mapping
+    # Verified 2025-01-11:
+    # W5: Multiple response options including middle categories
+    # Target: high = prioritizing economy over democracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5]
+          phrase: "economic.*democratic|solve.*economic"
+  - id: democrit_harms_values
+    concept: democracy_critique
+    description: "Democracy negatively affects social and ethical values in our country"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q172
+      w6: null # W6 q172 is emergency powers, different question
+    # Verified 2025-01-11:
+    # W5: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more critical of democracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5]
+          phrase: "democracy.*values|ethical.*values"
+  - id: democrit_indecisive
+    concept: democracy_critique
+    description: "Democratic regimes are indecisive and full of problems"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q169
+      w6: q169
+    # Verified 2025-01-11:
+    # W5/W6: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more critical of democracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "indecisive|full of problem"
+  - id: democrit_ineffective_stability
+    concept: democracy_critique
+    description: "Democratic systems are not effective at maintaining order and stability"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q170
+      w6: q170
+    # Verified 2025-01-11:
+    # W5/W6: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more critical of democracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "effective.*stability|order.*stability"
+  # ===========================================================================
+  # GROUP 4: Democracy Critiques (W5/W6)
+  # ===========================================================================
+  - id: demo_crit_poor_economy
+    concept: democracy_critique
+    description: "Under a democratic system, the country endures poor economic performance"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q168
+      w6: q168
+    # Verified 2025-01-11:
+    # W5/W6: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more critical of democracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "democratic.*economic"
+  - id: expert_rule
+    concept: authoritarianism
+    description: "We should get rid of elections and parliaments and have experts make decisions"
+    type: ordinal
+    source:
+      w1: q124
+      w2: null
+      w3: q132
+      w4: q133
+      w5: q140
+      w6: q132
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for technocracy (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disapprove"
+        2: "Disapprove"
+        3: "Approve"
+        4: "Strongly approve"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=approve (auth) → 4=disapprove; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "expert"
+  - id: military_rule
+    concept: authoritarianism
+    description: "The army/military should come in to govern the country"
+    type: ordinal
+    source:
+      w1: q123
+      w2: q126
+      w3: q131
+      w4: q132
+      w5: q139
+      w6: q131
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for military rule (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disapprove"
+        2: "Disapprove"
+        3: "Approve"
+        4: "Strongly approve"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=approve (auth) → 4=disapprove; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "army|military.*govern"
+  - id: single_party_rule
+    concept: authoritarianism
+    description: "Only one political party should be allowed to stand for election and hold office"
+    type: ordinal
+    source:
+      w1: q122
+      w2: q125
+      w3: q130
+      w4: q131
+      w5: q138
+      w6: q130
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for one-party rule (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disapprove"
+        2: "Disapprove"
+        3: "Approve"
+        4: "Strongly approve"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=approve (auth) → 4=disapprove; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "one.*party|opposition.*party"
+  # ===========================================================================
+  # GROUP 2: Regime Type Preferences (support for non-democratic alternatives)
+  # ===========================================================================
+  - id: strongman_rule
+    concept: authoritarianism
+    description: "We should get rid of parliament and elections and have a strong leader decide things"
+    type: ordinal
+    source:
+      w1: q121
+      w2: q124
+      w3: q129
+      w4: q130
+      w5: q137
+      w6: q129
+    # Verified 2025-01-11:
+    # W1: 1=Strongly agree → 4=Strongly disagree
+    # W2: 1=Strongly approve → 4=Strongly disapprove
+    # W4-W6: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for strong leader (authoritarian)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disapprove"
+        2: "Disapprove"
+        3: "Approve"
+        4: "Strongly approve"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=approve (auth) → 4=disapprove; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w4, w5, w6]
+          phrase: "strong leader|parliament.*election"
+  - id: trad_religious_authorities
+    concept: traditionalism
+    description: "The government should consult religious authorities when interpreting the laws"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q138
+      w4: q140
+      w5: q147
+      w6: q147
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more support for religious authority
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree → 4=disagree; reverse so high=more support for religious authority"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "religious.*authorities|consult.*religious"
+  # ===========================================================================
+  # GROUP 3: Illiberal Attitudes
+  # ===========================================================================
+  - id: trad_women_politics
+    concept: traditionalism
+    description: "Women should not be involved in politics as much as men"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q139
+      w4: q139
+      w5: q146
+      w6: q146
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more agreement with excluding women (authoritarian/sexist)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "women.*politics"
+  # ===========================================================================
+  # GROUP 1: Leader Deference / Discretion
+  # ===========================================================================
+  - id: upright_leader_discretion
+    concept: authoritarianism
+    description: "If we have political leaders who are morally upright, we can let them decide everything"
+    type: ordinal
+    source:
+      w1: q138
+      w2: q139
+      w3: q146
+      w4: q147
+      w5: q154
+      w6: q154
+    # Verified 2025-01-11:
+    # All waves: 1=Strongly agree → 4=Strongly disagree
+    # Target: high = more authoritarian (agreeing with leader discretion)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=agree (auth) → 4=disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "morally.*upright|upright.*leader|decide everything"

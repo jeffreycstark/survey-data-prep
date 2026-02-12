@@ -1,0 +1,707 @@
+# International Relations - Validated YAML (v2)
+# Variables measuring perceptions of major powers' influence and regional attitudes
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+  treat_as_na_dev_model:
+    codes: [-1, 0, 90, 97, 98, 99]
+    description: "Missing codes for development model (keeps 7/8/9 as valid responses)"
+  treat_as_na_country_list:
+    codes: [-1, 0, 90, 97, 98, 99]
+    description: "Missing codes for country list items (keeps 1-29 as valid responses)"
+  treat_as_na_10pt:
+    codes: [-1, 0, 97, 98, 99]
+    description: "Missing codes for 10-point valence scales (keeps 7-9 as valid responses)"
+variables:
+  # ===========================================================================
+  # GROUP 8: Democracy Ratings of Other Countries
+  # ===========================================================================
+  - id: dem_rating_china
+    concept: democracy_tradeoffs
+    description: "Where would you place China today on a democracy scale? (1=undemocratic, 10=democratic)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q120
+      w4: q121
+      w5: q128
+      w6: q120
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "China.*scale|place.*China"
+  - id: dem_rating_india
+    concept: democracy_tradeoffs
+    description: "Where would you place India today on a democracy scale? (1=undemocratic, 10=democratic)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q131
+      w6: null
+    note: "Wave 5 only"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w5]
+          phrase: "India.*scale|place.*India"
+  - id: dem_rating_japan
+    concept: democracy_tradeoffs
+    description: "Where would you place Japan today on a democracy scale? (1=undemocratic, 10=democratic)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q130
+      w6: null
+    note: "Wave 5 only"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w5]
+          phrase: "Japan.*scale|place.*Japan"
+  - id: dem_rating_usa
+    concept: democracy_tradeoffs
+    description: "Where would you place the United States today on a democracy scale? (1=undemocratic, 10=democratic)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q121
+      w4: q122
+      w5: q129
+      w6: q121
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "United States.*scale|USA.*scale|place.*United States"
+  # ===========================================================================
+  # GROUP 3: China Perceptions
+  # ===========================================================================
+  - id: intl_china_asia_goodharm
+    concept: international_relations
+    description: "Does China do more good or harm to Asia?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q157a
+      w4: q165
+      w5: q177
+      w6: q176
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Much more harm than good"
+        2: "Somewhat more harm than good"
+        3: "Somewhat more good than harm"
+        4: "Much more good than harm"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "China.*good.*harm"
+  - id: intl_china_country_influence_amount
+    concept: international_relations
+    description: "How much influence does China have on our country?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q181
+      w6: q181
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No influence at all"
+        2: "Not much influence"
+        3: "Some influence"
+        4: "A great deal of influence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "China.*influence.*country|how much influence.*China"
+  # ===========================================================================
+  # GROUP 7: China/USA Influence on Country (Wave 4)
+  # ===========================================================================
+  - id: intl_china_country_influence_amount_w4
+    concept: international_relations
+    description: "How much influence does China have on our country? (Wave 4 variant)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q168
+      w5: null
+      w6: null
+    note: "Wave 4 version - different question number than w6"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No influence at all"
+        2: "Not much influence"
+        3: "Some influence"
+        4: "A great deal of influence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "China.*influence.*country|how much influence.*China"
+  - id: intl_china_country_influence_valence
+    concept: international_relations
+    description: "Generally speaking, the influence China has on our country is?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q182
+      w6: q182
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5, w6]
+          phrase: "China.*influence.*country.*positive|China.*influence.*country.*negative"
+  - id: intl_china_country_influence_valence_w4
+    concept: international_relations
+    description: "Is the influence China has on our country positive or negative? (Wave 4 variant)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q169
+      w5: null
+      w6: null
+    note: "Wave 4 version - may have different scale than w6"
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w4]
+          phrase: "China.*influence.*positive|China.*influence.*negative"
+  - id: intl_china_world_influence
+    concept: international_relations
+    description: "Generally speaking, the influence China has on world affairs is?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_10pt
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q178
+      w6: q177
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+      exceptions:
+        w5:
+          method: r_function
+          fn: collapse_10pt_to_6pt
+          note: "W5 10-point scale (1=highly negative → 10=highly positive); collapse to 6-point without reversal"
+    qc:
+      valid_range: [1, 6]
+      coverage_missing_codes_by_wave:
+        w6: [7, 8, 9]
+      validate:
+        - waves: [w5, w6]
+          phrase: "China.*influence.*world"
+  # ===========================================================================
+  # GROUP 5: ASEAN Attitudes
+  # ===========================================================================
+  - id: intl_close_to_asean
+    concept: international_relations
+    description: "How close do you feel to ASEAN?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [6]
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q172
+      w5: q186
+      w6: q186
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not close at all"
+        2: "Not very close"
+        3: "Close"
+        4: "Very close"
+      note: "ASEAN countries only"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4, w5, w6]
+          phrase: "close.*ASEAN"
+  - id: intl_development_model
+    concept: international_relations
+    description: "Which country should be a model for our own country's future development?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na_dev_model
+    source:
+      w1: null
+      w2: null
+      w3: q159
+      w4: q167
+      w5: q180
+      w6: q180
+    scale:
+      min: 1
+      max: 7
+      labels:
+        1: "USA"
+        2: "China"
+        3: "India"
+        4: "Japan"
+        5: "Singapore"
+        6: "Other"
+        7: "Our own model"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_dev_model_w3_w4_w6
+        note: "Collapse expanded country list to 1-7; specific countries/combinations -> Other"
+      exceptions:
+        w5:
+          method: r_function
+          fn: recode_dev_model_w5
+          note: "W5 uses different coding (own model=8, Russia=6); collapse to 1-7"
+    qc:
+      valid_range: [1, 7]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "model.*develop|country.*model"
+  # ===========================================================================
+  # GROUP 4: EU Perceptions
+  # ===========================================================================
+  - id: intl_eu_world_influence
+    concept: international_relations
+    description: "Generally speaking, the influence the EU has on world affairs is?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q178
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w6]
+          phrase: "EU.*influence.*world|E.U.*world"
+  # ===========================================================================
+  # GROUP 6: Political Interest in Foreign Affairs (Wave 4)
+  # ===========================================================================
+  - id: intl_follow_foreign_events
+    concept: international_relations
+    description: "How closely do you follow what is going on in foreign countries?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q150
+      w5: null
+      w6: null
+    note: "Wave 4 only - interest in foreign affairs"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Not at all closely"
+        2: "Very little"
+        3: "Not too closely"
+        4: "Somewhat closely"
+        5: "Very closely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w4]
+          phrase: "foreign.*countr|follow.*foreign"
+  - id: intl_future_influence_asia
+    concept: international_relations
+    description: "In ten years, which country will have the most influence in Asia?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na_country_list
+    source:
+      w1: null
+      w2: null
+      w3: q158
+      w4: q166
+      w5: q179
+      w6: q179
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "China"
+        2: "Japan"
+        3: "India"
+        4: "United States"
+        5: "Other"
+    harmonize:
+      default:
+        method: r_function
+        fn: collapse_influence_country_to_5
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "ten years.*influence|future.*influence"
+  # ===========================================================================
+  # GROUP 1: Regional Influence (Nominal)
+  # ===========================================================================
+  - id: intl_most_influence_asia
+    concept: international_relations
+    description: "Which country has the most influence in Asia?"
+    type: nominal
+    missing:
+      use_convention: treat_as_na_country_list
+    source:
+      w1: null
+      w2: null
+      w3: q156
+      w4: q163
+      w5: q174
+      w6: q173
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "China"
+        2: "Japan"
+        3: "India"
+        4: "United States"
+        5: "Other"
+    harmonize:
+      default:
+        method: r_function
+        fn: collapse_influence_country_to_5
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "most influence.*asia"
+  # ===========================================================================
+  # GROUP 2: USA Perceptions
+  # ===========================================================================
+  - id: intl_usa_asia_goodharm
+    concept: international_relations
+    description: "Does the USA do more good or harm to Asia?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q164
+      w5: q175
+      w6: q174
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Much more harm than good"
+        2: "Somewhat more harm than good"
+        3: "Somewhat more good than harm"
+        4: "Much more good than harm"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4, w5, w6]
+          phrase: "USA.*good.*harm|United States.*good.*harm"
+  - id: intl_usa_country_influence_amount
+    concept: international_relations
+    description: "How much influence does the USA have on our country?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q183
+      w6: q183
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No influence at all"
+        2: "Not much influence"
+        3: "Some influence"
+        4: "A great deal of influence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "USA.*influence.*country|how much influence.*USA"
+  - id: intl_usa_country_influence_amount_w4
+    concept: international_relations
+    description: "How much influence does the USA have on our country? (Wave 4 variant)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q170
+      w5: null
+      w6: null
+    note: "Wave 4 version - different question number than w6"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No influence at all"
+        2: "Not much influence"
+        3: "Some influence"
+        4: "A great deal of influence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "USA.*influence.*country|how much influence.*USA"
+  - id: intl_usa_country_influence_valence
+    concept: international_relations
+    description: "Generally speaking, the influence the USA has on our country is?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q184
+      w6: q184
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5, w6]
+          phrase: "USA.*influence.*country.*positive|USA.*influence.*country.*negative"
+  - id: intl_usa_country_influence_valence_w4
+    concept: international_relations
+    description: "Is the influence the USA has on our country positive or negative? (Wave 4 variant)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q171
+      w5: null
+      w6: null
+    note: "Wave 4 version - may have different scale than w6"
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w4]
+          phrase: "USA.*influence.*positive|USA.*influence.*negative"
+  - id: intl_usa_world_influence
+    concept: international_relations
+    description: "Generally speaking, the influence the USA has on world affairs is?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_10pt
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q176
+      w6: q175
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Very negative"
+        2: "Negative"
+        3: "Somewhat negative"
+        4: "Somewhat positive"
+        5: "Positive"
+        6: "Very positive"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+      exceptions:
+        w5:
+          method: r_function
+          fn: collapse_10pt_to_6pt
+          note: "W5 10-point scale (1=highly negative → 10=highly positive); collapse to 6-point without reversal"
+    qc:
+      valid_range: [1, 6]
+      coverage_missing_codes_by_wave:
+        w6: [7, 8, 9]
+      validate:
+        - waves: [w5, w6]
+          phrase: "USA.*influence.*world|United States.*world"

@@ -1,0 +1,539 @@
+# Institutional Trust (v2 - CORRECTED)
+# 13 variables measuring trust in various institutions
+#
+# SCALE DIRECTION NOTES:
+# Target: 1=None at all, 2=Not very much, 3=Quite a lot, 4=A great deal
+# W1, W2: Already in target direction (identity)
+# W3, W4, W6: REVERSED (1=Great deal → 4=None) - need safe_reverse_4pt
+# W5: 6-point AND reversed - need safe_6pt_to_4pt
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes (-2 kept for legacy compatibility)"
+variables:
+  - id: trust_civil_service
+    concept: institutional_trust
+    description: "Trust in civil service"
+    type: ordinal
+    source:
+      w1: q011
+      w2: q12
+      w3: q12
+      w4: q12
+      w5: q12
+      w6: q12
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "civil"
+  - id: trust_courts
+    concept: institutional_trust
+    description: "Trust in courts"
+    type: ordinal
+    source:
+      w1: q007
+      w2: q8
+      w3: q8
+      w4: q8
+      w5: q8
+      w6: q8
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "court"
+  - id: trust_election_commission
+    concept: institutional_trust
+    description: "Trust in election commission"
+    type: ordinal
+    source:
+      w1: q017
+      w2: q18
+      w3: q18
+      w4: q18
+      w5: q16
+      w6: q16
+    note: "W5/W6 use q16 (election commission shifted in W5+ questionnaires)"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "election"
+  - id: trust_local_government
+    concept: institutional_trust
+    description: "Trust in local government"
+    type: ordinal
+    source:
+      w1: q014
+      w2: q15
+      w3: q15
+      w4: q15
+      w5: q15
+      w6: q15
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "local|government"
+  - id: trust_military
+    concept: institutional_trust
+    description: "Trust in military"
+    type: ordinal
+    source:
+      w1: q012
+      w2: q13
+      w3: q13
+      w4: q13
+      w5: q13
+      w6: q13
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "military"
+  - id: trust_national_government
+    concept: institutional_trust
+    description: "Trust in national government"
+    type: ordinal
+    source:
+      w1: q008
+      w2: q9
+      w3: q9
+      w4: q9
+      w5: q9
+      w6: q9
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "national|government"
+  - id: trust_newspapers
+    concept: institutional_trust
+    description: "Trust in newspapers"
+    type: ordinal
+    source:
+      w1: q015
+      w2: q16
+      w3: q16
+      w4: q16
+      w5: q54
+      w6: q16
+    note: "W5 uses q54 (different question block for media trust)"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "newspaper"
+  - id: trust_ngos
+    concept: institutional_trust
+    description: "Trust in NGOs"
+    type: ordinal
+    source:
+      w1: q018
+      w2: q19
+      w3: q19
+      w4: q19
+      w5: q17
+      w6: q17
+    note: "W5/W6 use q17 (NGOs shifted in W5+ questionnaires)"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "NGO|organization"
+  - id: trust_parliament
+    concept: institutional_trust
+    description: "Trust in parliament"
+    type: ordinal
+    source:
+      w1: q010
+      w2: q11
+      w3: q11
+      w4: q11
+      w5: q11
+      w6: q11
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "parliament"
+  - id: trust_police
+    concept: institutional_trust
+    description: "Trust in police"
+    type: ordinal
+    source:
+      w1: q013
+      w2: q14
+      w3: q14
+      w4: q14
+      w5: q14
+      w6: q14
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "police"
+  - id: trust_political_parties
+    concept: institutional_trust
+    description: "Trust in political parties"
+    type: ordinal
+    source:
+      w1: q009
+      w2: q10
+      w3: q10
+      w4: q10
+      w5: q10
+      w6: q10
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "party|parties"
+  - id: trust_president
+    concept: institutional_trust
+    description: "Trust in president/prime minister"
+    type: ordinal
+    source:
+      w1: null
+      w2: q7
+      w3: q7
+      w4: q7
+      w5: q7
+      w6: q7
+    note: "Wave 1 did not include president/PM trust question"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "president|prime minister"
+  - id: trust_television
+    concept: institutional_trust
+    description: "Trust in television"
+    type: ordinal
+    source:
+      w1: q016
+      w2: q17
+      w3: q17
+      w4: q17
+      w5: q53
+      w6: q17
+    note: "W5 uses q53 (different question block for media trust)"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+        w5:
+          method: r_function
+          fn: safe_6pt_to_4pt
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "television|TV"

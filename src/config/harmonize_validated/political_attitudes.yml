@@ -1,0 +1,537 @@
+# Political Attitudes - Comprehensive YAML (v2)
+# Variables measuring political interest, efficacy, trust, and system support
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: citizen_loyalty_country
+    concept: political_attitudes
+    description: "A citizen should always remain loyal only to his country, no matter how imperfect"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [5]
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: q153
+      w3: q137
+      w4: q138
+      w5: q145
+      w6: q137
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "loyal.*country"
+  - id: govt_policy_impact
+    concept: political_attitudes
+    description: "How much impact do you feel government policies have on your daily life?"
+    type: ordinal
+    source:
+      w1: q061
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No impact at all"
+        2: "A little impact"
+        3: "Quite some impact"
+        4: "A great deal of impact"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1]
+          phrase: "impact.*government|policy.*daily"
+  # ===========================================================================
+  # GROUP 2: Trust in Government / Officials
+  # NOTE: trust_govt_do_right moved to social_trust.yml (with correct reversal)
+  # ===========================================================================
+
+  # ===========================================================================
+  # GROUP 3: Government Responsiveness / Performance
+  # ===========================================================================
+  - id: govt_responds_people
+    concept: political_attitudes
+    description: "How well do you think the government responds to what people want?"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: q116
+      w3: q113
+      w4: q115
+      w5: q121
+      w6: q112
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Not very well"
+        3: "Fairly well"
+        4: "Very well"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "government.*respond"
+  - id: govt_withholds_info
+    concept: political_attitudes
+    description: "How often do government officials withhold important information from the public?"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: q112
+      w3: q109
+      w4: q111
+      w5: q117
+      w6: q108
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Always"
+        2: "Most of the time"
+        3: "Sometimes"
+        4: "Rarely/Never"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+      exceptions:
+        w5:
+          method: r_function
+          fn: collapse_5pt_rarely_never
+          note: "W5 has 5-point scale; collapse Rarely/Never into 4"
+        w6:
+          method: r_function
+          fn: collapse_5pt_rarely_never
+          note: "W6 has 5-point scale; collapse Rarely/Never into 4"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "withhold.*information"
+  - id: pol_discuss
+    concept: political_attitudes
+    description: "When you get together with family/friends, how often do you discuss political matters?"
+    type: ordinal
+    source:
+      w1: q023
+      w2: q52
+      w3: q46
+      w4: q46
+      w5: q48
+      w6: q49
+    # Verified 2025-01-10:
+    # W1: 1=Never → 5=Very often (5pt, low→high) - DIFFERENT SCALE
+    # W2-W6: 1=Frequently → 3=Never (3pt, high→low) - REVERSED
+    # Target: high = more frequent discussion
+    # NOTE: W1 is 5pt, W2-W6 are 3pt - requires collapsing W1 or excluding
+
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Occasionally"
+        3: "Frequently"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "W2-W6 coded 1=Frequently → 3=Never; reverse so high=more frequent"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_w1_discuss
+          note: "W1 is 5pt (1-5); collapse to 3pt: 1→1, 2-3→2, 4-5→3"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "discuss.*politic"
+  - id: pol_news_follow
+    concept: political_attitudes
+    description: "How often do you follow news about politics and government?"
+    type: ordinal
+    source:
+      w1: q057
+      w2: q50
+      w3: q44
+      w4: q45
+      w5: q47
+      w6: q48
+    # Verified 2025-01-10:
+    # W1: 2=Practically never → 6=Everyday (5pt starting at 2, low→high)
+    # W2: 1=Practically never → 5=Everyday (5pt, low→high) ✔
+    # W3-W6: 1=Everyday → 5=Practically never (5pt, high→low) - REVERSED
+    # Target: high = more frequent news following
+
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Practically never"
+        2: "Not even once a week"
+        3: "Once or twice a week"
+        4: "Several times a week"
+        5: "Everyday"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "W3-W6 coded 1=Everyday → 5=Never; reverse so high=more frequent"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_w1_news_follow
+          note: "W1 coded 2-6; subtract 1 to get 1-5 scale"
+        w2:
+          method: identity
+          note: "W2 already coded 1=Never → 5=Everyday"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "news.*politic"
+  # ===========================================================================
+  # Media-Specific News Consumption (Wave 1 Psychological Involvement)
+  # ===========================================================================
+  - id: pol_news_newspaper
+    concept: political_attitudes
+    description: "How often do you follow news about politics in the daily newspaper?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [6]
+    source:
+      w1: q058
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - detailed media breakdown"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Practically never"
+        2: "Not even once a week"
+        3: "Once or twice a week"
+        4: "Several times a week"
+        5: "Everyday"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "newspaper"
+  - id: pol_news_radio
+    concept: political_attitudes
+    description: "How often do you follow news about politics on the radio?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [6]
+    source:
+      w1: q060
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - detailed media breakdown"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Practically never"
+        2: "Not even once a week"
+        3: "Once or twice a week"
+        4: "Several times a week"
+        5: "Everyday"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "radio"
+  - id: pol_news_television
+    concept: political_attitudes
+    description: "How often do you follow news about politics on television?"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [6]
+    source:
+      w1: q059
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    note: "Wave 1 only - detailed media breakdown"
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Practically never"
+        2: "Not even once a week"
+        3: "Once or twice a week"
+        4: "Several times a week"
+        5: "Everyday"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1]
+          phrase: "television"
+  # ===========================================================================
+  # GROUP 1: Political Interest / Engagement
+  # ===========================================================================
+  - id: political_interest
+    concept: political_attitudes
+    description: "How interested would you say you are in politics?"
+    type: ordinal
+    source:
+      w1: q056
+      w2: q49
+      w3: q43
+      w4: q44
+      w5: q46
+      w6: q47
+    # Verified 2025-01-10:
+    # W1-W2: 1=Not at all → 4=Very interested (low→high) ✔
+    # W3-W6: 1=Very interested → 4=Not at all (high→low) - REVERSED
+    # Target: high = more interested
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all interested"
+        2: "Not very interested"
+        3: "Somewhat interested"
+        4: "Very interested"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W3-W6 coded 1=Very interested → 4=Not at all; reverse so high=more interested"
+      exceptions:
+        w1:
+          method: identity
+          note: "W1 already coded 1=Not at all → 4=Very interested"
+        w2:
+          method: identity
+          note: "W2 already coded 1=Not at all → 4=Very interested"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "interested.*politics"
+  - id: sat_president_govt
+    concept: political_attitudes
+    description: "How satisfied or dissatisfied are you with the current president/government?"
+    type: ordinal
+    source:
+      w1: q104 # "How satisfied or dissatisfied are you with the current government?"
+      w2: null # TODO: find w2 mapping
+      w3: q95
+      w4: q98 # "How satisfied or dissatisfied are you with the current government?"
+      w5: q105
+      w6: q96
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very dissatisfied"
+        2: "Somewhat dissatisfied"
+        3: "Somewhat satisfied"
+        4: "Very satisfied"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "satisfied.*government|satisfied.*president"
+  # ===========================================================================
+  # GROUP 4: System Support / Loyalty
+  # ===========================================================================
+  - id: system_capable
+    concept: political_attitudes
+    description: "Over the long run, our system of government is capable of solving the problems our country faces"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q80
+      w4: q83
+      w5: q86
+      w6: q80
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "system.*capable|solving.*problem"
+  - id: system_deserves_support
+    concept: political_attitudes
+    description: "A system like ours, even if it runs into problems, deserves the people's support"
+    type: ordinal
+    source:
+      w1: null # TODO: find w1 mapping
+      w2: null # TODO: find w2 mapping
+      w3: q82
+      w4: q85
+      w5: q88
+      w6: q82
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "system.*support"
+  - id: system_needs_change
+    concept: political_attitudes
+    description: "Would you say our system of government works fine, needs minor change, needs major change, or should be replaced?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q84
+      w4: q87
+      w5: q90
+      w6: q84
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Works fine, no change needed"
+        2: "Needs minor change"
+        3: "Needs major change"
+        4: "Should be replaced"
+    harmonize:
+      default:
+        method: identity
+        note: "Higher values = more desire for change (not reversed)"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "system.*change|needs.*change"
+  - id: system_prefer
+    concept: political_attitudes
+    description: "I would rather live under our system of government than any other that I can think of"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q83
+      w4: q86
+      w5: q89
+      w6: q83
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "rather live.*system|prefer.*system"
+  - id: system_proud
+    concept: political_attitudes
+    description: "Thinking in general, I am proud of our system of government"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q81
+      w4: q84
+      w5: q87
+      w6: q81
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "proud.*system"

@@ -1,0 +1,58 @@
+# Survey Weight Harmonization Specification
+# Variables: weight, weight_cross
+#
+# Individual country weights normalize to mean=1 within each country.
+# Cross-country weights adjust for cross-national comparisons.
+# W1 and W2 do not include weights in the ABS data files.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0]
+    description: "Standard missing codes"
+variables:
+  # ============================================================================
+  # Individual country weight
+  # ============================================================================
+  - id: weight
+    concept: sampling
+    description: "Individual country weight (normalizes to mean ~1 within country)"
+    type: continuous
+    source:
+      w1: null
+      w2: null
+      w3: allweight
+      w4: w
+      w5: w
+      w6: w
+    scale:
+      min: 0
+      max: 20
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 20]
+    tags: [sampling, weight]
+  # ============================================================================
+  # Cross-country weight
+  # ============================================================================
+  - id: weight_cross
+    concept: sampling
+    description: "Cross-country weight for pooled multi-country analyses"
+    type: continuous
+    source:
+      w1: null
+      w2: null
+      w3: couweight
+      w4: w_cross
+      w5: null
+      w6: null
+    scale:
+      min: 0
+      max: 20
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 20]
+    tags: [sampling, weight]

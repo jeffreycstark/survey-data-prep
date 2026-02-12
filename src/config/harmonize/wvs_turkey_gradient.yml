@@ -1,0 +1,541 @@
+# WVS Turkey Sensitivity Gradient Analysis
+# Harmonization spec for Wave 6 (2011) → Wave 7 (2018)
+# Pre/post July 2016 coup attempt and subsequent purges
+#
+# CODING NOTES:
+# WVS confidence items: 1=A great deal, 2=Quite a lot, 3=Not very much, 4=None at all
+# Target direction: higher = more trust (matching ABS convention)
+# Therefore ALL confidence items need safe_reverse_4pt
+#
+# Democracy items (1-10): already intuitive (higher = more democratic/important/satisfied)
+# EXCEPTION: V142 in W6 Turkey uses a 1-4 scale, not 1-10. See note on satisfaction item.
+#
+# Human rights (V143/Q253): 1=A great deal of respect ... 4=No respect at all
+# Needs reversal to match intuitive direction (higher = more respect)
+#
+# Country filter: V2=792 (W6), B_COUNTRY=792 (W7)
+# Weight: V258 (W6), W_WEIGHT (W7)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, -3, -4, -5]
+    description: "WVS standard missing codes (negative values)"
+
+variables:
+
+  # ============================================================
+  # HIGH-SENSITIVITY TRUST ITEMS (Gradient Test)
+  # ============================================================
+
+  - id: wvs_trust_police
+    concept: institutional_trust
+    description: "Confidence in the police"
+    type: ordinal
+    source:
+      wvs6: V113
+      wvs7: Q69
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "police"
+    tags: [gradient, high_sensitivity]
+
+  - id: wvs_trust_government
+    concept: institutional_trust
+    description: "Confidence in the government"
+    type: ordinal
+    source:
+      wvs6: V115
+      wvs7: Q71
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "government"
+    tags: [gradient, high_sensitivity]
+
+  - id: wvs_trust_armed_forces
+    concept: institutional_trust
+    description: "Confidence in the armed forces"
+    type: ordinal
+    note: >
+      Turkey-specific sensitivity is ambiguous: military perpetrated the 2016 coup
+      but was subsequently purged and subordinated to civilian (regime) control.
+      Respondents may fear expressing too much trust (signals coup sympathy) or
+      too little (signals opposition to the government that defeated the coup).
+    source:
+      wvs6: V109
+      wvs7: Q65
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "armed forces"
+    tags: [gradient, ambiguous_sensitivity]
+
+  - id: wvs_trust_parliament
+    concept: institutional_trust
+    description: "Confidence in parliament"
+    type: ordinal
+    source:
+      wvs6: V117
+      wvs7: Q73
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "parliament"
+    tags: [gradient, medium_sensitivity]
+
+  - id: wvs_trust_courts
+    concept: institutional_trust
+    description: "Confidence in the justice system/courts"
+    type: ordinal
+    note: >
+      Courts were massively purged post-coup (thousands of judges dismissed).
+      Sensitivity ranking: moderate — courts are coercive but the purge was
+      publicly known, possibly reducing perceived threat of honest response.
+    source:
+      wvs6: V114
+      wvs7: Q70
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "court"
+    tags: [gradient, medium_sensitivity]
+
+  - id: wvs_trust_political_parties
+    concept: institutional_trust
+    description: "Confidence in political parties"
+    type: ordinal
+    source:
+      wvs6: V116
+      wvs7: Q72
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "party|parties"
+    tags: [gradient, low_sensitivity]
+
+  - id: wvs_trust_civil_service
+    concept: institutional_trust
+    description: "Confidence in the civil service"
+    type: ordinal
+    source:
+      wvs6: V118
+      wvs7: Q74
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "civil"
+    tags: [gradient, medium_sensitivity]
+
+  # ============================================================
+  # BENCHMARK / PLACEBO ITEMS
+  # ============================================================
+
+  - id: wvs_trust_churches
+    concept: institutional_trust
+    description: "Confidence in churches/religious organizations"
+    type: ordinal
+    source:
+      wvs6: V108
+      wvs7: Q64
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "church"
+    tags: [placebo]
+
+  - id: wvs_trust_press
+    concept: institutional_trust
+    description: "Confidence in the press"
+    type: ordinal
+    source:
+      wvs6: V110
+      wvs7: Q66
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "press"
+    tags: [placebo, media]
+
+  - id: wvs_trust_television
+    concept: institutional_trust
+    description: "Confidence in television"
+    type: ordinal
+    source:
+      wvs6: V111
+      wvs7: Q67
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "television"
+    tags: [placebo, media]
+
+  - id: wvs_trust_universities
+    concept: institutional_trust
+    description: "Confidence in universities"
+    type: ordinal
+    source:
+      wvs6: V119
+      wvs7: Q75
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "universit"
+    tags: [placebo]
+
+  - id: wvs_trust_elections
+    concept: institutional_trust
+    description: "Confidence in elections"
+    type: ordinal
+    source:
+      wvs6: V120
+      wvs7: Q76
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "election"
+    tags: [placebo]
+
+  - id: wvs_trust_labor_unions
+    concept: institutional_trust
+    description: "Confidence in labor unions"
+    type: ordinal
+    source:
+      wvs6: V112
+      wvs7: Q68
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "union"
+    tags: [placebo]
+
+  # ============================================================
+  # DEMOCRACY / LOW-SENSITIVITY ITEMS
+  # ============================================================
+
+  - id: wvs_democracy_importance
+    concept: democracy
+    description: "How important is it to live in a democratically governed country (1-10)"
+    type: ordinal
+    source:
+      wvs6: V140
+      wvs7: Q250
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not at all important"
+        10: "Absolutely important"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "democrat"
+    tags: [gradient, low_sensitivity, critical_citizens]
+
+  - id: wvs_democracy_evaluation
+    concept: democracy
+    description: "How democratically is this country being governed today (1-10)"
+    type: ordinal
+    source:
+      wvs6: V141
+      wvs7: Q251
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not at all democratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "democrat"
+    tags: [gradient, low_sensitivity]
+
+  - id: wvs_system_satisfaction
+    concept: democracy
+    description: "Satisfaction with how the political system is functioning (1-10 in W7; 1-4 in W6 Turkey)"
+    type: ordinal
+    note: >
+      CRITICAL: Turkey W6 (V142) uses a 1-4 scale, but W7 (Q252) uses 1-10.
+      This appears to be a country-specific deviation in the W6 Turkish questionnaire.
+      Options: (a) standardize both to z-scores, (b) use only for direction comparison,
+      or (c) rescale W6 1-4 to 1-10 range. Recommend z-score approach for effect
+      size computation to avoid scale artifacts.
+    source:
+      wvs6: V142
+      wvs7: Q252
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not satisfied at all"
+        10: "Completely satisfied"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        wvs6:
+          method: r_function
+          fn: rescale_4pt_to_10pt
+          note: "Turkey W6 uses 1-4 scale; rescale or z-score"
+    qc:
+      valid_range: [1, 10]
+    tags: [gradient, low_sensitivity, critical_citizens]
+
+  - id: wvs_human_rights
+    concept: democracy
+    description: "How much respect is there for individual human rights (1-4)"
+    type: ordinal
+    note: >
+      Scale: 1=A great deal of respect, 4=No respect at all.
+      Reverse so higher = more respect.
+    source:
+      wvs6: V143
+      wvs7: Q253
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No respect at all"
+        2: "Not much respect"
+        3: "Some respect"
+        4: "A great deal of respect"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [wvs6, wvs7]
+          phrase: "human rights"
+    tags: [gradient, low_sensitivity]
+
+  # ============================================================
+  # METADATA / WEIGHTS
+  # ============================================================
+
+  - id: wvs_weight
+    concept: survey_design
+    description: "Survey weight"
+    type: continuous
+    source:
+      wvs6: V258
+      wvs7: W_WEIGHT
+    harmonize:
+      default:
+        method: identity
+    tags: [weight]
+
+  - id: wvs_country
+    concept: survey_design
+    description: "Country code (792 = Turkey)"
+    type: nominal
+    source:
+      wvs6: V2
+      wvs7: B_COUNTRY
+    harmonize:
+      default:
+        method: identity
+    tags: [filter]
+
+  - id: wvs_year
+    concept: survey_design
+    description: "Survey year"
+    type: nominal
+    source:
+      wvs6: V262
+      wvs7: A_YEAR
+    harmonize:
+      default:
+        method: identity
+    tags: [filter]
+
+  - id: wvs_interview_date
+    concept: survey_design
+    description: "Date of interview (YYYYMMDD in W7; year only in W6)"
+    type: nominal
+    source:
+      wvs6: V262
+      wvs7: J_INTDATE
+    harmonize:
+      default:
+        method: identity
+    tags: [filter]

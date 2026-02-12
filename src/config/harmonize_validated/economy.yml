@@ -1,0 +1,304 @@
+# Economy Harmonization Specification (v2)
+# Variables: econ_national_now, econ_change_1yr, econ_outlook_1yr
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  # ============================================================================
+  # Economic situation compared to one year ago
+  # ============================================================================
+  - id: econ_change_1yr
+    concept: economy
+    description: "Economic situation compared to one year ago"
+    type: ordinal
+    source:
+      w1: q002
+      w2: q2
+      w3: q2
+      w4: q2
+      w5: q2
+      w6: q2
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Worse"
+        3: "About the same"
+        4: "Better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2]
+          phrase: "economic|economy"
+        - waves: [w3, w4, w5, w6]
+          phrase: "economic|economy"
+    tags: ["candidate_index:economy"]
+  - id: econ_family_change
+    concept: economy
+    description: "Family economic situation compared to five years ago"
+    type: ordinal
+    source:
+      w1: q005
+      w2: q5
+      w3: q5
+      w4: q5
+      w5: q5
+      w6: q5
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "A little worse"
+        3: "About the same"
+        4: "A little better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "family.*five years|compare.*family"
+    tags: ["candidate_index:economy"]
+  # ============================================================================
+  # Family/Household Economic Condition
+  # ============================================================================
+  - id: econ_family_now
+    concept: economy
+    description: "Family/household economic situation today"
+    type: ordinal
+    source:
+      w1: q004
+      w2: q4
+      w3: q4
+      w4: q4
+      w5: q4
+      w6: q4
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Bad"
+        3: "So so"
+        4: "Good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "family.*economic|your own family"
+    tags: ["candidate_index:economy"]
+  - id: econ_family_outlook
+    concept: economy
+    description: "Expected family economic situation in five years"
+    type: ordinal
+    source:
+      w1: q006
+      w2: q6
+      w3: q6
+      w4: q6
+      w5: q6
+      w6: q6
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "About the same"
+        4: "Somewhat better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "family.*will be|family.*few years"
+    tags: ["candidate_index:economy"]
+  # ============================================================================
+  # Overall national economic condition
+  # ============================================================================
+  - id: econ_national_now
+    concept: economy
+    description: "Overall national economic condition today"
+    type: ordinal
+    source:
+      w1: q001
+      w2: q1
+      w3: q1
+      w4: q1
+      w5: q1
+      w6: q1
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Bad"
+        3: "So so"
+        4: "Good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2]
+          phrase: "economic|economy"
+        - waves: [w3, w4, w5, w6]
+          phrase: "economic|economy"
+    tags: [core, "candidate_index:economy"]
+  # ============================================================================
+  # Expected economic situation in one year
+  # ============================================================================
+  - id: econ_outlook_1yr
+    concept: economy
+    description: "Expected economic situation in one year"
+    type: ordinal
+    source:
+      w1: q003
+      w2: q3
+      w3: q3
+      w4: q3
+      w5: q3
+      w6: q3
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Worse"
+        3: "About the same"
+        4: "Better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_5pt
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+        w5:
+          method: r_function
+          fn: safe_reverse_5pt
+        w6:
+          method: r_function
+          fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2]
+          phrase: "economic|economy"
+        - waves: [w3, w4, w5, w6]
+          phrase: "economic|economy"
+    tags: ["candidate_index:economy"]
+  # ============================================================================
+  # Sample Type: Elite vs Mass
+  # ============================================================================
+  - id: sample_elite_mass
+    concept: economy
+    description: "Sample type indicator - Elite vs Mass sample"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: se9c_3
+      w5: Se9c_3
+      w6: se9c_3
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Elite"
+        2: "Mass"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+    tags: [sampling]

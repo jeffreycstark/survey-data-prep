@@ -1,0 +1,175 @@
+# Clientelism and Patronage Networks - Validated YAML (v2)
+# Variables measuring informal influence networks, community leader contact, and social capital
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+  # W3 uses 0 as valid "Never" response, so exclude 0 from missing
+  treat_as_na_no_zero:
+    codes: [-1, 7, 8, 9, 97, 98, 99]
+    description: "Missing codes excluding 0 (for scales that start at 0)"
+variables:
+  # ===========================================================================
+  # GROUP 1: Community/Traditional Leader Contact
+  # ===========================================================================
+  - id: community_leader_contact
+    concept: clientelism
+    description: "Contacted traditional leaders/community leaders for help or to address problems"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_no_zero
+    source:
+      w1: null
+      w2: q84
+      w3: q66
+      w4: q71
+      w5: q72
+      w6: q70
+    # Verified 2025-01-11:
+    # W2 q84: 1=Once, 2=More than once, 3=Never (3pt, reversed)
+    # W3 q66: 0=Never, 1=Once, 2=More than once (3pt, starts at 0)
+    # W4 q71: 1=More than once, 2=Once, 3=Never (3pt, reversed)
+    # W5 q72: 1=More than 3x, 2=2-3x, 3=Once, 4=Might, 5=Never (5pt)
+    # W6 q70: Same as W5 (5pt)
+    # Target: 3pt scale, high = more contact
+
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Once"
+        3: "More than once"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "W4 coded 1=More → 3=Never; reverse so high=more contact"
+      exceptions:
+        w2:
+          method: r_function
+          fn: safe_reverse_3pt
+          note: "W2 coded 1=Once, 2=More, 3=Never; reverse so high=more contact"
+        w3:
+          method: r_function
+          fn: recode_w3_leader_contact
+          note: "W3 coded 0=Never, 1=Once, 2=More; shift to 1-3 scale"
+        w5:
+          method: r_function
+          fn: collapse_5pt_leader_to_3pt
+          note: "W5 5pt scale: collapse 1-2→3 (More), 3→2 (Once), 4-5→1 (Never/Might)"
+        w6:
+          method: r_function
+          fn: collapse_5pt_leader_to_3pt
+          note: "W6 5pt scale: same as W5"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "traditional.*leader|community.*leader|influential.*people"
+  # ===========================================================================
+  # GROUP 2: Patronage / Influence Networks (W2 only)
+  # ===========================================================================
+  - id: influence_asked_by_others
+    concept: clientelism
+    description: "How often are you asked to help influence important decisions in other people's favor?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q28
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    # Verified 2025-01-11:
+    # W2 q28: 1=Never, 2=Seldom, 3=Occasionally, 4=Often
+    # Target: high = more often asked
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Seldom"
+        3: "Occasionally"
+        4: "Often"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "Already coded 1=Never → 4=Often"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2]
+          phrase: "asked.*influence|influence.*decision"
+  - id: influence_network_available
+    concept: clientelism
+    description: "Are there people you could ask to help influence important decisions in your favor?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q29
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    # Verified 2025-01-11:
+    # W2 q29: 1=No nobody, 2=Yes a few, 3=Yes some, 4=Yes a lot
+    # Target: high = more network available
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No, nobody"
+        2: "Yes, a few"
+        3: "Yes, some"
+        4: "Yes, a lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_4pt_none
+        note: "Already coded 1=Nobody → 4=A lot"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2]
+          phrase: "people.*ask.*influence|influence.*favor"
+  # ===========================================================================
+  # GROUP 3: Social Support Networks
+  # ===========================================================================
+  - id: social_support_available
+    concept: social_capital
+    description: "If you have a difficult problem, are there people outside your household you can ask for help?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q29
+      w4: q30
+      w5: q31
+      w6: q31
+    # Verified 2025-01-11:
+    # W3-W6: 4-point scale (1=No, 2=Yes a few, 3=Yes some, 4=Yes a lot)
+    # Target: keep 4-point ordering (low -> high support)
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No, nobody"
+        2: "Yes, a few"
+        3: "Yes, some"
+        4: "Yes, a lot"
+    harmonize:
+      default:
+        method: identity
+        note: "Raw scale already ordered low (no support) to high (a lot)"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w5, w6]
+          phrase: "difficult.*problem|ask.*help"

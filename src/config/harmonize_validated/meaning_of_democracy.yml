@@ -1,0 +1,463 @@
+# Meaning of Democracy - Validated YAML (v3)
+# Forced-choice questions about essential characteristics of democracy
+# Each set presents 4 options mixing substantive/economic and procedural/political choices
+# NOTE: W1/W2/W5 have different question formats - see dem_essential_harmonized for cross-wave version
+# Validated 2025-01-14
+
+# ===========================================================================
+# HARMONIZED CROSS-WAVE VARIABLE (W2-W6)
+# The single "most essential" question appears in all waves but with different
+# value codes and slightly different options. This harmonization captures the
+# core procedural vs substantive distinction.
+# ===========================================================================
+# 
+# Source mapping:
+#   W2: q92 (1=elections, 2=criticize, 3=income gap, 4=basic needs)
+#   W3: q85 (1=gap, 2=elections, 3=no waste, 4=express views)
+#   W4: q88 (1=gap, 2=elections, 3=no waste, 4=express views)  
+#   W5: q98 (1=express views, 2=basic needs, 3=elections, 4=clean politics)
+#   W6: q85 (1=gap, 2=elections, 3=no waste, 4=express views) - same as W3/W4
+#
+# Harmonization strategy:
+#   - Electoral (procedural): W2=1, W3=2, W4=2, W5=3, W6=2
+#   - Expressive (liberal): W2=2, W3=4, W4=4, W5=1, W6=4
+#   - Redistributive (substantive): W2=3, W3=1, W4=1, W5=NA, W6=1
+#   - Basic needs (substantive): W2=4, W3=NA, W4=NA, W5=2, W6=NA
+#   - Good governance: W2=NA, W3=3, W4=3, W5=4, W6=3
+# ===========================================================================
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes (0 excluded - used as valid value in binary variables)"
+variables:
+  # ===========================================================================
+  # CROSS-WAVE HARMONIZED VARIABLES (W2-W5)
+  # ===========================================================================
+  
+  - id: dem_essential_harmonized
+    concept: meaning_of_democracy
+    description: "Most essential characteristic of democracy - harmonized across waves with all categories"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [0]
+    source:
+      w1: null
+      w2: q92
+      w3: q85
+      w4: q88
+      w5: q98
+      w6: q85  # W6 uses same format as W3/W4
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Electoral (free and fair elections)"
+        2: "Expressive (freedom to express/criticize)"
+        3: "Redistributive (narrow income gap)"
+        4: "Basic needs (necessities for all)"
+        5: "Good governance (no waste/corruption)"
+      note: "1-2 = procedural/political; 3-5 = substantive/economic. Not all options available in all waves."
+    harmonize:
+      w2:
+        method: recode
+        mapping:
+          1: 1  # elections -> electoral
+          2: 2  # criticize -> expressive
+          3: 3  # income gap -> redistributive
+          4: 4  # basic needs -> basic needs
+      w3:
+        method: recode
+        mapping:
+          1: 3  # gap -> redistributive
+          2: 1  # elections -> electoral
+          3: 5  # no waste -> good governance
+          4: 2  # express -> expressive
+      w4:
+        method: recode
+        mapping:
+          1: 3  # gap -> redistributive
+          2: 1  # elections -> electoral
+          3: 5  # no waste -> good governance
+          4: 2  # express -> expressive
+      w5:
+        method: recode
+        mapping:
+          1: 2  # express -> expressive
+          2: 4  # basic needs -> basic needs
+          3: 1  # elections -> electoral
+          4: 5  # clean politics -> good governance
+      w6:
+        method: recode
+        mapping:
+          1: 3  # gap -> redistributive
+          2: 1  # elections -> electoral
+          3: 5  # no waste -> good governance
+          4: 2  # express -> expressive
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "essential|characteristic|democracy"
+      notes:
+        - "Redistributive (3) not available in W5"
+        - "Basic needs (4) only available in W2 and W5"
+        - "Good governance (5) not available in W2"
+
+  - id: dem_essential_core
+    concept: meaning_of_democracy
+    description: "Essential democracy: Electoral vs Expressive (binary, all waves W2-W5)"
+    type: binary
+    missing:
+      use_convention: treat_as_na
+      codes: [0]
+    source:
+      w1: null
+      w2: q92
+      w3: q85
+      w4: q88
+      w5: q98
+      w6: q85
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Expressive (freedom to express/criticize)"
+        1: "Electoral (free and fair elections)"
+      note: "Filters to only electoral vs expressive responses; others coded NA"
+    harmonize:
+      w2:
+        method: recode
+        mapping:
+          1: 1  # elections -> electoral
+          2: 0  # criticize -> expressive
+          3: null  # income gap -> NA
+          4: null  # basic needs -> NA
+      w3:
+        method: recode
+        mapping:
+          1: null  # gap -> NA
+          2: 1  # elections -> electoral
+          3: null  # no waste -> NA
+          4: 0  # express -> expressive
+      w4:
+        method: recode
+        mapping:
+          1: null  # gap -> NA
+          2: 1  # elections -> electoral
+          3: null  # no waste -> NA
+          4: 0  # express -> expressive
+      w5:
+        method: recode
+        mapping:
+          1: 0  # express -> expressive
+          2: null  # basic needs -> NA
+          3: 1  # elections -> electoral
+          4: null  # clean politics -> NA
+      w6:
+        method: recode
+        mapping:
+          1: null  # gap -> NA
+          2: 1  # elections -> electoral
+          3: null  # no waste -> NA
+          4: 0  # express -> expressive
+    qc:
+      valid_range: [0, 1]
+      notes:
+        - "Binary variable: 1 = procedural/electoral, 0 = liberal/expressive"
+        - "Respondents choosing substantive options (redistribution, basic needs, governance) are coded NA"
+        - "Use for cross-wave analysis where full harmonization not possible"
+
+  - id: dem_procedural_vs_substantive
+    concept: meaning_of_democracy
+    description: "Democracy conception: Procedural (electoral/expressive) vs Substantive (redistributive/needs/governance)"
+    type: binary
+    missing:
+      use_convention: treat_as_na
+      codes: [0]
+    source:
+      w1: null
+      w2: q92
+      w3: q85
+      w4: q88
+      w5: q98
+      w6: q85
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Substantive (redistribution/needs/governance)"
+        1: "Procedural (elections/expression)"
+      note: "Collapses all options into procedural vs substantive dichotomy"
+    harmonize:
+      w2:
+        method: recode
+        mapping:
+          1: 1  # elections -> procedural
+          2: 1  # criticize -> procedural
+          3: 0  # income gap -> substantive
+          4: 0  # basic needs -> substantive
+      w3:
+        method: recode
+        mapping:
+          1: 0  # gap -> substantive
+          2: 1  # elections -> procedural
+          3: 0  # no waste -> substantive
+          4: 1  # express -> procedural
+      w4:
+        method: recode
+        mapping:
+          1: 0  # gap -> substantive
+          2: 1  # elections -> procedural
+          3: 0  # no waste -> substantive
+          4: 1  # express -> procedural
+      w5:
+        method: recode
+        mapping:
+          1: 1  # express -> procedural
+          2: 0  # basic needs -> substantive
+          3: 1  # elections -> procedural
+          4: 0  # clean politics -> substantive
+      w6:
+        method: recode
+        mapping:
+          1: 0  # gap -> substantive
+          2: 1  # elections -> procedural
+          3: 0  # no waste -> substantive
+          4: 1  # express -> procedural
+    qc:
+      valid_range: [0, 1]
+      notes:
+        - "Procedural = elections + expression (political rights focus)"
+        - "Substantive = redistribution + basic needs + good governance (outcomes focus)"
+        - "Available for all waves W2-W6 with complete coverage"
+
+  # ===========================================================================
+  # Essential Characteristics Sets (4 sets, W3/W4/W6 only)
+  # Nominal: respondent picks 1 of 4 options
+  # ===========================================================================
+  - id: dem_meaning_set1
+    concept: meaning_of_democracy
+    description: "Most essential characteristic of democracy - Set 1 (equality/election/efficiency/expression)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: q85
+      w4: q88
+      w5: null
+      w6: q85
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Government narrows gap between rich and poor"
+        2: "People choose leaders in free and fair elections"
+        3: "Government does not waste public money"
+        4: "People free to express political views openly"
+      note: "Options 1,3 = substantive/economic; Options 2,4 = procedural/political"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w6]
+          phrase: "essential.*characteristic|gap.*rich.*poor|free.*fair.*election"
+  - id: dem_meaning_set2
+    concept: meaning_of_democracy
+    description: "Most essential characteristic of democracy - Set 2 (oversight/basic needs/organize/services)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: q86
+      w4: q89
+      w5: null
+      w6: q86
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Legislature has oversight over government"
+        2: "Basic necessities provided for all"
+        3: "People free to organize political groups"
+        4: "Government provides quality public services"
+      note: "Options 2,4 = substantive/economic; Options 1,3 = procedural/political"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w6]
+          phrase: "oversight|basic necessit|organize.*group|public service"
+  - id: dem_meaning_set3
+    concept: meaning_of_democracy
+    description: "Most essential characteristic of democracy - Set 3 (law-order/media freedom/jobs/multiparty)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: q87
+      w4: q90
+      w5: null
+      w6: q87
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Government ensures law and order"
+        2: "Media free to criticize government"
+        3: "Government ensures job opportunities for all"
+        4: "Multiple parties compete fairly in elections"
+      note: "Options 1,3 = substantive/security-economic; Options 2,4 = procedural/political"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w6]
+          phrase: "law and order|media.*free|job opportunit|multiple part"
+  - id: dem_meaning_set4
+    concept: meaning_of_democracy
+    description: "Most essential characteristic of democracy - Set 4 (protests/anticorruption/courts/unemployment)"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [0]
+    source:
+      w1: null
+      w2: null
+      w3: q88
+      w4: q91
+      w5: null
+      w6: q88
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Freedom to take part in protests and demonstrations"
+        2: "Politics is clean and free of corruption"
+        3: "Courts protect ordinary people from government abuse"
+        4: "People receive state aid if unemployed"
+      note: "Options 2,4 = substantive; Options 1,3 = procedural"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4, w6]
+          phrase: "protest|demonstration|corruption|court.*protect|unemploy"
+
+  # ===========================================================================
+  # ELECTORAL STATUS (Winner/Loser)
+  # Key variable for winner-loser gap analyses
+  # Source: "Did your candidate/party win the most recent election?"
+  # ===========================================================================
+
+  - id: electoral_status
+    concept: electoral_preferences
+    description: "Electoral winner/loser status - whether respondent's preferred party/candidate won most recent election"
+    type: nominal
+    missing:
+      use_convention: treat_as_na
+      codes: [0, 3]
+    source:
+      w1: null
+      w2: q39a
+      w3: q33a
+      w4: q34a
+      w5: q34a  # Fixed: q34a exists in W5 with 14,918 valid responses
+      w6: q34a
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Winner (voted for winning party/candidate)"
+        2: "Loser (voted for losing party/candidate)"
+      note: "Based on self-reported vote choice and election outcome"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "candidate|party|vote|win|election"
+      notes:
+        - "W1 does not include this question"
+        - "W5 uses q34a (same as W4/W6): 9,737 winners, 5,181 losers"
+        - "Coding consistent across all waves: 1=Winner, 2=Loser"
+        - "Missing/refused/don't know responses excluded"
+
+  # ===========================================================================
+  # PROCEDURAL PREFERENCE INDEX (0-4 scale)
+  # Derived from 4-set battery (W3/W4/W6) or single item (W2)
+  # Higher values = stronger procedural (vs substantive) orientation
+  # ===========================================================================
+
+  - id: procedural_preference_index
+    concept: meaning_of_democracy
+    description: "Procedural democracy preference index (0-4 scale) - count of procedural choices across 4 sets"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na
+      codes: [0]
+    source:
+      w1: null
+      w2: q92  # Single item, recoded to 0 or 4
+      w3: q85  # Placeholder - derived from q85-q88
+      w4: q88  # Placeholder - derived from q88-q91
+      w5: q98  # Single item with 4 options, recoded to 0 or 4
+      w6: q85  # Placeholder - derived from q85-q88
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "All substantive choices"
+        1: "1 procedural choice"
+        2: "2 procedural choices"
+        3: "3 procedural choices"
+        4: "All procedural choices"
+      note: "W2/W5 only produce 0 or 4 due to single-item measure"
+    harmonize:
+      w2:
+        method: recode
+        mapping:
+          1: 4  # elections -> procedural (scaled to max)
+          2: 4  # criticize -> procedural (scaled to max)
+          3: 0  # income gap -> substantive
+          4: 0  # basic needs -> substantive
+      w3:
+        method: derive
+        fn: compute_procedural_index
+        sources: [q85, q86, q87, q88]
+      w4:
+        method: derive
+        fn: compute_procedural_index
+        sources: [q88, q89, q90, q91]
+      w5:
+        method: recode
+        mapping:
+          1: 4  # free expression -> procedural
+          2: 0  # basic necessities -> substantive
+          3: 4  # free elections -> procedural
+          4: 4  # clean politics -> procedural
+      w6:
+        method: derive
+        fn: compute_procedural_index
+        sources: [q85, q86, q87, q88]
+    qc:
+      valid_range: [0, 4]
+      notes:
+        - "W2/W5 measures are NOT directly comparable (single item scaled to 0/4)"
+        - "W3/W4/W6 use 4-set battery producing true 0-4 range"
+        - "W5 q98: 1=expression(P), 2=basic needs(S), 3=elections(P), 4=clean politics(P)"
+        - "For cross-wave comparisons, consider using dem_procedural_vs_substantive (binary) instead"
+        - "Recode logic: procedural options (elections, expression, oversight, media freedom, courts, protests) coded 1"
+        - "Substantive options (redistribution, basic needs, jobs, governance) coded 0"
+        - "Uses compute_procedural_index function in src/r/harmonize/harmonize.R"

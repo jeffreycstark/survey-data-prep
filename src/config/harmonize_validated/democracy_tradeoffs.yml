@@ -1,0 +1,265 @@
+# Democracy Tradeoffs - Validated YAML (v2)
+# Variables measuring attitudes toward democracy through statement pairs
+# W4/W5 specific items with intensity follow-ups
+# Validated 2025-01-11
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+variables:
+  - id: dem_statement_opinion
+    concept: democracy_tradeoffs
+    description: "Which of the following statements comes closest to your own opinion?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q125
+      w5: q132
+      w6: null
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+        3: "Statement C"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w4, w5]
+          phrase: "statement.*closest|opinion"
+  # ===========================================================================
+  # GROUP 1: Statement Pairs with Intensity Follow-ups
+  # Format: Binary/ternary choice + intensity follow-up
+  # ===========================================================================
+  - id: dem_statement_pair_1
+    concept: democracy_tradeoffs
+    description: "Which statement do you agree with most? (Statement pair 1)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q79
+      w5: q82
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4, w5]
+          phrase: "statement.*agree"
+  - id: dem_statement_pair_1_intensity
+    concept: democracy_tradeoffs
+    description: "Do you strongly agree or just agree with the chosen statement? (Pair 1)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q79a
+      w5: q82a
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly agree"
+        2: "Just agree"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4, w5]
+          phrase: "strongly agree|just agree"
+  - id: dem_statement_pair_2
+    concept: democracy_tradeoffs
+    description: "Which statement do you agree with most? (Statement pair 2)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q80
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "statement.*agree"
+  - id: dem_statement_pair_2_intensity
+    concept: democracy_tradeoffs
+    description: "Do you strongly agree or just agree with the chosen statement? (Pair 2)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q80a
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly agree"
+        2: "Just agree"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "strongly agree|just agree"
+  - id: dem_statement_pair_3
+    concept: democracy_tradeoffs
+    description: "Which statement do you agree with most? (Statement pair 3)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q81
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "statement.*agree"
+  - id: dem_statement_pair_3_intensity
+    concept: democracy_tradeoffs
+    description: "Do you strongly agree or just agree with the chosen statement? (Pair 3)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q81a
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly agree"
+        2: "Just agree"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "strongly agree|just agree"
+  - id: dem_statement_pair_4
+    concept: democracy_tradeoffs
+    description: "Which statement do you agree with most? (Statement pair 4)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q82
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "statement.*agree"
+  - id: dem_statement_pair_4_intensity
+    concept: democracy_tradeoffs
+    description: "Do you strongly agree or just agree with the chosen statement? (Pair 4)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q82a
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Strongly agree"
+        2: "Just agree"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4]
+          phrase: "strongly agree|just agree"
+  - id: dem_statement_view
+    concept: democracy_tradeoffs
+    description: "Which of the following statements comes closer to your own view?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q126
+      w5: q133
+      w6: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Statement A"
+        2: "Statement B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w4, w5]
+          phrase: "statement.*closer|view"

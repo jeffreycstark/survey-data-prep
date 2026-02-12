@@ -1,0 +1,123 @@
+═══════════════════════════════════════════════════════════════════════════════
+INSTITUTIONAL TRUST YAML GENERATION SUMMARY
+═══════════════════════════════════════════════════════════════════════════════
+
+TASK COMPLETED: Generate YAML for the core 13 institutional trust measures
+
+═══════════════════════════════════════════════════════════════════════════════
+GENERATED FILES (13 total)
+═══════════════════════════════════════════════════════════════════════════════
+
+Location: src/config/harmonize/
+
+1. trust_civil_service.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q011 (w1), q12 (w2), q12 (w3), q12 (w4), q12 (w5), q12 (w6)
+
+2. trust_courts.yml (7 sources)
+   - Waves: w1 (2 sources), w2, w3, w4, w5, w6
+   - Primary variable: q8 (w2-w6), q007 (w1)
+
+3. trust_election_commission.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q012-q018 (varies by wave)
+
+4. trust_local_government.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q014 (w1), q15 (w2-w6)
+
+5. trust_military.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q012 (w1), q13 (w2-w6)
+
+6. trust_national_government.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q008 (w1), q9 (w2-w6)
+
+7. trust_newspapers.yml (4 sources)
+   - Waves: w1, w2, w3, w4
+   - Variables: q015 (w1), q16 (w2-w4)
+
+8. trust_ngos.yml (3 sources)
+   - Waves: w1, w2, w3
+   - Variables: q013, q018, q019
+
+9. trust_parliament.yml (6 sources)
+   - Waves: w1, w2, w3, w4, w5, w6
+   - Variables: q010 (w1), q11 (w2-w6)
+
+10. trust_police.yml (7 sources)
+    - Waves: w1, w2, w3, w4, w5, w6
+    - Variables: q013 (w1, plus q018_1), q14 (w2-w6)
+
+11. trust_political_parties.yml (6 sources)
+    - Waves: w1, w2, w3, w4, w5, w6
+    - Variables: q009 (w1), q10 (w2-w6)
+
+12. trust_president.yml (1 source)
+    - Waves: w2
+    - Variables: q7 (Prime Minister or president)
+
+13. trust_television.yml (4 sources)
+    - Waves: w1, w2, w3, w4
+    - Variables: q016 (w1), q17 (w2-w4)
+
+═══════════════════════════════════════════════════════════════════════════════
+FILTERED OUT (26 variables)
+═══════════════════════════════════════════════════════════════════════════════
+
+These institutional trust questions were excluded:
+- State/private/foreign enterprises (w1: q018_2-4)
+- Radio (w1: q018_6)
+- Local MP, Corruption Commission (w1: q018_7, q018_9)
+- Organizational membership questions (w2-w6: q20, q20_1, etc.)
+- "Other specify" responses (w6: q18_other, q19_other, q20_other)
+- Introductory/metadata questions
+
+═══════════════════════════════════════════════════════════════════════════════
+YAML STRUCTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+Each YAML file contains:
+- Variable name and label
+- Concept identifier (institutional_trust)
+- Data type (ordinal)
+- Sources: All wave-specific variable mappings with original question labels
+- Scale information: Type (likert), min/max values, reversal flags (TO VERIFY)
+- Harmonization methods: Direct, reverse, or recode (TO SELECT)
+- Quality bounds: Min/max values for QC (TO FINALIZE)
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT STEPS
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR EACH YAML FILE:
+
+1. Review scale information
+   - Confirm min/max values (1-4, 1-5, etc.)
+   - Check if any waves have reversed scales
+   - Note: Some waves may use different scale ranges
+
+2. Fill in 'id' field
+   - Current: "TRUST_COURTS", "TRUST_PARLIAMENT", etc.
+   - Finalize identifiers for use in harmonization pipeline
+
+3. Select harmonization method
+   - method: direct        → Use if all waves use identical scale
+   - method: safe_reverse  → Use if some waves are reversed (4→1, 3→2)
+   - method: recode_to_Xpt → Use if scale conversion needed
+
+4. Verify bounds
+   - Set min_value and max_value based on actual data
+   - Used for quality control during harmonization
+
+═══════════════════════════════════════════════════════════════════════════════
+EXECUTION
+═══════════════════════════════════════════════════════════════════════════════
+
+Once YAML files are finalized:
+  1. Review each file for accuracy
+  2. Update scale information and harmonization methods
+  3. Run: /harmonize-variables command in harmonization pipeline
+
+═══════════════════════════════════════════════════════════════════════════════

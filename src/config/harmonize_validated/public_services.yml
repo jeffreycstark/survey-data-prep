@@ -1,0 +1,355 @@
+# Public Services - Comprehensive YAML (v2)
+# Variables measuring ease of access to public services and local safety
+# Scale: 1-4 (Very easy to Very difficult) - REVERSED so higher = better access
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes"
+  treat_as_na_never_tried:
+    codes: [-1, 0, 5, 7, 8, 9, 97, 98, 99]
+    description: "Standard missing codes plus 5=Never tried"
+variables:
+  - id: access_childcare
+    concept: public_services
+    description: "How easy or difficult to obtain childcare"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q45
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "childcare"
+  # ===========================================================================
+  # GROUP 2: Essential Services Access
+  # ===========================================================================
+  - id: access_healthcare
+    concept: public_services
+    description: "How easy or difficult to obtain healthcare/medical treatment"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: q46
+      w3: q40
+      w4: q41
+      w5: q42
+      w6: q42
+    # Verified 2025-01-10:
+    # W2-W4: 1=Very difficult → 4=Very easy (low→high) ✔
+    # W5-W6: 1=Very easy → 4=Very difficult (high→low) - REVERSED
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: identity
+        note: "W2-W4 already coded 1=difficult → 4=easy"
+      exceptions:
+        w5:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W5 coded 1=easy → 4=difficult; reverse"
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W6 coded 1=easy → 4=difficult; reverse"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "healthcare|medical"
+  # ===========================================================================
+  # GROUP 3: Document and Education Access (Wave 4)
+  # Note: Wave 4 uses different question numbers than w5/w6
+  # ===========================================================================
+  - id: access_identity_document
+    concept: public_services
+    description: "How easy or difficult to obtain identity documents (such as birth certificate, ID card)"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q39
+      w5: null
+      w6: null
+    note: "Wave 4 only - access to identity documents"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "identity.*document|birth certificate|ID card"
+  - id: access_internet
+    concept: public_services
+    description: "How easy or difficult to obtain access to the Internet"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null # w4 q47/q48 ask yes/no about internet access, different scale
+      w5: q44
+      w6: q44
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "internet"
+  - id: access_police
+    concept: public_services
+    description: "How easy or difficult to obtain help from the police when you need it"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: q47
+      w3: q41
+      w4: q42
+      w5: q43
+      w6: q43
+    # Verified 2025-01-10:
+    # W2-W4: 1=Very difficult → 4=Very easy (low→high) ✔
+    # W5-W6: 1=Very easy → 4=Very difficult (high→low) - REVERSED
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: identity
+        note: "W2-W4 already coded 1=difficult → 4=easy"
+      exceptions:
+        w5:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W5 coded 1=easy → 4=difficult; reverse"
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W6 coded 1=easy → 4=difficult; reverse"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "poli.?ce|pollice"
+  - id: access_public_school
+    concept: public_services
+    description: "How easy or difficult to obtain a place in a public school"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q40
+      w5: null
+      w6: null
+    note: "Wave 4 only - access to public schooling"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4]
+          phrase: "school"
+  # ===========================================================================
+  # GROUP 1: Infrastructure Access
+  # ===========================================================================
+  - id: access_roads
+    concept: public_services
+    description: "How easy or difficult to obtain roads in good condition"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null # w1 has interviewer observation (ir010a), not respondent question
+      w2: null # w2 has interviewer observation
+      w3: null # w3 has interviewer observation
+      w4: null # w4 has interviewer observation
+      w5: q39
+      w6: q39
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "road"
+  - id: access_transport
+    concept: public_services
+    description: "How easy or difficult to obtain public transportation"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null # interviewer observation (distance)
+      w2: null # interviewer observation
+      w3: null # interviewer observation
+      w4: null # interviewer observation
+      w5: q41
+      w6: q41
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "transport"
+  - id: access_water
+    concept: public_services
+    description: "How easy or difficult to obtain running water"
+    type: ordinal
+    missing:
+      use_convention: treat_as_na_never_tried
+    source:
+      w1: null # interviewer observation
+      w2: null # interviewer observation
+      w3: null # interviewer observation
+      w4: null # interviewer observation
+      w5: q40
+      w6: q40
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very difficult"
+        2: "Difficult"
+        3: "Easy"
+        4: "Very easy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w5, w6]
+          phrase: "water"
+  # ===========================================================================
+  # GROUP 4: Local Safety
+  # ===========================================================================
+  - id: local_safety
+    concept: public_services
+    description: "Generally speaking, how safe is living in this city/town/village?"
+    type: ordinal
+    source:
+      w1: null
+      w2: q32
+      w3: q42
+      w4: q43
+      w5: q45
+      w6: q46
+    # Verified 2025-01-10: All waves 1=Very safe → 4=Very unsafe
+    # Need reversal so high = safer
+
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very unsafe"
+        2: "Somewhat unsafe"
+        3: "Safe"
+        4: "Very safe"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Very safe → 4=Very unsafe; reverse so high=safer"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "safe.*city|safe.*town|safe.*village"
