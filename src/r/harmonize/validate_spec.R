@@ -87,9 +87,9 @@ validate_harmonize_spec <- function(spec, var_id = NULL) {
         errors[[paste0(vid, ".harmonize.default")]] <- "Required: default method"
       } else {
         method <- var_spec$harmonize$default$method
-        if (!method %in% c("identity", "r_function")) {
+        if (!method %in% c("identity", "r_function", "recode", "derive")) {
           errors[[paste0(vid, ".harmonize.default.method")]] <- paste(
-            "Invalid method. Must be: identity, r_function"
+            "Invalid method. Must be: identity, r_function, recode, derive"
           )
         }
       }

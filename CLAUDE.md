@@ -2,7 +2,7 @@
 
 **Project**: Multi-Survey Harmonization Data Pipeline
 **Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Russian survey (TBD)
-**Status**: ABS pipeline complete (330 variables, 6 waves, 110,721 respondents); WVS pipeline planned
+**Status**: ABS pipeline complete (330 variables, 6 waves, 110,721 respondents); WVS pipeline complete (60 variables, 2 waves, 186,785 respondents)
 
 ---
 
@@ -47,9 +47,13 @@ src/
 │   │   └── validation.R
 │   │
 │   ├── data_prep_modules/      # Pipeline orchestration scripts
-│   │   ├── 0_load_waves.R
-│   │   ├── 2_harmonize_all.R
-│   │   └── 99_create_final_dataset.R
+│   │   ├── 0_load_waves.R          # ABS wave loader
+│   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
+│   │   ├── 99_create_final_dataset.R
+│   │   └── wvs/                    # WVS pipeline
+│   │       ├── 0_load_waves.R
+│   │       ├── 2_harmonize_all.R
+│   │       └── 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
 │
@@ -57,9 +61,8 @@ src/
 │   ├── abs/                    # ABS-specific config
 │   │   ├── harmonize/          # ABS YAML specs (27 files)
 │   │   └── harmonize_validated/
-│   └── wvs/                    # WVS-specific config (planned)
-│       ├── harmonize/
-│       └── harmonize_validated/
+│   └── wvs/                    # WVS-specific config
+│       └── harmonize/          # WVS YAML specs (10 files, 60 vars)
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -83,8 +86,10 @@ data/
 outputs/
 ├── figures/
 ├── tables/
-├── master_w*.rds               # Per-wave harmonized data
+├── master_w*.rds               # ABS per-wave harmonized data
 ├── abs_econdev_authpref.rds    # Combined ABS dataset
+├── wvs/                        # WVS per-wave master files
+│   └── master_w6.rds, master_w7.rds
 └── harmonization_validation_*  # Validation reports
 ```
 
@@ -112,12 +117,19 @@ Harmonized Output (data/processed/)
 Generate Reports (src/r/harmonize/report_harmonization.R)
 ```
 
-### Running the Pipeline
+### Running the Pipelines
 
+**ABS** (6 waves, SPSS → RDS → harmonize):
 ```bash
 Rscript src/r/data_prep_modules/0_load_waves.R
 Rscript src/r/data_prep_modules/2_harmonize_all.R
 Rscript src/r/data_prep_modules/99_create_final_dataset.R
+```
+
+**WVS** (2 waves, parquet → harmonize):
+```bash
+Rscript src/r/data_prep_modules/wvs/2_harmonize_all.R
+Rscript src/r/data_prep_modules/wvs/99_create_final_dataset.R
 ```
 
 ---
@@ -165,6 +177,30 @@ d <- readRDS("data/processed/abs_econdev_authpref.rds")
 
 ### Country Codes
 1=Japan, 2=Hong Kong, 3=Korea, 4=China, 5=Mongolia, 6=Philippines, 7=Taiwan, 8=Thailand, 9=Indonesia, 10=Singapore, 11=Vietnam, 12=Cambodia, 13=Malaysia, 14=Myanmar, 15=Australia, 18=India
+
+### WVS Harmonized Dataset
+
+```r
+d <- readRDS("data/processed/wvs_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/wvs_harmonized.parquet")
+```
+
+**186,785 respondents, 84 countries, 60 harmonized variables across waves 6-7.**
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Institutional Trust (19) | trust_churches, trust_armed_forces, trust_press, trust_television, trust_labor_unions, trust_police, trust_courts, trust_government, trust_political_parties, trust_parliament, trust_civil_service, trust_universities, trust_elections (W7), trust_major_companies, trust_banks, trust_environmental_orgs, trust_womens_orgs, trust_charitable_orgs, trust_united_nations | 1-4, higher=more trust |
+| Social Trust (7) | trust_generalized_binary (1-2), trust_family, trust_neighborhood, trust_people_personally, trust_first_time, trust_another_religion, trust_another_nationality | 1-4, higher=more trust |
+| Democratic Attitudes (3) | dem_importance_democracy, dem_how_democratic, dem_satisfaction_political_system (W7) | 1-10, higher=more |
+| Democratic Support (5) | dem_strong_leader, dem_experts_rule, dem_army_rule, dem_democratic_system, dem_religious_law (W7) | 1-4, higher=more support for that system |
+| Life Satisfaction (2) | happiness, life_satisfaction | 1-4 / 1-10, higher=better |
+| Political Engagement (2) | pol_interest, pol_discuss_friends (W7) | 1-4 / 1-3, higher=more |
+| Political Action (5) | action_petition, action_boycotts, action_demonstrations, action_strikes, action_other_protest (W6) | 1-3, higher=more active |
+| Media Consumption (9) | info_newspaper, info_magazines (W6), info_television, info_radio, info_mobile_phone, info_email, info_internet, info_social_media (W7), info_talk_friends | 1-5, higher=more frequent |
+| National Identity (1) | national_pride | 1-4, higher=more proud |
+| Demographics (7) | sex, age, education_level (1-3 harmonized), income_scale (1-10), social_class, marital_status, employment_status | varies |
+
+Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU")
 
 ---
 

@@ -5,7 +5,7 @@ Multi-survey harmonization data pipeline for cross-national survey research.
 ## Surveys
 
 - **Asian Barometer Survey (ABS)**: Waves 1-6, 16 countries, 110,721 respondents, 330 harmonized variables
-- **World Values Survey (WVS)**: Waves 6-7 (pipeline in development)
+- **World Values Survey (WVS)**: Waves 6-7, 84 countries, 186,785 respondents, 60 harmonized variables
 
 ## What This Repo Does
 
@@ -34,25 +34,27 @@ source .venv/bin/activate
 
 ## Running the Pipeline
 
+### ABS
 ```bash
-# Load raw survey waves
 Rscript src/r/data_prep_modules/0_load_waves.R
-
-# Harmonize all variables via YAML specs
 Rscript src/r/data_prep_modules/2_harmonize_all.R
-
-# Create final combined dataset
 Rscript src/r/data_prep_modules/99_create_final_dataset.R
 ```
-
 Output: `data/processed/abs_econdev_authpref.rds`
+
+### WVS
+```bash
+Rscript src/r/data_prep_modules/wvs/2_harmonize_all.R
+Rscript src/r/data_prep_modules/wvs/99_create_final_dataset.R
+```
+Output: `data/processed/wvs_harmonized.rds` (and `.parquet`)
 
 ## Structure
 
 ```
 src/              R/Python code (codebook tools, harmonization engine, utilities)
 src/config/abs/   ABS YAML harmonization specs (27 spec files)
-src/config/wvs/   WVS YAML harmonization specs (planned)
+src/config/wvs/   WVS YAML harmonization specs (10 spec files, 60 variables)
 data/abs/raw/     ABS survey microdata (waves 1-6)
 data/wvs/raw/     WVS survey microdata (waves 6-7)
 data/processed/   Harmonized output datasets
