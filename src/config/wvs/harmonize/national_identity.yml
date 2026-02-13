@@ -1,0 +1,49 @@
+# WVS National Pride / National Identity
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Raw: 1=Very proud, 2=Quite proud, 3=Not very proud, 4=Not at all proud
+#      5=I am not [nationality] (treated as NA — question not applicable)
+# Target: 1=Not at all proud, 2=Not very proud, 3=Quite proud, 4=Very proud
+# Recode method used (rather than safe_reverse_4pt) to also handle code 5 → NA
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: national_pride
+    concept: national_identity
+    description: "How proud are you to be [nationality]?"
+    type: ordinal
+    source:
+      w6: V211
+      w7: Q254
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all proud"
+        2: "Not very proud"
+        3: "Quite proud"
+        4: "Very proud"
+    harmonize:
+      default:
+        method: recode
+        mapping:
+          1: 4
+          2: 3
+          3: 2
+          4: 1
+          5: null
+        note: "Reverse 1-4 so high=more proud; code 5 (not a national) → NA"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "proud"

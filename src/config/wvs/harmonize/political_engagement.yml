@@ -1,0 +1,75 @@
+# WVS Political Interest / Engagement
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Interest in politics (4pt):
+#   Raw: 1=Very interested, 2=Somewhat interested, 3=Not very interested, 4=Not at all interested
+#   Target: 1=Not at all interested, 2=Not very interested, 3=Somewhat interested, 4=Very interested
+#   Both waves need safe_reverse_4pt so higher = more interested
+#
+# Discuss politics with friends (3pt, W7 only):
+#   Raw: 1=Frequently, 2=Occasionally, 3=Never
+#   Target: 1=Never, 2=Occasionally, 3=Frequently
+#   Needs safe_reverse_3pt so higher = more frequent
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: pol_interest
+    concept: political_engagement
+    description: "How interested would you say you are in politics?"
+    type: ordinal
+    source:
+      w6: V84
+      w7: Q199
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all interested"
+        2: "Not very interested"
+        3: "Somewhat interested"
+        4: "Very interested"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very interested → 4=Not at all; reverse so high=more interested"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "interest.*politic"
+
+  - id: pol_discuss_friends
+    concept: political_engagement
+    description: "When you get together with your friends, would you say you discuss political matters frequently, occasionally, or never?"
+    type: ordinal
+    source:
+      w6: null
+      w7: Q200
+    note: "Wave 6 did not include a direct 'discuss politics with friends' item in this format. W6 V224 covers frequency of talking with friends generally (see media_consumption.yml)."
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Occasionally"
+        3: "Frequently"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "W7 coded 1=Frequently → 3=Never; reverse so high=more frequent"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w7]
+          phrase: "discuss|politic"

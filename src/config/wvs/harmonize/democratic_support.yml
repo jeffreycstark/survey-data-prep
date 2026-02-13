@@ -1,0 +1,159 @@
+# WVS Democratic Support / Political System Preferences
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# "Having a political system where [X]" — how good or bad?
+# Raw: 1=Very good, 2=Fairly good, 3=Fairly bad, 4=Very bad
+# Target: 1=Very bad, 2=Fairly bad, 3=Fairly good, 4=Very good
+# All items reversed so higher = more support for that system type
+#
+# INTERPRETATION NOTE:
+# Each item measures support for a specific system type independently.
+# Higher scores mean MORE support for that particular system:
+#   - dem_strong_leader: higher = more support for authoritarian strong leader
+#   - dem_experts_rule: higher = more support for technocratic governance
+#   - dem_army_rule: higher = more support for military governance
+#   - dem_democratic_system: higher = more support for democracy
+#   - dem_religious_law: higher = more support for religious authority
+# Researchers should combine/contrast items as needed for their analysis.
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: dem_strong_leader
+    concept: democratic_support
+    description: "Having a strong leader who does not have to bother with parliament and elections"
+    type: ordinal
+    source:
+      w6: V127
+      w7: Q235
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very good → 4=Very bad; reverse so high=more support for strong leader"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "strong leader"
+
+  - id: dem_experts_rule
+    concept: democratic_support
+    description: "Having experts, not government, make decisions according to what they think is best for the country"
+    type: ordinal
+    source:
+      w6: V128
+      w7: Q236
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very good → 4=Very bad; reverse so high=more support"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "expert"
+
+  - id: dem_army_rule
+    concept: democratic_support
+    description: "Having the army rule"
+    type: ordinal
+    source:
+      w6: V129
+      w7: Q237
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very good → 4=Very bad; reverse so high=more support for army rule"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "army"
+
+  - id: dem_democratic_system
+    concept: democratic_support
+    description: "Having a democratic political system"
+    type: ordinal
+    source:
+      w6: V130
+      w7: Q238
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very good → 4=Very bad; reverse so high=more support for democracy"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "democrat"
+
+  - id: dem_religious_law
+    concept: democratic_support
+    description: "Having a system governed by religious law in which there are no political parties or elections"
+    type: ordinal
+    source:
+      w6: null
+      w7: Q239
+    note: "Wave 6 did not include religious law as a political system option"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W7 coded 1=Very good → 4=Very bad; reverse so high=more support for religious law"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w7]
+          phrase: "religious"

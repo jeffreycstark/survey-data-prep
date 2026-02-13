@@ -1,0 +1,71 @@
+# WVS Life Satisfaction / Subjective Wellbeing
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Happiness (4pt):
+#   Raw: 1=Very happy, 2=Rather happy, 3=Not very happy, 4=Not at all happy
+#   Target: 1=Not at all happy, 2=Not very happy, 3=Rather happy, 4=Very happy
+#   Both waves need safe_reverse_4pt so higher = happier
+#
+# Life satisfaction (10pt):
+#   Raw: 1=Completely dissatisfied → 10=Completely satisfied
+#   Identity (no reversal needed) — higher already = more satisfied
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: happiness
+    concept: life_satisfaction
+    description: "Taking all things together, would you say you are: very happy, rather happy, not very happy, not at all happy?"
+    type: ordinal
+    source:
+      w6: V10
+      w7: Q46
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all happy"
+        2: "Not very happy"
+        3: "Rather happy"
+        4: "Very happy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Very happy → 4=Not at all; reverse so high=happy"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "happy"
+
+  - id: life_satisfaction
+    concept: life_satisfaction
+    description: "All things considered, how satisfied are you with your life as a whole these days? (1=Completely dissatisfied, 10=Completely satisfied)"
+    type: ordinal
+    source:
+      w6: V23
+      w7: Q49
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely dissatisfied"
+        10: "Completely satisfied"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves coded 1=Dissatisfied → 10=Satisfied; no reversal needed"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w6, w7]
+          phrase: "satisf"

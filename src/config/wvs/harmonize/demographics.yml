@@ -1,0 +1,229 @@
+# WVS Demographics
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION & NOTES:
+#
+# Sex: 1=Male, 2=Female — identity (nominal)
+#
+# Age: Continuous (years) — identity
+#
+# Education (harmonized 3-level):
+#   W6 V248 uses custom 9-category scheme (1=No formal → 9=University degree)
+#   W7 Q275 uses ISCED 2011 (0=Early childhood → 8=Doctoral)
+#   Cross-walked to common 3-level: 1=Primary or less, 2=Secondary, 3=Tertiary
+#
+# Income scale: 1-10 (self-placement, lowest to highest group) — identity
+#
+# Social class: Raw 1=Upper → 5=Lower
+#   Target: 1=Lower, 2=Lower middle, 3=Middle, 4=Upper middle, 5=Upper
+#   Reverse so higher = higher class
+#
+# Marital status: 1-6 categorical — identity (nominal)
+#   1=Married, 2=Living together, 3=Divorced, 4=Separated, 5=Widowed, 6=Single
+#
+# Employment status: 1-8 categorical — identity (nominal)
+#   1=Full time, 2=Part time, 3=Self employed, 4=Retired, 5=Housewife,
+#   6=Student, 7=Unemployed, 8=Other
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: sex
+    concept: demographics
+    description: "Sex of respondent"
+    type: nominal
+    source:
+      w6: V240
+      w7: Q260
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves coded 1=Male, 2=Female; no transformation needed"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6, w7]
+          phrase: "sex"
+
+  - id: age
+    concept: demographics
+    description: "Age of respondent (years)"
+    type: continuous
+    source:
+      w6: V242
+      w7: Q262
+    scale:
+      min: 16
+      max: 110
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves record age in years; no transformation needed"
+    qc:
+      valid_range: [16, 110]
+
+  - id: education_level
+    concept: demographics
+    description: "Highest educational level attained (harmonized 3-level: 1=Primary or less, 2=Secondary, 3=Tertiary)"
+    type: ordinal
+    source:
+      w6: V248
+      w7: Q275
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Primary or less"
+        2: "Secondary"
+        3: "Tertiary"
+    harmonize:
+      default:
+        method: identity
+      by_wave:
+        w6:
+          method: recode
+          mapping:
+            1: 1
+            2: 1
+            3: 1
+            4: 2
+            5: 2
+            6: 2
+            7: 2
+            8: 3
+            9: 3
+          note: "W6 V248: 1-3 (no formal/primary) → 1; 4-7 (secondary) → 2; 8-9 (university) → 3"
+        w7:
+          method: recode
+          mapping:
+            0: 1
+            1: 1
+            2: 2
+            3: 2
+            4: 2
+            5: 3
+            6: 3
+            7: 3
+            8: 3
+          note: "W7 Q275 ISCED: 0-1 (primary) → 1; 2-4 (secondary/post-sec) → 2; 5-8 (tertiary) → 3"
+    qc:
+      valid_range: [1, 3]
+
+  - id: income_scale
+    concept: demographics
+    description: "On this card is an income scale on which 1 indicates the lowest income group and 10 the highest. Which group does your household fall into?"
+    type: ordinal
+    source:
+      w6: V239
+      w7: Q288
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Lowest income group"
+        10: "Highest income group"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves use 1-10 self-placement scale; no transformation needed"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w6, w7]
+          phrase: "income"
+
+  - id: social_class
+    concept: demographics
+    description: "People sometimes describe themselves as belonging to the working class, the middle class, or the upper or lower class. Would you describe yourself as belonging to the..."
+    type: ordinal
+    source:
+      w6: V238
+      w7: Q287
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Lower class"
+        2: "Working class"
+        3: "Lower middle class"
+        4: "Upper middle class"
+        5: "Upper class"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Both waves coded 1=Upper → 5=Lower; reverse so high=upper class"
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w6, w7]
+          phrase: "class"
+
+  - id: marital_status
+    concept: demographics
+    description: "Current legal marital status"
+    type: nominal
+    source:
+      w6: V57
+      w7: Q273
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Married"
+        2: "Living together as married"
+        3: "Divorced"
+        4: "Separated"
+        5: "Widowed"
+        6: "Single/Never married"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves use same 1-6 categories; no transformation needed"
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w6, w7]
+          phrase: "marri|marital"
+
+  - id: employment_status
+    concept: demographics
+    description: "Employment status of respondent"
+    type: nominal
+    source:
+      w6: V229
+      w7: Q279
+    scale:
+      min: 1
+      max: 8
+      labels:
+        1: "Full time"
+        2: "Part time"
+        3: "Self employed"
+        4: "Retired/pensioned"
+        5: "Housewife/not otherwise employed"
+        6: "Student"
+        7: "Unemployed"
+        8: "Other"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves use same 1-8 categories; no transformation needed"
+    qc:
+      valid_range: [1, 8]
+      validate:
+        - waves: [w6, w7]
+          phrase: "employ"

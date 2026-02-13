@@ -1,0 +1,143 @@
+# WVS Political Action
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Raw: 1=Have done, 2=Might do, 3=Would never do
+# Target: 1=Would never do, 2=Might do, 3=Have done
+# All items need safe_reverse_3pt so higher = more active
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: action_petition
+    concept: political_action
+    description: "Signing a petition"
+    type: ordinal
+    source:
+      w6: V85
+      w7: Q209
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would never do"
+        2: "Might do"
+        3: "Have done"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Both waves coded 1=Have done → 3=Would never; reverse so high=more active"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6, w7]
+          phrase: "petition"
+
+  - id: action_boycotts
+    concept: political_action
+    description: "Joining in boycotts"
+    type: ordinal
+    source:
+      w6: V86
+      w7: Q210
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would never do"
+        2: "Might do"
+        3: "Have done"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Both waves coded 1=Have done → 3=Would never; reverse so high=more active"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6, w7]
+          phrase: "boycott"
+
+  - id: action_demonstrations
+    concept: political_action
+    description: "Attending peaceful demonstrations"
+    type: ordinal
+    source:
+      w6: V87
+      w7: Q211
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would never do"
+        2: "Might do"
+        3: "Have done"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Both waves coded 1=Have done → 3=Would never; reverse so high=more active"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6, w7]
+          phrase: "demonstrat"
+
+  - id: action_strikes
+    concept: political_action
+    description: "Joining unofficial strikes"
+    type: ordinal
+    source:
+      w6: V88
+      w7: Q212
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would never do"
+        2: "Might do"
+        3: "Have done"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Both waves coded 1=Have done → 3=Would never; reverse so high=more active"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6, w7]
+          phrase: "strike"
+
+  - id: action_other_protest
+    concept: political_action
+    description: "Any other act of protest"
+    type: ordinal
+    source:
+      w6: V89
+      w7: null
+    note: "Wave 7 did not include 'any other act of protest' as a separate item"
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would never do"
+        2: "Might do"
+        3: "Have done"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "W6 coded 1=Have done → 3=Would never; reverse so high=more active"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "protest"

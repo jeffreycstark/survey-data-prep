@@ -1,0 +1,86 @@
+# WVS Democratic Attitudes
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# All items on 1-10 scale already coded higher = more democratic/important
+# Identity (no reversal needed)
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: dem_importance_democracy
+    concept: democratic_attitudes
+    description: "How important is it for you to live in a country that is governed democratically? (1=Not at all important, 10=Absolutely important)"
+    type: ordinal
+    source:
+      w6: V140
+      w7: Q250
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not at all important"
+        10: "Absolutely important"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves coded 1=Not important → 10=Absolutely important; no reversal needed"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w6, w7]
+          phrase: "democrat"
+
+  - id: dem_how_democratic
+    concept: democratic_attitudes
+    description: "How democratically is this country being governed today? (1=Not at all democratic, 10=Completely democratic)"
+    type: ordinal
+    source:
+      w6: V141
+      w7: Q251
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not at all democratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves coded 1=Not democratic → 10=Completely democratic; no reversal needed"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w6, w7]
+          phrase: "democrat"
+
+  - id: dem_satisfaction_political_system
+    concept: democratic_attitudes
+    description: "How satisfied are you with how the political system is functioning in your country? (1=Not satisfied at all, 10=Completely satisfied)"
+    type: ordinal
+    source:
+      w6: null
+      w7: Q252
+    note: "Wave 6 did not include satisfaction with political system as a separate item"
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Not satisfied at all"
+        10: "Completely satisfied"
+    harmonize:
+      default:
+        method: identity
+        note: "W7 coded 1=Not satisfied → 10=Completely satisfied; no reversal needed"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w7]
+          phrase: "satisf|political"
