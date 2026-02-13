@@ -1,0 +1,203 @@
+# WVS Social / Interpersonal Trust
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Interpersonal trust items (4pt):
+#   Raw: 1=Trust completely, 2=Trust somewhat, 3=Do not trust very much, 4=Do not trust at all
+#   Target: 1=Do not trust at all, 2=Do not trust very much, 3=Trust somewhat, 4=Trust completely
+#   Both waves need safe_reverse_4pt so higher = more trust
+#
+# Generalized trust binary:
+#   1=Most people can be trusted, 2=Need to be very careful
+#   Identity (no reversal needed)
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  # ===========================================================================
+  # Generalized Trust
+  # ===========================================================================
+  - id: trust_generalized_binary
+    concept: social_trust
+    description: "Would you say that most people can be trusted or that you need to be very careful in dealing with people?"
+    type: nominal
+    source:
+      w6: V24
+      w7: Q57
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Most people can be trusted"
+        2: "Need to be very careful"
+    harmonize:
+      default:
+        method: identity
+        note: "Both waves coded 1=Trusted, 2=Careful; no reversal needed"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w6, w7]
+          phrase: "most people.*trusted|careful.*dealing"
+
+  # ===========================================================================
+  # Trust in Specific Groups of People
+  # ===========================================================================
+  - id: trust_family
+    concept: social_trust
+    description: "How much do you trust people in your family?"
+    type: ordinal
+    source:
+      w6: V102
+      w7: Q58
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Trust completely → 4=Not at all; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "family"
+
+  - id: trust_neighborhood
+    concept: social_trust
+    description: "How much do you trust people in your neighborhood?"
+    type: ordinal
+    source:
+      w6: V103
+      w7: Q59
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Trust completely → 4=Not at all; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "neighbor"
+
+  - id: trust_people_personally
+    concept: social_trust
+    description: "How much do you trust people you know personally?"
+    type: ordinal
+    source:
+      w6: V104
+      w7: Q60
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "know personally"
+
+  - id: trust_first_time
+    concept: social_trust
+    description: "How much do you trust people you meet for the first time?"
+    type: ordinal
+    source:
+      w6: V105
+      w7: Q61
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "first time"
+
+  - id: trust_another_religion
+    concept: social_trust
+    description: "How much do you trust people of another religion?"
+    type: ordinal
+    source:
+      w6: V106
+      w7: Q62
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "another religion"
+
+  - id: trust_another_nationality
+    concept: social_trust
+    description: "How much do you trust people of another nationality?"
+    type: ordinal
+    source:
+      w6: V107
+      w7: Q63
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Do not trust at all"
+        2: "Do not trust very much"
+        3: "Trust somewhat"
+        4: "Trust completely"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "another nationality"

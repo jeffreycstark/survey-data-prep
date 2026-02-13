@@ -1,0 +1,494 @@
+# WVS Institutional Trust (Confidence in Institutions)
+# Waves 6-7 harmonization
+#
+# SCALE DIRECTION:
+# Raw: 1=A great deal, 2=Quite a lot, 3=Not very much, 4=None at all
+# Target: 1=None at all, 2=Not very much, 3=Quite a lot, 4=A great deal
+# Both waves need safe_reverse_4pt so higher = more trust
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: trust_churches
+    concept: institutional_trust
+    description: "Confidence in the churches/religious organizations"
+    type: ordinal
+    source:
+      w6: V108
+      w7: Q64
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Both waves coded 1=Great deal → 4=None; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "church"
+
+  - id: trust_armed_forces
+    concept: institutional_trust
+    description: "Confidence in the armed forces"
+    type: ordinal
+    source:
+      w6: V109
+      w7: Q65
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "armed forces"
+
+  - id: trust_press
+    concept: institutional_trust
+    description: "Confidence in the press"
+    type: ordinal
+    source:
+      w6: V110
+      w7: Q66
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "press"
+
+  - id: trust_television
+    concept: institutional_trust
+    description: "Confidence in television"
+    type: ordinal
+    source:
+      w6: V111
+      w7: Q67
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "television"
+
+  - id: trust_labor_unions
+    concept: institutional_trust
+    description: "Confidence in labor unions"
+    type: ordinal
+    source:
+      w6: V112
+      w7: Q68
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "labor|union"
+
+  - id: trust_police
+    concept: institutional_trust
+    description: "Confidence in the police"
+    type: ordinal
+    source:
+      w6: V113
+      w7: Q69
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "police"
+
+  - id: trust_courts
+    concept: institutional_trust
+    description: "Confidence in the courts"
+    type: ordinal
+    source:
+      w6: V114
+      w7: Q70
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "court"
+
+  - id: trust_government
+    concept: institutional_trust
+    description: "Confidence in the government (in your nation's capital)"
+    type: ordinal
+    source:
+      w6: V115
+      w7: Q71
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "government"
+
+  - id: trust_political_parties
+    concept: institutional_trust
+    description: "Confidence in political parties"
+    type: ordinal
+    source:
+      w6: V116
+      w7: Q72
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "party|parties"
+
+  - id: trust_parliament
+    concept: institutional_trust
+    description: "Confidence in parliament"
+    type: ordinal
+    source:
+      w6: V117
+      w7: Q73
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "parliament"
+
+  - id: trust_civil_service
+    concept: institutional_trust
+    description: "Confidence in the civil service"
+    type: ordinal
+    source:
+      w6: V118
+      w7: Q74
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "civil"
+
+  - id: trust_universities
+    concept: institutional_trust
+    description: "Confidence in universities"
+    type: ordinal
+    source:
+      w6: V119
+      w7: Q75
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "universit"
+
+  - id: trust_elections
+    concept: institutional_trust
+    description: "Confidence in elections"
+    type: ordinal
+    source:
+      w6: null
+      w7: Q76
+    note: "Wave 6 did not include elections as a separate confidence item"
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w7]
+          phrase: "election"
+
+  - id: trust_major_companies
+    concept: institutional_trust
+    description: "Confidence in major companies"
+    type: ordinal
+    source:
+      w6: V120
+      w7: Q77
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "compan"
+
+  - id: trust_banks
+    concept: institutional_trust
+    description: "Confidence in banks"
+    type: ordinal
+    source:
+      w6: V121
+      w7: Q78
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "bank"
+
+  - id: trust_environmental_orgs
+    concept: institutional_trust
+    description: "Confidence in environmental organizations"
+    type: ordinal
+    source:
+      w6: V122
+      w7: Q79
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "environment"
+
+  - id: trust_womens_orgs
+    concept: institutional_trust
+    description: "Confidence in women's organizations"
+    type: ordinal
+    source:
+      w6: V123
+      w7: Q80
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "women"
+
+  - id: trust_charitable_orgs
+    concept: institutional_trust
+    description: "Confidence in charitable or humanitarian organizations"
+    type: ordinal
+    source:
+      w6: V124
+      w7: Q81
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "charitab|humanitarian"
+
+  - id: trust_united_nations
+    concept: institutional_trust
+    description: "Confidence in the United Nations"
+    type: ordinal
+    source:
+      w6: V126
+      w7: Q83
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "united nations"
