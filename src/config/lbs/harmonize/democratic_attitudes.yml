@@ -1,0 +1,193 @@
+# LBS Democratic Attitudes
+# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+#
+# NOTE ON SCALE DIFFERENCES FROM WVS:
+# WVS dem_importance_democracy and dem_how_democratic use 1-10 scales.
+# LBS asks related but differently-framed questions with different scales.
+# These are best-effort mappings — see LBS_VARIABLE_REVIEW.md for details.
+#
+# MISSING VALUES:
+# All waves: negative values are missing
+# -1=Don't know, -2=No answer, -3=Not applicable, -4=Not asked, -5=DK/NA combined
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  # ===========================================================================
+  # Support for Democracy (LBS's "Churchillian" item)
+  # ===========================================================================
+  # LBS asks: "Democracy is preferable to any other kind of government" vs
+  #           "Under some circumstances, an authoritarian government can be preferable" vs
+  #           "For people like me, it doesn't matter"
+  # This is a 1-3 nominal item, NOT the WVS 1-10 importance scale.
+  # Mapped to its own variable name since it's conceptually distinct.
+
+  - id: dem_support_preferable
+    concept: democratic_attitudes
+    description: "Support for democracy: Democracy is preferable (1) vs Authoritarian sometimes preferable (2) vs Doesn't matter (3)"
+    type: nominal
+    source:
+      w1: P11STGBS
+      w2: P8STGBS
+      w3: P12STGBS
+      w4: P10STGBS
+      w5: P10STGBS
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Democracy is preferable to any other kind of government"
+        2: "Under some circumstances, an authoritarian government can be preferable"
+        3: "For people like me, it doesn't matter whether we have a democratic or non-democratic regime"
+    harmonize:
+      default:
+        method: identity
+        note: "All waves use same 1-3 coding. Nominal item — no reversal. Lower values = more pro-democracy."
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "support.*democra|democra.*preferable"
+
+  # ===========================================================================
+  # Satisfaction with Democracy
+  # ===========================================================================
+  # LBS uses 1-4 scale: 1=Very satisfied, 2=Quite satisfied, 3=Not very, 4=Not at all
+  # WVS dem_satisfaction_political_system uses 1-10.
+  # Keep as 1-4 reversed — comparable within LBS waves, not directly to WVS.
+
+  - id: dem_satisfaction
+    concept: democratic_attitudes
+    description: "Satisfaction with democracy in the country (1-4, higher = more satisfied)"
+    type: ordinal
+    source:
+      w1: P12TG.A
+      w2: P9STGBSA
+      w3: P13STGBS.A
+      w4: P11STGBS.A
+      w5: P11STGBS.A
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all satisfied"
+        2: "Not very satisfied"
+        3: "Quite satisfied"
+        4: "Very satisfied"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Very satisfied → 4=Not at all; reverse so high=more satisfied"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "satisf.*democra"
+
+  # ===========================================================================
+  # How Democratic Is Country
+  # ===========================================================================
+  # 2015: 1-10 scale (1=Completely undemocratic, 10=Completely democratic) — identity
+  # 2016: 1-10 scale (same) — identity
+  # 2018: 1-5 qualitative (1=Full democracy, 5=Don't understand) — different framing
+  # 2020: 1-5 qualitative (same as 2018) — different framing
+  # 2023: NOT AVAILABLE
+  #
+  # The 1-10 and 1-5 versions are not directly comparable.
+  # Only harmonize the 1-10 versions (2015, 2016) and the 1-5 versions (2018, 2020) separately.
+
+  - id: dem_how_democratic_10pt
+    concept: democratic_attitudes
+    description: "How democratic is the country on a 1-10 scale (higher = more democratic). Available waves 1-2 only."
+    type: ordinal
+    note: "Only 2015-2016 use the 1-10 scale. 2018-2020 use a different 1-5 qualitative framing. 2023 does not ask."
+    source:
+      w1: P17STGBS
+      w2: P11STGBS
+      w3: null
+      w4: null
+      w5: null
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "1-10 scale already coded higher=more democratic; identity mapping"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2]
+          phrase: "democra.*scale"
+
+  - id: dem_how_democratic_qual
+    concept: democratic_attitudes
+    description: "How democratic is the country (qualitative: 1-4, higher = more democratic). Available waves 3-4 only."
+    type: ordinal
+    note: "2018-2020 use qualitative categories. Code 5 ('Don't understand what democracy is') treated as NA."
+    source:
+      w1: null
+      w2: null
+      w3: P18GBS
+      w4: P14GBS
+      w5: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not a democracy"
+        2: "Democracy with big problems"
+        3: "Democracy with small problems"
+        4: "Full democracy"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw coded 1=Full democracy → 4=Not a democracy; reverse so high=more democratic. Code 5 goes to NA via range check."
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "democra"
+
+  # ===========================================================================
+  # Churchill Quote: Democracy Best System
+  # ===========================================================================
+  # 1-4 agree/disagree: 1=Strongly agree, 4=Strongly disagree
+  # Reverse so higher = more agreement that democracy is best
+
+  - id: dem_best_system
+    concept: democratic_attitudes
+    description: "Agreement that democracy may have problems but is the best system of government (1-4, higher = more agreement)"
+    type: ordinal
+    source:
+      w1: P13ST.A
+      w2: P31STA
+      w3: P24ST
+      w4: P20ST.A
+      w5: P18ST.A
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=Strongly agree → 4=Strongly disagree; reverse so high=more agreement"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "best system|churchill|best.*government"

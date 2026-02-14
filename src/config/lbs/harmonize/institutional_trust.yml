@@ -1,0 +1,271 @@
+# LBS Institutional Trust (Confidence in Institutions)
+# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+#
+# SCALE DIRECTION:
+# Raw: 1=A lot, 2=Some, 3=Little, 4=No trust
+# Target: 1=No trust, 2=Little, 3=Some, 4=A lot
+# All waves need safe_reverse_4pt so higher = more trust
+#
+# MISSING VALUES:
+# All waves: negative values are missing
+# -1=Don't know, -2=No answer, -3=Not applicable, -4=Not asked, -5=DK/NA combined
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  - id: trust_churches
+    concept: institutional_trust
+    description: "Confidence in the Church"
+    type: ordinal
+    source:
+      w1: P16ST.E
+      w2: P13STC
+      w3: P15STGBSC.C
+      w4: P13ST.C
+      w5: P13ST.C
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot → 4=No trust; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "church"
+
+  - id: trust_armed_forces
+    concept: institutional_trust
+    description: "Confidence in the Armed Forces"
+    type: ordinal
+    source:
+      w1: P16TGB.A
+      w2: P13STGBSA
+      w3: P15STGBSC.A
+      w4: P13STGBS.A
+      w5: P13STGBS.A
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "armed forces"
+
+  - id: trust_police
+    concept: institutional_trust
+    description: "Confidence in the Police"
+    type: ordinal
+    source:
+      w1: P16TGB.B
+      w2: P13STGBSB
+      w3: P15STGBSC.B
+      w4: P13STGBS.B
+      w5: P13STGBS.B
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "police"
+
+  - id: trust_courts
+    concept: institutional_trust
+    description: "Confidence in the Judiciary"
+    type: ordinal
+    source:
+      w1: P16ST.H
+      w2: P13STF
+      w3: P15STGBSC.F
+      w4: P13ST.F
+      w5: P13ST.F
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "judic|court"
+
+  - id: trust_government
+    concept: institutional_trust
+    description: "Confidence in the National Government"
+    type: ordinal
+    source:
+      w1: P16ST.G
+      w2: P13STE
+      w3: P15STGBSC.E
+      w4: P13ST.E
+      w5: P13ST.E
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "government"
+
+  - id: trust_political_parties
+    concept: institutional_trust
+    description: "Confidence in Political Parties"
+    type: ordinal
+    source:
+      w1: P19ST.C
+      w2: P13STG
+      w3: P15STGBSC.G
+      w4: P13ST.G
+      w5: P13ST.G
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "party|parties"
+
+  - id: trust_parliament
+    concept: institutional_trust
+    description: "Confidence in National Congress/Parliament"
+    type: ordinal
+    source:
+      w1: P16ST.F
+      w2: P13STD
+      w3: P15STGBSC.D
+      w4: P13ST.D
+      w5: P13ST.D
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "congress|parliament"
+
+  - id: trust_elections
+    concept: institutional_trust
+    description: "Confidence in the Electoral Institution"
+    type: ordinal
+    source:
+      w1: P19N.H
+      w2: P13STH
+      w3: P15STGBSC.H
+      w4: P13ST.H
+      w5: P13ST.H
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w1, w2, w3, w4, w5]
+          phrase: "electoral"
+
+  - id: trust_president
+    concept: institutional_trust
+    description: "Confidence in the President (LBS-specific, not in WVS)"
+    type: ordinal
+    note: "LBS-specific variable. Only available in waves 4 (2020) and 5 (2023)."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: P13ST.I
+      w5: P13ST.I
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w4, w5]
+          phrase: "president"
