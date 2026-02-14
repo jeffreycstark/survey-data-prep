@@ -87,7 +87,7 @@ outputs/
 ├── figures/
 ├── tables/
 ├── master_w*.rds               # ABS per-wave harmonized data
-├── abs_econdev_authpref.rds    # Combined ABS dataset
+├── abs_harmonized.rds          # Combined ABS dataset
 ├── wvs/                        # WVS per-wave master files
 │   └── master_w6.rds, master_w7.rds
 └── harmonization_validation_*  # Validation reports
@@ -161,8 +161,8 @@ batch_generate_yaml(results_list, output_dir = "src/config/abs/harmonize/")  # o
 
 ### Loading the Data
 ```r
-d <- readRDS("data/processed/abs_econdev_authpref.rds")
-# Or: arrow::read_parquet("data/processed/abs_econdev_authpref.parquet")
+d <- readRDS("data/processed/abs_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/abs_harmonized.parquet")
 ```
 
 ### Key Variable Categories
