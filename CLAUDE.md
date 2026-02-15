@@ -1,8 +1,10 @@
-# survey-data-prep — Claude Navigation Guide
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Russian survey (TBD)
-**Status**: ABS pipeline complete (330 variables, 6 waves, 110,721 respondents); WVS pipeline complete (60 variables, 2 waves, 186,785 respondents)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (60 vars, 2 waves, 186,785 respondents); LBS complete (18 vars, 5 waves, ~20k respondents)
 
 ---
 
@@ -48,9 +50,14 @@ src/
 │   │
 │   ├── data_prep_modules/      # Pipeline orchestration scripts
 │   │   ├── 0_load_waves.R          # ABS wave loader
+│   │   ├── 1_harmonize_funs.R      # Shared recoding helpers
 │   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
 │   │   ├── 99_create_final_dataset.R
-│   │   └── wvs/                    # WVS pipeline
+│   │   ├── wvs/                    # WVS pipeline
+│   │   │   ├── 0_load_waves.R
+│   │   │   ├── 2_harmonize_all.R
+│   │   │   └── 99_create_final_dataset.R
+│   │   └── lbs/                    # LBS (Latinobarómetro) pipeline
 │   │       ├── 0_load_waves.R
 │   │       ├── 2_harmonize_all.R
 │   │       └── 99_create_final_dataset.R
@@ -61,8 +68,10 @@ src/
 │   ├── abs/                    # ABS-specific config
 │   │   ├── harmonize/          # ABS YAML specs (27 files)
 │   │   └── harmonize_validated/
-│   └── wvs/                    # WVS-specific config
-│       └── harmonize/          # WVS YAML specs (10 files, 60 vars)
+│   ├── wvs/                    # WVS-specific config
+│   │   └── harmonize/          # WVS YAML specs (10 files, 60 vars)
+│   └── lbs/                    # LBS-specific config
+│       └── harmonize/          # LBS YAML specs (4 files, 18 vars)
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -79,6 +88,9 @@ data/
 ├── wvs/                        # World Values Survey
 │   └── raw/
 │       ├── wave6/, wave7/      # WVS waves (parquet)
+├── lbs/                        # Latinobarómetro
+│   └── raw/
+│       ├── 2015/ ... 2023/     # LBS waves (SPSS .sav, English)
 ├── external/                   # External datasets (V-Dem, COVID, etc.)
 ├── interim/                    # Intermediate processing
 └── processed/                  # Final harmonized datasets
@@ -90,6 +102,8 @@ outputs/
 ├── abs_harmonized.rds          # Combined ABS dataset
 ├── wvs/                        # WVS per-wave master files
 │   └── master_w6.rds, master_w7.rds
+├── lbs/                        # LBS per-wave master files
+│   └── master_w1.rds ... master_w5.rds
 └── harmonization_validation_*  # Validation reports
 ```
 
@@ -130,6 +144,13 @@ Rscript src/r/data_prep_modules/99_create_final_dataset.R
 ```bash
 Rscript src/r/data_prep_modules/wvs/2_harmonize_all.R
 Rscript src/r/data_prep_modules/wvs/99_create_final_dataset.R
+```
+
+**LBS** (5 waves, SPSS → harmonize):
+```bash
+Rscript src/r/data_prep_modules/lbs/0_load_waves.R
+Rscript src/r/data_prep_modules/lbs/2_harmonize_all.R
+Rscript src/r/data_prep_modules/lbs/99_create_final_dataset.R
 ```
 
 ---
@@ -202,6 +223,28 @@ d <- readRDS("data/processed/wvs_harmonized.rds")
 
 Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU")
 
+### LBS Harmonized Dataset
+
+```r
+d <- readRDS("data/processed/lbs_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/lbs_harmonized.parquet")
+```
+
+**~20,000 respondents, 18 Latin American countries, 18 harmonized variables across 5 waves (2015, 2016, 2018, 2020, 2023).**
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Institutional Trust (9) | trust_churches, trust_armed_forces, trust_police, trust_courts, trust_government, trust_political_parties, trust_parliament, trust_elections, trust_president | 1-4, higher=more trust |
+| Social Trust (1) | trust_generalized_binary | 1-2 |
+| Democratic Attitudes | dem_importance_democracy, dem_satisfaction, dem_how_democratic | varies (1-4 ordinal or 1-10) |
+| Democratic Support | dem_strong_leader, dem_democratic_system, dem_army_rule, dem_always_preferable, dem_military_support | 1-4 or binary |
+
+Country identifier: `country` (3-letter ISO alpha codes, e.g. "ARG", "BRA", "MEX")
+LBS waves mapped: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+
+LBS missing value conventions: codes -5 through -1 treated as NA.
+See `src/config/lbs/harmonize/LBS_VARIABLE_REVIEW.md` for WVS→LBS variable mappability assessment.
+
 ---
 
 ## Key Functions
@@ -245,5 +288,18 @@ Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU
 
 ---
 
-## Note on R
+## Environment Setup
+
+**R** (primary language): Managed via `renv`. Restore with `Rscript -e "renv::restore()"`. Key packages: tidyverse, haven (SPSS I/O), here, arrow (parquet I/O).
+
+**Python** (minimal use): Managed via `uv`. Setup: `uv sync && source .venv/bin/activate`. Lint: `ruff check src/python/`.
+
 No R MCP is currently configured. R code is executed via `Rscript` in Bash.
+
+## Architecture Notes
+
+**Adding a new survey**: Each survey follows the same 3-file pipeline pattern in `src/r/data_prep_modules/{survey}/`: `0_load_waves.R` → `2_harmonize_all.R` → `99_create_final_dataset.R`. YAML specs go in `src/config/{survey}/harmonize/`. The harmonization engine (`src/r/harmonize/harmonize.R`) is shared across all surveys.
+
+**Shared recoding functions** in `src/r/data_prep_modules/1_harmonize_funs.R`: `safe_reverse_4pt()`, `safe_reverse_5pt()`, `recode_5pt_to_4pt()`, `recode_3pt_to_4pt()`. These are referenced by name in YAML spec `fn:` fields and sourced by each survey's `2_harmonize_all.R`.
+
+**ABS uses validated specs**: Production ABS specs are in `src/config/abs/harmonize_validated/` (28 files), not `harmonize/`.
