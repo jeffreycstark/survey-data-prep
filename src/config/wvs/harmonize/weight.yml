@@ -1,0 +1,32 @@
+# WVS Survey Weights
+# Waves 6-7 harmonization
+#
+# Individual country weights normalize to mean ~1 within each country.
+# W6: V258, W7: W_WEIGHT
+#
+# MISSING VALUES:
+# W6 parquet: negatives already converted to NA
+# W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1, 0]
+    description: "WVS standard missing codes plus zero (invalid weight)"
+
+variables:
+  - id: weight
+    concept: sampling
+    description: "Individual country weight (normalizes to mean ~1 within country)"
+    type: continuous
+    source:
+      w6: V258
+      w7: W_WEIGHT
+    scale:
+      min: 0
+      max: 25
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 25]
+    tags: [sampling, weight]
