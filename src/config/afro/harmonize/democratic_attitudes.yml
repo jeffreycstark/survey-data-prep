@@ -1,0 +1,137 @@
+# Afrobarometer R9 Democratic Attitudes
+# Wave: w9 (Round 9, 2021-2023)
+#
+# MISSING VALUES:
+# -1=Missing, 8=Refused, 9=Don't know, 98=Refused, 99=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 998, 999]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  # ===========================================================================
+  # Support for Democracy (Churchillian item)
+  # ===========================================================================
+  # Q23: Which of these three statements is closest to your own opinion?
+  # 1=Democracy is preferable to any other kind of government
+  # 2=In some circumstances, a non-democratic government can be preferable
+  # 3=For someone like me, it doesn't matter what kind of government we have
+  # Same 1-3 coding as LBS — identity mapping
+
+  - id: dem_support_preferable
+    concept: democratic_attitudes
+    description: "Support for democracy: Democracy preferable (1) vs Non-dem sometimes preferable (2) vs Doesn't matter (3)"
+    type: nominal
+    source:
+      w9: Q23
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Democracy is preferable to any other kind of government"
+        2: "In some circumstances, a non-democratic government can be preferable"
+        3: "For someone like me, it doesn't matter what kind of government we have"
+    harmonize:
+      default:
+        method: identity
+        note: "Same 1-3 coding as LBS. Nominal item — no reversal needed."
+    qc:
+      valid_range: [1, 3]
+
+  # ===========================================================================
+  # Satisfaction with Democracy
+  # ===========================================================================
+  # Q31: Overall, how satisfied are you with the way democracy works in [country]?
+  # 1=Not at all satisfied, 2=Not very satisfied, 3=Fairly satisfied, 4=Very satisfied
+  # Already coded higher=more satisfied — identity mapping
+
+  - id: dem_satisfaction
+    concept: democratic_attitudes
+    description: "Satisfaction with democracy (1-4, higher = more satisfied)"
+    type: ordinal
+    source:
+      w9: Q31
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all satisfied"
+        2: "Not very satisfied"
+        3: "Fairly satisfied"
+        4: "Very satisfied"
+    harmonize:
+      default:
+        method: identity
+        note: "Already coded 1=Not at all → 4=Very satisfied. No reversal needed."
+    qc:
+      valid_range: [1, 4]
+
+  # ===========================================================================
+  # How Democratic Is Country (qualitative)
+  # ===========================================================================
+  # Q30: In your opinion, how much of a democracy is [country] today?
+  # 1=Not a democracy, 2=A democracy with major problems,
+  # 3=A democracy with minor problems, 4=A full democracy
+  # Already coded higher=more democratic — identity mapping
+
+  - id: dem_how_democratic_qual
+    concept: democratic_attitudes
+    description: "How democratic is the country (1-4, higher = more democratic)"
+    type: ordinal
+    source:
+      w9: Q30
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not a democracy"
+        2: "A democracy with major problems"
+        3: "A democracy with minor problems"
+        4: "A full democracy"
+    harmonize:
+      default:
+        method: identity
+        note: "Already coded 1=Not a democracy → 4=Full democracy. No reversal needed."
+    qc:
+      valid_range: [1, 4]
+
+  # ===========================================================================
+  # How Democratic (10-point) — NOT AVAILABLE
+  # ===========================================================================
+
+  - id: dem_how_democratic_10pt
+    concept: democratic_attitudes
+    description: "How democratic is the country on a 1-10 scale"
+    type: ordinal
+    note: "No 10-point version in Afrobarometer R9. Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  # ===========================================================================
+  # Churchill Quote: Democracy Best System — NOT AVAILABLE
+  # ===========================================================================
+
+  - id: dem_best_system
+    concept: democratic_attitudes
+    description: "Agreement that democracy is the best system of government"
+    type: ordinal
+    note: "No Churchill item in Afrobarometer R9. Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]

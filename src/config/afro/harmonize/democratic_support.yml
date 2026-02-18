@@ -1,0 +1,79 @@
+# Afrobarometer R9 Democratic Support / Authoritarian Alternatives
+# Wave: w9 (Round 9, 2021-2023)
+#
+# None of the LBS democratic_support variables have direct equivalents
+# in Afrobarometer R9 at matching scales.
+# All columns will be NA for cross-survey compatibility.
+#
+# MISSING VALUES:
+# -1=Missing, 8=Refused, 9=Don't know, 98=Refused, 99=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 998, 999]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: dem_nondem_ok
+    concept: democratic_support
+    description: "Wouldn't mind a non-democratic government if it could solve problems"
+    type: ordinal
+    note: "No equivalent in Afrobarometer R9. Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_military_support
+    concept: democratic_support
+    description: "Would support a military government"
+    type: nominal
+    note: "Afro Q22B exists but uses 5-point scale (1-5) vs LBS binary (1-2). Scale mismatch — column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 2
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: dem_solves_problems
+    concept: democratic_support
+    description: "Democracy allows us to solve problems"
+    type: ordinal
+    note: "No equivalent in Afrobarometer R9. Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: pol_say_what_think
+    concept: political_expression
+    description: "Do people say what they think about politics?"
+    type: nominal
+    note: "Afro Q9A and Q33D exist but use different scales than LBS binary (1-2). Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 2
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]

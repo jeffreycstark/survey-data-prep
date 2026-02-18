@@ -1444,6 +1444,24 @@ extract_month_from_date <- function(x,
 #' @param data Full wave data frame (used to access original Date column)
 #' @param var_name Variable name to read from data
 #' @return Numeric vector (e.g., 2010, 2011, 2012)
+recode_0_3_to_1_4 <- function(x,
+                              data = NULL,
+                              var_name = NULL,
+                              missing_codes = c(-1, 8, 9, 98, 99, 998, 999),
+                              validate_all = NULL) {
+  #' Shift 0-3 scale to 1-4 (Afrobarometer trust items)
+  #'
+  #' Raw: 0=Not at all, 1=Just a little, 2=Somewhat, 3=A lot
+  #' Target: 1=Not at all, 2=Just a little, 3=Somewhat, 4=A lot
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 0:3 ~ x + 1,
+    TRUE ~ NA_real_
+  )
+}
+
 extract_year_from_date <- function(x,
                                    data = NULL,
                                    var_name = NULL,

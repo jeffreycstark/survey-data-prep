@@ -1,0 +1,63 @@
+# Afrobarometer R9 Demographics (Interview Date)
+# Wave: w9 (Round 9, 2021-2023)
+#
+# DATEINTR is a Date object — extract month and year components
+# using the same functions as ABS W3.
+#
+# MISSING VALUES:
+# -1=Missing
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: int_month
+    concept: identifiers
+    description: "Interview month (1-12)"
+    type: ordinal
+    source:
+      w9: DATEINTR
+    note: "DATEINTR is a Date object — month extracted via extract_month_from_date()"
+    scale:
+      min: 1
+      max: 12
+      labels:
+        1: "January"
+        2: "February"
+        3: "March"
+        4: "April"
+        5: "May"
+        6: "June"
+        7: "July"
+        8: "August"
+        9: "September"
+        10: "October"
+        11: "November"
+        12: "December"
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_month_from_date
+        note: "DATEINTR is a Date object — extract month component"
+    qc:
+      valid_range: [1, 12]
+
+  - id: int_year
+    concept: identifiers
+    description: "Interview year"
+    type: ordinal
+    source:
+      w9: DATEINTR
+    note: "DATEINTR is a Date object — year extracted via extract_year_from_date()"
+    scale:
+      min: 2021
+      max: 2024
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_year_from_date
+        note: "DATEINTR is a Date object — extract year component"
+    qc:
+      valid_range: [2021, 2024]

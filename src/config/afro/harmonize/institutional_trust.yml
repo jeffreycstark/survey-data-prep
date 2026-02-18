@@ -1,0 +1,210 @@
+# Afrobarometer R9 Institutional Trust
+# Wave: w9 (Round 9, 2021-2023)
+#
+# SCALE DIRECTION:
+# Raw: 0=Not at all, 1=Just a little, 2=Somewhat, 3=A lot
+# Target: 1=Not at all, 2=Just a little, 3=Somewhat, 4=A lot
+# All items need recode_0_3_to_1_4 (+1 shift) so higher = more trust
+#
+# MISSING VALUES:
+# -1=Missing, 8=Refused, 9=Don't know, 998=Refused, 999=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 998, 999]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: trust_president
+    concept: institutional_trust
+    description: "Trust in the President"
+    type: ordinal
+    source:
+      w9: Q37A
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_parliament
+    concept: institutional_trust
+    description: "Trust in Parliament/National Assembly"
+    type: ordinal
+    source:
+      w9: Q37B
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_elections
+    concept: institutional_trust
+    description: "Trust in the National Electoral Commission"
+    type: ordinal
+    source:
+      w9: Q37C
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_police
+    concept: institutional_trust
+    description: "Trust in the Police"
+    type: ordinal
+    source:
+      w9: Q37G
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_armed_forces
+    concept: institutional_trust
+    description: "Trust in the Army"
+    type: ordinal
+    source:
+      w9: Q37H
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_courts
+    concept: institutional_trust
+    description: "Trust in Courts of Law"
+    type: ordinal
+    source:
+      w9: Q37I
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_churches
+    concept: institutional_trust
+    description: "Trust in Religious Leaders (closest match to trust_churches)"
+    type: ordinal
+    note: "Afro asks about 'religious leaders' rather than 'the church' — closest available match."
+    source:
+      w9: Q37K
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_government
+    concept: institutional_trust
+    description: "Trust in the National Government"
+    type: ordinal
+    note: "No equivalent 'national government' item in Afrobarometer R9. Column will be NA."
+    source:
+      w9: null
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_political_parties
+    concept: institutional_trust
+    description: "Trust in the Ruling Party"
+    type: ordinal
+    note: "Afro Q37E asks about 'the ruling party', not generic 'political parties'. Closest available match."
+    source:
+      w9: Q37E
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 scale shifted +1 to match 1-4 target"
+    qc:
+      valid_range: [1, 4]

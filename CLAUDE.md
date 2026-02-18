@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (60 vars, 2 waves, 186,785 respondents); LBS complete (18 vars, 5 waves, ~20k respondents)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents)
 
 ---
 
@@ -57,7 +57,11 @@ src/
 │   │   │   ├── 0_load_waves.R
 │   │   │   ├── 2_harmonize_all.R
 │   │   │   └── 99_create_final_dataset.R
-│   │   └── lbs/                    # LBS (Latinobarómetro) pipeline
+│   │   ├── lbs/                    # LBS (Latinobarómetro) pipeline
+│   │   │   ├── 0_load_waves.R
+│   │   │   ├── 2_harmonize_all.R
+│   │   │   └── 99_create_final_dataset.R
+│   │   └── afro/                   # Afrobarometer pipeline
 │   │       ├── 0_load_waves.R
 │   │       ├── 2_harmonize_all.R
 │   │       └── 99_create_final_dataset.R
@@ -69,9 +73,11 @@ src/
 │   │   ├── harmonize/          # ABS YAML specs (27 files)
 │   │   └── harmonize_validated/
 │   ├── wvs/                    # WVS-specific config
-│   │   └── harmonize/          # WVS YAML specs (10 files, 60 vars)
-│   └── lbs/                    # LBS-specific config
-│       └── harmonize/          # LBS YAML specs (4 files, 18 vars)
+│   │   └── harmonize/          # WVS YAML specs (11 files, 61 vars)
+│   ├── lbs/                    # LBS-specific config
+│   │   └── harmonize/          # LBS YAML specs (5 files, 20 vars)
+│   └── afro/                   # Afrobarometer-specific config
+│       └── harmonize/          # Afro YAML specs (5 files, 20 vars)
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -91,6 +97,9 @@ data/
 ├── lbs/                        # Latinobarómetro
 │   └── raw/
 │       ├── 2015/ ... 2023/     # LBS waves (SPSS .sav, English)
+├── afro/                       # Afrobarometer
+│   └── raw/
+│       └── wave9/              # Afro Round 9 (SPSS .sav)
 ├── external/                   # External datasets (V-Dem, COVID, etc.)
 ├── interim/                    # Intermediate processing
 └── processed/                  # Final harmonized datasets
@@ -104,6 +113,8 @@ outputs/
 │   └── master_w6.rds, master_w7.rds
 ├── lbs/                        # LBS per-wave master files
 │   └── master_w1.rds ... master_w5.rds
+├── afro/                       # Afro per-wave master files
+│   └── master_w9.rds
 └── harmonization_validation_*  # Validation reports
 ```
 
@@ -153,6 +164,13 @@ Rscript src/r/data_prep_modules/lbs/2_harmonize_all.R
 Rscript src/r/data_prep_modules/lbs/99_create_final_dataset.R
 ```
 
+**Afrobarometer** (1 wave, SPSS → harmonize):
+```bash
+Rscript src/r/data_prep_modules/afro/0_load_waves.R
+Rscript src/r/data_prep_modules/afro/2_harmonize_all.R
+Rscript src/r/data_prep_modules/afro/99_create_final_dataset.R
+```
+
 ---
 
 ## YAML Workflow
@@ -195,6 +213,7 @@ d <- readRDS("data/processed/abs_harmonized.rds")
 | Democracy | dem_sat_national, dem_best_form, dem_always_preferable |
 | Economy | econ_national_now, econ_family_now (1-5, higher=better) |
 | Social Media | sm_use_facebook, sm_use_twitter (1=Yes, 2=No, W6 only) |
+| Weights | weight (mean ~1, W3-W6), weight_cross (W3-W4 only) | continuous |
 
 ### Country Codes
 1=Japan, 2=Hong Kong, 3=Korea, 4=China, 5=Mongolia, 6=Philippines, 7=Taiwan, 8=Thailand, 9=Indonesia, 10=Singapore, 11=Vietnam, 12=Cambodia, 13=Malaysia, 14=Myanmar, 15=Australia, 18=India
@@ -206,7 +225,7 @@ d <- readRDS("data/processed/wvs_harmonized.rds")
 # Or: arrow::read_parquet("data/processed/wvs_harmonized.parquet")
 ```
 
-**186,785 respondents, 84 countries, 60 harmonized variables across waves 6-7.**
+**186,785 respondents, 84 countries, 61 harmonized variables across waves 6-7.**
 
 | Category | Variables | Scale |
 |----------|-----------|-------|
@@ -220,6 +239,7 @@ d <- readRDS("data/processed/wvs_harmonized.rds")
 | Media Consumption (9) | info_newspaper, info_magazines (W6), info_television, info_radio, info_mobile_phone, info_email, info_internet, info_social_media (W7), info_talk_friends | 1-5, higher=more frequent |
 | National Identity (1) | national_pride | 1-4, higher=more proud |
 | Demographics (7) | sex, age, education_level (1-3 harmonized), income_scale (1-10), social_class, marital_status, employment_status | varies |
+| Weights (1) | weight | continuous, mean ~1; raw: V258 (W6), W_WEIGHT (W7) |
 
 Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU")
 
@@ -230,7 +250,7 @@ d <- readRDS("data/processed/lbs_harmonized.rds")
 # Or: arrow::read_parquet("data/processed/lbs_harmonized.parquet")
 ```
 
-**~20,000 respondents, 18 Latin American countries, 18 harmonized variables across 5 waves (2015, 2016, 2018, 2020, 2023).**
+**~100,000 respondents, 18 Latin American countries, 20 harmonized variables across 5 waves (2015, 2016, 2018, 2020, 2023).**
 
 | Category | Variables | Scale |
 |----------|-----------|-------|
@@ -238,12 +258,41 @@ d <- readRDS("data/processed/lbs_harmonized.rds")
 | Social Trust (1) | trust_generalized_binary | 1-2 |
 | Democratic Attitudes | dem_importance_democracy, dem_satisfaction, dem_how_democratic | varies (1-4 ordinal or 1-10) |
 | Democratic Support | dem_strong_leader, dem_democratic_system, dem_army_rule, dem_always_preferable, dem_military_support | 1-4 or binary |
+| Weights (1) | weight | continuous, mean ~1; raw: WT (all waves) |
 
 Country identifier: `country` (3-letter ISO alpha codes, e.g. "ARG", "BRA", "MEX")
 LBS waves mapped: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
 
 LBS missing value conventions: codes -5 through -1 treated as NA.
 See `src/config/lbs/harmonize/LBS_VARIABLE_REVIEW.md` for WVS→LBS variable mappability assessment.
+
+### Afrobarometer Harmonized Dataset
+
+```r
+d <- readRDS("data/processed/afro_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/afro_harmonized.parquet")
+```
+
+**53,444 respondents, 39 African countries, 20 harmonized variables (12 populated, 8 NA placeholders), Round 9.**
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Institutional Trust (8 of 9) | trust_president, trust_parliament, trust_elections, trust_police, trust_armed_forces, trust_courts, trust_churches, trust_political_parties | 1-4, higher=more trust |
+| Institutional Trust (NA) | trust_government | NA (no equivalent) |
+| Social Trust (NA) | trust_generalized_binary | NA (no equivalent) |
+| Democratic Attitudes (3) | dem_support_preferable (1-3), dem_satisfaction (1-4), dem_how_democratic_qual (1-4) | varies |
+| Democratic Attitudes (NA) | dem_how_democratic_10pt, dem_best_system | NA (no equivalent) |
+| Democratic Support (NA) | dem_nondem_ok, dem_military_support, dem_solves_problems, pol_say_what_think | NA (scale mismatch or no equivalent) |
+| Weights (1) | weight | continuous, mean ~1; raw: withinwt_hh |
+
+Country identifier: `country` (3-letter ISO alpha codes)
+Afro wave: w9 = Round 9 (2021-2023), year = 2022
+
+Country codes (39 countries):
+2=AGO, 3=BEN, 4=BWA, 5=BFA, 6=CPV, 7=CMR, 8=COG, 9=CIV, 10=SWZ, 11=ETH, 12=GAB, 13=GMB, 14=GHA, 15=GIN, 16=KEN, 17=LSO, 18=LBR, 19=MDG, 20=MWI, 21=MLI, 22=MRT, 23=MUS, 24=MAR, 25=MOZ, 26=NAM, 27=NER, 28=NGA, 29=STP, 30=SEN, 31=SYC, 32=SLE, 33=ZAF, 34=SDN, 35=TZA, 36=TGO, 37=TUN, 38=UGA, 39=ZMB, 40=ZWE
+
+Afro missing value conventions: codes -1, 8, 9, 98, 99, 998, 999 treated as NA.
+Trust variables use `recode_0_3_to_1_4()` (raw 0-3 scale shifted +1 to 1-4).
 
 ---
 
