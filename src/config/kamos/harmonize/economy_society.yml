@@ -1,0 +1,160 @@
+# KAMOS Economy and Society
+#
+# DIRECTION NOTE for economic evaluation variables:
+#   econ_national, econ_family: 1=very good → 4=poor  (higher = WORSE)
+#   social_mobility, social_mobility_next_gen: 1=improved a lot → 4=worsened a lot
+#   social_conflict_severity: 1=very severe → 4=not serious at all (higher = LESS severe)
+#
+#   econ_equality, subjective_class: 0-10 scales (already in demographics.yml)
+#   news_interest: 1=very interested → 4=not interested at all (higher = LESS interested)
+#
+# These scales are kept as-is (not reversed) for fidelity. Document direction
+# clearly in any paper or analysis.
+
+missing_conventions:
+  treat_as_na:
+    codes: [97, 98, 99]
+    description: "Don't know / refused"
+
+variables:
+
+  - id: econ_national
+    concept: economy
+    description: "Assessment of the South Korean national economy (1=very good, 4=poor)"
+    note: "DIRECTION: higher = worse assessment"
+    type: ordinal
+    source:
+      w1: econ
+      w4: econ
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "very good"
+        2: "somewhat good"
+        3: "somewhat poor"
+        4: "poor"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: econ_family
+    concept: economy
+    description: "Assessment of own family financial situation (1=very good, 4=poor)"
+    note: "DIRECTION: higher = worse"
+    type: ordinal
+    source:
+      w1: famfin
+      w4: famfin
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: social_mobility
+    concept: economy
+    description: "Perceived individual socioeconomic mobility (1=improved a lot, 4=worsened)"
+    note: "DIRECTION: higher = more pessimistic about own mobility"
+    type: ordinal
+    source:
+      w1: socmob
+      w4: socmob
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: social_mobility_next_gen
+    concept: economy
+    description: "Expected intergenerational mobility for next generation (1=will improve, 4=will worsen)"
+    note: "DIRECTION: higher = more pessimistic"
+    type: ordinal
+    source:
+      w1: Socmob2
+      w4: socmob2
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: econ_equality
+    concept: economy
+    description: "Perceived economic equality in society (0=extremely unequal, 10=completely equal)"
+    type: continuous
+    source:
+      w1: Ecequal
+      w4: ecequal
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_equal
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: social_conflict_severity
+    concept: society
+    description: "Perceived severity of social conflict in Korea (1=very severe, 4=not serious)"
+    note: "DIRECTION: higher = less severe conflict perceived"
+    type: ordinal
+    source:
+      w1: socconse
+      w4: socconse
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: national_pride
+    concept: society
+    description: "National pride (1=very proud, 4=not proud at all)"
+    note: "DIRECTION: higher = less proud"
+    type: ordinal
+    source:
+      w1: npride
+      w4: npride
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: news_interest
+    concept: media
+    description: "Interest in current events / news (1=very interested, 4=not interested)"
+    note: "DIRECTION: higher = less interested"
+    type: ordinal
+    source:
+      w1: curevent
+      w4: curevent
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]

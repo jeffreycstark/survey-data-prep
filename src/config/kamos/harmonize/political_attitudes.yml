@@ -1,0 +1,237 @@
+# KAMOS Political Attitudes and Behaviour
+#
+# ideology      : 1=extremely liberal → 5=extremely conservative
+# pol_sat       : 1=very satisfied    → 4=very unsatisfied  (REVERSED: higher=worse)
+# pol_system    : 1-5 categorical (preferred system of government)
+# party_id      : current party identification (NOMINAL — different parties in W1 vs W4;
+#                 do NOT compute cross-wave means)
+# party_id_lean : secondary party for those who said "none" to party_id (same caveat)
+#
+# PARTY THERMOMETERS (W1 only; all W4 = null):
+#   party_att_* : 0=strongly dislike → 10=strongly favour
+#   Parties measured in W1: Saenuri (conservative), Deobureo Minjudang (progressive),
+#                            Gungminui Dang (centrist), Jeonguidang (left)
+#   These parties renamed/merged/dissolved before W4; no equivalent in 2019.
+#
+# ELECTION PARTICIPATION (binary: 1=voted in that election, NA=did not):
+#   Stored as multi-select checkboxes in raw data.
+#   W1 covers elections up to June 2014.
+#   W4 covers elections up to June 2018.
+#   voted_presidential: W1=Dec 2012 (Park Geun-hye elected),
+#                        W4=May 2017 (Moon Jae-in elected after impeachment)
+#   These are the most politically consequential elections for each wave.
+
+missing_conventions:
+  treat_as_na:
+    codes: [97, 98, 99]
+    description: "Don't know / refused"
+
+variables:
+
+  # ── Ideology & Satisfaction ─────────────────────────────────────────────────
+
+  - id: ideology
+    concept: political_attitudes
+    description: "Left-right self-placement (1=extremely liberal, 5=extremely conservative)"
+    type: ordinal
+    source:
+      w1: polviews
+      w4: polviews
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "extremely liberal"
+        2: "somewhat liberal"
+        3: "moderate"
+        4: "somewhat conservative"
+        5: "extremely conservative"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_satisfaction
+    concept: political_attitudes
+    description: "Satisfaction with current state of Korean politics (1=very satisfied, 4=very unsatisfied)"
+    note: "DIRECTION: higher values = LESS satisfied"
+    type: ordinal
+    source:
+      w1: polisat
+      w4: polisat
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "very satisfied"
+        2: "somewhat satisfied"
+        3: "somewhat unsatisfied"
+        4: "very unsatisfied"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: pol_system_pref
+    concept: political_attitudes
+    description: "Preferred system of government (1-5 categorical)"
+    note: "Nominal. 1=current 5yr single-term presidential, 2=4yr re-electable presidential, 3=semi-presidential, 4=parliamentary, 5=don't know"
+    type: categorical
+    source:
+      w1: polisys
+      w4: polisys
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  # ── Party Identification ─────────────────────────────────────────────────────
+
+  - id: party_id
+    concept: political_attitudes
+    description: "Current party identification (nominal; party labels differ across waves)"
+    note: |
+      W1 codes: 1=Saenuri, 2=Deobureo Minjudang, 3=Gungminui Dang, 4=other, 5=none
+      W4 codes: 1=Deobureo Minjudang, 2=Jayu Hanguk Dang (was Saenuri), 3=Bareun Mirae,
+                4=Jeongui Dang, 5=other, 6=none
+      Do NOT compare raw codes across waves. Recode to conservative/progressive/other
+      for cross-wave analysis.
+    type: categorical
+    source:
+      w1: partyid
+      w4: partyid3
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: party_id_lean
+    concept: political_attitudes
+    description: "Secondary party lean for respondents who initially said 'none' (nominal)"
+    note: "Only populated for respondents who answered 'none' to party_id. Same cross-wave caveat applies."
+    type: categorical
+    source:
+      w1: Partyid2
+      w4: partyid4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  # ── Party Thermometers (W1 only) ─────────────────────────────────────────────
+
+  - id: party_att_saenuri
+    concept: political_attitudes
+    description: "Feeling thermometer: Saenuri Party (W1 only; 0=strongly dislike, 10=strongly favour)"
+    note: "W1 2016 only. Saenuri dissolved/renamed to Liberty Korea Party before W4."
+    type: continuous
+    source:
+      w1: Partyatt_1
+      w4: null
+    scale:
+      min: 0
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: party_att_minjoo
+    concept: political_attitudes
+    description: "Feeling thermometer: Deobureo Minjudang / Minjoo Party (W1 only; 0-10)"
+    note: "W1 2016 only. The Minjoo Party continued into W4 but the thermometer was not re-asked."
+    type: continuous
+    source:
+      w1: Partyatt_2
+      w4: null
+    scale:
+      min: 0
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: party_att_peoples
+    concept: political_attitudes
+    description: "Feeling thermometer: Gungminui Dang / People's Party (W1 only; 0-10)"
+    type: continuous
+    source:
+      w1: Partyatt_3
+      w4: null
+    scale:
+      min: 0
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: party_att_justice
+    concept: political_attitudes
+    description: "Feeling thermometer: Jeonguidang / Justice Party (W1 only; 0-10)"
+    type: continuous
+    source:
+      w1: Partyatt_4
+      w4: null
+    scale:
+      min: 0
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  # ── Election Participation ────────────────────────────────────────────────────
+  # Binary: 1 = voted in that specific election, NA = did not vote or not asked.
+
+  - id: voted_presidential
+    concept: political_behaviour
+    description: "Voted in most recent presidential election before fieldwork (binary: 1=yes, NA=no)"
+    note: "W1=Dec 2012 presidential (Park Geun-hye elected); W4=May 2017 presidential (Moon Jae-in elected post-impeachment)"
+    type: binary
+    source:
+      w1: Vote14_2
+      w4: vote16
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 1]
+
+  - id: voted_general
+    concept: political_behaviour
+    description: "Voted in most recent National Assembly general election before fieldwork (binary)"
+    note: "W1=Apr 2012 general election; W4=Apr 2016 general election"
+    type: binary
+    source:
+      w1: Vote14_1
+      w4: vote15
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 1]
+
+  - id: voted_local
+    concept: political_behaviour
+    description: "Voted in most recent local election before fieldwork (binary)"
+    note: "W1=Jun 2014 local; W4=Jun 2018 local"
+    type: binary
+    source:
+      w1: Vote14_3
+      w4: vote17
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 1]

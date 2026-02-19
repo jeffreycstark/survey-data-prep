@@ -1,0 +1,32 @@
+# KAMOS Survey Weights
+#
+# W1 has two weight variables:
+#   wt1 : full design weight  (range 0.09 - 12.05, mean ≈ 1)
+#   wt2 : trimmed/post-strat weight (range 0.72 - 1.81, mean ≈ 1) — USED HERE
+#
+# wt2 is preferred for most analyses because the extreme values in wt1
+# (max ~12) can inflate variance substantially. Use wt1 for design-based
+# variance estimation.
+#
+# W4 : NO weight variable found in data file. Unweighted analysis only for W4.
+#      weight is set to 1.0 for all W4 respondents in 99_create_final_dataset.R.
+
+missing_conventions:
+  treat_as_na:
+    codes: []
+    description: "No missing weight codes expected"
+
+variables:
+  - id: weight
+    concept: weight
+    description: "Post-stratification survey weight (W1=wt2 trimmed; W4=1.0 constant)"
+    note: "W1 wt2 range 0.72-1.81 mean≈1. W4 has no weight; constant 1.0 assigned."
+    type: continuous
+    source:
+      w1: wt2
+      w4: null
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true

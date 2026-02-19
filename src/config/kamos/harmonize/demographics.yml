@@ -1,0 +1,192 @@
+# KAMOS Demographics
+#
+# GENDER CODING WARNING:
+#   W1: 1=female, 2=male  (reversed from W4!)
+#   W4: 1=male,   2=female
+# Harmonized target: 1=male, 2=female (matching W4).
+# W1 values are recoded via recode_kamos_gender_w1().
+#
+# AGE MISSING CODES (W4 only):
+#   Values 98, 99 observed in W4 age; treated as NA.
+#
+# NO INTERVIEW DATE VARIABLE exists in either wave.
+# Survey year is assigned statically in 99_create_final_dataset.R:
+#   W1 → 2016, W4 → 2019
+
+missing_conventions:
+  treat_as_na:
+    codes: [97, 98, 99]
+    description: "Don't know / refused / implausible age codes"
+
+variables:
+  - id: gender
+    concept: demographics
+    description: "Respondent gender (1=male, 2=female)"
+    type: categorical
+    source:
+      w1: gender
+      w4: sex
+    scale:
+      labels:
+        1: "male"
+        2: "female"
+    harmonize:
+      w1:
+        method: r_function
+        fn: recode_kamos_gender_w1
+        note: "W1 codes 1=female, 2=male — recoded to 1=male, 2=female"
+      w4:
+        method: identity
+        note: "W4 codes already 1=male, 2=female"
+    qc:
+      valid_range: [1, 2]
+
+  - id: age
+    concept: demographics
+    description: "Respondent age in years"
+    type: continuous
+    source:
+      w1: age_1
+      w4: age
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [18, 95]
+
+  - id: birth_year
+    concept: demographics
+    description: "Respondent birth year"
+    type: continuous
+    source:
+      w1: ybirth
+      w4: birth
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1920, 2006]
+
+  - id: education
+    concept: demographics
+    description: "Education level (1=no school → 8=doctorate)"
+    type: ordinal
+    source:
+      w1: edlevel
+      w4: edlevel
+    scale:
+      min: 1
+      max: 8
+      labels:
+        1: "never went to school"
+        2: "elementary school"
+        3: "middle school"
+        4: "high school"
+        5: "community college (2-3 year)"
+        6: "university (4 year)"
+        7: "graduate school (master's)"
+        8: "graduate school (doctorate)"
+        9: "other"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+
+  - id: income
+    concept: demographics
+    description: "Household monthly income bracket (1=lowest → 11=highest)"
+    note: "1=≤1M KRW, 11=≥10.01M KRW; ordinal scale, not continuous"
+    type: ordinal
+    source:
+      w1: Income
+      w4: income
+    scale:
+      min: 1
+      max: 11
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 11]
+
+  - id: marital_status
+    concept: demographics
+    description: "Marital status (1=single, 2=married, 3=divorced, 4=widowed)"
+    type: categorical
+    source:
+      w1: marstat
+      w4: marstat
+    scale:
+      labels:
+        1: "single, never married"
+        2: "married"
+        3: "divorced"
+        4: "widowed"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: employment
+    concept: demographics
+    description: "Employment / occupation category (1-14 nominal)"
+    note: "Nominal; do not compute means. W4 label for code 8 differs slightly from W1."
+    type: categorical
+    source:
+      w1: job
+      w4: job
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: region
+    concept: demographics
+    description: "Administrative region of residence (1-17 nominal; 1=Seoul)"
+    type: categorical
+    source:
+      w1: area
+      w4: area
+    scale:
+      labels:
+        1: "Seoul"
+        2: "Busan"
+        3: "Daegu"
+        4: "Incheon"
+        5: "Gwangju"
+        6: "Daejeon"
+        7: "Ulsan"
+        8: "Sejong"
+        9: "Gyeonggi"
+        10: "Gangwon"
+        11: "North Chungcheong"
+        12: "South Chungcheong"
+        13: "North Jeolla"
+        14: "South Jeolla"
+        15: "North Gyeongsang"
+        16: "South Gyeongsang"
+        17: "Jeju"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 17]
+
+  - id: subjective_class
+    concept: demographics
+    description: "Subjective social class position (0=lowest, 10=highest)"
+    type: continuous
+    source:
+      w1: class
+      w4: class
+    scale:
+      min: 0
+      max: 10
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]

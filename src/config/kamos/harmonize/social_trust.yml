@@ -1,0 +1,49 @@
+# KAMOS Social / Generalised Trust
+# Scale: 0-10 (0=completely untrustworthy, 10=completely trustworthy)
+#
+# trust_society  = "How much do you trust Korean society in general?"
+# trust_citizens = "How much do you trust Korean citizens in general?"
+#
+# These are not the standard Rosenberg binary ("most people can be trusted")
+# item but they are the closest KAMOS equivalent and directly comparable
+# across W1 and W4.
+
+missing_conventions:
+  treat_as_na:
+    codes: [97, 98, 99]
+    description: "Don't know / refused"
+
+variables:
+  - id: trust_society
+    concept: social_trust
+    description: "Generalised trust in Korean society (0-10)"
+    type: continuous
+    source:
+      w1: Soctrus
+      w4: Soctrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_citizens
+    concept: social_trust
+    description: "Generalised trust in Korean citizens (0-10)"
+    type: continuous
+    source:
+      w1: cittrust
+      w4: cittrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]

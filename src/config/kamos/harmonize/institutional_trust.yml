@@ -1,0 +1,152 @@
+# KAMOS Institutional Trust
+# Scale: 0-10 (0=completely untrustworthy, 10=completely trustworthy)
+# Higher = more trust throughout.
+#
+# MISSING VALUES: No negative codes found in data; trust items appear fully
+# clean. Standard exclusion codes included as a precaution.
+#
+# NOTE: W1 variable names differ slightly from W4 (e.g. Medtrust vs medtrust,
+# Orgtrust vs orgtrust). Source fields handle this per wave.
+
+missing_conventions:
+  treat_as_na:
+    codes: [97, 98, 99]
+    description: "Don't know / refused"
+
+variables:
+  - id: trust_central_govt
+    concept: institutional_trust
+    description: "Trust in central government (0-10)"
+    type: continuous
+    source:
+      w1: cgotrust
+      w4: cgotrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_local_govt
+    concept: institutional_trust
+    description: "Trust in local government (0-10)"
+    type: continuous
+    source:
+      w1: lgotrust
+      w4: lgotrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_national_assembly
+    concept: institutional_trust
+    description: "Trust in the National Assembly (0-10)"
+    type: continuous
+    source:
+      w1: natrust
+      w4: natrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_legislature
+    concept: institutional_trust
+    description: "Trust in the legislature / parliamentary process (0-10)"
+    note: "Distinct from trust_national_assembly; appears separately in codebook"
+    type: continuous
+    source:
+      w1: legtrust
+      w4: legtrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_private_enterprise
+    concept: institutional_trust
+    description: "Trust in private enterprise (0-10)"
+    type: continuous
+    source:
+      w1: petrust
+      w4: petrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_media
+    concept: institutional_trust
+    description: "Trust in media / press (0-10)"
+    type: continuous
+    source:
+      w1: Medtrust
+      w4: medtrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_ngo
+    concept: institutional_trust
+    description: "Trust in civic/non-governmental organizations (0-10)"
+    type: continuous
+    source:
+      w1: Orgtrust
+      w4: orgtrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_religious
+    concept: institutional_trust
+    description: "Trust in religious organizations (0-10)"
+    type: continuous
+    source:
+      w1: reltrust
+      w4: reltrust
+    scale:
+      min: 0
+      max: 10
+      direction: higher_more_trust
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]

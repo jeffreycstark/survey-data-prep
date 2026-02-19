@@ -1522,3 +1522,19 @@ extract_year_from_date <- function(x,
   # If nothing works, return NA
   rep(NA_real_, length(x))
 }
+
+# ── KAMOS-specific recoding functions ─────────────────────────────────────────
+
+# recode_kamos_gender_w1
+# KAMOS Wave 1 codes gender as 1=female, 2=male.
+# Wave 4 uses the reverse (1=male, 2=female).
+# This function standardises W1 to match W4: 1=male, 2=female.
+recode_kamos_gender_w1 <- function(x, data = NULL, var_name = NULL,
+                                   validate_all = NULL) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x == 1L ~ 2L,   # female → 2
+    x == 2L ~ 1L,   # male   → 1
+    TRUE    ~ NA_integer_
+  )
+}
