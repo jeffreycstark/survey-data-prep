@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9) + KAMOS (Waves 1, 4)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9) + KAMOS (Waves 1, 4) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
 
 ---
 
@@ -65,9 +65,12 @@ src/
 │   │   │   ├── 0_load_waves.R
 │   │   │   ├── 2_harmonize_all.R
 │   │   │   └── 99_create_final_dataset.R
-│   │   └── kamos/                  # KAMOS pipeline
-│   │       ├── 0_load_waves.R
-│   │       ├── 2_harmonize_all.R
+│   │   ├── kamos/                  # KAMOS pipeline
+│   │   │   ├── 0_load_waves.R
+│   │   │   ├── 2_harmonize_all.R
+│   │   │   └── 99_create_final_dataset.R
+│   │   └── vdem/                   # V-Dem pipeline (scaffold)
+│   │       ├── 0_load_vdem.R
 │   │       └── 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
@@ -110,6 +113,9 @@ data/
 │   └── raw/
 │       ├── wave1/              # KAMOS W1 2016 (SPSS .sav, n=2000)
 │       └── wave4/              # KAMOS W4 2019 (SPSS .sav, n=1500)
+├── v-dem/                      # Varieties of Democracy
+│   └── raw/
+│       └── v15/                # V-Dem v15 (RDS, 27,913 rows × 4,607 cols)
 ├── external/                   # External datasets (V-Dem, COVID, etc.)
 ├── interim/                    # Intermediate processing
 └── processed/                  # Final harmonized datasets
@@ -188,6 +194,11 @@ Rscript src/r/data_prep_modules/afro/99_create_final_dataset.R
 Rscript src/r/data_prep_modules/kamos/0_load_waves.R
 Rscript src/r/data_prep_modules/kamos/2_harmonize_all.R
 Rscript src/r/data_prep_modules/kamos/99_create_final_dataset.R
+```
+
+**V-Dem** (country-year panel, scaffold):
+```bash
+Rscript src/r/data_prep_modules/vdem/99_create_final_dataset.R
 ```
 
 ---
@@ -344,6 +355,38 @@ KAMOS waves: w1=2016, w4=2019 (waves 2 and 3 not available)
 
 KAMOS missing value conventions: 98 and 99 treated as NA for age; other variables per-spec.
 Gender coding corrected via `recode_kamos_gender_w1()` (W1 had 1=female,2=male; standardized to 1=male,2=female).
+
+### V-Dem Core Dataset (scaffold)
+
+```r
+d <- readRDS("data/processed/vdem_core.rds")
+# Or: arrow::read_parquet("data/processed/vdem_core.parquet")
+# Raw: data/v-dem/raw/v15/V-Dem-CY-Full+Others-v15.rds (4,607 cols — select what you need)
+```
+
+**27,913 country-years, 202 countries, 1789–2024. Unit: country × year (NOT individual respondents).**
+
+| Variable | Description | Scale |
+|----------|-------------|-------|
+| `country_name` | Full country name | string |
+| `country_text_id` | ISO 3-letter alpha code (e.g. "KOR", "THA") | string |
+| `COWcode` | Correlates of War numeric code | integer |
+| `year` | Calendar year | integer |
+| `v2x_polyarchy` | Electoral Democracy Index | 0–1 |
+| `v2x_libdem` | Liberal Democracy Index | 0–1 |
+| `v2x_partipdem` | Participatory Democracy Index | 0–1 |
+| `v2x_delibdem` | Deliberative Democracy Index | 0–1 |
+| `v2x_egaldem` | Egalitarian Democracy Index | 0–1 |
+| `v2x_corr` | Political Corruption Index (higher = more corrupt) | 0–1 |
+| `v2x_accountability` | Accountability Index | 0–1 |
+| `v2x_freespeech` | Freedom of Expression Index | 0–1 |
+| `v2x_regime` | Regime type (0=closed autocracy … 3=liberal democracy) | 0–3 |
+
+**Notes:**
+- This is a scaffold — add indices from the 4,607-column raw file as papers require
+- Full variable list and definitions: `data/v-dem/raw/v15/codebook.pdf`
+- For paper-specific merges, join on `country_text_id` (ISO3) + `year`
+- Contemporary coverage is most complete from ~1900 onward
 
 ---
 
