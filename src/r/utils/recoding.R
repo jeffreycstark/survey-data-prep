@@ -1444,6 +1444,32 @@ extract_month_from_date <- function(x,
 #' @param data Full wave data frame (used to access original Date column)
 #' @param var_name Variable name to read from data
 #' @return Numeric vector (e.g., 2010, 2011, 2012)
+extract_date <- function(x,
+                         data = NULL,
+                         var_name = NULL,
+                         validate_all = NULL) {
+  #' Extract Date from a Date column, preserving class
+  #'
+  #' The harmonization engine coerces to numeric (days since epoch).
+  #' This function reads the original Date from data[[var_name]].
+  #' @return Date vector
+
+  # Get original Date from raw data
+  if (!is.null(data) && !is.null(var_name) && var_name %in% names(data)) {
+    orig <- data[[var_name]]
+    if (inherits(orig, "Date")) {
+      return(orig)
+    }
+  }
+
+  # Fallback: convert numeric (days since epoch) back to Date
+  if (is.numeric(x)) {
+    return(as.Date(x, origin = "1970-01-01"))
+  }
+
+  rep(as.Date(NA), length(x))
+}
+
 recode_0_3_to_1_4 <- function(x,
                               data = NULL,
                               var_name = NULL,

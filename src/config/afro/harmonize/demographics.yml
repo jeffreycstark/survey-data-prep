@@ -61,3 +61,18 @@ variables:
         note: "DATEINTR is a Date object — extract year component"
     qc:
       valid_range: [2021, 2024]
+
+  - id: int_date
+    concept: identifiers
+    description: "Full interview date (Date class, for sub-monthly event studies)"
+    type: continuous
+    source:
+      w9: DATEINTR
+    note: "DATEINTR is a Date object — preserved via extract_date(). Zero missingness."
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_date
+        note: "Reads original Date from raw data, bypassing numeric coercion"
+    qc:
+      skip_range_check: true
