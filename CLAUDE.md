@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9) + KAMOS (Waves 1, 4)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents)
 
 ---
 
@@ -61,7 +61,11 @@ src/
 │   │   │   ├── 0_load_waves.R
 │   │   │   ├── 2_harmonize_all.R
 │   │   │   └── 99_create_final_dataset.R
-│   │   └── afro/                   # Afrobarometer pipeline
+│   │   ├── afro/                   # Afrobarometer pipeline
+│   │   │   ├── 0_load_waves.R
+│   │   │   ├── 2_harmonize_all.R
+│   │   │   └── 99_create_final_dataset.R
+│   │   └── kamos/                  # KAMOS pipeline
 │   │       ├── 0_load_waves.R
 │   │       ├── 2_harmonize_all.R
 │   │       └── 99_create_final_dataset.R
@@ -76,8 +80,10 @@ src/
 │   │   └── harmonize/          # WVS YAML specs (11 files, 61 vars)
 │   ├── lbs/                    # LBS-specific config
 │   │   └── harmonize/          # LBS YAML specs (5 files, 20 vars)
-│   └── afro/                   # Afrobarometer-specific config
-│       └── harmonize/          # Afro YAML specs (5 files, 20 vars)
+│   ├── afro/                   # Afrobarometer-specific config
+│   │   └── harmonize/          # Afro YAML specs (5 files, 20 vars)
+│   └── kamos/                  # KAMOS-specific config
+│       └── harmonize/          # KAMOS YAML specs (6 files, 39 vars)
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -100,6 +106,10 @@ data/
 ├── afro/                       # Afrobarometer
 │   └── raw/
 │       └── wave9/              # Afro Round 9 (SPSS .sav)
+├── kamos/                      # Korean Attitudes and Mobilization Opinion Survey
+│   └── raw/
+│       ├── wave1/              # KAMOS W1 2016 (SPSS .sav, n=2000)
+│       └── wave4/              # KAMOS W4 2019 (SPSS .sav, n=1500)
 ├── external/                   # External datasets (V-Dem, COVID, etc.)
 ├── interim/                    # Intermediate processing
 └── processed/                  # Final harmonized datasets
@@ -115,6 +125,8 @@ outputs/
 │   └── master_w1.rds ... master_w5.rds
 ├── afro/                       # Afro per-wave master files
 │   └── master_w9.rds
+├── kamos/                      # KAMOS per-wave master files
+│   └── master_w1.rds, master_w4.rds
 └── harmonization_validation_*  # Validation reports
 ```
 
@@ -169,6 +181,13 @@ Rscript src/r/data_prep_modules/lbs/99_create_final_dataset.R
 Rscript src/r/data_prep_modules/afro/0_load_waves.R
 Rscript src/r/data_prep_modules/afro/2_harmonize_all.R
 Rscript src/r/data_prep_modules/afro/99_create_final_dataset.R
+```
+
+**KAMOS** (2 waves, SPSS → harmonize):
+```bash
+Rscript src/r/data_prep_modules/kamos/0_load_waves.R
+Rscript src/r/data_prep_modules/kamos/2_harmonize_all.R
+Rscript src/r/data_prep_modules/kamos/99_create_final_dataset.R
 ```
 
 ---
@@ -293,6 +312,38 @@ Country codes (39 countries):
 
 Afro missing value conventions: codes -1, 8, 9, 98, 99, 998, 999 treated as NA.
 Trust variables use `recode_0_3_to_1_4()` (raw 0-3 scale shifted +1 to 1-4).
+
+### KAMOS Harmonized Dataset
+
+```r
+d <- readRDS("data/processed/kamos_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/kamos_harmonized.parquet")
+```
+
+**3,500 respondents, South Korea only (KOR), 39 harmonized variables across 2 waves (W1=2016, W4=2019).**
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Institutional Trust (8) | trust_central_govt, trust_local_govt, trust_national_assembly, trust_legislature, trust_private_enterprise, trust_media, trust_ngo, trust_religious | 0-10, higher=more trust |
+| Social Trust (2) | trust_society, trust_citizens | 0-10, higher=more trust |
+| Demographics (9) | gender, age, birth_year, education (1-8), income (1-11), marital_status, employment (nominal), region (1-17 nominal), subjective_class (0-10) | varies |
+| Political Attitudes (6) | ideology (1=far left–5=far right), pol_satisfaction (1=satisfied–4=unsatisfied), pol_system_pref (1-5 categorical), party_id (nominal), party_id_lean (nominal), party thermometers W1 only: party_att_saenuri, party_att_minjoo, party_att_peoples, party_att_justice (0-10) | varies |
+| Economy & Society (8) | econ_national, econ_family, social_mobility, social_mobility_next_gen (1-4), econ_equality (0-10), social_conflict_severity (1-4), national_pride (1-4), news_interest (1-4) | varies |
+| Vote (3) | voted_presidential, voted_general, voted_local | binary (1=voted, NA=did not) |
+| Weights (1) | weight | continuous; W1=wt2 (trimmed post-strat, mean≈1, range 0.72–1.81); W4=1.0 (no weight in raw data) |
+
+Country identifier: `country` = "KOR" (all rows)
+KAMOS waves: w1=2016, w4=2019 (waves 2 and 3 not available)
+
+**Important notes:**
+- Trust scale is **0–10** (not 1–4 like ABS/LBS/WVS) — do not compare directly without rescaling
+- `party_id` and `party_id_lean` are **nominal and wave-incompatible** (Saenuri Party renamed/dissolved between waves; landscape differs)
+- `pol_satisfaction` direction: 1=very satisfied, 4=very unsatisfied (higher=worse)
+- `econ_national`, `econ_family` direction: 1=very good, 4=poor (higher=worse)
+- No interview date variable in either wave; year assigned statically
+
+KAMOS missing value conventions: 98 and 99 treated as NA for age; other variables per-spec.
+Gender coding corrected via `recode_kamos_gender_w1()` (W1 had 1=female,2=male; standardized to 1=male,2=female).
 
 ---
 
