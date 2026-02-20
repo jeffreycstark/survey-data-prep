@@ -12,7 +12,7 @@ library(here)
 library(dplyr)
 library(haven)
 
-cat("\n=== CREATING FINAL DATASET: abs_econdev_authpref.rds ===\n\n")
+cat("\n=== CREATING FINAL DATASET: abs_harmonized.rds ===\n\n")
 
 # Load all master wave files
 output_dir <- here("outputs")
@@ -62,12 +62,9 @@ wave_summary <- abs_econdev_authpref %>%
   summarise(n = n(), .groups = "drop")
 print(wave_summary)
 
-# Save final dataset to data/processed (primary) and outputs (backup)
-output_file <- here("data", "processed", "abs_econdev_authpref.rds")
+# Save final dataset
+output_file <- here("data", "processed", "abs_harmonized.rds")
 saveRDS(abs_econdev_authpref, output_file)
-
-# Also save to outputs for convenience
-saveRDS(abs_econdev_authpref, here("outputs", "abs_econdev_authpref.rds"))
 
 cat("\n=== FINAL DATASET SAVED ===\n")
 cat("File:", output_file, "\n")
@@ -81,5 +78,5 @@ var_names <- setdiff(names(abs_econdev_authpref), c("wave", "row_id"))
 cat(paste(" ", var_names, collapse = "\n"), "\n")
 
 cat("\n", paste(rep("=", 60), collapse = ""), "\n", sep = "")
-cat("DONE: abs_econdev_authpref.rds ready for analysis\n")
+cat("DONE: abs_harmonized.rds ready for analysis\n")
 cat(paste(rep("=", 60), collapse = ""), "\n\n", sep = "")

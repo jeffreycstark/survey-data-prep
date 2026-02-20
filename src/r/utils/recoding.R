@@ -882,33 +882,50 @@ recode_w2_anticorrupt <- function(x,
 
 # ------------------------------------------------------------------------------
 # CORRUPTION: Witnessed corruption recodes
+# Target scale: 0 = No (not witnessed), 1 = Yes (witnessed)
 # ------------------------------------------------------------------------------
 
+recode_witnessed_default <- function(x,
+                                     missing_codes = c(-1, 0, 7, 8, 9),
+                                     ...) {
+  #' Recode default waves (W1, W2, W5, W6) witnessed corruption to 0/1
+  #'
+  #' Source coding: 1 = Yes/witnessed, 2 = No/not witnessed
+  #' Target:        1 = Yes,           0 = No
+
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,  # Witnessed -> 1
+    x == 2 ~ 0,  # Not witnessed -> 0
+    TRUE ~ NA_real_
+  )
+}
+
 recode_w3_witnessed <- function(x,
-                                 missing_codes = c(-1, 0, 7, 8, 9),
-                                 ...) {
-  #' Recode Wave 3 witnessed corruption (q119) to binary
+                                missing_codes = c(-1, 0, 7, 8, 9),
+                                ...) {
+  #' Recode Wave 3 witnessed corruption (q119) to 0/1
   #'
   #' Wave 3 has:
   #'   1 = Witnessed
   #'   2 = Never witnessed
   #'   6 = No one I know has personally witnessed
   #'
-  #' Target binary: 1=Yes, 2=No
-  #' Mapping: 1->1, 2->2, 6->2
+  #' Target: 1 = Yes, 0 = No
+  #' Mapping: 1->1, 2->0, 6->0
 
   dplyr::case_when(
     x %in% missing_codes ~ NA_real_,
-    x == 1 ~ 1,           # Witnessed -> Yes
-    x %in% c(2, 6) ~ 2,   # Never witnessed / No one I know -> No
+    x == 1 ~ 1,           # Witnessed -> 1
+    x %in% c(2, 6) ~ 0,   # Never witnessed / No one I know -> 0
     TRUE ~ NA_real_
   )
 }
 
 recode_w4_witnessed <- function(x,
-                                 missing_codes = c(-1, 0, 7, 8, 9),
-                                 ...) {
-  #' Recode Wave 4 witnessed corruption (q120) to binary
+                                missing_codes = c(-1, 0, 7, 8, 9),
+                                ...) {
+  #' Recode Wave 4 witnessed corruption (q120) to 0/1
   #'
   #' Wave 4 has 5 categories:
   #'   1 = Personally witnessed
@@ -917,13 +934,13 @@ recode_w4_witnessed <- function(x,
   #'   4 = Personally never witnessed
   #'   5 = No one I know has personally witnessed
   #'
-  #' Target binary: 1=Yes (any witnessing), 2=No
-  #' Mapping: 1,2,3->1, 4,5->2
+  #' Target: 1 = Yes (any witnessing), 0 = No
+  #' Mapping: 1,2,3->1, 4,5->0
 
   dplyr::case_when(
     x %in% missing_codes ~ NA_real_,
-    x %in% c(1, 2, 3) ~ 1,  # Any form of witnessed -> Yes
-    x %in% c(4, 5) ~ 2,      # Never witnessed -> No
+    x %in% c(1, 2, 3) ~ 1,  # Any form of witnessed -> 1
+    x %in% c(4, 5) ~ 0,     # Never witnessed -> 0
     TRUE ~ NA_real_
   )
 }

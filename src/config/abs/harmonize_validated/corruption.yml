@@ -157,26 +157,27 @@ variables:
     # W5-W6: 1=Yes, 2=No
 
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
+        0: "No, not witnessed"
         1: "Yes, witnessed"
-        2: "No, not witnessed"
     harmonize:
       default:
-        method: identity
-        note: "Most waves coded 1=Yes, 2=No"
+        method: r_function
+        fn: recode_witnessed_default
+        note: "W1, W2, W5, W6 coded 1=Yes, 2=No — recode to 1=Yes, 0=No"
       exceptions:
         w3:
           method: r_function
           fn: recode_w3_witnessed
-          note: "W3 has category 6 (no one I know) - recode to 2"
+          note: "W3 has category 6 (no one I know) - collapse to 0=No"
         w4:
           method: r_function
           fn: recode_w4_witnessed
-          note: "W4 has 5 categories: 1-3→1 (witnessed), 4-5→2 (not witnessed)"
+          note: "W4 has 5 categories: 1-3→1 (witnessed), 4-5→0 (not witnessed)"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "witnessed.*corrupt|corrupt.*bribe"
