@@ -37,23 +37,24 @@ missing_conventions:
 variables:
   - id: sex
     concept: demographics
-    description: "Sex of respondent"
+    description: "Sex of respondent (1=Male, 0=Female)"
     type: nominal
     source:
       w6: V240
       w7: Q260
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Male"
-        2: "Female"
+        0: "Female"
     harmonize:
       default:
-        method: identity
-        note: "Both waves coded 1=Male, 2=Female; no transformation needed"
+        method: r_function
+        fn: recode_gender_binary
+        note: "Both waves coded 1=Male, 2=Female in raw; recode to 1=Male, 0=Female for consistency with ABS gender"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6, w7]
           phrase: "sex"
