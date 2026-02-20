@@ -38,6 +38,14 @@ if (!exists("MIN_WAVES"))           MIN_WAVES           <- 3
 if (!exists("Z_THRESHOLD"))         Z_THRESHOLD         <- 2.0
 if (!exists("VARS_OF_INTEREST"))    VARS_OF_INTEREST    <- NULL
 
+# Variables to drop before any analysis (nominal vars, admin IDs, etc.)
+# These inflate the global slope SD and break z-score and cross-group thresholds.
+# Example: EXCLUDE_VARS <- c("religion", "idnumber", "problem_most_important")
+if (!exists("EXCLUDE_VARS"))        EXCLUDE_VARS        <- c(
+  "religion", "idnumber", "problem_most_important",
+  "int_year", "int_month"
+)
+
 # Path to concept group definitions YAML
 # Default: concept_groups.yml in the same directory as this script
 if (!exists("CONCEPT_GROUPS_PATH")) CONCEPT_GROUPS_PATH <- "src/scripts/concept_groups.yml"
@@ -47,6 +55,17 @@ if (!exists("CONCEPT_GROUPS_PATH")) CONCEPT_GROUPS_PATH <- "src/scripts/concept_
 dir.create(OUTPUT_DIR, recursive = TRUE, showWarnings = FALSE)
 
 harmonized_data <- read_csv(INPUT_PATH, show_col_types = FALSE)
+
+# Drop excluded variables (nominal IDs, open-ended categories, admin fields)
+if (length(EXCLUDE_VARS) > 0) {
+  n_before <- n_distinct(harmonized_data$variable)
+  harmonized_data <- harmonized_data %>%
+    filter(!variable %in% EXCLUDE_VARS)
+  n_dropped <- n_before - n_distinct(harmonized_data$variable)
+  if (n_dropped > 0)
+    cat(sprintf("Excluded %d variable(s): %s\n", n_dropped,
+                paste(intersect(EXCLUDE_VARS, unique(harmonized_data$variable)), collapse = ", ")))
+}
 
 # Filter to variables of interest if specified
 if (!is.null(VARS_OF_INTEREST)) {
@@ -114,27 +133,35 @@ write_csv(outliers, file.path(OUTPUT_DIR, "outlier_slopes.csv"))
 
 cat("\n── Running structural break tests ──\n")
 
-break_results <- harmonized_data %>%
+eligible_for_breaks <- harmonized_data %>%
   group_by(country, variable) %>%
-  filter(n() >= 4) %>%  # need at least 4 points for break detection
-  summarise(
-    n_waves = n(),
-    break_test = list(
-      tryCatch({
-        ts_data <- cur_data() %>% arrange(wave_num)
-        test <- sctest(mean_value ~ wave_num, data = ts_data, type = "supF")
-        tibble(
-          statistic = test$statistic,
-          p_value = test$p.value
-        )
-      }, error = function(e) {
-        tibble(statistic = NA_real_, p_value = NA_real_)
-      })
-    ),
-    .groups = "drop"
-  ) %>%
-  unnest(break_test) %>%
-  filter(!is.na(p_value))
+  filter(n() >= 4) %>%
+  ungroup()
+
+if (nrow(eligible_for_breaks) > 0) {
+  break_results <- eligible_for_breaks %>%
+    group_by(country, variable) %>%
+    summarise(
+      n_waves = n(),
+      break_test = list(
+        tryCatch({
+          ts_data <- pick(everything()) %>% arrange(wave_num)
+          test <- sctest(mean_value ~ wave_num, data = ts_data, type = "supF")
+          tibble(statistic = test$statistic, p_value = test$p.value)
+        }, error = function(e) {
+          tibble(statistic = NA_real_, p_value = NA_real_)
+        })
+      ),
+      .groups = "drop"
+    ) %>%
+    unnest(break_test) %>%
+    filter(!is.na(p_value))
+} else {
+  cat("(Skipped — fewer than 4 waves in data)\n")
+  break_results <- tibble(country = character(), variable = character(),
+                          n_waves = integer(), statistic = numeric(),
+                          p_value = numeric())
+}
 
 # Flag significant breaks
 significant_breaks <- break_results %>%

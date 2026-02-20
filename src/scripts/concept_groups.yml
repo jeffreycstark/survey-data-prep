@@ -142,17 +142,30 @@ concept_groups:
     - trust_strangers
     - trust_govt_do_right
 
-  # ── POLITICAL ACTION / ENGAGEMENT ─────────────────────────────────────────
-  # Formal and informal political participation.
-  political_action:
+  # ── POLITICAL ACTION: VOTING ──────────────────────────────────────────────
+  # Voting and electoral participation. In Korea, this has trended OPPOSITE
+  # to contacting/protest — that divergence is the "hollow citizenship" story.
+  political_action_voting:
+    - voted_last_election
+    - voting_frequency
+    - attended_campaign_rally
+    - persuaded_others_vote
+    - persuade_others_vote
+
+  # ── POLITICAL ACTION: CONTACTING & PROTEST ────────────────────────────────
+  # Non-electoral participation. Sharp decline in Korea across all 6 ABS waves
+  # while voting stayed flat — keep these separate so the divergence surfaces
+  # in cross-group detection rather than being averaged away.
+  political_action_contacting_protest:
+    - action_contact_elected
+    - action_contact_civil_servant
+    - action_contact_media
+    - action_contact_influential
     - action_demonstration
     - action_petition
-    - action_contact_elected
-    - action_contact_media
-    - action_internet_political
     - action_join_cause
     - action_risky_political
-    - voted_last_election
+    - action_internet_political
 
   # ── MEDIA AND INFORMATION ACCESS ──────────────────────────────────────────
   media_and_information:
