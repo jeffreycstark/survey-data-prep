@@ -23,6 +23,7 @@ library(tidyverse)
 library(broom)
 library(strucchange)
 library(patchwork)
+library(yaml)
 
 # ── 0. CONFIGURATION ──────────────────────────────────────────────────────────
 
@@ -33,9 +34,13 @@ if (!exists("INPUT_PATH")) INPUT_PATH <- "path/to/your/harmonized_means.csv"
 if (!exists("OUTPUT_DIR")) OUTPUT_DIR  <- "output/prospecting"
 
 # Minimum number of waves required to estimate a slope
-if (!exists("MIN_WAVES"))        MIN_WAVES        <- 3
-if (!exists("Z_THRESHOLD"))      Z_THRESHOLD      <- 2.0
-if (!exists("VARS_OF_INTEREST")) VARS_OF_INTEREST <- NULL
+if (!exists("MIN_WAVES"))           MIN_WAVES           <- 3
+if (!exists("Z_THRESHOLD"))         Z_THRESHOLD         <- 2.0
+if (!exists("VARS_OF_INTEREST"))    VARS_OF_INTEREST    <- NULL
+
+# Path to concept group definitions YAML
+# Default: concept_groups.yml in the same directory as this script
+if (!exists("CONCEPT_GROUPS_PATH")) CONCEPT_GROUPS_PATH <- "src/scripts/concept_groups.yml"
 
 # ── 1. LOAD AND PREPARE DATA ─────────────────────────────────────────────────
 
@@ -228,7 +233,145 @@ if (n_distinct(harmonized_data$wave_num) >= 4) {
   write_csv(acceleration, file.path(OUTPUT_DIR, "acceleration.csv"))
 }
 
-# ── 7. VISUALIZATIONS ────────────────────────────────────────────────────────
+# ── 7. CONCEPT GROUP ANALYSIS ────────────────────────────────────────────────
+# Detects whether theoretically related variables move coherently (all same
+# direction) or divergently (mixed directions — the interesting stories).
+# Requires concept_groups.yml at CONCEPT_GROUPS_PATH.
+
+if (file.exists(CONCEPT_GROUPS_PATH)) {
+
+  cat(sprintf("\n── Concept group analysis (%s) ──\n", CONCEPT_GROUPS_PATH))
+  concept_groups_raw <- yaml.load_file(CONCEPT_GROUPS_PATH)
+
+  # Build variable → group lookup table
+  group_lookup <- map_dfr(names(concept_groups_raw$concept_groups), function(grp) {
+    tibble(group = grp, variable = concept_groups_raw$concept_groups[[grp]])
+  })
+
+  # Warn about variables named in config but absent from data
+  missing_from_data <- setdiff(group_lookup$variable, slopes$variable)
+  if (length(missing_from_data) > 0) {
+    cat(sprintf("Note: %d config variables not in data (check spelling or wave coverage):\n",
+                length(missing_from_data)))
+    cat(paste(" ", missing_from_data, collapse = "\n"), "\n")
+  }
+
+  # Join slopes with group assignments (inner — only matched vars contribute)
+  slopes_grouped <- slopes %>%
+    inner_join(group_lookup, by = "variable")
+
+  n_matched <- n_distinct(slopes_grouped$variable)
+  n_total   <- n_distinct(slopes$variable)
+  cat(sprintf("Variables matched to a group: %d / %d total in data\n", n_matched, n_total))
+  cat(sprintf("Groups defined: %d\n", n_distinct(group_lookup$group)))
+
+  # ── 7a. Group coherence report ─────────────────────────────────────────────
+  # For each country × group: mean slope, direction coherence, divergent vars.
+  # Coherence flags:
+  #   COHERENT_RISING  — all variables in the group are rising
+  #   COHERENT_FALLING — all variables in the group are falling
+  #   DIVERGENT        — mixed directions (theoretically most interesting)
+
+  group_coherence <- slopes_grouped %>%
+    group_by(country, group) %>%
+    filter(n() >= 2) %>%   # need at least 2 variables to assess coherence
+    summarise(
+      n_vars        = n(),
+      mean_slope    = mean(slope),
+      sd_slope      = sd(slope),
+      n_rising      = sum(slope > 0),
+      n_falling     = sum(slope < 0),
+      all_same_sign = all(slope > 0) | all(slope < 0),
+      rising_vars   = paste(variable[slope > 0],  collapse = "; "),
+      falling_vars  = paste(variable[slope <= 0], collapse = "; "),
+      .groups       = "drop"
+    ) %>%
+    mutate(
+      coherence_flag = case_when(
+        all_same_sign & mean_slope >  0 ~ "COHERENT_RISING",
+        all_same_sign & mean_slope <= 0 ~ "COHERENT_FALLING",
+        TRUE                            ~ "DIVERGENT"
+      )
+    ) %>%
+    arrange(group, country)
+
+  divergent_groups <- group_coherence %>%
+    filter(coherence_flag == "DIVERGENT") %>%
+    arrange(desc(sd_slope))
+
+  cat(sprintf("\nGroup × country pairs assessed: %d\n", nrow(group_coherence)))
+  cat(sprintf("Divergent groups (mixed direction within group): %d\n",
+              nrow(divergent_groups)))
+
+  if (nrow(divergent_groups) > 0) {
+    cat("\nTop divergent groups — variables pulling in opposite directions:\n")
+    divergent_groups %>%
+      select(country, group, mean_slope, sd_slope, n_rising, n_falling,
+             rising_vars, falling_vars) %>%
+      mutate(across(where(is.numeric), ~ round(., 3))) %>%
+      print(n = 20)
+  }
+
+  write_csv(group_coherence, file.path(OUTPUT_DIR, "slope_groups.csv"))
+  cat(sprintf("── Saved: %s/slope_groups.csv ──\n", OUTPUT_DIR))
+
+  # ── 7b. Cross-group divergence ─────────────────────────────────────────────
+  # For each country, compare every pair of concept groups.
+  # Flag pairs where the difference in group mean slopes exceeds
+  # 0.5 SD of the overall (individual-variable) slope distribution.
+  # Opposite-direction pairs are sorted first — those are your paper hypotheses.
+
+  global_slope_sd    <- sd(slopes$slope, na.rm = TRUE)
+  cross_group_thresh <- 0.5 * global_slope_sd
+
+  group_means <- group_coherence %>%
+    select(country, group, mean_slope)
+
+  cross_group <- group_means %>%
+    rename(group1 = group, slope1 = mean_slope) %>%
+    inner_join(
+      group_means %>% rename(group2 = group, slope2 = mean_slope),
+      by = "country"
+    ) %>%
+    filter(group1 < group2) %>%   # unique pairs only
+    mutate(
+      slope_diff = abs(slope1 - slope2),
+      direction1 = if_else(slope1 > 0, "RISING",  "FALLING"),
+      direction2 = if_else(slope2 > 0, "RISING",  "FALLING"),
+      opposite   = sign(slope1) != sign(slope2)
+    ) %>%
+    filter(slope_diff > cross_group_thresh) %>%
+    # Opposite-direction pairs first, then by magnitude
+    arrange(desc(opposite), desc(slope_diff))
+
+  cat(sprintf(
+    "\n── Cross-group divergences (|Δslope| > %.3f = 0.5 SD): %d found ──\n",
+    cross_group_thresh, nrow(cross_group)
+  ))
+  cat(sprintf("   Of which opposite direction: %d (highest priority)\n",
+              sum(cross_group$opposite)))
+
+  if (nrow(cross_group) > 0) {
+    cross_group %>%
+      select(country, group1, slope1, direction1,
+             group2, slope2, direction2, slope_diff, opposite) %>%
+      mutate(across(where(is.numeric), ~ round(., 3))) %>%
+      print(n = 20)
+  }
+
+  write_csv(cross_group, file.path(OUTPUT_DIR, "slope_divergence.csv"))
+  cat(sprintf("── Saved: %s/slope_divergence.csv ──\n", OUTPUT_DIR))
+
+} else {
+  cat(sprintf(
+    "\n── Concept group analysis skipped (no file at: %s) ──\n",
+    CONCEPT_GROUPS_PATH
+  ))
+  group_coherence <- tibble()
+  cross_group     <- tibble()
+}
+
+# ── 8. VISUALIZATIONS ────────────────────────────────────────────────────────
 
 # 7a. Heatmap: all slopes at a glance
 p_heatmap <- slopes %>%
@@ -310,7 +453,7 @@ if (nrow(outliers) > 0) {
   walk(outlier_countries, ~ plot_country_profile(harmonized_data, .x))
 }
 
-# ── 8. SUMMARY REPORT ────────────────────────────────────────────────────────
+# ── 9. SUMMARY REPORT ────────────────────────────────────────────────────────
 
 summary_lines <- c(
   "# Slope Prospector: Summary Report",
@@ -322,10 +465,10 @@ summary_lines <- c(
   sprintf("- Variables: %d", n_distinct(harmonized_data$variable)),
   sprintf("- Waves: %d", n_distinct(harmonized_data$wave_num)),
   "",
-  "## Findings",
+  "## Findings — Individual Variables",
   sprintf("- Outlier slopes (|z| > %.1f): %d", Z_THRESHOLD, nrow(outliers)),
   sprintf("- Structural breaks (p < .05): %d", nrow(significant_breaks)),
-  sprintf("- Opposite-direction pairs: %d", nrow(opposite_movers)),
+  sprintf("- Opposite-direction variable pairs: %d", nrow(opposite_movers)),
   "",
   "## Top Outliers (by |z-score|)",
   if (nrow(outliers) > 0) {
@@ -336,7 +479,7 @@ summary_lines <- c(
       pull(line)
   } else "- None found",
   "",
-  "## Top Divergent Pairs",
+  "## Top Divergent Pairs (variable level)",
   if (nrow(opposite_movers) > 0) {
     opposite_movers %>%
       head(10) %>%
@@ -346,15 +489,57 @@ summary_lines <- c(
       pull(line)
   } else "- None found",
   "",
+  "## Findings — Concept Groups",
+  if (nrow(group_coherence) > 0) {
+    c(
+      sprintf("- Groups defined: %d", n_distinct(group_coherence$group)),
+      sprintf("- Group × country pairs assessed: %d", nrow(group_coherence)),
+      sprintf("- Divergent groups (mixed direction): %d",
+              sum(group_coherence$coherence_flag == "DIVERGENT")),
+      sprintf("- Cross-group divergences flagged: %d",
+              nrow(cross_group)),
+      sprintf("- Cross-group, opposite direction: %d",
+              if (nrow(cross_group) > 0) sum(cross_group$opposite) else 0)
+    )
+  } else "- Concept group analysis not run (no concept_groups.yml found)",
+  "",
+  "## Top Divergent Concept Groups",
+  if (nrow(group_coherence) > 0 &&
+      any(group_coherence$coherence_flag == "DIVERGENT")) {
+    group_coherence %>%
+      filter(coherence_flag == "DIVERGENT") %>%
+      arrange(desc(sd_slope)) %>%
+      head(10) %>%
+      mutate(line = sprintf(
+        "- %s | %s: mean slope = %.3f, rising=[%s], falling=[%s]",
+        country, group, mean_slope, rising_vars, falling_vars
+      )) %>%
+      pull(line)
+  } else "- None found",
+  "",
+  "## Top Cross-Group Divergences (opposite direction)",
+  if (nrow(cross_group) > 0 && any(cross_group$opposite)) {
+    cross_group %>%
+      filter(opposite) %>%
+      head(10) %>%
+      mutate(line = sprintf(
+        "- %s: [%s] %s (%.3f) vs [%s] %s (%.3f) | Δ=%.3f",
+        country, group1, direction1, slope1, group2, direction2, slope2, slope_diff
+      )) %>%
+      pull(line)
+  } else "- None found",
+  "",
   "## Files",
   sprintf("- %s/outlier_slopes.csv", OUTPUT_DIR),
   sprintf("- %s/structural_breaks.csv", OUTPUT_DIR),
   sprintf("- %s/divergent_pairs.csv", OUTPUT_DIR),
   sprintf("- %s/acceleration.csv", OUTPUT_DIR),
+  sprintf("- %s/slope_groups.csv", OUTPUT_DIR),
+  sprintf("- %s/slope_divergence.csv", OUTPUT_DIR),
   sprintf("- %s/heatmap_slopes.png", OUTPUT_DIR),
   "",
   "## REMINDER",
-  "These are PUZZLES, not findings. Each outlier needs:",
+  "These are PUZZLES, not findings. Each outlier or divergent group needs:",
   "1. A check of the political timeline — is there a real-world explanation?",
   "2. A check of survey methodology — did sampling/questions change?",
   "3. A theoretical framework — why would this pattern exist?",

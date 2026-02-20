@@ -1,0 +1,188 @@
+# concept_groups.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Concept group definitions for slope_prospector.R group-coherence analysis.
+#
+# Purpose: Group theoretically related variables so the prospector can detect
+#   whether a concept is moving coherently (all variables shift together) or
+#   divergently (sister variables pull in opposite directions — which is where
+#   the interesting stories live).
+#
+# Usage: Edit these groups freely as your theoretical framework develops.
+#   The prospector will warn you at runtime if a variable name here does not
+#   appear in the data — that usually means a typo or the variable is absent
+#   for the current survey/wave set.
+#
+# Format: Each group is a named list of harmonized variable IDs (matching the
+#   `id:` field in the YAML specs under src/config/abs/harmonize_validated/).
+# ─────────────────────────────────────────────────────────────────────────────
+
+concept_groups:
+
+  # ── INSTITUTIONAL TRUST: EXECUTIVE BRANCH ──────────────────────────────────
+  # How much the public trusts the core executive and enforcement apparatus.
+  # A coherent decline here is the classic legitimacy crisis signal.
+  institutional_trust_executive:
+    - trust_national_government
+    - trust_local_government
+    - trust_civil_service
+    - trust_military
+    - trust_president
+    - trust_police
+
+  # ── INSTITUTIONAL TRUST: INTERMEDIARY / CHECKS-AND-BALANCES ───────────────
+  # Legislatures, courts, parties, media. When this group diverges from
+  # executive trust, it can signal selective legitimation or partisan sorting.
+  institutional_trust_intermediary:
+    - trust_parliament
+    - trust_political_parties
+    - trust_courts
+    - trust_election_commission
+    - trust_newspapers
+    - trust_television
+    - trust_ngos
+
+  # ── CORRUPTION PERCEPTIONS ─────────────────────────────────────────────────
+  # Direct assessments of corruption and anti-corruption effort.
+  # Watch for divergence between experienced corruption (corrupt_witnessed)
+  # and perceived systemic corruption — that gap is theoretically important.
+  corruption:
+    - corrupt_national_govt
+    - corrupt_local_govt
+    - corrupt_witnessed
+    - corrupt_better_than_before
+    - govt_anticorrupt_effort
+
+  # ── ACCOUNTABILITY PERCEPTIONS ─────────────────────────────────────────────
+  # Whether citizens believe the system provides meaningful accountability.
+  # Divergence within this group (e.g., elections seen as real choice but
+  # courts powerless) reveals selectivity in perceived accountability channels.
+  accountability_perceptions:
+    - gov_no_accountability_between_elections
+    - gov_elections_make_responsive
+    - gov_legislature_oversight
+    - gov_leaders_abuse_power
+    - gov_courts_powerless
+    - gov_remove_through_elections
+    - gov_elections_real_choice
+    - gov_enforce_laws
+    - gov_opposition_opportunities
+
+  # ── GOVERNMENT RESPONSIVENESS (POLITICAL ATTITUDES MODULE) ────────────────
+  # Perceived responsiveness and information transparency of government.
+  # These are the "sibling" variables to accountability — divergence between
+  # responsiveness and information-sharing is theoretically interesting.
+  government_responsiveness:
+    - govt_responds_people
+    - govt_withholds_info
+    - gov_sat_national
+    - sat_president_govt
+
+  # ── RULE OF LAW / EQUALITY UNDER THE STATE ────────────────────────────────
+  rule_of_law:
+    - gov_economic_equality
+    - gov_ethnic_equality
+    - gov_free_to_organize
+    - rich_poor_treated_equally
+    - gov_basic_necessities
+
+  # ── POLITICAL EFFICACY ─────────────────────────────────────────────────────
+  # Internal and external efficacy. A divergence here — e.g., people feel
+  # capable but believe they have no influence — maps onto alienation theory.
+  political_efficacy:
+    - efficacy_no_influence
+    - efficacy_politics_complicated
+    - efficacy_ability_participate
+    - democracy_efficacy
+
+  # ── DEMOCRACY SUPPORT (NORMATIVE) ─────────────────────────────────────────
+  # Whether citizens prefer and value democracy in principle.
+  democracy_support_normative:
+    - dem_always_preferable
+    - dem_best_form
+    - dem_want_democratic
+    - democracy_suitability
+
+  # ── DEMOCRACY ASSESSMENT (EMPIRICAL) ──────────────────────────────────────
+  # How democratic the respondent thinks their country currently is.
+  # Watch for divergence from normative support — the "aspiration gap."
+  democracy_assessment_empirical:
+    - dem_extent_current
+    - dem_country_present_govt
+    - dem_country_future
+    - democracy_satisfaction
+
+  # ── AUTHORITARIAN SYSTEM SUPPORT ──────────────────────────────────────────
+  # Support for non-democratic alternatives. Rising here while democracy
+  # support stays flat is the classic democratic erosion footprint.
+  authoritarian_support:
+    - strongman_rule
+    - single_party_rule
+    - military_rule
+    - expert_rule
+
+  # ── ECONOMIC EVALUATIONS ──────────────────────────────────────────────────
+  # Retrospective and prospective economic assessments.
+  # Divergence between national and family evaluations signals distributional
+  # concerns (the "pocketbook vs. sociotropic" split).
+  economic_evaluations:
+    - econ_national_now
+    - econ_family_now
+    - econ_change_1yr
+    - econ_family_change
+    - econ_outlook_1yr
+    - econ_family_outlook
+
+  # ── SOCIAL TRUST ──────────────────────────────────────────────────────────
+  social_trust:
+    - trust_generalized_binary
+    - trust_generalized_ordinal
+    - trust_relatives
+    - trust_neighbors
+    - trust_acquaintances
+    - trust_strangers
+    - trust_govt_do_right
+
+  # ── POLITICAL ACTION / ENGAGEMENT ─────────────────────────────────────────
+  # Formal and informal political participation.
+  political_action:
+    - action_demonstration
+    - action_petition
+    - action_contact_elected
+    - action_contact_media
+    - action_internet_political
+    - action_join_cause
+    - action_risky_political
+    - voted_last_election
+
+  # ── MEDIA AND INFORMATION ACCESS ──────────────────────────────────────────
+  media_and_information:
+    - political_interest
+    - pol_discuss
+    - pol_news_follow
+    - pol_news_television
+    - pol_news_newspaper
+    - pol_news_radio
+    - internet_access_home
+    - internet_access_mobile
+    - news_internet
+    - sm_use_any
+
+  # ── SOCIAL MEDIA POLITICAL USE ────────────────────────────────────────────
+  social_media_political:
+    - sm_express_political
+    - sm_express_political_binary
+    - sm_organize_politics
+    - sm_share_news
+    - internet_political_info
+    - action_internet_political
+
+  # ── REGIME COMPARATIVE RATINGS ────────────────────────────────────────────
+  # Relative assessments of other systems (China, USA, India, Japan models).
+  # Interesting to track alongside authoritarian_support.
+  regime_comparative:
+    - dem_rating_china
+    - dem_rating_india
+    - dem_rating_japan
+    - dem_rating_usa
+    - intl_china_country_influence_valence
+    - intl_usa_country_influence_valence
