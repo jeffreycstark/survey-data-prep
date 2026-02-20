@@ -1545,13 +1545,230 @@ extract_year_from_date <- function(x,
 # recode_kamos_gender_w1
 # KAMOS Wave 1 codes gender as 1=female, 2=male.
 # Wave 4 uses the reverse (1=male, 2=female).
-# This function standardises W1 to match W4: 1=male, 2=female.
+# This function standardises W1 to match 1=male, 0=female.
 recode_kamos_gender_w1 <- function(x, data = NULL, var_name = NULL,
                                    validate_all = NULL) {
   x <- as.numeric(x)
   dplyr::case_when(
-    x == 1L ~ 2L,   # female → 2
+    x == 1L ~ 0L,   # female → 0
     x == 2L ~ 1L,   # male   → 1
     TRUE    ~ NA_integer_
   )
+}
+
+# ------------------------------------------------------------------------------
+# GENERAL BINARY RECODING: 1=Yes, 2=No -> 1=Yes, 0=No
+# ------------------------------------------------------------------------------
+
+#' Recode standard 1=Yes, 2=No binary scale to 1=Yes, 0=No
+#'
+#' @param x Numeric vector
+#' @param data Full wave data frame
+#' @param var_name Variable name
+#' @param missing_codes Values to treat as NA
+#' @param validate_all Optional patterns for label validation
+#' @return Numeric vector (0=No, 1=Yes, others=NA)
+recode_binary_yes_no <- function(x,
+                                 data = NULL,
+                                 var_name = NULL,
+                                 missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
+                                 validate_all = NULL) {
+  # ---- semantic validation (optional) ----
+  if (!is.null(validate_all)) {
+    if (is.null(data) || is.null(var_name)) {
+      stop("❌ validate_all requires both `data` and `var_name`")
+    }
+    qtext <- attr(data[[var_name]], "label")
+    if (!is.null(qtext)) {
+      for (pattern in validate_all) {
+        if (!grepl(pattern, qtext, ignore.case = TRUE)) {
+          stop(glue::glue("❌ {var_name}: expected concept '{pattern}' not found in label '{qtext}'"))
+        }
+      }
+    }
+  }
+
+  # ---- recode logic ----
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,  # Yes -> 1
+    x == 2 ~ 0,  # No  -> 0
+    TRUE ~ NA_real_
+  )
+}
+
+#' Recode gender to 1=Male, 0=Female
+recode_gender_binary <- function(x,
+                                 missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
+                                 ...) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,  # Male -> 1
+    x == 2 ~ 0,  # Female -> 0
+    TRUE ~ NA_real_
+  )
+}
+
+#' Recode urban/rural to 1=Urban, 0=Rural
+#'
+#' Default (W1-W3): 1=Urban, 2=Rural
+#' Target: 1=Urban, 0=Rural
+recode_urban_rural_binary <- function(x,
+                                      missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
+                                      ...) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,  # Urban -> 1
+    x == 2 ~ 0,  # Rural -> 0
+    TRUE ~ NA_real_
+  )
+}
+
+#' Recode urban/rural (reversed waves) to 1=Urban, 0=Rural
+#'
+#' Reversed (W4-W6): 1=Rural, 2=Urban
+#' Target: 1=Urban, 0=Rural
+recode_urban_rural_reversed_binary <- function(x,
+                                               missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
+                                               ...) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 0,  # Rural -> 0
+    x == 2 ~ 1,  # Urban -> 1
+    TRUE ~ NA_real_
+  )
+}
+
+#' Recode 1/2 binary to 0/1 (generic mapping 1->0, 2->1)
+#'
+#' Useful for "No/Yes" where 1=No, 2=Yes or "Alone/Others" where 1=Alone, 2=Others
+recode_binary_01 <- function(x,
+                             missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
+                             ...) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 0,
+    x == 2 ~ 1,
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# SCALE CONVERSION FUNCTIONS
+# ==============================================================================
+
+#' Recode 5-point to 4-point scale
+#'
+#' Linear rescaling: (x-1) * (4/5) + 1 with rounding
+#' @param x Numeric vector (1-5)
+#' @return Rescaled numeric vector (1-4)
+recode_5pt_to_4pt <- function(x, ...) {
+  round((as.numeric(x) - 1) * (4 / 5) + 1, 0)
+}
+
+#' Recode 3-point to 4-point scale
+#'
+#' Linear rescaling: (x-1) * (4/3) + 1
+#' @param x Numeric vector (1-3)
+#' @return Rescaled numeric vector (1-4)
+recode_3pt_to_4pt <- function(x, ...) {
+  round((as.numeric(x) - 1) * (4 / 3) + 1, 0)
+}
+
+#' Recode 6-point to 4-point scale
+#'
+#' Linear rescaling: (x-1) * (4/6) + 1 with rounding
+#' @param x Numeric vector (1-6)
+#' @return Rescaled numeric vector (1-4)
+recode_6pt_to_4pt <- function(x, ...) {
+  round((as.numeric(x) - 1) * (4 / 6) + 1, 0)
+}
+
+#' Recode 10-point to 4-point scale
+#'
+#' Linear rescaling: (x-1) * (4/10) + 1 with rounding
+#' Maps 1-10 scale to 1-4 scale proportionally
+#' @param x Numeric vector (1-10)
+#' @return Rescaled numeric vector (1-4)
+recode_10pt_to_4pt <- function(x, ...) {
+  round((as.numeric(x) - 1) * (4 / 10) + 1, 0)
+}
+
+# ==============================================================================
+# IDENTIFICATION AND VALIDATION FUNCTIONS
+# ==============================================================================
+
+#' Identify and preserve 4-point scale values
+#'
+#' Remove NA codes (keep only 1-4 values) without transforming
+#' Converts out-of-range values to NA_real_
+#' @param x Numeric vector containing 1-4 and missing codes
+#' @return Numeric vector with missing codes converted to NA_real_
+safe_identify_4pt <- function(x, ...) {
+  ifelse(x >= 1 & x <= 4, x, NA_real_)
+}
+
+#' Identify and preserve 5-point scale values
+#'
+#' Remove NA codes (keep only 1-5 values) without transforming
+#' Converts out-of-range values to NA_real_
+#' @param x Numeric vector containing 1-5 and missing codes
+#' @return Numeric vector with missing codes converted to NA_real_
+safe_identify_5pt <- function(x, ...) {
+  ifelse(x >= 1 & x <= 5, x, NA_real_)
+}
+
+#' Identify and preserve 6-point scale values
+#'
+#' Remove NA codes (keep only 1-6 values) without transforming
+#' Converts out-of-range values to NA_real_
+#' @param x Numeric vector containing 1-6 and missing codes
+#' @return Numeric vector with missing codes converted to NA_real_
+safe_identify_6pt <- function(x, ...) {
+  ifelse(x >= 1 & x <= 6, x, NA_real_)
+}
+
+#' Handle W6 extended corruption scale (1-5 with special codes)
+#'
+#' W6 has extended scale with:
+#'   1 = Hardly anyone involved
+#'   2 = Not a lot of officials are corrupt
+#'   3 = Most officials are corrupt
+#'   4 = Almost everyone is corrupt
+#'   5 = No one is involved (rare response)
+#'   0 = Not applicable
+#'
+#' Map to standard 1-4 scale by treating 5 and 0 as NA
+#' @param x Numeric vector (1-5 with 0=N/A)
+#' @return Numeric vector with 5→NA, 0→NA, keeping 1-4
+harmonize_w6_corruption <- function(x, ...) {
+  # Map 5 (No one involved) and 0 (N/A) to NA
+  # Keep 1-4 as-is
+  ifelse(x >= 1 & x <= 4, x, NA_real_)
+}
+
+#' Validate harmonization
+#'
+#' Check that harmonized vector has expected range and no invalid values
+#' @param x Harmonized vector
+#' @param expected_min Expected minimum value
+#' @param expected_max Expected maximum value
+#' @param var_name Variable name (for messages)
+#' @return Logical TRUE/FALSE with warnings if issues found
+validate_harmonization <- function(x, expected_min = 1, expected_max = 4, var_name = "variable") {
+  valid_count <- sum(!is.na(x))
+  missing_count <- sum(is.na(x))
+  out_of_range <- sum(!is.na(x) & (x < expected_min | x > expected_max))
+
+  cat(sprintf("\n%s:\n", var_name))
+  cat(sprintf("  Valid: %d | Missing: %d | Out of range: %d\n",
+              valid_count, missing_count, out_of_range))
+
+  if (out_of_range > 0) {
+    cat(sprintf("  ⚠️  Found %d out-of-range values\n", out_of_range))
+    return(FALSE)
+  } else {
+    cat("  ✅ All values within expected range\n")
+    return(TRUE)
+  }
 }

@@ -32,17 +32,18 @@ variables:
       w6: V24
       w7: Q57
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Most people can be trusted"
-        2: "Need to be very careful"
+        0: "Need to be very careful"
     harmonize:
       default:
-        method: identity
-        note: "Both waves coded 1=Trusted, 2=Careful; no reversal needed"
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "Recode 1=Trusted, 2=Careful to 1=Trusted, 0=Careful"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6, w7]
           phrase: "most people.*trusted|careful.*dealing"

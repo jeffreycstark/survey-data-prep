@@ -72,39 +72,40 @@ variables:
       w6: q22
     # WARNING: W1 has 3 categories (1=Careful, 2=Trusted, 3=Both)
     # WARNING: W5 has 3 categories (1=Trusted, 2=Careful, 3=Depends)
-    # W2 is reversed (1=Careful, 2=Trusted) vs W3-W6 (1=Trusted, 2=Careful)
+    # Target scale: 1=Trusted, 0=Careful
 
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Most people can be trusted"
-        2: "Must be very careful"
+        0: "Must be very careful"
     harmonize:
       default:
-        method: identity
-        note: "W3, W4, W6 coded 1=Trusted, 2=Careful"
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "W3, W4, W6 coded 1=Trusted, 2=Careful; map to 1/0"
       exceptions:
         w1:
           method: recode
           mapping:
-            1: 2
-            2: 1
+            1: 0  # Careful -> 0
+            2: 1  # Trusted -> 1
             3: null
-          note: "W1 has 3 categories: 1=Careful→2, 2=Trusted→1, 3=Both→NA"
+          note: "W1 has 3 categories: 1=Careful→0, 2=Trusted→1, 3=Both→NA"
         w2:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W2 coded 1=Careful, 2=Trusted; reverse to match W3-W6"
+          fn: recode_binary_01
+          note: "W2 coded 1=Careful, 2=Trusted; map to 0/1"
         w5:
           method: recode
           mapping:
-            1: 1
-            2: 2
+            1: 1  # Trusted -> 1
+            2: 0  # Careful -> 0
             3: null
-          note: "W5 has 3 categories: 1=Trusted→1, 2=Careful→2, 3=Depends→NA"
+          note: "W5 has 3 categories: 1=Trusted→1, 2=Careful→0, 3=Depends→NA"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "most people.*trusted|careful.*dealing"

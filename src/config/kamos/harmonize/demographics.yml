@@ -21,7 +21,7 @@ missing_conventions:
 variables:
   - id: gender
     concept: demographics
-    description: "Respondent gender (1=male, 2=female)"
+    description: "Respondent gender (1=male, 0=female)"
     type: categorical
     source:
       w1: gender
@@ -29,17 +29,18 @@ variables:
     scale:
       labels:
         1: "male"
-        2: "female"
+        0: "female"
     harmonize:
       w1:
         method: r_function
         fn: recode_kamos_gender_w1
-        note: "W1 codes 1=female, 2=male — recoded to 1=male, 2=female"
+        note: "W1 codes 1=female, 2=male — recoded to 1=male, 0=female"
       w4:
-        method: identity
-        note: "W4 codes already 1=male, 2=female"
+        method: r_function
+        fn: recode_gender_binary
+        note: "W4 codes 1=male, 2=female — recoded to 1=male, 0=female"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
 
   - id: age
     concept: demographics

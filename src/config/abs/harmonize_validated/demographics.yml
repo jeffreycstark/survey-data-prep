@@ -205,16 +205,17 @@ variables:
       w5: SE9
       w6: SE9
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w3, w4, w5, w6]
           phrase: "employed"
@@ -260,16 +261,17 @@ variables:
       w5: SE2
       w6: se2
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Male"
-        2: "Female"
+        0: "Female"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_gender_binary
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "gender"
@@ -455,16 +457,17 @@ variables:
       w5: SE10
       w6: SE10
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w3, w4, w5, w6]
           phrase: "main earner"
@@ -680,30 +683,31 @@ variables:
       w5: Level
       w6: level
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Urban"
-        2: "Rural"
+        0: "Rural"
     harmonize:
       default:
-        method: identity
-        note: "W1-W3 coded 1=urban, 2=rural"
+        method: r_function
+        fn: recode_urban_rural_binary
+        note: "W1-W3 coded 1=urban, 2=rural; map to 1=Urban, 0=Rural"
       exceptions:
         w4:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W4 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+          fn: recode_urban_rural_reversed_binary
+          note: "W4 coded 1=Rural, 2=Urban; map to 1=Urban, 0=Rural"
         w5:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W5 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+          fn: recode_urban_rural_reversed_binary
+          note: "W5 coded 1=Rural, 2=Urban; map to 1=Urban, 0=Rural"
         w6:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W6 coded 1=Rural, 2=Urban; reverse to 1=Urban, 2=Rural"
+          fn: recode_urban_rural_reversed_binary
+          note: "W6 coded 1=Rural, 2=Urban; map to 1=Urban, 0=Rural"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "urban|rural"

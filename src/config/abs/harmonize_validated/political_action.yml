@@ -801,16 +801,17 @@ variables:
       w5: q35
       w6: q35
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "campaign.*rally|rally.*campaign|meeting.*rally"
@@ -827,22 +828,23 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*elected"
   # ===========================================================================
   # GROUP 8: Wave 1 Contact Mode - Alone or With Others
-  # Binary: 1=No (alone), 2=Yes (with others)
+  # Binary: 0=No (alone), 1=Yes (with others)
   # ===========================================================================
   - id: contact_mode_govt
     concept: political_action
@@ -857,16 +859,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*government"
@@ -883,16 +886,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*higher level"
@@ -909,16 +913,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*media"
@@ -935,16 +940,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*non-government"
@@ -961,16 +967,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*other people"
@@ -987,16 +994,17 @@ variables:
       w6: null
     note: "Wave 1 only - follow-up to contact actions"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No (alone)"
-        2: "Yes (with others)"
+        0: "No (alone)"
+        1: "Yes (with others)"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "alone.*others.*political parties"
@@ -1041,16 +1049,17 @@ variables:
       w6: null
     note: "Wave 4 - electoral campaign activity"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w4]
           phrase: "help.*party|work.*candidate"
@@ -1068,16 +1077,17 @@ variables:
       w6: null
     note: "Wave 1 only - cf. worked_for_candidate for w6"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "help.*party|support.*candidate"
@@ -1130,16 +1140,17 @@ variables:
       w6: null
     note: "Wave 4 - electoral campaign activity"
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w4]
           phrase: "persuade.*vote"
@@ -1155,16 +1166,17 @@ variables:
       w5: q36
       w6: q36
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "persuade.*vote"
@@ -1350,16 +1362,17 @@ variables:
       w5: q37
       w6: q37
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w5, w6]
           phrase: "help.*party|work.*candidate"

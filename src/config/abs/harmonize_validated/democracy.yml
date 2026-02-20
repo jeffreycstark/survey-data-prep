@@ -494,29 +494,31 @@ variables:
       w4: q126
       w5: q133
       w6: q125
-    # NOTE: W1-W2 reversed from W3-W6
+    # NOTE: W1-W2 coded 1=Cannot, 2=Capable; W3-W6 coded 1=Capable, 2=Cannot
+    # Target scale: 1=Capable, 0=Cannot
 
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Democracy is capable of solving problems"
-        2: "Democracy cannot solve problems"
+        0: "Democracy cannot solve problems"
     harmonize:
       default:
-        method: identity
-        note: "W3-W6 already coded 1=Capable, 2=Cannot"
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "W3-W6 coded 1=Capable, 2=Cannot; map to 1/0"
       exceptions:
         w1:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W1 coded 1=Cannot, 2=Capable; reverse to match W3-W6"
+          fn: recode_binary_01
+          note: "W1 coded 1=Cannot, 2=Capable; map to 0/1"
         w2:
           method: r_function
-          fn: safe_reverse_2pt
-          note: "W2 coded 1=Cannot, 2=Capable; reverse to match W3-W6"
+          fn: recode_binary_01
+          note: "W2 coded 1=Cannot, 2=Capable; map to 0/1"
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "comes closer"

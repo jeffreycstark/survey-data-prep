@@ -22,16 +22,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w4]
           phrase: "internet.*home|access.*internet"
@@ -47,16 +48,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w4]
           phrase: "internet.*mobile|mobile.*internet"
@@ -324,16 +326,17 @@ variables:
       w5: q50
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w4, w5]
           phrase: "social media"
@@ -349,16 +352,17 @@ variables:
       w5: null
       w6: q51a_facebook
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "facebook"
@@ -374,16 +378,17 @@ variables:
       w5: null
       w6: q51c_instagram
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "instagram"
@@ -399,16 +404,17 @@ variables:
       w5: null
       w6: q51g_philippines_messenger
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "messenger"
@@ -424,16 +430,17 @@ variables:
       w5: null
       w6: q51e_tiktok
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "tiktok"
@@ -449,16 +456,17 @@ variables:
       w5: null
       w6: q51b_twitter
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "twitter"
@@ -474,16 +482,17 @@ variables:
       w5: null
       w6: q51e_whatsapp
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "whatsapp"
@@ -499,16 +508,17 @@ variables:
       w5: null
       w6: q51a_youtube
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
         1: "Yes"
-        2: "No"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_yes_no
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w6]
           phrase: "youtube"

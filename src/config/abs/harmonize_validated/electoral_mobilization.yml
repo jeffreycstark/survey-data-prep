@@ -20,16 +20,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*clan|senior.*vote"
@@ -45,16 +46,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*community|leader.*vote"
@@ -70,16 +72,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*owner|firm.*vote"
@@ -100,16 +103,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*family|family.*vote"
@@ -125,16 +129,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*government.*know|official.*know.*vote"
@@ -150,16 +155,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*government|official.*vote"
@@ -175,16 +181,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*neighbor|friend.*vote"
@@ -200,16 +207,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*organization|member.*official.*vote"
@@ -225,16 +233,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*other"
@@ -250,16 +259,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*party.*know|candidate.*activist.*know"
@@ -275,16 +285,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*party|candidate.*activist.*vote"
@@ -300,16 +311,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "ask.*vote.*superior|work.*school.*vote"
@@ -325,16 +337,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*clan|senior.*influential"
@@ -350,16 +363,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*community|leader.*influential"
@@ -375,16 +389,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*owner|firm.*influential"
@@ -405,16 +420,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*family"
@@ -430,16 +446,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*government.*know|official.*know.*influential"
@@ -455,16 +472,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*government|official.*influential"
@@ -480,16 +498,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*neighbor|friend.*influential"
@@ -505,16 +524,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*organization|member.*official.*influential"
@@ -530,16 +550,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*other"
@@ -555,16 +576,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*party.*know|candidate.*activist.*know.*influential"
@@ -580,16 +602,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*party|candidate.*activist.*influential"
@@ -605,16 +628,17 @@ variables:
       w5: null
       w6: null
     scale:
-      min: 1
-      max: 2
+      min: 0
+      max: 1
       labels:
-        1: "No"
-        2: "Yes"
+        1: "Yes"
+        0: "No"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_binary_01
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
       validate:
         - waves: [w1]
           phrase: "influential.*superior|work.*school.*influential"
