@@ -1,0 +1,95 @@
+# concept_groups_kamos.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Concept group definitions for slope_prospector.R — KAMOS dataset.
+#
+# Variable names follow the KAMOS harmonization spec in
+# src/config/kamos/harmonize/. Trust variables use a 0-10 scale (not 1-4).
+#
+# NOTE: KAMOS currently has waves 1 (2016) and 4 (2019) only. With 2 waves,
+# the slope is purely directional (± movement, no rate information).
+# Group coherence here means: did all variables in the group move the same
+# direction between 2016 and 2019?
+# ─────────────────────────────────────────────────────────────────────────────
+
+concept_groups:
+
+  # ── INSTITUTIONAL TRUST: EXECUTIVE / GOVERNMENT ────────────────────────────
+  # Central and local government. In ABS Korea both fell; KAMOS lets us see
+  # whether the same decline holds with a Korea-only sample.
+  institutional_trust_executive:
+    - trust_central_govt
+    - trust_local_govt
+
+  # ── INSTITUTIONAL TRUST: LEGISLATIVE ───────────────────────────────────────
+  # National Assembly + legislature (may overlap depending on wave coding).
+  institutional_trust_legislative:
+    - trust_national_assembly
+    - trust_legislature
+
+  # ── INSTITUTIONAL TRUST: CIVIL SOCIETY ─────────────────────────────────────
+  # Non-state institutions. Divergence here (e.g. media falling while NGOs
+  # hold) maps onto selective de-legitimation patterns.
+  institutional_trust_civil_society:
+    - trust_media
+    - trust_ngo
+    - trust_private_enterprise
+    - trust_religious
+
+  # ── SOCIAL TRUST ────────────────────────────────────────────────────────────
+  # Generalised social trust — society-level and citizen-level.
+  social_trust:
+    - trust_society
+    - trust_citizens
+
+  # ── ECONOMIC EVALUATIONS: PRESENT ──────────────────────────────────────────
+  # Sociotropic (national) and pocketbook (family) economic assessments.
+  # Note: raw coding 1=very good, 4=poor (higher=worse); normalization handles
+  # direction so higher normalized value = better economic assessment.
+  economic_present:
+    - econ_national
+    - econ_family
+
+  # ── ECONOMIC EQUALITY AND SOCIAL CONFLICT ──────────────────────────────────
+  # Perceptions of distributional fairness and social tensions.
+  # Divergence between these two is theoretically interesting: conflict can
+  # rise even when equality perceptions are stable.
+  economic_equality_conflict:
+    - econ_equality
+    - social_conflict_severity
+
+  # ── SOCIAL MOBILITY ─────────────────────────────────────────────────────────
+  # Own mobility vs. expected mobility for next generation. A classic
+  # divergence: people may feel they have done OK while pessimistic about
+  # their children — the "last generation of upward mobility" pattern.
+  social_mobility:
+    - social_mobility
+    - social_mobility_next_gen
+
+  # ── POLITICAL ATTITUDES ─────────────────────────────────────────────────────
+  # Satisfaction, system preference, and ideological position.
+  # Note: pol_satisfaction is coded 1=satisfied, 4=unsatisfied (higher=worse);
+  # normalization inverts direction so coherence detection works correctly.
+  political_attitudes:
+    - pol_satisfaction
+    - pol_system_pref
+    - ideology
+
+  # ── NATIONAL IDENTITY AND SUBJECTIVE STATUS ────────────────────────────────
+  # Pride and self-placement on the social ladder.
+  national_identity:
+    - national_pride
+    - subjective_class
+
+  # ── ELECTORAL PARTICIPATION ─────────────────────────────────────────────────
+  # Voted in presidential, general, and local elections.
+  # W1 and W4 cover different electoral cycles so interpret with caution.
+  electoral_participation:
+    - voted_presidential
+    - voted_general
+    - voted_local
+
+  # ── MEDIA ENGAGEMENT ────────────────────────────────────────────────────────
+  # News interest (only one variable available in KAMOS — single-item group,
+  # useful as a cross-group comparison anchor).
+  media_engagement:
+    - news_interest
