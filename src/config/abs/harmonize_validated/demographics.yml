@@ -648,7 +648,8 @@ variables:
     description: "Subjective social status (1=lowest, 10=highest)"
     type: ordinal
     source:
-      w1: se017
+      w1: null  # se017 is a DIFFERENT question: 5-category social CLASS (1=Upper, 5=Lower),
+                # direction inverted vs. the 10-pt status ladder in W2-6. DO NOT harmonize.
       w2: se13
       w3: se12
       w4: se12
@@ -666,7 +667,7 @@ variables:
     qc:
       valid_range: [1, 10]
       validate:
-        - waves: [w1, w2, w3, w4, w5, w6]
+        - waves: [w2, w3, w4, w5, w6]
           phrase: "social status|place.*family"
   # ===========================================================================
   # GROUP 1: Basic Demographics
