@@ -43,7 +43,7 @@ if (!exists("VARS_OF_INTEREST"))    VARS_OF_INTEREST    <- NULL
 # Example: EXCLUDE_VARS <- c("religion", "idnumber", "problem_most_important")
 if (!exists("EXCLUDE_VARS"))        EXCLUDE_VARS        <- c(
   "religion", "idnumber", "problem_most_important",
-  "int_year", "int_month"
+  "int_year", "int_month", "sample_elite_mass"
 )
 
 # Path to concept group definitions YAML

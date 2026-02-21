@@ -67,15 +67,22 @@ concept_groups:
     - gov_enforce_laws
     - gov_opposition_opportunities
 
-  # ── GOVERNMENT RESPONSIVENESS (POLITICAL ATTITUDES MODULE) ────────────────
-  # Perceived responsiveness and information transparency of government.
-  # These are the "sibling" variables to accountability — divergence between
-  # responsiveness and information-sharing is theoretically interesting.
+  # ── DEMOCRATIC SATISFACTION ────────────────────────────────────────────────
+  # Pure satisfaction measures — the outcome variable for the output legitimacy
+  # argument. Kept separate from responsiveness perceptions so cross-group
+  # detection can test whether satisfaction tracks economics or democratic quality.
+  democratic_satisfaction:
+    - gov_sat_national
+    - sat_president_govt
+    - democracy_satisfaction
+
+  # ── GOVERNMENT RESPONSIVENESS ──────────────────────────────────────────────
+  # Perceived responsiveness and information transparency — distinct from
+  # satisfaction. Divergence between these two groups is theoretically important:
+  # satisfaction rising while responsiveness falls = output legitimacy.
   government_responsiveness:
     - govt_responds_people
     - govt_withholds_info
-    - gov_sat_national
-    - sat_president_govt
 
   # ── RULE OF LAW / EQUALITY UNDER THE STATE ────────────────────────────────
   rule_of_law:
@@ -121,10 +128,14 @@ concept_groups:
     - expert_rule
 
   # ── ECONOMIC EVALUATIONS: PRESENT ─────────────────────────────────────────
-  # Current conditions (sociotropic vs. pocketbook split detectable here).
+  # Current conditions — sociotropic (national) vs. pocketbook (family).
+  # Also includes subjective wellbeing measures that likely co-move with
+  # satisfaction if the output legitimacy hypothesis holds.
   economic_present:
     - econ_national_now
     - econ_family_now
+    - hh_income_sat
+    - subjective_social_status
 
   # ── ECONOMIC EVALUATIONS: RETROSPECTIVE ───────────────────────────────────
   # How things have changed vs. the past. Divergence from present signals
