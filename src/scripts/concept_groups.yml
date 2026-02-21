@@ -120,15 +120,23 @@ concept_groups:
     - military_rule
     - expert_rule
 
-  # ── ECONOMIC EVALUATIONS ──────────────────────────────────────────────────
-  # Retrospective and prospective economic assessments.
-  # Divergence between national and family evaluations signals distributional
-  # concerns (the "pocketbook vs. sociotropic" split).
-  economic_evaluations:
+  # ── ECONOMIC EVALUATIONS: PRESENT ─────────────────────────────────────────
+  # Current conditions (sociotropic vs. pocketbook split detectable here).
+  economic_present:
     - econ_national_now
     - econ_family_now
+
+  # ── ECONOMIC EVALUATIONS: RETROSPECTIVE ───────────────────────────────────
+  # How things have changed vs. the past. Divergence from present signals
+  # whether people think conditions are improving or just tolerable.
+  economic_retrospective:
     - econ_change_1yr
     - econ_family_change
+
+  # ── ECONOMIC EVALUATIONS: OUTLOOK ─────────────────────────────────────────
+  # Prospective assessments. In Korea, these are declining while present
+  # evaluations stay flat — the "stable now, worried about tomorrow" pattern.
+  economic_outlook:
     - econ_outlook_1yr
     - econ_family_outlook
 
