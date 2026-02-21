@@ -50,6 +50,15 @@ if (!exists("EXCLUDE_VARS"))        EXCLUDE_VARS        <- c(
 # Default: concept_groups.yml in the same directory as this script
 if (!exists("CONCEPT_GROUPS_PATH")) CONCEPT_GROUPS_PATH <- "src/scripts/concept_groups.yml"
 
+# Groups to exclude from CROSS-GROUP divergence comparison only.
+# These groups still appear in the within-group coherence table (slope_groups.csv)
+# but are omitted from cross_group pairing so they don't dominate the divergence
+# table when their slopes are extreme outliers (e.g. sharp participation declines).
+if (!exists("EXCLUDE_FROM_CROSS_GROUP")) EXCLUDE_FROM_CROSS_GROUP <- c(
+  "political_action_contacting_protest",
+  "political_action_voting"
+)
+
 # ── 1. LOAD AND PREPARE DATA ─────────────────────────────────────────────────
 
 dir.create(OUTPUT_DIR, recursive = TRUE, showWarnings = FALSE)
@@ -72,6 +81,28 @@ if (!is.null(VARS_OF_INTEREST)) {
   harmonized_data <- harmonized_data %>%
     filter(variable %in% VARS_OF_INTEREST)
 }
+
+# ── Normalize each variable to [0, 1] ────────────────────────────────────────
+# Slopes are computed on raw means, so variables with wider scales (e.g. 1-10)
+# produce larger raw slopes than variables on narrower scales (e.g. 1-4) even
+# for identical proportional change. Rescaling to [0,1] using the observed
+# min/max per variable (across all countries and waves) makes slopes comparable:
+# a slope of 0.01 always means "1% of that variable's full observed range per wave."
+harmonized_data <- harmonized_data %>%
+  group_by(variable) %>%
+  mutate(
+    obs_min = min(mean_value, na.rm = TRUE),
+    obs_max = max(mean_value, na.rm = TRUE),
+    mean_value = if_else(
+      obs_max > obs_min,
+      (mean_value - obs_min) / (obs_max - obs_min),
+      0  # constant variable — flat slope regardless
+    )
+  ) %>%
+  select(-obs_min, -obs_max) %>%
+  ungroup()
+
+cat("── Variables normalized to [0, 1] using observed min/max per variable ──\n")
 
 # Quick summary of coverage
 coverage <- harmonized_data %>%
@@ -354,10 +385,22 @@ if (file.exists(CONCEPT_GROUPS_PATH)) {
   group_means <- group_coherence %>%
     select(country, group, mean_slope)
 
-  cross_group <- group_means %>%
+  # Apply cross-group exclusions (groups that still appear in coherence table
+  # but are too extreme to dominate the cross-group comparison)
+  group_means_cg <- group_means %>%
+    filter(!group %in% EXCLUDE_FROM_CROSS_GROUP)
+
+  if (length(EXCLUDE_FROM_CROSS_GROUP) > 0) {
+    excluded <- intersect(EXCLUDE_FROM_CROSS_GROUP, unique(group_means$group))
+    if (length(excluded) > 0)
+      cat(sprintf("Cross-group: excluding %d group(s) from pairing: %s\n",
+                  length(excluded), paste(excluded, collapse=", ")))
+  }
+
+  cross_group <- group_means_cg %>%
     rename(group1 = group, slope1 = mean_slope) %>%
     inner_join(
-      group_means %>% rename(group2 = group, slope2 = mean_slope),
+      group_means_cg %>% rename(group2 = group, slope2 = mean_slope),
       by = "country"
     ) %>%
     filter(group1 < group2) %>%   # unique pairs only
