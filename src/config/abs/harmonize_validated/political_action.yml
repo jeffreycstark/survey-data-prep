@@ -1422,6 +1422,20 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      QUESTION WORDING NON-EQUIVALENCE — W2 vs W3/W4/W5/W6:
+      W2 (q81): "Contacted elected officials or representatives at any level" — broad framing,
+        no motivational qualifier.
+      W3 (q64): "Contacted elected officials or legislative representative because of personal/
+        family/neighborhood problems" — problem-motivated framing, definitionally narrower.
+      W4–W6: Return to broad "at any level" framing (no motivation qualifier).
+      W3 produces substantially lower rates (Cambodia: ~4%) than W2 (~33%) or W4 (~5%).
+      W4 (broad framing) also shows ~5%, confirming the drop is not coding error — W3's
+      problem framing genuinely suppresses reported participation.
+      RECOMMENDED USE: Use W4–W6 as primary cross-wave comparison series. W2 can serve as
+      a pre-collapse baseline in footnotes with explicit caveat that W2/W3 framings differ.
+      W3 rates are interpretable as "problem-motivated contact" not general contact — valid
+      as a trough data point with appropriate labeling.
     harmonize:
       default:
         method: r_function
@@ -1469,6 +1483,24 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      TWO QUESTION WORDING NON-EQUIVALENCES — treat as supplementary to gate_contact_elected:
+      NON-EQUIVALENCE 1 — MOTIVATIONAL FRAMING (W3 only):
+        W2/W4–W6: Broad framing, no motivational qualifier.
+        W3 (q65): "because of personal/family/neighborhood problems" — same problem-motivated
+          framing as W3 elected officials item; definitionally narrower across all contact items.
+      NON-EQUIVALENCE 2 — CONCEPT SHIFT (W2 vs W3/W4 vs W6):
+        W2 (q79): "Contacted government (administrative) official" — administrative/bureaucratic
+          staff (civil servant proper).
+        W3 (q65) / W4 (q70): "Contacted officials at higher level" — escalation framing;
+          measures contact with senior/executive officials, not frontline civil servants.
+        W5 (q71): "Contacted government officials" — intermediate framing.
+        W6 (q69): "Contacted civil servants or officials" — broadest framing, most inclusive.
+      RECOMMENDED USE: Use as supplementary evidence only. gate_contact_elected is the cleaner
+      series for Cambodia analysis (one non-equivalence vs two here). If civil servant contact
+      is substantively required, restrict primary comparison to W5–W6 where framing is closest,
+      and note W2/W3/W4 limitations explicitly. Do not use W3 as a direct comparator to any
+      other wave on this item.
     harmonize:
       default:
         method: r_function
