@@ -1712,6 +1712,25 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      TWO WORDING NON-EQUIVALENCES — W3 problem-framing + W1 minor wording shift:
+      NON-EQUIVALENCE 1 — W3 PROBLEM FRAMING:
+        W3 (q68): "Contacted news media" — q68 is the LAST item in the q64 problem-motivated
+          battery ("because of personal, family, or neighborhood problems, or problems with
+          government officials and policies"). The q69 citizen-action battery begins after q68.
+          W3 media contact rates will be suppressed by the problem-motivation qualifier,
+          same as gate_contact_elected and gate_contact_civil_servant.
+        W4/W5/W6: "Contacted news media" — broad framing, no motivational qualifier.
+      NON-EQUIVALENCE 2 — W1 WORDING SHIFT:
+        W1 (q078): "Contacted media to comment on something?" — adds a purpose qualifier
+          ("to comment") and uses "media" rather than "news media" (slightly broader concept).
+          Minor non-equivalence; direction of bias is unclear.
+        W4/W5/W6: "Contacted news media" — consistent wording.
+      W2: Not available (null).
+      RECOMMENDED USE: W4–W6 are directly comparable and form the clean series (consistent
+      wording, no framing issues). W3 rates are suppressed by problem framing — use as
+      trough evidence with explicit caveat, as for gate_contact_elected. W1 can be included
+      as context but note the wording difference. For Cambodia analysis, W4–W6 are preferred.
     harmonize:
       default:
         method: r_function
