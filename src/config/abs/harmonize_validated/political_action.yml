@@ -1562,13 +1562,15 @@ variables:
           such as traditional leaders/community leaders." — concept broadened to any
           influential non-government figure; traditional/community leaders cited as examples
           only. W5/W6 rates may be inflated relative to W2/W3/W4.
-      NON-EQUIVALENCE 3 — W2 WITHIN-WAVE COUNTRY SUBSTITUTION:
+      NON-EQUIVALENCE 3 — W2 WITHIN-WAVE COUNTRY SUBSTITUTION (FIXED IN PIPELINE):
         W2 (q84) includes country-specific concept substitutions in the questionnaire:
           Indonesia: item reads "Mass media" (not traditional leaders at all).
           Taiwan / Hong Kong: item reads "Acquaintances in the government."
           These are entirely different concepts per country, making W2 cross-national
           comparison unreliable for this item. Cambodia was not in W2 (W2=null for Cambodia),
           so this does not affect Cambodia-specific analysis.
+          FIX: 2_harmonize_all.R post-hoc sets gate_contact_influential to NA for
+          Indonesia (country=9), Taiwan (country=7), and Hong Kong (country=2) in W2.
       RECOMMENDED USE: W4 only as a clean, concept-consistent, uncontaminated data point
       for within-series comparison. W5–W6 are internally consistent but conceptually broader.
       Avoid cross-wave comparisons that span the W4→W5 concept shift. W3 and W2 require

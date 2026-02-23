@@ -245,6 +245,23 @@ if (sys.nframe() == 0) {
   # Stack into wide format
   harmonized_wide <- stack_harmonized_wide(results, waves)
 
+  # ---------------------------------------------------------------------------
+  # Post-hoc country exclusions
+  # For variables where within-wave question wording was substituted per country,
+  # set affected country × wave cells to NA to prevent cross-national pollution.
+  # ---------------------------------------------------------------------------
+
+  # gate_contact_influential W2: question substituted for Indonesia (9), Taiwan (7),
+  # Hong Kong (2). Those respondents were asked about "Mass media" (IN) or
+  # "Acquaintances in the government" (TW/HK) — not traditional/community leaders.
+  if ("gate_contact_influential" %in% names(harmonized_wide[["w2"]])) {
+    harmonized_wide[["w2"]] <- harmonized_wide[["w2"]] |>
+      dplyr::mutate(gate_contact_influential = dplyr::if_else(
+        country %in% c(2, 7, 9), NA_real_, gate_contact_influential
+      ))
+    cat("  [post-hoc] gate_contact_influential W2: set NA for HK/TW/IN (country substitution)\n")
+  }
+
   # Save master files
   cat("\n=== Saving master files ===\n")
   output_dir <- here::here("outputs")
