@@ -1548,6 +1548,31 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      THREE NON-EQUIVALENCES — most complex gate variable; use with caution cross-nationally:
+      NON-EQUIVALENCE 1 — W3 PROBLEM FRAMING:
+        W3 (q66): "Contacted traditional leaders/community leaders." — q66 is within the q64
+          problem-motivated battery ("because of personal, family, or neighborhood problems,
+          or problems with government officials and policies"). Same contamination as all W3
+          contact items. W3 rates will be suppressed.
+      NON-EQUIVALENCE 2 — CONCEPT BROADENING W5/W6 vs W2/W3/W4:
+        W2 (q84) / W3 (q66) / W4 (q71): "Contacted traditional leaders/community leaders"
+          — concept is restricted to traditional/community leaders specifically.
+        W5 (q72) / W6 (q70): "Contacted other influential people outside the government,
+          such as traditional leaders/community leaders." — concept broadened to any
+          influential non-government figure; traditional/community leaders cited as examples
+          only. W5/W6 rates may be inflated relative to W2/W3/W4.
+      NON-EQUIVALENCE 3 — W2 WITHIN-WAVE COUNTRY SUBSTITUTION:
+        W2 (q84) includes country-specific concept substitutions in the questionnaire:
+          Indonesia: item reads "Mass media" (not traditional leaders at all).
+          Taiwan / Hong Kong: item reads "Acquaintances in the government."
+          These are entirely different concepts per country, making W2 cross-national
+          comparison unreliable for this item. Cambodia was not in W2 (W2=null for Cambodia),
+          so this does not affect Cambodia-specific analysis.
+      RECOMMENDED USE: W4 only as a clean, concept-consistent, uncontaminated data point
+      for within-series comparison. W5–W6 are internally consistent but conceptually broader.
+      Avoid cross-wave comparisons that span the W4→W5 concept shift. W3 and W2 require
+      explicit caveats. Consider excluding this variable from primary Cambodia analysis.
     harmonize:
       default:
         method: r_function
