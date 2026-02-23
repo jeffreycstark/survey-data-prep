@@ -1591,6 +1591,23 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      CONCEPT SHIFT — W2/W3/W4 vs W5/W6 (NO problem-framing issue in any wave):
+      W3 NOTE: q70 is in the q69 citizen-action battery ("Here is a list of actions that
+        people sometimes take as citizens..."), NOT in the q64 problem-motivated battery.
+        W3 framing is equivalent to W2/W4 for this item.
+      W2 (q87) / W3 (q70) / W4 (q75): "Got together with others to raise an issue or
+        sign a petition" — broader concept capturing both collective mobilization (issue
+        raising with others) and individual signing.
+      W5 (q74): "Signed a paper petition" — narrowed to individual paper signing only;
+        collective "raise an issue" action dropped entirely.
+      W6 (q72): "Signed a paper or online petition?" — adds online modality vs W5 but
+        retains the narrower petition-only concept; collective action still excluded.
+      RECOMMENDED USE: W2/W3/W4 are directly comparable (consistent wording). W5/W6 are
+      comparable to each other. Cross-series comparison (W2–W4 vs W5–W6) should note that
+      W5/W6 rates may be higher (online petition lowers friction) or lower (drops collective
+      mobilization component) — direction is ambiguous. Use W2–W4 as preferred series for
+      Cambodia analysis if collective action dimension matters.
     harmonize:
       default:
         method: r_function
@@ -1634,6 +1651,20 @@ variables:
       labels:
         0: "Never done"
         1: "Done at least once"
+    editorial_note: |
+      CONCEPT SHIFT — W1 only; W2–W6 consistent (NO problem-framing issue in any wave):
+      W3 NOTE: q71 is in the q69 citizen-action battery, NOT the q64 problem-motivated
+        battery. W3 framing is equivalent to W2/W4/W5/W6 for this item.
+      W1 (q079): "Demonstrated, striken, or sat-in for something?" — broader; captures
+        strikes and sit-ins in addition to demonstrations and marches. W1 rates will be
+        inflated relative to W2–W6 because the item includes forms of collective action
+        that later waves exclude.
+      W2 (q88) / W3 (q71) / W4 (q76) / W5 (q79) / W6 (q76):
+        "Attended a demonstration or protest march" — consistent wording across all five
+        waves. No framing or concept non-equivalence.
+      RECOMMENDED USE: W2–W6 are directly comparable and form the clean time series.
+      W1 can be included as context but should be footnoted: W1 item includes strikes
+      and sit-ins. This is the cleanest gate variable for cross-wave analysis.
     harmonize:
       default:
         method: r_function
