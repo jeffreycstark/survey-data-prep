@@ -10,6 +10,13 @@ missing_conventions:
   treat_as_na_winning_losing:
     codes: [-1, 0, 3, 7, 8, 9, 97, 98, 99]
     description: "Standard missing codes plus 3=not applicable/other in winner-loser items"
+  contact_binary_missing:
+    codes: [-1, 7, 8, 97, 98, 99]
+    description: |
+      Binary gate participation items: keeps 0 and 9 as live values so recode functions
+      can interpret them semantically. W1: 9=Never done (valid); W3: 0=Never Done (valid);
+      W2/W4: 3=Never (already valid under treat_as_na); W5/W6: 0=N/A, falls to NA in recode.
+      True non-response codes (7=don't understand, 8=can't choose, 97/98/99=refuse) → NA.
 variables:
   - id: action_contact_civil_servant
     concept: political_action
@@ -1376,3 +1383,292 @@ variables:
       validate:
         - waves: [w5, w6]
           phrase: "help.*party|work.*candidate"
+
+  # ===========================================================================
+  # GROUP 11: Binary Gate Variables — Ever Participated (0=Never, 1=Ever done)
+  #
+  # These derive from the same source variables as the ordinal action_contact_*
+  # items but use wave-appropriate recoding to produce full-sample binary
+  # indicators (N = all respondents, not just those who said "yes" to a filter).
+  #
+  # Raw scale structures:
+  #   W1:    1=Once, 2=More than once, 9=Never done (9 kept via contact_binary_missing)
+  #   W2:    1=Once, 2=More than once, 3=Never
+  #   W3:    0=Never Done, 1=Once, 2=More than once (0 kept via contact_binary_missing)
+  #   W4:    1=More than once, 2=Once, 3=Never
+  #   W5/W6: 1=>3×, 2=2-3×, 3=once, 4=might, 5=would never (raw reversed; 0=N/A→NA)
+  #
+  # NOTE: The existing action_contact_* ordinal items are miscoded for W1–W4
+  # (wrong scale structure assumed). These gate variables are correctly specified
+  # and should be preferred for cross-wave participation analysis.
+  # ===========================================================================
+
+  - id: gate_contact_elected
+    concept: political_action
+    description: "Ever contacted elected officials or legislative representatives (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: q075
+      w2: q81
+      w3: q64
+      w4: q69
+      w5: q70
+      w6: q68
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 (ever done) → 1; raw 4-5 (never done) → 0"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_contact_to_binary_w1
+          note: "W1: raw 9 (Never done) → 0; raw 1,2 (done) → 1"
+        w2:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W2: raw 1,2 (done) → 1; raw 3 (Never) → 0"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 (Never Done) → 0; raw 1,2 (done) → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 (done) → 1; raw 3 (Never) → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "elected.*official|legislative.*representative"
+
+  - id: gate_contact_civil_servant
+    concept: political_action
+    description: "Ever contacted civil servants or government officials (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: q073
+      w2: q79
+      w3: q65
+      w4: q70
+      w5: q71
+      w6: q69
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 → 1; raw 4-5 → 0"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_contact_to_binary_w1
+          note: "W1: raw 9 → 0; raw 1,2 → 1"
+        w2:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W2: raw 1,2 → 1; raw 3 → 0"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 → 0; raw 1,2 → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 → 1; raw 3 → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "civil servant|official"
+
+  - id: gate_contact_influential
+    concept: political_action
+    description: "Ever contacted traditional/community leaders or other influential people outside government (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: null
+      w2: q84
+      w3: q66
+      w4: q71
+      w5: q72
+      w6: q70
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 → 1; raw 4-5 → 0"
+      exceptions:
+        w2:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W2: raw 1,2 → 1; raw 3 → 0"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 → 0; raw 1,2 → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 → 1; raw 3 → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "influential|traditional leader|community leader"
+
+  - id: gate_petition
+    concept: political_action
+    description: "Ever signed a petition or got together to raise an issue (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: null
+      w2: q87
+      w3: q70
+      w4: q75
+      w5: q74
+      w6: q72
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 → 1; raw 4-5 → 0"
+      exceptions:
+        w2:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W2: raw 1,2 → 1; raw 3 → 0"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 → 0; raw 1,2 → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 → 1; raw 3 → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w2, w3, w4, w5, w6]
+          phrase: "petition|raise.*issue"
+
+  - id: gate_demonstration
+    concept: political_action
+    description: "Ever attended a demonstration or protest march (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: q079
+      w2: q88
+      w3: q71
+      w4: q76
+      w5: q79
+      w6: q76
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 → 1; raw 4-5 → 0"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_contact_to_binary_w1
+          note: "W1: raw 9 → 0; raw 1,2 → 1"
+        w2:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W2: raw 1,2 → 1; raw 3 → 0"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 → 0; raw 1,2 → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 → 1; raw 3 → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "demonstration|protest"
+
+  - id: gate_contact_media
+    concept: political_action
+    description: "Ever contacted news media (binary)"
+    type: nominal
+    missing:
+      use_convention: contact_binary_missing
+    source:
+      w1: q078
+      w2: null
+      w3: q68
+      w4: q73
+      w5: q73
+      w6: q71
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Never done"
+        1: "Done at least once"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_contact_to_binary_5pt
+        note: "W5/W6: raw 1-3 → 1; raw 4-5 → 0"
+      exceptions:
+        w1:
+          method: r_function
+          fn: recode_contact_to_binary_w1
+          note: "W1: raw 9 → 0; raw 1,2 → 1"
+        w3:
+          method: r_function
+          fn: recode_contact_to_binary_w3
+          note: "W3: raw 0 → 0; raw 1,2 → 1"
+        w4:
+          method: r_function
+          fn: recode_contact_to_binary_w2w4
+          note: "W4: raw 1,2 → 1; raw 3 → 0"
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "news media|media"

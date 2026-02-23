@@ -6,6 +6,9 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]
     description: "Standard missing codes"
+  internet_frequency_missing:
+    codes: [-1, 97, 98, 99]
+    description: "Internet frequency variables: 7/8/9 are valid responses in W5/W6 (a few times/year, hardly ever, never); only true non-response codes removed"
 variables:
   # ===========================================================================
   # GROUP 2: Internet Access (Wave 4 only)
@@ -101,6 +104,8 @@ variables:
     concept: social_media
     description: "How often do you use the internet, either through computer, tablet or smartphone?"
     type: ordinal
+    missing:
+      use_convention: internet_frequency_missing
     source:
       w1: null
       w2: q66
@@ -109,25 +114,41 @@ variables:
       w5: q49
       w6: q50
     scale:
-      min: 0
-      max: 9
+      min: 1
+      max: 6
       labels:
-        0: "No access to internet"
-        1: "Connected all the time"
-        2: "Several hours a day"
-        3: "Half to one hour a day"
-        4: "Less than half hour a day"
+        1: "Never"
+        2: "Hardly ever"
+        3: "A few times a year"
+        4: "At least once a month"
         5: "At least once a week"
-        6: "At least once a month"
-        7: "A few times a year"
-        8: "Hardly ever"
-        9: "Never"
-      note: "Lower numeric = more internet usage (0=no access is special case)"
+        6: "Daily or more"
+      note: |
+        Harmonized 1-6 scale (higher = more frequent use). Raw scales differed by wave:
+        W2/W3: 6-pt (1=almost daily, 6=never); W4: 8-pt (0=N/A, 1=several hrs/day, 8=never);
+        W5/W6: 9-pt (0=no access, 1=connected all time, 9=never).
+        W2/W3 'almost daily' collapses into category 6 (Daily+) — cannot distinguish
+        sub-daily frequency in those waves. 0 (no access/not aware) -> NA in all waves.
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_internet_w5w6_to_6pt
+        note: "W5/W6: 9-pt scale; 0=no access->NA; 1-4=daily variants->6; 5->5; 6->4; 7->3; 8->2; 9->1"
+      exceptions:
+        w2:
+          method: r_function
+          fn: recode_internet_w2w3_to_6pt
+          note: "W2: 6-pt scale; 0=not aware->NA; 1=almost daily->6; 6=never->1"
+        w3:
+          method: r_function
+          fn: recode_internet_w2w3_to_6pt
+          note: "W3: 6-pt scale; 1=almost daily->6; 6=never->1"
+        w4:
+          method: r_function
+          fn: recode_internet_w4_to_6pt
+          note: "W4: 8-pt scale; 0=not applicable->NA; 1-3=daily variants->6; 4->5; 5->4; 6->3; 7->2; 8->1"
     qc:
-      valid_range: [0, 9]
+      valid_range: [1, 6]
       validate:
         - waves: [w2, w3, w4, w5, w6]
           phrase: "internet"

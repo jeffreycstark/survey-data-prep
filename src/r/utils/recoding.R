@@ -1747,6 +1747,134 @@ harmonize_w6_corruption <- function(x, ...) {
   ifelse(x >= 1 & x <= 4, x, NA_real_)
 }
 
+# ==============================================================================
+# INTERNET FREQUENCY HARMONIZATION
+# Harmonizes ABS news_internet (q66/q45/q49/q50) to a common 1-6 ordinal scale
+# Output: 1=Never, 2=Hardly ever, 3=A few times/year, 4=Monthly, 5=Weekly, 6=Daily+
+# Higher values = more frequent internet use (reversed from raw coding)
+# ==============================================================================
+
+#' Harmonize W2/W3 internet frequency to 1-6 scale
+#'
+#' W2 (q66): 0=not aware, 1=almost daily, 2=once/wk, 3=once/month,
+#'           4=several/year, 5=hardly ever, 6=never; 7,8,9=non-response
+#' W3 (q45): same structure, no 0 category
+#' @param x Numeric vector (raw W2/W3 codes)
+#' @return Numeric vector 1-6 (1=never, 6=daily+)
+# ==============================================================================
+# PARTICIPATION BINARY GATE FUNCTIONS
+# Convert ABS political action items to binary: 0=never done, 1=ever done
+#
+# Raw scale structures differ by wave:
+#   W1  (q073, q075, etc.): 1=Once, 2=More than once, 9=Never done; 97/98/99=non-response
+#   W2  (q81, etc.):        1=Once, 2=More than once, 3=Never; 7/8/9=non-response
+#   W3  (q64, etc.):        0=Never Done, 1=Once, 2=More than once; 8/9=non-response
+#   W4  (q69 3-cat, etc.):  1=More than once, 2=Once, 3=Never; 7/8/9=non-response
+#   W5/W6 (q70, etc.):      1=>3 times, 2=2-3 times, 3=once, 4=might, 5=would never;
+#                            0=N/A; 7/8/9=non-response
+#
+# Use with missing convention: contact_binary_missing [-1, 7, 8, 97, 98, 99]
+# (keeps 0 and 9 alive so recode functions can handle them semantically)
+# ==============================================================================
+
+#' Binary gate: W1 participation items (1=Once, 2=More, 9=Never done)
+recode_contact_to_binary_w1 <- function(x, ...) {
+  dplyr::case_when(
+    x == 9         ~ 0,   # Never done
+    x %in% c(1, 2) ~ 1,  # Once or more than once
+    TRUE           ~ NA_real_
+  )
+}
+
+#' Binary gate: W2 and W4 (3-cat) participation items
+#' W2: 1=Once, 2=More than once, 3=Never
+#' W4: 1=More than once, 2=Once, 3=Never (order differs but binary mapping is same)
+recode_contact_to_binary_w2w4 <- function(x, ...) {
+  dplyr::case_when(
+    x %in% c(1, 2) ~ 1,  # Once or more than once (either order)
+    x == 3         ~ 0,  # Never
+    TRUE           ~ NA_real_
+  )
+}
+
+#' Binary gate: W3 participation items (0=Never Done, 1=Once, 2=More than once)
+#' Note: 0 must survive missing code filtering — use contact_binary_missing convention
+recode_contact_to_binary_w3 <- function(x, ...) {
+  dplyr::case_when(
+    x == 0         ~ 0,  # Never Done
+    x %in% c(1, 2) ~ 1,  # Once or more than once
+    TRUE           ~ NA_real_
+  )
+}
+
+#' Binary gate: W5/W6 participation items (5-pt scale, raw 1=most active)
+#' 1=>3 times, 2=2-3 times, 3=once → ever done (1)
+#' 4=might do, 5=would never → never done (0)
+#' 0=Not applicable → NA (via TRUE branch)
+recode_contact_to_binary_5pt <- function(x, ...) {
+  dplyr::case_when(
+    x %in% c(1, 2, 3) ~ 1,  # Ever done (any frequency)
+    x %in% c(4, 5)    ~ 0,  # Never done (might or would never)
+    TRUE               ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# INTERNET FREQUENCY HARMONIZATION
+recode_internet_w2w3_to_6pt <- function(x, ...) {
+  dplyr::case_when(
+    x == 0 ~ NA_real_,   # W2: not aware of internet
+    x == 1 ~ 6,          # Almost daily    -> Daily or more
+    x == 2 ~ 5,          # At least once a week
+    x == 3 ~ 4,          # At least once a month
+    x == 4 ~ 3,          # Several times a year
+    x == 5 ~ 2,          # Hardly ever
+    x == 6 ~ 1,          # Never
+    TRUE   ~ NA_real_
+  )
+}
+
+#' Harmonize W4 internet frequency to 1-6 scale
+#'
+#' W4 (q49): 0=not applicable, 1=several hrs/day, 2=half-1hr/day,
+#'           3=at least once/day, 4=at least once/wk, 5=at least once/month,
+#'           6=a few times/year, 7=hardly ever, 8=never; 97,98,99=non-response
+#' @param x Numeric vector (raw W4 codes)
+#' @return Numeric vector 1-6 (1=never, 6=daily+)
+recode_internet_w4_to_6pt <- function(x, ...) {
+  dplyr::case_when(
+    x == 0          ~ NA_real_,  # Not applicable
+    x %in% c(1,2,3) ~ 6,         # Several hrs / half-hr / once per day -> Daily+
+    x == 4          ~ 5,          # At least once a week
+    x == 5          ~ 4,          # At least once a month
+    x == 6          ~ 3,          # A few times a year
+    x == 7          ~ 2,          # Hardly ever
+    x == 8          ~ 1,          # Never
+    TRUE            ~ NA_real_
+  )
+}
+
+#' Harmonize W5/W6 internet frequency to 1-6 scale
+#'
+#' W5 (q49): 1=connected all time, 2=several hrs/day, 3=half-1hr/day,
+#'           4=<half hr/day, 5=at least once/wk, 6=at least once/month,
+#'           7=a few times/year, 8=hardly ever, 9=never; 97,98,99=non-response
+#' W6 (q50): 0=no access, 1-9 same as W5
+#' @param x Numeric vector (raw W5/W6 codes)
+#' @return Numeric vector 1-6 (1=never, 6=daily+)
+recode_internet_w5w6_to_6pt <- function(x, ...) {
+  dplyr::case_when(
+    x == 0           ~ NA_real_,  # W6: no access to internet
+    x %in% c(1,2,3,4) ~ 6,        # Connected all time / several hrs / half-hr / <half hr -> Daily+
+    x == 5           ~ 5,          # At least once a week
+    x == 6           ~ 4,          # At least once a month
+    x == 7           ~ 3,          # A few times a year
+    x == 8           ~ 2,          # Hardly ever
+    x == 9           ~ 1,          # Never
+    TRUE             ~ NA_real_
+  )
+}
+
 #' Validate harmonization
 #'
 #' Check that harmonized vector has expected range and no invalid values
