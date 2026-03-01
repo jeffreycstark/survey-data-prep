@@ -1,0 +1,40 @@
+# KGSS Survey Weight
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# FINALWT: Post-stratification weight
+#   Range: ~0.203 to 4.591, mean = 1.0
+#   All 16 years have weight data.
+#
+# MISSING VALUES:
+# -8 = DK, -1 = IAP (should not occur for weight variable)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: weight
+    concept: weight
+    description: "Survey post-stratification weight (FINALWT; range ~0.20-4.59, mean=1)"
+    type: continuous
+    source:
+      w2003: FINALWT
+      w2004: FINALWT
+      w2005: FINALWT
+      w2006: FINALWT
+      w2007: FINALWT
+      w2008: FINALWT
+      w2009: FINALWT
+      w2010: FINALWT
+      w2011: FINALWT
+      w2012: FINALWT
+      w2013: FINALWT
+      w2014: FINALWT
+      w2016: FINALWT
+      w2018: FINALWT
+      w2021: FINALWT
+      w2023: FINALWT
+    harmonize:
+      default:
+        method: identity

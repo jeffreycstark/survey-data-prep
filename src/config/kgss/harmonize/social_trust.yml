@@ -1,0 +1,123 @@
+# KGSS Social Trust
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# Variables from the GSS trust battery:
+#   FAIR:     People's fairness (1=take advantage, 2=fair, 3=depends) — 3-point
+#   TRUST:    Generalized trust binary (1=can trust, 2=can't be careful, 3=depends) — 3-point
+#   CANTRUST: Generalized trust 4-point (1=almost always trust, 4=almost always can't)
+#   RELIABLE: Social trustworthiness 0-10 scale
+#
+# MISSING VALUES:
+# -8 = DK (Don't Know)
+# -1 = IAP (Inapplicable / skipped)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: trust_fair
+    concept: social_trust
+    description: "Would most people try to be fair or take advantage of you? (3-point)"
+    type: ordinal
+    note: "1=take advantage of you, 2=try to be fair, 3=DEPENDS; higher=more fairness perception"
+    source:
+      w2003: FAIR
+      w2004: FAIR
+      w2005: FAIR
+      w2006: FAIR
+      w2007: FAIR
+      w2008: FAIR
+      w2009: FAIR
+      w2010: FAIR
+      w2011: FAIR
+      w2012: FAIR
+      w2013: FAIR
+      w2014: FAIR
+      w2016: FAIR
+      w2018: FAIR
+      w2021: FAIR
+      w2023: FAIR
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Would take advantage of you"
+        2: "Would try to be fair"
+        3: "Depends"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: trust_generalized
+    concept: social_trust
+    description: "Generalized trust: can most people be trusted? (binary, 3 cats)"
+    type: ordinal
+    note: "1=people can almost always be trusted, 2=can usually be trusted, 3=usually can't be careful, 4=almost always can't be careful. CANTRUST is more granular than TRUST (1/2/3)."
+    source:
+      w2003: CANTRUST
+      w2004: CANTRUST
+      w2005: CANTRUST
+      w2006: CANTRUST
+      w2007: CANTRUST
+      w2008: CANTRUST
+      w2009: CANTRUST
+      w2010: CANTRUST
+      w2011: CANTRUST
+      w2012: CANTRUST
+      w2013: CANTRUST
+      w2014: CANTRUST
+      w2016: CANTRUST
+      w2018: CANTRUST
+      w2021: CANTRUST
+      w2023: CANTRUST
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "People can almost always be trusted"
+        2: "People can usually be trusted"
+        3: "Usually can't be too careful"
+        4: "Almost always can't be too careful"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_reliable
+    concept: social_trust
+    description: "Trustworthiness of society on 0-10 scale (0=hardly trustful, 10=very trustful)"
+    type: continuous
+    note: "0-10 continuous scale; higher = more perceived societal trustworthiness"
+    source:
+      w2003: RELIABLE
+      w2004: RELIABLE
+      w2005: RELIABLE
+      w2006: RELIABLE
+      w2007: RELIABLE
+      w2008: RELIABLE
+      w2009: RELIABLE
+      w2010: RELIABLE
+      w2011: RELIABLE
+      w2012: RELIABLE
+      w2013: RELIABLE
+      w2014: RELIABLE
+      w2016: RELIABLE
+      w2018: RELIABLE
+      w2021: RELIABLE
+      w2023: RELIABLE
+    scale:
+      min: 0
+      max: 10
+      labels:
+        0: "Hardly trustful"
+        10: "Very trustful"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]

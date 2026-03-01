@@ -1,0 +1,722 @@
+# KGSS Institutional Confidence
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# SCALE DIRECTION:
+# Raw: 1=A great deal of confidence, 2=Only some confidence, 3=Hardly any confidence
+# Target: 1=Hardly any, 2=Some, 3=A great deal (higher = more confidence)
+# All variables use safe_reverse_3pt
+#
+# NOTE: This is a 1-3 scale (not 1-4 or 0-10 like other surveys).
+# Do not compare conf_* variables to trust_* from ABS/WVS/LBS without rescaling.
+#
+# MISSING VALUES:
+# -8 = DK (Don't Know)
+# -1 = IAP (Inapplicable / skipped)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: conf_business
+    concept: institutional_confidence
+    description: "Confidence in leaders of major companies"
+    type: ordinal
+    source:
+      w2003: CONBUS
+      w2004: CONBUS
+      w2005: CONBUS
+      w2006: CONBUS
+      w2007: CONBUS
+      w2008: CONBUS
+      w2009: CONBUS
+      w2010: CONBUS
+      w2011: CONBUS
+      w2012: CONBUS
+      w2013: CONBUS
+      w2014: CONBUS
+      w2016: CONBUS
+      w2018: CONBUS
+      w2021: CONBUS
+      w2023: CONBUS
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw 1=great deal → 3=hardly any; reverse so high=more confidence"
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_legislature
+    concept: institutional_confidence
+    description: "Confidence in leaders of the congress/legislature"
+    type: ordinal
+    source:
+      w2003: CONLEGIS
+      w2004: CONLEGIS
+      w2005: CONLEGIS
+      w2006: CONLEGIS
+      w2007: CONLEGIS
+      w2008: CONLEGIS
+      w2009: CONLEGIS
+      w2010: CONLEGIS
+      w2011: CONLEGIS
+      w2012: CONLEGIS
+      w2013: CONLEGIS
+      w2014: CONLEGIS
+      w2016: CONLEGIS
+      w2018: CONLEGIS
+      w2021: CONLEGIS
+      w2023: CONLEGIS
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_judiciary
+    concept: institutional_confidence
+    description: "Confidence in leaders of the Supreme Court"
+    type: ordinal
+    source:
+      w2003: CONJUDGE
+      w2004: CONJUDGE
+      w2005: CONJUDGE
+      w2006: CONJUDGE
+      w2007: CONJUDGE
+      w2008: CONJUDGE
+      w2009: CONJUDGE
+      w2010: CONJUDGE
+      w2011: CONJUDGE
+      w2012: CONJUDGE
+      w2013: CONJUDGE
+      w2014: CONJUDGE
+      w2016: CONJUDGE
+      w2018: CONJUDGE
+      w2021: CONJUDGE
+      w2023: CONJUDGE
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_science
+    concept: institutional_confidence
+    description: "Confidence in leaders of the academic community / science"
+    type: ordinal
+    source:
+      w2003: CONSCI
+      w2004: CONSCI
+      w2005: CONSCI
+      w2006: CONSCI
+      w2007: CONSCI
+      w2008: CONSCI
+      w2009: CONSCI
+      w2010: CONSCI
+      w2011: CONSCI
+      w2012: CONSCI
+      w2013: CONSCI
+      w2014: CONSCI
+      w2016: CONSCI
+      w2018: CONSCI
+      w2021: CONSCI
+      w2023: CONSCI
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_military
+    concept: institutional_confidence
+    description: "Confidence in leaders of the military"
+    type: ordinal
+    source:
+      w2003: CONARMY
+      w2004: CONARMY
+      w2005: CONARMY
+      w2006: CONARMY
+      w2007: CONARMY
+      w2008: CONARMY
+      w2009: CONARMY
+      w2010: CONARMY
+      w2011: CONARMY
+      w2012: CONARMY
+      w2013: CONARMY
+      w2014: CONARMY
+      w2016: CONARMY
+      w2018: CONARMY
+      w2021: CONARMY
+      w2023: CONARMY
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_finance
+    concept: institutional_confidence
+    description: "Confidence in leaders of banks and financial institutions"
+    type: ordinal
+    source:
+      w2003: CONFINAN
+      w2004: CONFINAN
+      w2005: CONFINAN
+      w2006: CONFINAN
+      w2007: CONFINAN
+      w2008: CONFINAN
+      w2009: CONFINAN
+      w2010: CONFINAN
+      w2011: CONFINAN
+      w2012: CONFINAN
+      w2013: CONFINAN
+      w2014: CONFINAN
+      w2016: CONFINAN
+      w2018: CONFINAN
+      w2021: CONFINAN
+      w2023: CONFINAN
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_bluehouse
+    concept: institutional_confidence
+    description: "Confidence in leaders of the Blue House (presidential office)"
+    type: ordinal
+    note: "CONBLUHO = Blue House (Korea's presidential office), not blue-collar labor"
+    source:
+      w2003: CONBLUHO
+      w2004: CONBLUHO
+      w2005: CONBLUHO
+      w2006: CONBLUHO
+      w2007: CONBLUHO
+      w2008: CONBLUHO
+      w2009: CONBLUHO
+      w2010: CONBLUHO
+      w2011: CONBLUHO
+      w2012: CONBLUHO
+      w2013: CONBLUHO
+      w2014: CONBLUHO
+      w2016: CONBLUHO
+      w2018: CONBLUHO
+      w2021: CONBLUHO
+      w2023: CONBLUHO
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_civil_society
+    concept: institutional_confidence
+    description: "Confidence in leaders of civic activist organizations (CSOs)"
+    type: ordinal
+    source:
+      w2003: CONCSO
+      w2004: CONCSO
+      w2005: CONCSO
+      w2006: CONCSO
+      w2007: CONCSO
+      w2008: CONCSO
+      w2009: CONCSO
+      w2010: CONCSO
+      w2011: CONCSO
+      w2012: CONCSO
+      w2013: CONCSO
+      w2014: CONCSO
+      w2016: CONCSO
+      w2018: CONCSO
+      w2021: CONCSO
+      w2023: CONCSO
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_clergy
+    concept: institutional_confidence
+    description: "Confidence in leaders of organized religion"
+    type: ordinal
+    source:
+      w2003: CONCLERG
+      w2004: CONCLERG
+      w2005: CONCLERG
+      w2006: CONCLERG
+      w2007: CONCLERG
+      w2008: CONCLERG
+      w2009: CONCLERG
+      w2010: CONCLERG
+      w2011: CONCLERG
+      w2012: CONCLERG
+      w2013: CONCLERG
+      w2014: CONCLERG
+      w2016: CONCLERG
+      w2018: CONCLERG
+      w2021: CONCLERG
+      w2023: CONCLERG
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_education
+    concept: institutional_confidence
+    description: "Confidence in leaders of education"
+    type: ordinal
+    source:
+      w2003: CONEDUC
+      w2004: CONEDUC
+      w2005: CONEDUC
+      w2006: CONEDUC
+      w2007: CONEDUC
+      w2008: CONEDUC
+      w2009: CONEDUC
+      w2010: CONEDUC
+      w2011: CONEDUC
+      w2012: CONEDUC
+      w2013: CONEDUC
+      w2014: CONEDUC
+      w2016: CONEDUC
+      w2018: CONEDUC
+      w2021: CONEDUC
+      w2023: CONEDUC
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_labor
+    concept: institutional_confidence
+    description: "Confidence in leaders of organized labor"
+    type: ordinal
+    source:
+      w2003: CONLABOR
+      w2004: CONLABOR
+      w2005: CONLABOR
+      w2006: CONLABOR
+      w2007: CONLABOR
+      w2008: CONLABOR
+      w2009: CONLABOR
+      w2010: CONLABOR
+      w2011: CONLABOR
+      w2012: CONLABOR
+      w2013: CONLABOR
+      w2014: CONLABOR
+      w2016: CONLABOR
+      w2018: CONLABOR
+      w2021: CONLABOR
+      w2023: CONLABOR
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_press
+    concept: institutional_confidence
+    description: "Confidence in leaders of newspapers (press)"
+    type: ordinal
+    source:
+      w2003: CONPRESS
+      w2004: CONPRESS
+      w2005: CONPRESS
+      w2006: CONPRESS
+      w2007: CONPRESS
+      w2008: CONPRESS
+      w2009: CONPRESS
+      w2010: CONPRESS
+      w2011: CONPRESS
+      w2012: CONPRESS
+      w2013: CONPRESS
+      w2014: CONPRESS
+      w2016: CONPRESS
+      w2018: CONPRESS
+      w2021: CONPRESS
+      w2023: CONPRESS
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_television
+    concept: institutional_confidence
+    description: "Confidence in leaders of broadcasting networks (TV)"
+    type: ordinal
+    source:
+      w2003: CONTV
+      w2004: CONTV
+      w2005: CONTV
+      w2006: CONTV
+      w2007: CONTV
+      w2008: CONTV
+      w2009: CONTV
+      w2010: CONTV
+      w2011: CONTV
+      w2012: CONTV
+      w2013: CONTV
+      w2014: CONTV
+      w2016: CONTV
+      w2018: CONTV
+      w2021: CONTV
+      w2023: CONTV
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_medicine
+    concept: institutional_confidence
+    description: "Confidence in leaders of medicine / medical profession"
+    type: ordinal
+    source:
+      w2003: CONMEDIC
+      w2004: CONMEDIC
+      w2005: CONMEDIC
+      w2006: CONMEDIC
+      w2007: CONMEDIC
+      w2008: CONMEDIC
+      w2009: CONMEDIC
+      w2010: CONMEDIC
+      w2011: CONMEDIC
+      w2012: CONMEDIC
+      w2013: CONMEDIC
+      w2014: CONMEDIC
+      w2016: CONMEDIC
+      w2018: CONMEDIC
+      w2021: CONMEDIC
+      w2023: CONMEDIC
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_govt_national
+    concept: institutional_confidence
+    description: "Confidence in leaders of the national government"
+    type: ordinal
+    source:
+      w2003: CONGOVT
+      w2004: CONGOVT
+      w2005: CONGOVT
+      w2006: CONGOVT
+      w2007: CONGOVT
+      w2008: CONGOVT
+      w2009: CONGOVT
+      w2010: CONGOVT
+      w2011: CONGOVT
+      w2012: CONGOVT
+      w2013: CONGOVT
+      w2014: CONGOVT
+      w2016: CONGOVT
+      w2018: CONGOVT
+      w2021: CONGOVT
+      w2023: CONGOVT
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_govt_local
+    concept: institutional_confidence
+    description: "Confidence in leaders of local government"
+    type: ordinal
+    source:
+      w2003: CONLGOVT
+      w2004: CONLGOVT
+      w2005: CONLGOVT
+      w2006: CONLGOVT
+      w2007: CONLGOVT
+      w2008: CONLGOVT
+      w2009: CONLGOVT
+      w2010: CONLGOVT
+      w2011: CONLGOVT
+      w2012: CONLGOVT
+      w2013: CONLGOVT
+      w2014: CONLGOVT
+      w2016: CONLGOVT
+      w2018: CONLGOVT
+      w2021: CONLGOVT
+      w2023: CONLGOVT
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_research
+    concept: institutional_confidence
+    description: "Confidence in leaders of public opinion research centers"
+    type: ordinal
+    source:
+      w2003: CONRCH
+      w2004: CONRCH
+      w2005: CONRCH
+      w2006: CONRCH
+      w2007: CONRCH
+      w2008: CONRCH
+      w2009: CONRCH
+      w2010: CONRCH
+      w2011: CONRCH
+      w2012: CONRCH
+      w2013: CONRCH
+      w2014: CONRCH
+      w2016: CONRCH
+      w2018: CONRCH
+      w2021: CONRCH
+      w2023: CONRCH
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_prosecutors
+    concept: institutional_confidence
+    description: "Confidence in leaders of prosecutors / prosecution service"
+    type: ordinal
+    source:
+      w2003: CONPROS
+      w2004: CONPROS
+      w2005: CONPROS
+      w2006: CONPROS
+      w2007: CONPROS
+      w2008: CONPROS
+      w2009: CONPROS
+      w2010: CONPROS
+      w2011: CONPROS
+      w2012: CONPROS
+      w2013: CONPROS
+      w2014: CONPROS
+      w2016: CONPROS
+      w2018: CONPROS
+      w2021: CONPROS
+      w2023: CONPROS
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_statistics
+    concept: institutional_confidence
+    description: "Confidence in leaders of the national statistical office"
+    type: ordinal
+    source:
+      w2003: CONSTAT
+      w2004: CONSTAT
+      w2005: CONSTAT
+      w2006: CONSTAT
+      w2007: CONSTAT
+      w2008: CONSTAT
+      w2009: CONSTAT
+      w2010: CONSTAT
+      w2011: CONSTAT
+      w2012: CONSTAT
+      w2013: CONSTAT
+      w2014: CONSTAT
+      w2016: CONSTAT
+      w2018: CONSTAT
+      w2021: CONSTAT
+      w2023: CONSTAT
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+
+  - id: conf_election_commission
+    concept: institutional_confidence
+    description: "Confidence in the National Election Commission"
+    type: ordinal
+    source:
+      w2003: CONELEC
+      w2004: CONELEC
+      w2005: CONELEC
+      w2006: CONELEC
+      w2007: CONELEC
+      w2008: CONELEC
+      w2009: CONELEC
+      w2010: CONELEC
+      w2011: CONELEC
+      w2012: CONELEC
+      w2013: CONELEC
+      w2014: CONELEC
+      w2016: CONELEC
+      w2018: CONELEC
+      w2021: CONELEC
+      w2023: CONELEC
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Hardly any confidence"
+        2: "Only some confidence"
+        3: "A great deal of confidence"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]

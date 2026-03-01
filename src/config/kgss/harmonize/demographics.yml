@@ -1,0 +1,437 @@
+# KGSS Demographics
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# Core demographic variables repeated annually in the KGSS.
+#
+# VARIABLE NOTES:
+#   AGE:     Respondent age in years (18–99; 99=99+)
+#   SEX:     1=Male, 2=Female
+#   EDUC:    Education level (0=no formal, 1=elementary, ..., 7=PhD, 8=other)
+#            Coding consistent across all 16 years.
+#   MARITAL: Marital status (1=married, 2=widowed, 3=divorced, 4=separated, 5=never married, 6=cohabiting)
+#   EMPLY:   Employment status (1=employed, 2=not employed)
+#   INCOME:  Monthly household income categorical (0=no income, 1–21 = brackets in KRW; 87=10M+ uncertain)
+#   REGION:  1=Seoul, 2=Gyeonggi, 3=Gangwon, 4=Chungcheong, 5=Gyeongsang, 6=Jeolla, 7=Jeju
+#   URBAN:   0=Rural, 1=Urban
+#   RELIG:   Religion nominal (1=Buddhist, 2=Protestant, 3=Catholic, 4=No religion, 5+=other)
+#   ATTEND:  Religious attendance (1=few times/week, 8=never)
+#   CLASS:   Subjective class 6-point (1=upper-upper, 6=lower-lower; higher=lower class)
+#   RANK:    Subjective class 10-point (1=bottom, 10=top; higher=higher class)
+#
+# MISSING VALUES:
+# -8 = DK (Don't Know)
+# -1 = IAP (Inapplicable / skipped)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: age
+    concept: demographics
+    description: "Respondent's age in years"
+    type: continuous
+    source:
+      w2003: AGE
+      w2004: AGE
+      w2005: AGE
+      w2006: AGE
+      w2007: AGE
+      w2008: AGE
+      w2009: AGE
+      w2010: AGE
+      w2011: AGE
+      w2012: AGE
+      w2013: AGE
+      w2014: AGE
+      w2016: AGE
+      w2018: AGE
+      w2021: AGE
+      w2023: AGE
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [18, 99]
+
+  - id: sex
+    concept: demographics
+    description: "Respondent's sex (1=male, 2=female)"
+    type: nominal
+    source:
+      w2003: SEX
+      w2004: SEX
+      w2005: SEX
+      w2006: SEX
+      w2007: SEX
+      w2008: SEX
+      w2009: SEX
+      w2010: SEX
+      w2011: SEX
+      w2012: SEX
+      w2013: SEX
+      w2014: SEX
+      w2016: SEX
+      w2018: SEX
+      w2021: SEX
+      w2023: SEX
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: education
+    concept: demographics
+    description: "Highest school level completed (0=no formal school, 1=elementary, 2=junior high, 3=high school, 4=junior college, 5=college, 6=masters, 7=PhD, 8=other)"
+    type: ordinal
+    source:
+      w2003: EDUC
+      w2004: EDUC
+      w2005: EDUC
+      w2006: EDUC
+      w2007: EDUC
+      w2008: EDUC
+      w2009: EDUC
+      w2010: EDUC
+      w2011: EDUC
+      w2012: EDUC
+      w2013: EDUC
+      w2014: EDUC
+      w2016: EDUC
+      w2018: EDUC
+      w2021: EDUC
+      w2023: EDUC
+    scale:
+      min: 0
+      max: 8
+      labels:
+        0: "No formal school"
+        1: "Elementary school"
+        2: "Junior high school"
+        3: "High school"
+        4: "Junior college"
+        5: "College"
+        6: "Graduate school (Masters)"
+        7: "Graduate school (PhD)"
+        8: "Other"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 8]
+
+  - id: marital_status
+    concept: demographics
+    description: "Marital status (1=married, 2=widowed, 3=divorced, 4=separated, 5=never married, 6=cohabiting)"
+    type: nominal
+    source:
+      w2003: MARITAL
+      w2004: MARITAL
+      w2005: MARITAL
+      w2006: MARITAL
+      w2007: MARITAL
+      w2008: MARITAL
+      w2009: MARITAL
+      w2010: MARITAL
+      w2011: MARITAL
+      w2012: MARITAL
+      w2013: MARITAL
+      w2014: MARITAL
+      w2016: MARITAL
+      w2018: MARITAL
+      w2021: MARITAL
+      w2023: MARITAL
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Married"
+        2: "Widowed"
+        3: "Divorced"
+        4: "Separated"
+        5: "Never married"
+        6: "Cohabiting"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  - id: employment
+    concept: demographics
+    description: "Employment status (1=employed, 2=not employed)"
+    type: nominal
+    source:
+      w2003: EMPLY
+      w2004: EMPLY
+      w2005: EMPLY
+      w2006: EMPLY
+      w2007: EMPLY
+      w2008: EMPLY
+      w2009: EMPLY
+      w2010: EMPLY
+      w2011: EMPLY
+      w2012: EMPLY
+      w2013: EMPLY
+      w2014: EMPLY
+      w2016: EMPLY
+      w2018: EMPLY
+      w2021: EMPLY
+      w2023: EMPLY
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Employed"
+        2: "Not employed"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: income
+    concept: demographics
+    description: "Monthly household income (categorical brackets in KRW; 0=no income, 1–21=brackets, 87=10M+ uncertain)"
+    type: ordinal
+    note: "Categorical income brackets in Korean Won. 87 is a special code for respondents uncertain about high income; treat as NA for ordinal analysis."
+    source:
+      w2003: INCOME
+      w2004: INCOME
+      w2005: INCOME
+      w2006: INCOME
+      w2007: INCOME
+      w2008: INCOME
+      w2009: INCOME
+      w2010: INCOME
+      w2011: INCOME
+      w2012: INCOME
+      w2013: INCOME
+      w2014: INCOME
+      w2016: INCOME
+      w2018: INCOME
+      w2021: INCOME
+      w2023: INCOME
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 87]
+
+  - id: region
+    concept: demographics
+    description: "Region of residence (1=Seoul, 2=Gyeonggi, 3=Gangwon, 4=Chungcheong, 5=Gyeongsang, 6=Jeolla, 7=Jeju)"
+    type: nominal
+    source:
+      w2003: REGION
+      w2004: REGION
+      w2005: REGION
+      w2006: REGION
+      w2007: REGION
+      w2008: REGION
+      w2009: REGION
+      w2010: REGION
+      w2011: REGION
+      w2012: REGION
+      w2013: REGION
+      w2014: REGION
+      w2016: REGION
+      w2018: REGION
+      w2021: REGION
+      w2023: REGION
+    scale:
+      min: 1
+      max: 7
+      labels:
+        1: "Seoul"
+        2: "Gyeonggi"
+        3: "Gangwon"
+        4: "Chungcheong"
+        5: "Gyeongsang"
+        6: "Jeolla"
+        7: "Jeju"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 7]
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urban vs. rural area of residence (0=rural, 1=urban)"
+    type: nominal
+    source:
+      w2003: URBAN
+      w2004: URBAN
+      w2005: URBAN
+      w2006: URBAN
+      w2007: URBAN
+      w2008: URBAN
+      w2009: URBAN
+      w2010: URBAN
+      w2011: URBAN
+      w2012: URBAN
+      w2013: URBAN
+      w2014: URBAN
+      w2016: URBAN
+      w2018: URBAN
+      w2021: URBAN
+      w2023: URBAN
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Rural area"
+        1: "Urban area"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: religion
+    concept: demographics
+    description: "Religion (1=Buddhist, 2=Protestant, 3=Catholic, 4=No religion, 5+=other denominations)"
+    type: nominal
+    source:
+      w2003: RELIG
+      w2004: RELIG
+      w2005: RELIG
+      w2006: RELIG
+      w2007: RELIG
+      w2008: RELIG
+      w2009: RELIG
+      w2010: RELIG
+      w2011: RELIG
+      w2012: RELIG
+      w2013: RELIG
+      w2014: RELIG
+      w2016: RELIG
+      w2018: RELIG
+      w2021: RELIG
+      w2023: RELIG
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 77]
+
+  - id: religious_attendance
+    concept: demographics
+    description: "Frequency of attending religious meetings (1=few times/week, 8=never)"
+    type: ordinal
+    note: "Higher values = less frequent attendance"
+    source:
+      w2003: ATTEND
+      w2004: ATTEND
+      w2005: ATTEND
+      w2006: ATTEND
+      w2007: ATTEND
+      w2008: ATTEND
+      w2009: ATTEND
+      w2010: ATTEND
+      w2011: ATTEND
+      w2012: ATTEND
+      w2013: ATTEND
+      w2014: ATTEND
+      w2016: ATTEND
+      w2018: ATTEND
+      w2021: ATTEND
+      w2023: ATTEND
+    scale:
+      min: 1
+      max: 8
+      labels:
+        1: "A few times a week"
+        2: "Once a week"
+        3: "Twice or three times a month"
+        4: "Once a month"
+        5: "Several times a year"
+        6: "Once a year"
+        7: "Less than once a year"
+        8: "Never"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 8]
+
+  - id: subjective_class_6pt
+    concept: demographics
+    description: "Subjective class identification, 6-point (1=upper-upper, 6=lower-lower; higher=lower class)"
+    type: ordinal
+    note: "Direction: higher=lower social class. Reverse before comparing with 10-point rank scale."
+    source:
+      w2003: CLASS
+      w2004: CLASS
+      w2005: CLASS
+      w2006: CLASS
+      w2007: CLASS
+      w2008: CLASS
+      w2009: CLASS
+      w2010: CLASS
+      w2011: CLASS
+      w2012: CLASS
+      w2013: CLASS
+      w2014: CLASS
+      w2016: CLASS
+      w2018: CLASS
+      w2021: CLASS
+      w2023: CLASS
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Upper-upper"
+        2: "Lower-upper"
+        3: "Upper-middle"
+        4: "Lower-middle"
+        5: "Upper-lower"
+        6: "Lower-lower"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  - id: subjective_rank_10pt
+    concept: demographics
+    description: "Subjective class identification, 10-point (1=bottom, 10=top; higher=higher class)"
+    type: ordinal
+    note: "Direction: higher=higher class. Opposite direction to subjective_class_6pt."
+    source:
+      w2003: RANK
+      w2004: RANK
+      w2005: RANK
+      w2006: RANK
+      w2007: RANK
+      w2008: RANK
+      w2009: RANK
+      w2010: RANK
+      w2011: RANK
+      w2012: RANK
+      w2013: RANK
+      w2014: RANK
+      w2016: RANK
+      w2018: RANK
+      w2021: RANK
+      w2023: RANK
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Bottom"
+        10: "Top"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]

@@ -1,0 +1,101 @@
+# KGSS Technical / Administrative Variables
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# NOTE: No interview date variable exists in the cumulative file.
+#
+# RESPID:    Respondent ID within each survey year (not unique across years)
+# YRRESPID:  Unique respondent ID across all years (format: YYYYnnnnn, e.g. 200300102 = 2003, resp 102)
+# SAMPLEAB:  Split-ballot questionnaire type (1=Form A, 2=Form B); -1=IAP (not used in that year)
+#
+# MISSING VALUES:
+# -8 = DK, -1 = IAP (inapplicable / not asked that year)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: resp_id
+    concept: identifiers
+    description: "Respondent ID within each survey year (not unique across years; use yr_resp_id for cross-year uniqueness)"
+    type: nominal
+    source:
+      w2003: RESPID
+      w2004: RESPID
+      w2005: RESPID
+      w2006: RESPID
+      w2007: RESPID
+      w2008: RESPID
+      w2009: RESPID
+      w2010: RESPID
+      w2011: RESPID
+      w2012: RESPID
+      w2013: RESPID
+      w2014: RESPID
+      w2016: RESPID
+      w2018: RESPID
+      w2021: RESPID
+      w2023: RESPID
+    harmonize:
+      default:
+        method: identity
+
+  - id: yr_resp_id
+    concept: identifiers
+    description: "Unique respondent ID across all years (format: YYYYnnnnn, e.g. 200300102)"
+    type: nominal
+    source:
+      w2003: YRRESPID
+      w2004: YRRESPID
+      w2005: YRRESPID
+      w2006: YRRESPID
+      w2007: YRRESPID
+      w2008: YRRESPID
+      w2009: YRRESPID
+      w2010: YRRESPID
+      w2011: YRRESPID
+      w2012: YRRESPID
+      w2013: YRRESPID
+      w2014: YRRESPID
+      w2016: YRRESPID
+      w2018: YRRESPID
+      w2021: YRRESPID
+      w2023: YRRESPID
+    harmonize:
+      default:
+        method: identity
+
+  - id: questionnaire_form
+    concept: identifiers
+    description: "Split-ballot questionnaire form (1=Form A, 2=Form B); NA if not applicable for that year"
+    type: nominal
+    note: "SAMPLEAB is only populated for some years (split-ballot design). Most years return NA."
+    source:
+      w2003: SAMPLEAB
+      w2004: SAMPLEAB
+      w2005: SAMPLEAB
+      w2006: SAMPLEAB
+      w2007: SAMPLEAB
+      w2008: SAMPLEAB
+      w2009: SAMPLEAB
+      w2010: SAMPLEAB
+      w2011: SAMPLEAB
+      w2012: SAMPLEAB
+      w2013: SAMPLEAB
+      w2014: SAMPLEAB
+      w2016: SAMPLEAB
+      w2018: SAMPLEAB
+      w2021: SAMPLEAB
+      w2023: SAMPLEAB
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Form A"
+        2: "Form B"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]

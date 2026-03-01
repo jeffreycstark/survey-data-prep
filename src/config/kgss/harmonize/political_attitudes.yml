@@ -1,0 +1,349 @@
+# KGSS Political Attitudes
+# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+#
+# Variables:
+#   CURGOV   - Assessment of current government (1=very good, 5=very poor)
+#   SATECO   - Satisfaction with national economy (1=very satisfied, 5=very dissatisfied)
+#   PARTYLR  - Political orientation/ideology (1=very liberal, 5=very conservative)
+#   KRPROUD  - National pride (1=very proud, 4=not proud at all)
+#   ECOPROS  - Prospect for Korean economy (1=much better, 5=much worse)
+#   POLPROS  - Prospect for Korean politics (1=much better, 5=much worse)
+#   NORTHWHO - View on North Korea (1=support, 4=fight against)
+#   NKACCEPT - Policy toward North Korean defectors (1=admit all, 3=admit none)
+#   UNIFI    - Need for unification (1=very necessary, 4=not at all necessary)
+#
+# NOTE: Prospect/assessment variables coded higher=worse; stored as-is (identity).
+# Researchers should note direction before analysis.
+#
+# MISSING VALUES:
+# -8 = DK (Don't Know)
+# -1 = IAP (Inapplicable / skipped)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable"
+
+variables:
+  - id: pol_govt_eval
+    concept: political_attitudes
+    description: "Assessment of current government's administration (1=very good, 5=very poor)"
+    type: ordinal
+    note: "Higher values = worse evaluation; reverse before comparing to satisfaction scales coded high=good"
+    source:
+      w2003: CURGOV
+      w2004: CURGOV
+      w2005: CURGOV
+      w2006: CURGOV
+      w2007: CURGOV
+      w2008: CURGOV
+      w2009: CURGOV
+      w2010: CURGOV
+      w2011: CURGOV
+      w2012: CURGOV
+      w2013: CURGOV
+      w2014: CURGOV
+      w2016: CURGOV
+      w2018: CURGOV
+      w2021: CURGOV
+      w2023: CURGOV
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very good"
+        2: "Somewhat good"
+        3: "Neither good nor poor"
+        4: "Somewhat poor"
+        5: "Very poor"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_econ_sat
+    concept: political_attitudes
+    description: "Satisfaction with current national economic state (1=very satisfied, 5=very dissatisfied)"
+    type: ordinal
+    note: "Higher values = more dissatisfied"
+    source:
+      w2003: SATECO
+      w2004: SATECO
+      w2005: SATECO
+      w2006: SATECO
+      w2007: SATECO
+      w2008: SATECO
+      w2009: SATECO
+      w2010: SATECO
+      w2011: SATECO
+      w2012: SATECO
+      w2013: SATECO
+      w2014: SATECO
+      w2016: SATECO
+      w2018: SATECO
+      w2021: SATECO
+      w2023: SATECO
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very satisfied"
+        2: "Somewhat satisfied"
+        3: "Neither"
+        4: "Somewhat dissatisfied"
+        5: "Very dissatisfied"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_ideology
+    concept: political_attitudes
+    description: "Political orientation / ideology (1=very liberal, 5=very conservative)"
+    type: ordinal
+    source:
+      w2003: PARTYLR
+      w2004: PARTYLR
+      w2005: PARTYLR
+      w2006: PARTYLR
+      w2007: PARTYLR
+      w2008: PARTYLR
+      w2009: PARTYLR
+      w2010: PARTYLR
+      w2011: PARTYLR
+      w2012: PARTYLR
+      w2013: PARTYLR
+      w2014: PARTYLR
+      w2016: PARTYLR
+      w2018: PARTYLR
+      w2021: PARTYLR
+      w2023: PARTYLR
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very liberal"
+        2: "Somewhat liberal"
+        3: "Neither liberal nor conservative"
+        4: "Somewhat conservative"
+        5: "Very conservative"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_national_pride
+    concept: political_attitudes
+    description: "National pride (1=very proud, 4=not proud at all)"
+    type: ordinal
+    note: "Higher = less pride; reverse before comparing to ABS/WVS national pride variables"
+    source:
+      w2003: KRPROUD
+      w2004: KRPROUD
+      w2005: KRPROUD
+      w2006: KRPROUD
+      w2007: KRPROUD
+      w2008: KRPROUD
+      w2009: KRPROUD
+      w2010: KRPROUD
+      w2011: KRPROUD
+      w2012: KRPROUD
+      w2013: KRPROUD
+      w2014: KRPROUD
+      w2016: KRPROUD
+      w2018: KRPROUD
+      w2021: KRPROUD
+      w2023: KRPROUD
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very proud"
+        2: "Somewhat proud"
+        3: "Not very proud"
+        4: "Not proud at all"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: pol_econ_prospect
+    concept: political_attitudes
+    description: "Prospect for South Korean economy in the near future (1=much better, 5=much worse)"
+    type: ordinal
+    source:
+      w2003: ECOPROS
+      w2004: ECOPROS
+      w2005: ECOPROS
+      w2006: ECOPROS
+      w2007: ECOPROS
+      w2008: ECOPROS
+      w2009: ECOPROS
+      w2010: ECOPROS
+      w2011: ECOPROS
+      w2012: ECOPROS
+      w2013: ECOPROS
+      w2014: ECOPROS
+      w2016: ECOPROS
+      w2018: ECOPROS
+      w2021: ECOPROS
+      w2023: ECOPROS
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much better"
+        2: "Somewhat better"
+        3: "About the same"
+        4: "Somewhat worse"
+        5: "Much worse"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_pol_prospect
+    concept: political_attitudes
+    description: "Prospect for South Korean politics in the near future (1=much better, 5=much worse)"
+    type: ordinal
+    source:
+      w2003: POLPROS
+      w2004: POLPROS
+      w2005: POLPROS
+      w2006: POLPROS
+      w2007: POLPROS
+      w2008: POLPROS
+      w2009: POLPROS
+      w2010: POLPROS
+      w2011: POLPROS
+      w2012: POLPROS
+      w2013: POLPROS
+      w2014: POLPROS
+      w2016: POLPROS
+      w2018: POLPROS
+      w2021: POLPROS
+      w2023: POLPROS
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much better"
+        2: "Somewhat better"
+        3: "About the same"
+        4: "Somewhat worse"
+        5: "Much worse"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_northkorea_view
+    concept: political_attitudes
+    description: "View on North Korea (1=country to support, 4=country to fight against)"
+    type: ordinal
+    source:
+      w2003: NORTHWHO
+      w2004: NORTHWHO
+      w2005: NORTHWHO
+      w2006: NORTHWHO
+      w2007: NORTHWHO
+      w2008: NORTHWHO
+      w2009: NORTHWHO
+      w2010: NORTHWHO
+      w2011: NORTHWHO
+      w2012: NORTHWHO
+      w2013: NORTHWHO
+      w2014: NORTHWHO
+      w2016: NORTHWHO
+      w2018: NORTHWHO
+      w2021: NORTHWHO
+      w2023: NORTHWHO
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "A country to support"
+        2: "A country to cooperate with"
+        3: "A country to guard against"
+        4: "A country to fight against"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: pol_nk_defectors
+    concept: political_attitudes
+    description: "Policy toward North Korean defectors (1=admit all, 3=admit none)"
+    type: ordinal
+    source:
+      w2003: NKACCEPT
+      w2004: NKACCEPT
+      w2005: NKACCEPT
+      w2006: NKACCEPT
+      w2007: NKACCEPT
+      w2008: NKACCEPT
+      w2009: NKACCEPT
+      w2010: NKACCEPT
+      w2011: NKACCEPT
+      w2012: NKACCEPT
+      w2013: NKACCEPT
+      w2014: NKACCEPT
+      w2016: NKACCEPT
+      w2018: NKACCEPT
+      w2021: NKACCEPT
+      w2023: NKACCEPT
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "All should be admitted"
+        2: "Should be admitted selectively"
+        3: "Should not be admitted any more"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: pol_unification
+    concept: political_attitudes
+    description: "Need for unification between South and North Korea (1=very necessary, 4=not at all)"
+    type: ordinal
+    note: "Higher = less support for unification"
+    source:
+      w2003: UNIFI
+      w2004: UNIFI
+      w2005: UNIFI
+      w2006: UNIFI
+      w2007: UNIFI
+      w2008: UNIFI
+      w2009: UNIFI
+      w2010: UNIFI
+      w2011: UNIFI
+      w2012: UNIFI
+      w2013: UNIFI
+      w2014: UNIFI
+      w2016: UNIFI
+      w2018: UNIFI
+      w2021: UNIFI
+      w2023: UNIFI
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very necessary"
+        2: "Fairly necessary"
+        3: "Not too necessary"
+        4: "Not necessary at all"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]

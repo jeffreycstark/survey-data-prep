@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9) + KAMOS (Waves 1, 4) + V-Dem v15 (scaffold)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 5 waves: 2015-2023) + Afrobarometer (Afro, Round 9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 16 years: 2003-2023) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (20 vars, 5 waves, ~100k respondents); Afro complete (20 vars, 1 wave, 53,444 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (47 vars, 16 years 2003–2023, 22,071 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
 
 ---
 
@@ -69,6 +69,10 @@ src/
 │   │   │   ├── 0_load_waves.R
 │   │   │   ├── 2_harmonize_all.R
 │   │   │   └── 99_create_final_dataset.R
+│   │   ├── kgss/                   # KGSS pipeline
+│   │   │   ├── 0_load_waves.R
+│   │   │   ├── 2_harmonize_all.R
+│   │   │   └── 99_create_final_dataset.R
 │   │   └── vdem/                   # V-Dem pipeline (scaffold)
 │   │       ├── 0_load_vdem.R
 │   │       └── 99_create_final_dataset.R
@@ -85,8 +89,10 @@ src/
 │   │   └── harmonize/          # LBS YAML specs (5 files, 20 vars)
 │   ├── afro/                   # Afrobarometer-specific config
 │   │   └── harmonize/          # Afro YAML specs (5 files, 20 vars)
-│   └── kamos/                  # KAMOS-specific config
-│       └── harmonize/          # KAMOS YAML specs (6 files, 39 vars)
+│   ├── kamos/                  # KAMOS-specific config
+│   │   └── harmonize/          # KAMOS YAML specs (6 files, 39 vars)
+│   └── kgss/                   # KGSS-specific config
+│       └── harmonize/          # KGSS YAML specs (6 files, 47 vars)
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -113,6 +119,9 @@ data/
 │   └── raw/
 │       ├── wave1/              # KAMOS W1 2016 (SPSS .sav, n=2000)
 │       └── wave4/              # KAMOS W4 2019 (SPSS .sav, n=1500)
+├── kgss/                       # Korea General Social Survey
+│   └── raw/
+│       └── Eng_data_CUM0062_V3.sav  # Cumulative file (n=22,071, 3,353 cols, 2003-2023)
 ├── v-dem/                      # Varieties of Democracy
 │   └── raw/
 │       └── v15/                # V-Dem v15 (RDS, 27,913 rows × 4,607 cols)
@@ -194,6 +203,13 @@ Rscript src/r/data_prep_modules/afro/99_create_final_dataset.R
 Rscript src/r/data_prep_modules/kamos/0_load_waves.R
 Rscript src/r/data_prep_modules/kamos/2_harmonize_all.R
 Rscript src/r/data_prep_modules/kamos/99_create_final_dataset.R
+```
+
+**KGSS** (16 years 2003–2023, single cumulative SPSS → split by year → harmonize):
+```bash
+Rscript src/r/data_prep_modules/kgss/0_load_waves.R
+Rscript src/r/data_prep_modules/kgss/2_harmonize_all.R
+Rscript src/r/data_prep_modules/kgss/99_create_final_dataset.R
 ```
 
 **V-Dem** (country-year panel, scaffold):
@@ -355,6 +371,32 @@ KAMOS waves: w1=2016, w4=2019 (waves 2 and 3 not available)
 
 KAMOS missing value conventions: 98 and 99 treated as NA for age; other variables per-spec.
 Gender coding corrected via `recode_kamos_gender_w1()` (W1 had 1=female,2=male; standardized to 1=male,2=female).
+
+### KGSS Harmonized Dataset
+
+```r
+d <- readRDS("data/processed/kgss_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/kgss_harmonized.parquet")
+```
+
+**22,071 respondents, South Korea only (KOR), 47 harmonized variables across 16 survey years (2003–2023; no 2015, 2017, 2019–2020, 2022).**
+
+⚠️ **Scale warning**: `conf_*` variables are **1–3** (not 1–4 like ABS/WVS/LBS trust vars); do not compare without rescaling.
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Institutional Confidence (20) | conf_business, conf_legislature, conf_judiciary, conf_science, conf_military, conf_finance, conf_bluehouse, conf_civil_society, conf_clergy, conf_education, conf_labor, conf_press, conf_television, conf_medicine, conf_govt_national, conf_govt_local, conf_research, conf_prosecutors, conf_statistics, conf_election_commission | 1–3, higher=more confidence |
+| Social Trust (3) | trust_fair (1–3), trust_generalized (1–4), trust_reliable (0–10) | varies; higher=more trust |
+| Political Attitudes (9) | pol_govt_eval, pol_econ_sat (1–5 higher=worse), pol_ideology (1–5 liberal–conservative), pol_national_pride (1–4 higher=less proud), pol_econ_prospect, pol_pol_prospect (1–5 higher=worse), pol_northkorea_view, pol_nk_defectors, pol_unification | varies |
+| Demographics (12) | age, sex, education, marital_status, employment, income, region, urban_rural, religion, religious_attendance, subjective_class_6pt (1–6 higher=lower class), subjective_rank_10pt (1–10 higher=higher class) | varies |
+| Identifiers (3) | resp_id (within-year), yr_resp_id (cross-year unique, format YYYYnnnnn), questionnaire_form (1=A, 2=B; sparse) | nominal |
+| Weight (1) | weight | continuous, mean=1; raw: FINALWT (range ~0.20–4.59) |
+
+Country identifier: `country` = "KOR" (all rows)
+Wave column: `wave` = calendar year integer (2003, 2004, ..., 2023), **not** a sequential wave index.
+KGSS missing value conventions: -8=DK, -1=IAP treated as NA.
+conf_bluehouse = confidence in the Blue House (Korea's presidential executive office).
+**No interview date variable** exists in the cumulative file; year is the only temporal identifier.
 
 ### V-Dem Core Dataset (scaffold)
 
