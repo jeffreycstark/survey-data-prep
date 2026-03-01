@@ -162,6 +162,8 @@ data/processed/abs_econdev_authpref.csv
 data/wvs/raw/
 # Afrobarometer raw data
 data/afro/
+# KGSS raw data
+data/kgss/
 # External reference datasets (V-Dem, OWID, CLEA, etc.)
 data/external/
 # V-Dem raw data (large RDS files, refreshable from V-Dem website)
