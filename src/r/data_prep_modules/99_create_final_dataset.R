@@ -55,6 +55,12 @@ abs_econdev_authpref <- abs_econdev_authpref %>%
 
 cat("  Labels zapped successfully\n")
 
+# Rescale education to 0-1 (ABS raw: 1-10)
+if ("education_level" %in% names(abs_econdev_authpref)) {
+  abs_econdev_authpref <- abs_econdev_authpref %>%
+    mutate(education_level_01 = (education_level - 1) / 9)
+}
+
 # Summary by wave
 cat("\n=== WAVE SUMMARY ===\n")
 wave_summary <- abs_econdev_authpref %>%

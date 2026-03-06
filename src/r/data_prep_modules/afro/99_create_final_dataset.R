@@ -219,6 +219,12 @@ afro_harmonized <- afro_combined %>%
 afro_harmonized <- afro_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")), ~ as.numeric(haven::zap_labels(.x))))
 
+# Rescale education to 0-1 (Afro raw: 0-3)
+if ("education_level" %in% names(afro_harmonized)) {
+  afro_harmonized <- afro_harmonized %>%
+    mutate(education_level_01 = education_level / 3)
+}
+
 # ==============================================================================
 # SUMMARY
 # ==============================================================================

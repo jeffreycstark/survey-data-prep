@@ -190,7 +190,14 @@ Note: ABS and Afro do not have generalized social trust in the harmonized datase
 | LBS | `urban_rural` | City size (1–8, 8=capital) | 1–8 | 1997–2024 (not 1995–1996) |
 | WVS | `sex`, `age`, `education_level`, `income_scale` | Standard demographics | varies | W6–W7 |
 
-**EDUCATION SCALE WARNING**: ABS scale varies by wave. Afro = 0–3 (collapsed). LBS = 1–7 (Illiterate…Complete higher). WVS = 1–3 (harmonized). Not directly comparable without rescaling.
+**EDUCATION SCALES** differ across surveys. Each survey provides both the raw ordinal and a 0–1 rescaled version:
+
+| Survey | Raw variable | Raw scale | Rescaled variable | Formula |
+|--------|-------------|-----------|-------------------|---------|
+| ABS | `education_level` | 1–10 (No formal…Post-graduate) | `education_level_01` | (x − 1) / 9 |
+| Afro | `education_level` | 0–3 (No formal…Post-secondary) | `education_level_01` | x / 3 |
+| LBS | `education_level` | 1–7 (Illiterate…Complete higher) | `education_level_01` | (x − 1) / 6 |
+| WVS | `education_level` | 1–3 (Primary…Tertiary) | `education_level_01` | (x − 1) / 2 |
 
 
 ## Weights

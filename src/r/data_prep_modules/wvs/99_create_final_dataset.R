@@ -89,6 +89,12 @@ wvs_harmonized <- wvs_combined %>%
 wvs_harmonized <- wvs_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")), ~ as.numeric(haven::zap_labels(.x))))
 
+# Rescale education to 0-1 (WVS raw: 1-3)
+if ("education_level" %in% names(wvs_harmonized)) {
+  wvs_harmonized <- wvs_harmonized %>%
+    mutate(education_level_01 = (education_level - 1) / 2)
+}
+
 # ==============================================================================
 # SUMMARY
 # ==============================================================================

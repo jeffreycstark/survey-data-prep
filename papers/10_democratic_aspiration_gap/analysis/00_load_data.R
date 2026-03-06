@@ -71,3 +71,9 @@ cat("WVS:", nrow(wvs), "rows,", length(unique(wvs$country)), "countries,",
 #   Afro: dem_satisfaction
 #   LBS:  dem_satisfaction
 #   WVS:  dem_satisfaction_political_system (1-10, W7 only)
+#
+# EDUCATION (use education_level_01 for cross-survey, 0-1 min-max rescaled):
+#   ABS:  education_level (1-10) → education_level_01 = (x-1)/9
+#   Afro: education_level (0-3)  → education_level_01 = x/3
+#   LBS:  education_level (1-7)  → education_level_01 = (x-1)/6
+#   WVS:  education_level (1-3)  → education_level_01 = (x-1)/2
