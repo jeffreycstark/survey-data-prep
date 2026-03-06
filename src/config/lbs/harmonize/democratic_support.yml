@@ -15,6 +15,50 @@ missing_conventions:
     description: "LBS standard missing codes"
 
 variables:
+  - id: strongman_mano_dura
+    concept: democratic_support
+    description: "A firm hand from the government is not a bad thing (1=pro-strongman, 0=anti-strongman)"
+    type: nominal
+    note: "Binary item. 1995, 2004, 2016 only. 2023 asks reversed 4pt question — excluded."
+    source:
+      y1995: p35
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: p26st
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: null
+      y2016: P19ST
+      y2017: null
+      y2018: null
+      y2020: null
+      y2023: null
+      y2024: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        1: "Firm hand not a bad thing (pro-strongman)"
+        0: "Firm hand not good for the country (anti-strongman)"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "Raw 1=firm hand not bad → 1; raw 2=not good → 0"
+    qc:
+      valid_range: [0, 1]
+
   - id: dem_nondem_ok
     concept: democratic_support
     description: "Wouldn't mind a non-democratic government if it could solve problems (1-4, higher = more agreement)"

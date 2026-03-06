@@ -28,6 +28,7 @@ concept_groups:
     - dem_how_democratic_10pt
 
   democratic_support_sparse:
+    - strongman_mano_dura
     - dem_nondem_ok
     - dem_military_support
     - dem_solves_problems
