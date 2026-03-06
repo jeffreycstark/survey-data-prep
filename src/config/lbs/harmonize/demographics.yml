@@ -1,0 +1,151 @@
+# LBS Demographics
+# Waves: 24 years (1995-2024)
+#
+# age: continuous (respondent age in years)
+# education_level: 1-7 ordinal (recoded education, all waves consistent)
+# urban_rural: 1-8 ordinal (city size, TAMCIUD; not available 1995-1996)
+#
+# MISSING VALUES:
+# -5 through -1 are LBS standard missing codes
+# Education 2023: 0 = "No data" → treat as NA
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  - id: age
+    concept: demographics
+    description: "Respondent age in years"
+    type: continuous
+    note: "Variable name changes across eras: s2 (1995-2004), s7/s6 (2005-2009), EDAD/reedad (2007+)"
+    source:
+      y1995: s2
+      y1996: s2
+      y1997: s2
+      y1998: s2
+      y2000: S2
+      y2001: s2
+      y2002: s2
+      y2003: s2
+      y2004: s2
+      y2005: s7
+      y2006: s7
+      y2007: edad
+      y2008: reedad
+      y2009: s6
+      y2010: EDAD
+      y2011: EDAD
+      y2013: REEDAD
+      y2015: REEDAD
+      y2016: EDAD
+      y2017: EDAD
+      y2018: EDAD
+      y2020: EDAD
+      y2023: EDAD
+      y2024: EDAD
+    scale:
+      min: 15
+      max: 99
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [15, 110]
+
+  - id: education_level
+    concept: demographics
+    description: "Respondent education recoded (1-7, higher = more education)"
+    type: ordinal
+    note: "Pre-computed recode by LBS (REEDUC). Variable name changes: s20 (1995), s16a (1996), s12a (1997), s14a (1998), reeduc1 (2000-2012), REEDUC_1 (2013-2016), REEDUC.1 (2017+). 2023 has 0=No data → NA."
+    source:
+      y1995: s20
+      y1996: s16a
+      y1997: s12a
+      y1998: s14a
+      y2000: reeduc1
+      y2001: reeduc1
+      y2002: reeduc1
+      y2003: s18
+      y2004: reeduc1
+      y2005: reeduc1
+      y2006: reeduc1
+      y2007: reeduc1
+      y2008: reeduc1
+      y2009: reeduc1
+      y2010: REEDUC1
+      y2011: REEDUC1
+      y2013: REEDUC_1
+      y2015: REEDUC_1
+      y2016: REEDUC_1
+      y2017: REEDUC.1
+      y2018: REEDUC.1
+      y2020: REEDUC.1
+      y2023: REEEDUC.1
+      y2024: REEDUC.1
+    scale:
+      min: 1
+      max: 7
+      labels:
+        1: "Illiterate"
+        2: "Incomplete primary/basic"
+        3: "Complete primary/basic"
+        4: "Incomplete secondary/technical"
+        5: "Complete secondary/technical"
+        6: "Incomplete higher education"
+        7: "Complete higher education"
+    harmonize:
+      default:
+        method: identity
+        note: "All waves use same 1-7 recoded scale. 2023 has 0=No data treated as NA by valid_range."
+    qc:
+      valid_range: [1, 7]
+
+  - id: urban_rural
+    concept: demographics
+    description: "Size of city/town (1-8, higher = larger; 8 = capital)"
+    type: ordinal
+    note: "TAMCIUD. Not available 1995 or 1996. Available 1997-2024."
+    source:
+      y1995: null
+      y1996: null
+      y1997: tamciud
+      y1998: tamciud
+      y2000: TAMCIUD
+      y2001: tamciud
+      y2002: tamciud
+      y2003: tamciud
+      y2004: tamciud
+      y2005: tamciud
+      y2006: tamciud
+      y2007: tamciud
+      y2008: tamciud
+      y2009: tamciud
+      y2010: TAMCIUD
+      y2011: TAMCIUD
+      y2013: TAMCIUD
+      y2015: TAMCIUD
+      y2016: TAMCIUD
+      y2017: TAMCIUD
+      y2018: TAMCIUD
+      y2020: TAMCIUD
+      y2023: TAMCIUD
+      y2024: TAMCIUD
+    scale:
+      min: 1
+      max: 8
+      labels:
+        1: "Up to 5,000"
+        2: "5,001 - 10,000"
+        3: "10,001 - 20,000"
+        4: "20,001 - 40,000"
+        5: "40,001 - 50,000"
+        6: "50,001 - 100,000"
+        7: "100,001 and more"
+        8: "Capital"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 8]
