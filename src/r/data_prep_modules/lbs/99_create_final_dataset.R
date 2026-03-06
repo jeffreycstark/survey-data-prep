@@ -136,6 +136,20 @@ if ("education_level" %in% names(lbs_harmonized)) {
     mutate(education_level_01 = (education_level - 1) / 6)
 }
 
+# 5-category education (LBS REEDUC 1-7 → 1-5)
+# 1=No studies(1), 2=Primary(2-3), 3=Secondary(4-5), 4=Incomplete higher(6), 5=Complete higher(7)
+if ("education_level" %in% names(lbs_harmonized)) {
+  lbs_harmonized <- lbs_harmonized %>%
+    mutate(education_5cat = case_when(
+      education_level == 1             ~ 1L,
+      education_level %in% 2:3        ~ 2L,
+      education_level %in% 4:5        ~ 3L,
+      education_level == 6            ~ 4L,
+      education_level == 7            ~ 5L,
+      TRUE                            ~ NA_integer_
+    ))
+}
+
 # ==============================================================================
 # SUMMARY
 # ==============================================================================

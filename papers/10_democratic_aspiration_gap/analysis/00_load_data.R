@@ -77,3 +77,8 @@ cat("WVS:", nrow(wvs), "rows,", length(unique(wvs$country)), "countries,",
 #   Afro: education_level (0-3)  → education_level_01 = x/3
 #   LBS:  education_level (1-7)  → education_level_01 = (x-1)/6
 #   WVS:  education_level (1-3)  → education_level_01 = (x-1)/2
+#
+# EDUCATION 5-CATEGORY (education_5cat, ABS/LBS/Afro only — WVS too coarse):
+#   1=No formal, 2=Primary, 3=Secondary, 4=Post-sec/some uni, 5=Uni+postgrad
+#   Afro uses education_detailed (0-9 raw from Q94/Q97/q84/q90/Q89, R2-R9)
+#   R1 fallback to education_level (0-3), max education_5cat = 4

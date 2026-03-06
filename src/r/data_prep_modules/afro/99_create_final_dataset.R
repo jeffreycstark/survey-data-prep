@@ -225,6 +225,38 @@ if ("education_level" %in% names(afro_harmonized)) {
     mutate(education_level_01 = education_level / 3)
 }
 
+# 5-category education from education_detailed (0-9) where available
+# Source: q84 (R2), q90 (R3), Q89 (R4), Q97 (R5-R8), Q94 (R9)
+# R1 has only condensed educ (0-3), so fall back to education_level
+# 0-1→1(No formal), 2-3→2(Primary), 4-5→3(Secondary),
+# 6-7→4(Post-sec/some uni), 8-9→5(Uni complete+postgrad)
+if ("education_detailed" %in% names(afro_harmonized)) {
+  afro_harmonized <- afro_harmonized %>%
+    mutate(education_5cat = case_when(
+      !is.na(education_detailed) & education_detailed %in% 0:1 ~ 1L,
+      !is.na(education_detailed) & education_detailed %in% 2:3 ~ 2L,
+      !is.na(education_detailed) & education_detailed %in% 4:5 ~ 3L,
+      !is.na(education_detailed) & education_detailed %in% 6:7 ~ 4L,
+      !is.na(education_detailed) & education_detailed %in% 8:9 ~ 5L,
+      # R1 fallback: education_level 0-3
+      is.na(education_detailed) & education_level == 0 ~ 1L,
+      is.na(education_detailed) & education_level == 1 ~ 2L,
+      is.na(education_detailed) & education_level == 2 ~ 3L,
+      is.na(education_detailed) & education_level == 3 ~ 4L,
+      TRUE ~ NA_integer_
+    ))
+} else if ("education_level" %in% names(afro_harmonized)) {
+  # Fallback if education_detailed not yet harmonized
+  afro_harmonized <- afro_harmonized %>%
+    mutate(education_5cat = case_when(
+      education_level == 0 ~ 1L,
+      education_level == 1 ~ 2L,
+      education_level == 2 ~ 3L,
+      education_level == 3 ~ 4L,
+      TRUE                 ~ NA_integer_
+    ))
+}
+
 # ==============================================================================
 # SUMMARY
 # ==============================================================================

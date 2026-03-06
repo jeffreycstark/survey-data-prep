@@ -78,6 +78,42 @@ variables:
     qc:
       valid_range: [0, 3]
 
+  - id: education_detailed
+    concept: demographics
+    description: "Education level detailed (0-9 scale from Q94/Q97 raw)"
+    type: ordinal
+    note: "R1 only has condensed 0-3 (educ), so null. R2-R9 have detailed 0-9."
+    source:
+      w1: null
+      w2: q84
+      w3: q90
+      w4: Q89
+      w5: Q97
+      w6: Q97
+      w7: Q97
+      w8: Q97
+      w9: Q94
+    scale:
+      min: 0
+      max: 9
+      labels:
+        0: "No formal schooling"
+        1: "Informal schooling only"
+        2: "Some primary schooling"
+        3: "Primary school completed"
+        4: "Some secondary school / high school"
+        5: "Secondary school completed / high school"
+        6: "Post-secondary qualifications, not university"
+        7: "Some university"
+        8: "University completed"
+        9: "Post-graduate"
+    harmonize:
+      default:
+        method: identity
+        note: "Raw 0-9 scale preserved. Missing codes cleaned."
+    qc:
+      valid_range: [0, 9]
+
   - id: urban_rural
     concept: demographics
     description: "Urban or rural PSU (1=Urban, 2=Rural)"

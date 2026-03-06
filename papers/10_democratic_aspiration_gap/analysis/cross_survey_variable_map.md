@@ -199,6 +199,20 @@ Note: ABS and Afro do not have generalized social trust in the harmonized datase
 | LBS | `education_level` | 1–7 (Illiterate…Complete higher) | `education_level_01` | (x − 1) / 6 |
 | WVS | `education_level` | 1–3 (Primary…Tertiary) | `education_level_01` | (x − 1) / 2 |
 
+**5-CATEGORY EDUCATION** (`education_5cat`): Harmonized ordinal variable for cross-survey comparison.
+
+| Level | Label | ABS (1–10) | LBS REEDUC (1–7) | Afro detailed (0–9) |
+|-------|-------|-----------|------------------|---------------------|
+| 1 | No formal | 1 | 1 | 0–1 |
+| 2 | Primary | 2–3 | 2–3 | 2–3 |
+| 3 | Secondary | 4–7 | 4–5 | 4–5 |
+| 4 | Post-sec / some uni | 8 | 6 | 6–7 |
+| 5 | Uni complete + postgrad | 9–10 | 7 | 8–9 |
+
+Afro source: `education_detailed` (0–9) from raw Q94 (R9), Q97 (R5–R8), Q89 (R4), q90 (R3), q84 (R2). R1 only has condensed `educ` (0–3), so R1 education_5cat maxes at 4 (post-sec + uni merged).
+
+⚠️ **WVS excluded**: WVS education (1–3) is too coarse for 5-category mapping. Use `education_level_01` for cross-survey comparison including WVS.
+
 
 ## Weights
 

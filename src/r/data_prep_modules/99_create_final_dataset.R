@@ -61,6 +61,20 @@ if ("education_level" %in% names(abs_econdev_authpref)) {
     mutate(education_level_01 = (education_level - 1) / 9)
 }
 
+# 5-category education (ABS 1-10 → 1-5)
+# 1=No formal(1), 2=Primary(2-3), 3=Secondary(4-7), 4=Post-sec/some uni(8), 5=Uni+postgrad(9-10)
+if ("education_level" %in% names(abs_econdev_authpref)) {
+  abs_econdev_authpref <- abs_econdev_authpref %>%
+    mutate(education_5cat = case_when(
+      education_level == 1             ~ 1L,
+      education_level %in% 2:3        ~ 2L,
+      education_level %in% 4:7        ~ 3L,
+      education_level == 8            ~ 4L,
+      education_level %in% 9:10       ~ 5L,
+      TRUE                            ~ NA_integer_
+    ))
+}
+
 # Summary by wave
 cat("\n=== WAVE SUMMARY ===\n")
 wave_summary <- abs_econdev_authpref %>%
