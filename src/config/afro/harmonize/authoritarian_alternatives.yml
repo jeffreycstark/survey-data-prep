@@ -1,0 +1,111 @@
+# Afrobarometer Authoritarian Alternatives
+# Rounds 1-9
+#
+# "Reject one-party/military/one-man rule" items
+# Scale: 1=Strongly disapprove ... 5=Strongly approve (R2-R9)
+# Higher values = MORE approval of authoritarian alternative
+# We REVERSE so higher = more REJECTION of authoritarian rule (pro-democracy)
+#
+# R1 has a different item (xstronld) with a different scale - excluded
+#
+# MISSING VALUES:
+# -1=Missing, 8/98=Refused, 9/99=Don't know, 997=Not asked
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 997, 998]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: reject_one_party
+    concept: authoritarian_alternatives
+    description: "Reject one-party rule (1-5, higher = stronger rejection, i.e. pro-democracy)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q35a
+      w3: q36a
+      w4: Q29A
+      w5: Q31A
+      w6: Q28A
+      w7: Q27A
+      w8: Q20A
+      w9: Q22A
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Strongly approve (of one-party rule)"
+        2: "Approve"
+        3: "Neither approve nor disapprove"
+        4: "Disapprove"
+        5: "Strongly disapprove (of one-party rule)"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_reject_auth
+        note: "Reverse raw 1-5 so higher = more rejection. Raw: 1=Strongly disapprove...5=Strongly approve."
+    qc:
+      valid_range: [1, 5]
+
+  - id: reject_military_rule
+    concept: authoritarian_alternatives
+    description: "Reject military rule (1-5, higher = stronger rejection)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q35c
+      w3: q36b
+      w4: Q29B
+      w5: Q31B
+      w6: Q28B
+      w7: Q27B
+      w8: Q20B
+      w9: Q22B
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Strongly approve (of military rule)"
+        2: "Approve"
+        3: "Neither approve nor disapprove"
+        4: "Disapprove"
+        5: "Strongly disapprove (of military rule)"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_reject_auth
+        note: "Reverse raw 1-5 so higher = more rejection."
+    qc:
+      valid_range: [1, 5]
+
+  - id: reject_one_man_rule
+    concept: authoritarian_alternatives
+    description: "Reject one-man rule (1-5, higher = stronger rejection)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q35d
+      w3: q36c
+      w4: Q29C
+      w5: Q31C
+      w6: Q28C
+      w7: Q27C
+      w8: Q20C
+      w9: Q22C
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Strongly approve (of one-man rule)"
+        2: "Approve"
+        3: "Neither approve nor disapprove"
+        4: "Disapprove"
+        5: "Strongly disapprove (of one-man rule)"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_reject_auth
+        note: "Reverse raw 1-5 so higher = more rejection."
+    qc:
+      valid_range: [1, 5]

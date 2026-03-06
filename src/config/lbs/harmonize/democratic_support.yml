@@ -1,12 +1,9 @@
 # LBS Democratic Support / Authoritarian Alternatives
-# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+# Extended to 24 waves (1995-2024) — most variables only available in recent waves
 #
-# NOTE: LBS asks about authoritarian alternatives differently than WVS.
-# WVS uses "How good/bad would it be to have [system X]?" on 1-4 scale.
-# LBS uses agree/disagree or binary support items.
-# These are best-effort mappings — see LBS_VARIABLE_REVIEW.md.
-#
-# Also includes the special pre-registered variable: pol_say_what_think
+# NOTE: These variables have SPARSE coverage. Most are only asked in 2-3 recent waves.
+# They are preserved for backward compatibility but are NOT the focus of the
+# time-series extension (use dem_always_preferable and dem_satisfaction instead).
 #
 # MISSING VALUES:
 # All waves: negative values are missing
@@ -18,25 +15,36 @@ missing_conventions:
     description: "LBS standard missing codes"
 
 variables:
-  # ===========================================================================
-  # Non-Democratic Government Acceptable
-  # ===========================================================================
-  # "I wouldn't mind a non-democratic government in power if it could solve problems"
-  # 1-4 agree/disagree: 1=Strongly agree, 4=Strongly disagree
-  # Reverse so higher = more support for non-democratic alternative
-  # Conceptually related to WVS dem_strong_leader
-
   - id: dem_nondem_ok
     concept: democratic_support
     description: "Wouldn't mind a non-democratic government if it could solve problems (1-4, higher = more agreement)"
     type: ordinal
-    note: "Not available in w1 (2015) or w3 (2018). Conceptually related to WVS dem_strong_leader but differently framed."
+    note: "Very sparse coverage. Only 2016, 2020, 2023."
     source:
-      w1: null
-      w2: P44STMB
-      w3: null
-      w4: P22STM.B
-      w5: P18STM.B
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: null
+      y2016: P44STMB
+      y2017: null
+      y2018: null
+      y2020: P22STM.B
+      y2023: P18STM.B
+      y2024: null
     scale:
       min: 1
       max: 4
@@ -49,115 +57,122 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
-        note: "Raw coded 1=Strongly agree → 4=Strongly disagree; reverse so high=more support for non-dem"
     qc:
       valid_range: [1, 4]
-      validate:
-        - waves: [w2, w4, w5]
-          phrase: "non.?democrat|wouldn.?t mind"
-
-  # ===========================================================================
-  # Military Government Support
-  # ===========================================================================
-  # Binary: 1=Support a military government, 2=Under no circumstance
-  # Identity (no reversal) — 1=support, 2=no support
 
   - id: dem_military_support
     concept: democratic_support
-    description: "Would support a military government (1=Support, 0=Under no circumstance). Available waves 4-5 only."
+    description: "Would support a military government (1=Support, 0=Under no circumstance). 2020, 2023 only."
     type: nominal
-    note: "Only available in 2020 and 2023. Binary item, not directly comparable to WVS dem_army_rule (1-4 scale)."
     source:
-      w1: null
-      w2: null
-      w3: null
-      w4: P21STM
-      w5: P20STM
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: null
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: P21STM
+      y2023: P20STM
+      y2024: null
     scale:
       min: 0
       max: 1
-      labels:
-        1: "Support a military government"
-        0: "Under no circumstance support a military government"
     harmonize:
       default:
         method: r_function
         fn: recode_binary_yes_no
-        note: "Binary item. 1=support→1, 2=no support→0."
     qc:
       valid_range: [0, 1]
-      validate:
-        - waves: [w4, w5]
-          phrase: "military"
-
-  # ===========================================================================
-  # Democracy Solves Problems
-  # ===========================================================================
-  # "Democracy allows us to solve the problems we have"
-  # 1-4 agree/disagree scale
-  # Reverse so higher = more agreement
 
   - id: dem_solves_problems
     concept: democratic_support
-    description: "Agreement that democracy allows us to solve problems (1-4, higher = more agreement). Available waves 4-5 only."
+    description: "Agreement that democracy allows us to solve problems (1-4). 2020, 2023 only."
     type: ordinal
-    note: "Conceptually related to WVS dem_democratic_system but differently framed (agree/disagree vs good/bad)."
     source:
-      w1: null
-      w2: null
-      w3: null
-      w4: P20STM.C
-      w5: P18ST.I
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: null
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: P20STM.C
+      y2023: P18ST.I
+      y2024: null
     scale:
       min: 1
       max: 4
-      labels:
-        1: "Strongly disagree"
-        2: "Disagree"
-        3: "Agree"
-        4: "Strongly agree"
     harmonize:
       default:
         method: r_function
         fn: safe_reverse_4pt
-        note: "Raw coded 1=Strongly agree → 4=Strongly disagree; reverse so high=more agreement"
     qc:
       valid_range: [1, 4]
-      validate:
-        - waves: [w4, w5]
-          phrase: "democra.*solve|solve.*problem"
-
-  # ===========================================================================
-  # SPECIAL PRE-REGISTERED VARIABLE
-  # ===========================================================================
-  # "Do people say what they think about politics?"
-  # Binary: 1=Say what they think, 2=Do not say what they really think
-  # 2015 has code 4 instead of -4 for "Not asked" — need to handle
 
   - id: pol_say_what_think
     concept: political_expression
-    description: "Do people say what they think about politics? (1=Say what they think, 0=Do not say what they really think)"
+    description: "Do people say what they think about politics? (1=Yes, 0=No). Sparse."
     type: nominal
-    note: "Pre-registered special variable. 2015 P29ST has code 4='Not asked' (out of range → NA). 2016 asks different question (free speech frequency). 2018 not available."
     source:
-      w1: P29ST
-      w2: null
-      w3: null
-      w4: P60ST
-      w5: P48ST
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: P29ST
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: P60ST
+      y2023: P48ST
+      y2024: null
     scale:
       min: 0
       max: 1
-      labels:
-        1: "Say what they think about politics"
-        0: "Do not say what they really think"
     harmonize:
       default:
         method: r_function
         fn: recode_binary_yes_no
-        note: "Binary item. 1=say what think→1, 2=do not→0. W1 code 4='Not asked' becomes NA via out-of-range handling."
     qc:
       valid_range: [0, 1]
-      validate:
-        - waves: [w1, w4, w5]
-          phrase: "say what|opinion"

@@ -1,0 +1,155 @@
+# LBS Media Trust
+# Waves: 24 years (1995-2024)
+#
+# Confidence in newspapers, television, radio
+# Scale: 1=A lot, 2=Some, 3=A little, 4=None -> REVERSE so higher = more trust
+# Same trust battery as other institutional trust items
+#
+# IMPORTANT: Media trust items essentially disappear 2016-2020, partially return 2023-2024
+#
+# MISSING VALUES:
+# -5 through -1 are LBS standard missing codes
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  - id: trust_newspapers
+    concept: media_trust
+    description: "Confidence in newspapers (1-4, higher = more trust)"
+    type: ordinal
+    note: "Good coverage 1995-2015, disappears 2016-2020, partial return 2024."
+    source:
+      y1995: p27e
+      y1996: p33e
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: p63ste
+      y2002: null
+      y2003: p23ste
+      y2004: p34ste
+      y2005: p47stc
+      y2006: p32st.c
+      y2007: p24st.c
+      y2008: p31st.d
+      y2009: p24st.d
+      y2010: P18ST.D
+      y2011: null
+      y2013: P28TGB.C
+      y2015: P16TGB.C
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: null
+      y2023: null
+      y2024: P14ST.M
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "A little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=A lot...4=None; reverse so higher=more trust"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_television
+    concept: media_trust
+    description: "Confidence in television (1-4, higher = more trust)"
+    type: ordinal
+    note: "Good coverage 1995-2015, disappears 2016-2020, partial return 2023-2024."
+    source:
+      y1995: p27l
+      y1996: p33l
+      y1997: sp63h
+      y1998: sp38h
+      y2000: P35ST.H
+      y2001: p63sta
+      y2002: p36sta
+      y2003: p21stc
+      y2004: null
+      y2005: p45stb
+      y2006: p35st.c
+      y2007: p24st.i
+      y2008: p31st.e
+      y2009: p24st.e
+      y2010: P18ST.E
+      y2011: null
+      y2013: P28TGB.D
+      y2015: P16TGB.D
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: null
+      y2023: P14ST.D
+      y2024: P14ST.K
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "A little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=A lot...4=None; reverse so higher=more trust"
+    qc:
+      valid_range: [1, 4]
+
+  - id: trust_radio
+    concept: media_trust
+    description: "Confidence in radio (1-4, higher = more trust)"
+    type: ordinal
+    note: "Sparse pre-2003, good 2003-2015, gap 2016-2020, partial return 2023-2024."
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: p63stf
+      y2002: null
+      y2003: p23stf
+      y2004: null
+      y2005: p47std
+      y2006: p35st.b
+      y2007: p27st.a
+      y2008: p31st.f
+      y2009: p24st.f
+      y2010: P18ST.F
+      y2011: null
+      y2013: P28ST.I
+      y2015: P16ST.I
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: null
+      y2023: P14ST.G
+      y2024: P14ST.J
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "A little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=A lot...4=None; reverse so higher=more trust"
+    qc:
+      valid_range: [1, 4]

@@ -1,5 +1,5 @@
 # LBS Institutional Trust (Confidence in Institutions)
-# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+# Waves: 24 years (1995-2024)
 #
 # SCALE DIRECTION:
 # Raw: 1=A lot, 2=Some, 3=Little, 4=No trust
@@ -21,11 +21,30 @@ variables:
     description: "Confidence in the Church"
     type: ordinal
     source:
-      w1: P16ST.E
-      w2: P13STC
-      w3: P15STGBSC.C
-      w4: P13ST.C
-      w5: P13ST.C
+      y1995: p27a
+      y1996: p33a
+      y1997: sp63a
+      y1998: sp38a
+      y2000: P35ST.A
+      y2001: p61sta
+      y2002: p34sta
+      y2003: p21sta
+      y2004: p32stc
+      y2005: p42sta
+      y2006: p32st.d
+      y2007: p27st.c
+      y2008: p28st.g
+      y2009: p26st.g
+      y2010: P20ST.G
+      y2011: P20ST.G
+      y2013: P28ST.E
+      y2015: P16ST.E
+      y2016: P13STC
+      y2017: P14ST.C
+      y2018: P15STGBSC.C
+      y2020: P13ST.C
+      y2023: P13ST.C
+      y2024: P14ST.C
     scale:
       min: 1
       max: 4
@@ -38,11 +57,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
-        note: "All waves coded 1=A lot → 4=No trust; reverse so high=trust"
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "church"
 
   - id: trust_armed_forces
@@ -50,11 +69,30 @@ variables:
     description: "Confidence in the Armed Forces"
     type: ordinal
     source:
-      w1: P16TGB.A
-      w2: P13STGBSA
-      w3: P15STGBSC.A
-      w4: P13STGBS.A
-      w5: P13STGBS.A
+      y1995: p27b
+      y1996: p33b
+      y1997: sp63b
+      y1998: sp38b
+      y2000: P35ST.B
+      y2001: p61stb
+      y2002: p36stb
+      y2003: p21stg
+      y2004: p32stg
+      y2005: p42stb
+      y2006: p32st.e
+      y2007: p27st.d
+      y2008: p28st.d
+      y2009: p26st.d
+      y2010: P20ST.D
+      y2011: P20ST.D
+      y2013: P28TGB.A
+      y2015: P16TGB.A
+      y2016: P13STGBSA
+      y2017: P14STGBS.A
+      y2018: P15STGBSC.A
+      y2020: P13STGBS.A
+      y2023: P13STGBS.A
+      y2024: P14STGBS.A
     scale:
       min: 1
       max: 4
@@ -67,10 +105,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "armed forces"
 
   - id: trust_police
@@ -78,11 +117,30 @@ variables:
     description: "Confidence in the Police"
     type: ordinal
     source:
-      w1: P16TGB.B
-      w2: P13STGBSB
-      w3: P15STGBSC.B
-      w4: P13STGBS.B
-      w5: P13STGBS.B
+      y1995: p27h
+      y1996: p33h
+      y1997: sp63e
+      y1998: sp38e
+      y2000: P35ST.E
+      y2001: p61ste
+      y2002: p36ste
+      y2003: p21stb
+      y2004: p32stb
+      y2005: p42stf
+      y2006: p24st.d
+      y2007: p27st.f
+      y2008: p31st.c
+      y2009: p24st.c
+      y2010: P18ST.C
+      y2011: P22ST.C
+      y2013: P28TGB.B
+      y2015: P16TGB.B
+      y2016: P13STGBSB
+      y2017: P14STGBS.B
+      y2018: P15STGBSC.B
+      y2020: P13STGBS.B
+      y2023: P13STGBS.B
+      y2024: P14STGBS.B
     scale:
       min: 1
       max: 4
@@ -95,10 +153,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "police"
 
   - id: trust_courts
@@ -106,11 +165,30 @@ variables:
     description: "Confidence in the Judiciary"
     type: ordinal
     source:
-      w1: P16ST.H
-      w2: P13STF
-      w3: P15STGBSC.F
-      w4: P13ST.F
-      w5: P13ST.F
+      y1995: p27d
+      y1996: p33d
+      y1997: sp63c
+      y1998: sp38c
+      y2000: P35ST.C
+      y2001: p61stc
+      y2002: p34stc
+      y2003: p21ste
+      y2004: p34stb
+      y2005: p42std
+      y2006: p24st.a
+      y2007: p24st.d
+      y2008: p28st.b
+      y2009: p26st.b
+      y2010: P20ST.B
+      y2011: P20ST.B
+      y2013: P26TGB.E
+      y2015: P16ST.H
+      y2016: P13STF
+      y2017: P14ST.F
+      y2018: P15STGBSC.F
+      y2020: P13ST.F
+      y2023: P13ST.F
+      y2024: P14ST.F
     scale:
       min: 1
       max: 4
@@ -123,50 +201,42 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "judic|court"
-
-  - id: trust_government
-    concept: institutional_trust
-    description: "Confidence in the National Government"
-    type: ordinal
-    source:
-      w1: P16ST.G
-      w2: P13STE
-      w3: P15STGBSC.E
-      w4: P13ST.E
-      w5: P13ST.E
-    scale:
-      min: 1
-      max: 4
-      labels:
-        1: "No trust"
-        2: "Little"
-        3: "Some"
-        4: "A lot"
-    harmonize:
-      default:
-        method: r_function
-        fn: safe_reverse_4pt
-    qc:
-      valid_range: [1, 4]
-      validate:
-        - waves: [w1, w2, w3, w4, w5]
-          phrase: "government"
 
   - id: trust_political_parties
     concept: institutional_trust
     description: "Confidence in Political Parties"
     type: ordinal
     source:
-      w1: P19ST.C
-      w2: P13STG
-      w3: P15STGBSC.G
-      w4: P13ST.G
-      w5: P13ST.G
+      y1995: p27j
+      y1996: p33j
+      y1997: sp63g
+      y1998: sp38g
+      y2000: P35ST.G
+      y2001: p61stg
+      y2002: p34stf
+      y2003: p21std
+      y2004: p34std
+      y2005: p47stb
+      y2006: p24st.c
+      y2007: p27st.e
+      y2008: p28st.c
+      y2009: p26st.c
+      y2010: P20ST.C
+      y2011: P20ST.C
+      y2013: P26TGB.G
+      y2015: P19ST.C
+      y2016: P13STG
+      y2017: P14ST.G
+      y2018: P15STGBSC.G
+      y2020: P13ST.G
+      y2023: P13ST.G
+      y2024: P14ST.G
     scale:
       min: 1
       max: 4
@@ -179,10 +249,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "party|parties"
 
   - id: trust_parliament
@@ -190,11 +261,30 @@ variables:
     description: "Confidence in National Congress/Parliament"
     type: ordinal
     source:
-      w1: P16ST.F
-      w2: P13STD
-      w3: P15STGBSC.D
-      w4: P13ST.D
-      w5: P13ST.D
+      y1995: p27i
+      y1996: p33i
+      y1997: sp63f
+      y1998: sp38f
+      y2000: P35ST.F
+      y2001: p61stf
+      y2002: p36std
+      y2003: p21stf
+      y2004: p34stf
+      y2005: p45sta
+      y2006: p24st.f
+      y2007: p24st.f
+      y2008: p28st.a
+      y2009: p26st.a
+      y2010: P20ST.A
+      y2011: P20ST.A
+      y2013: P26TGB.C
+      y2015: P16ST.F
+      y2016: P13STD
+      y2017: P14ST.D
+      y2018: P15STGBSC.D
+      y2020: P13ST.D
+      y2023: P13ST.D
+      y2024: P14ST.D
     scale:
       min: 1
       max: 4
@@ -207,22 +297,42 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "congress|parliament"
 
-  - id: trust_elections
+  - id: trust_government
     concept: institutional_trust
-    description: "Confidence in the Electoral Institution"
+    description: "Confidence in the National Government"
     type: ordinal
     source:
-      w1: P19N.H
-      w2: P13STH
-      w3: P15STGBSC.H
-      w4: P13ST.H
-      w5: P13ST.H
+      y1995: p27m
+      y1996: p33m
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: p34std
+      y2003: p23stg
+      y2004: p32std
+      y2005: p45stc
+      y2006: p32st.a
+      y2007: p24st.a
+      y2008: p31s.ta
+      y2009: p24st.a
+      y2010: P18ST.A
+      y2011: null
+      y2013: P26TGB.B
+      y2015: P16ST.G
+      y2016: P13STE
+      y2017: P14ST.E
+      y2018: P15STGBSC.E
+      y2020: P13ST.E
+      y2023: P13ST.E
+      y2024: P14ST.E
     scale:
       min: 1
       max: 4
@@ -235,23 +345,39 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
-      validate:
-        - waves: [w1, w2, w3, w4, w5]
-          phrase: "electoral"
 
   - id: trust_president
     concept: institutional_trust
-    description: "Confidence in the President (LBS-specific, not in WVS)"
+    description: "Confidence in the President"
     type: ordinal
-    note: "LBS-specific variable. Only available in waves 4 (2020) and 5 (2023)."
     source:
-      w1: null
-      w2: null
-      w3: null
-      w4: P13ST.I
-      w5: P13ST.I
+      y1995: null
+      y1996: null
+      y1997: sp63d
+      y1998: sp38d
+      y2000: P35ST.D
+      y2001: p61std
+      y2002: null
+      y2003: p23stc
+      y2004: p34stc
+      y2005: p47stf
+      y2006: p24st.b
+      y2007: p24st.e
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: P26TGB.A
+      y2015: null
+      y2016: null
+      y2017: null
+      y2018: null
+      y2020: P13ST.I
+      y2023: P13ST.I
+      y2024: P14ST.I
     scale:
       min: 1
       max: 4
@@ -264,8 +390,52 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
     qc:
       valid_range: [1, 4]
-      validate:
-        - waves: [w4, w5]
-          phrase: "president"
+
+  - id: trust_elections
+    concept: institutional_trust
+    description: "Confidence in the National Electoral Institution"
+    type: ordinal
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: p35st.d
+      y2007: p27st.b
+      y2008: null
+      y2009: null
+      y2010: P20ST.H
+      y2011: null
+      y2013: null
+      y2015: P19N.H
+      y2016: P13STH
+      y2017: P14ST.H
+      y2018: P15STGBSC.H
+      y2020: P13ST.H
+      y2023: P13ST.H
+      y2024: P14ST.H
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust"
+        2: "Little"
+        3: "Some"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "All waves coded 1=A lot -> 4=No trust; reverse so high=trust"
+    qc:
+      valid_range: [1, 4]
+

@@ -1,0 +1,78 @@
+# Afrobarometer Economic Evaluations
+# Rounds 2-9
+#
+# National economic condition and personal living conditions
+# Scale: 1=Very bad, 2=Fairly bad, 3=Neither, 4=Fairly good, 5=Very good
+# Higher = better evaluation
+#
+# R1 has different items (pfenow 1-5 satisfaction scale, pfesol 1-5 change scale)
+# R5 uses different variable names (Q3A/Q3B instead of Q4A/Q4B)
+#
+# MISSING VALUES:
+# -1=Missing, 6=Don't know (R1), 8/98=Refused, 9/99=Don't know, 998=Refused
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 6, 8, 9, 98, 99, 998]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: econ_national_current
+    concept: economic_evaluations
+    description: "Country's present economic condition (1-5, higher = better)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q1a
+      w3: q4a
+      w4: Q4A
+      w5: Q3A
+      w6: Q4A
+      w7: Q4A
+      w8: Q4A
+      w9: Q4A
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Neither good nor bad"
+        4: "Fairly good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: identity
+        note: "1-5 scale consistent R2-R9. Higher = better."
+    qc:
+      valid_range: [1, 5]
+
+  - id: econ_living_conditions
+    concept: economic_evaluations
+    description: "Your present living conditions (1-5, higher = better)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q1b
+      w3: q4b
+      w4: Q4B
+      w5: Q3B
+      w6: Q4B
+      w7: Q4B
+      w8: Q4B
+      w9: Q4B
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Neither good nor bad"
+        4: "Fairly good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: identity
+        note: "1-5 scale consistent R2-R9. Higher = better."
+    qc:
+      valid_range: [1, 5]

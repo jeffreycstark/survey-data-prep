@@ -11,6 +11,9 @@ library(dplyr)
 library(haven)
 library(arrow)
 
+# Load the wave finder function
+source(here::here("src/r/data_prep_modules/lbs/0_load_waves.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: lbs_harmonized\n")
@@ -21,7 +24,7 @@ cat(strrep("=", 70), "\n\n")
 # ==============================================================================
 
 output_dir <- here("outputs", "lbs")
-wave_files <- sort(list.files(output_dir, pattern = "^master_w[1-5]\\.rds$", full.names = TRUE))
+wave_files <- sort(list.files(output_dir, pattern = "^master_y[0-9]+\\.rds$", full.names = TRUE))
 
 if (length(wave_files) == 0) {
   stop("No master files found in outputs/lbs/. Run 2_harmonize_all.R first.")
@@ -45,7 +48,6 @@ for (f in wave_files) {
 cat("\nAdding country identifiers from raw .sav files...\n")
 
 # LBS country codes (IDENPA) are ISO 3166-1 numeric codes
-# Map to ISO alpha-3 for consistency with WVS
 idenpa_to_iso3 <- c(
   "32" = "ARG", "68" = "BOL", "76" = "BRA", "152" = "CHL",
   "170" = "COL", "188" = "CRI", "214" = "DOM", "218" = "ECU",
@@ -54,19 +56,34 @@ idenpa_to_iso3 <- c(
   "724" = "ESP", "858" = "URY", "862" = "VEN"
 )
 
-raw_paths <- list(
-  w1 = here("data", "lbs", "raw", "2015", "Latinobarometro_2015_Eng.sav"),
-  w2 = here("data", "lbs", "raw", "2016", "Latinobarometro2016Eng_v20170205.sav"),
-  w3 = here("data", "lbs", "raw", "2018", "Latinobarometro_2018_Eng_Spss_v20190303.sav"),
-  w4 = here("data", "lbs", "raw", "2020", "Latinobarometro_2020_Eng_Spss_v1_0.sav"),
-  w5 = here("data", "lbs", "raw", "2023", "Latinobarometro_2023_Eng_Spss_v1_0.sav")
-)
+# Country ID variable name differs across waves
+# Most waves: IDENPA; some early waves: idenpa or numpais
+find_country_var <- function(df) {
+  candidates <- c("IDENPA", "idenpa", "Idenpa", "numpais", "NUMPAIS", "pais", "PAIS")
+  for (v in candidates) {
+    if (v %in% names(df)) return(v)
+  }
+  # Fallback: case-insensitive search
+  idx <- grep("^idenpa$", names(df), ignore.case = TRUE)
+  if (length(idx) > 0) return(names(df)[idx[1]])
+  return(NULL)
+}
 
 for (wave_name in names(wave_list)) {
-  raw <- haven::read_sav(raw_paths[[wave_name]], col_select = "IDENPA")
-  country_codes <- as.character(as.integer(raw$IDENPA))
+  yr <- as.integer(gsub("y", "", wave_name))
+  raw_path <- find_lbs_eng_sav(yr)
 
-  # Map to ISO alpha-3
+  # Read just the country ID column
+  raw <- haven::read_sav(raw_path, encoding = "latin1")
+  cvar <- find_country_var(raw)
+
+  if (is.null(cvar)) {
+    warning(sprintf("No country ID variable found for %s", wave_name))
+    wave_list[[wave_name]]$country <- NA_character_
+    next
+  }
+
+  country_codes <- as.character(as.integer(raw[[cvar]]))
   country <- idenpa_to_iso3[country_codes]
 
   if (length(country) != nrow(wave_list[[wave_name]])) {
@@ -83,10 +100,8 @@ for (wave_name in names(wave_list)) {
 # ADD YEAR VARIABLE
 # ==============================================================================
 
-wave_years <- c(w1 = 2015L, w2 = 2016L, w3 = 2018L, w4 = 2020L, w5 = 2023L)
-
 for (wave_name in names(wave_list)) {
-  wave_list[[wave_name]]$year <- wave_years[[wave_name]]
+  wave_list[[wave_name]]$year <- as.integer(gsub("y", "", wave_name))
 }
 
 # ==============================================================================
@@ -96,9 +111,9 @@ for (wave_name in names(wave_list)) {
 cat("\nCombining waves...\n")
 lbs_combined <- bind_rows(wave_list)
 
-# Convert wave column from character ("w1"/"w2"/...) to numeric (1/2/...)
+# Convert wave column from character ("y1995") to numeric year
 lbs_combined <- lbs_combined %>%
-  mutate(wave = as.integer(gsub("w", "", wave)))
+  mutate(wave = as.integer(gsub("y", "", wave)))
 
 cat(sprintf("  Combined: %s rows, %d columns\n",
             format(nrow(lbs_combined), big.mark = ","),
@@ -108,7 +123,6 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-# Remove row_id (internal tracking, not useful for analysis)
 lbs_harmonized <- lbs_combined %>%
   select(-row_id)
 
@@ -124,7 +138,6 @@ cat("\n", strrep("=", 70), "\n", sep = "")
 cat("DATASET SUMMARY\n")
 cat(strrep("=", 70), "\n\n")
 
-# Wave summary
 cat("Respondents per wave:\n")
 wave_summary <- lbs_harmonized %>%
   group_by(wave, year) %>%
@@ -135,7 +148,6 @@ cat(sprintf("\nTotal: %s respondents across %d waves\n",
             format(nrow(lbs_harmonized), big.mark = ","),
             n_distinct(lbs_harmonized$wave)))
 
-# Variable list
 var_names <- setdiff(names(lbs_harmonized), c("wave", "year", "country"))
 cat(sprintf("\n%d harmonized variables:\n", length(var_names)))
 cat(paste("  ", var_names, collapse = "\n"), "\n")
@@ -148,23 +160,20 @@ cat("\n", strrep("=", 70), "\n", sep = "")
 cat("SAVING\n")
 cat(strrep("=", 70), "\n\n")
 
-# Ensure output directory exists
 dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
-# RDS
 rds_path <- here("data", "processed", "lbs_harmonized.rds")
 saveRDS(lbs_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))
 
-# Parquet
 parquet_path <- here("data", "processed", "lbs_harmonized.parquet")
 arrow::write_parquet(lbs_harmonized, parquet_path)
 cat(sprintf("  Parquet: %s\n", parquet_path))
 
-# Also save to outputs for convenience
 saveRDS(lbs_harmonized, here("outputs", "lbs", "lbs_harmonized.rds"))
 
-cat(sprintf("\n✅ lbs_harmonized saved: %s rows, %d columns\n",
+cat(sprintf("\nlbs_harmonized saved: %s rows, %d columns\n",
             format(nrow(lbs_harmonized), big.mark = ","),
             ncol(lbs_harmonized)))
 cat(strrep("=", 70), "\n\n")
+

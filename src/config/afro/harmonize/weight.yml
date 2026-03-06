@@ -1,8 +1,10 @@
-# Afrobarometer R9 Survey Weights
-# Wave: w9 (Round 9, 2021-2023)
+# Afrobarometer Survey Weights
+# Waves: w1-w9 (Rounds 1-9)
 #
-# withinwt_hh: Household-level within-country weight
-# Normalizes to mean ~1 within each country.
+# R1-R7: withinwt (within-country weight)
+# R4: Withinwt (capitalized)
+# R8: withinwt_hh (household-level, preferred)
+# R9: withinwt_hh
 #
 # MISSING VALUES:
 # -1=Missing, 0=Invalid weight
@@ -15,9 +17,17 @@ missing_conventions:
 variables:
   - id: weight
     concept: sampling
-    description: "Household-level within-country weight (normalizes to mean ~1 within country)"
+    description: "Within-country weight (normalizes to mean ~1 within country)"
     type: continuous
     source:
+      w1: withinwt
+      w2: withinwt
+      w3: withinwt
+      w4: Withinwt
+      w5: withinwt
+      w6: withinwt
+      w7: withinwt
+      w8: withinwt_hh
       w9: withinwt_hh
     scale:
       min: 0

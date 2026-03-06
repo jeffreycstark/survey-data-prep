@@ -1,35 +1,44 @@
 # LBS Survey Weights
-# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
-#
-# Individual country weights normalize to mean ~1 within each country.
-# All waves use variable name: WT
-#
-# MISSING VALUES:
-# All waves: negative values are missing
-# -1=Don't know, -2=No answer, -3=Not applicable, -4=Not asked, -5=DK/NA combined
+# Waves: 24 years (1995-2024)
 
 missing_conventions:
   treat_as_na:
-    codes: [-5, -4, -3, -2, -1, 0]
-    description: "LBS standard missing codes plus zero (invalid weight)"
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
 
 variables:
   - id: weight
-    concept: sampling
-    description: "Individual country weight (normalizes to mean ~1 within country)"
+    concept: weight
+    description: "Survey weight"
     type: continuous
     source:
-      w1: WT
-      w2: WT
-      w3: WT
-      w4: WT
-      w5: WT
-    scale:
-      min: 0
-      max: 50
+      y1995: wt
+      y1996: wt
+      y1997: wt
+      y1998: pondera
+      y2000: WT
+      y2001: wt
+      y2002: wt
+      y2003: wt
+      y2004: wt
+      y2005: wt
+      y2006: wt
+      y2007: wt
+      y2008: wt
+      y2009: wt
+      y2010: wt
+      y2011: WT
+      y2013: WT
+      y2015: WT
+      y2016: WT
+      y2017: WT
+      y2018: WT
+      y2020: WT
+      y2023: WT
+      y2024: WT
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [0, 50]
-    tags: [sampling, weight]
+      valid_range: [0, 100]
+

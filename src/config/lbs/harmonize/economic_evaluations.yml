@@ -1,0 +1,107 @@
+# LBS Economic Evaluations
+# Waves: 24 years (1995-2024)
+#
+# National economic situation (current) and personal economic situation (current)
+# Scale: 1=Very bad, 2=Bad, 3=Regular/Neither, 4=Good, 5=Very good
+# Raw coding: 1=Very good ... 5=Very bad -> REVERSE so higher = better
+#
+# MISSING VALUES:
+# -5 through -1 are LBS standard missing codes
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  - id: econ_national_current
+    concept: economic_evaluations
+    description: "Current economic situation of the country (1-5, higher = better)"
+    type: ordinal
+    source:
+      y1995: p1
+      y1996: p1
+      y1997: sp1
+      y1998: sp1
+      y2000: P1ST
+      y2001: p1st
+      y2002: p2sta
+      y2003: p1st
+      y2004: p2st
+      y2005: p2st
+      y2006: p2st
+      y2007: p100st
+      y2008: p4st
+      y2009: p3st.a
+      y2010: P3ST.A
+      y2011: P3ST.A
+      y2013: P3STGBS
+      y2015: null
+      y2016: P4STGBS
+      y2017: P4STGBSC
+      y2018: P6STGBSC
+      y2020: P4STGBS
+      y2023: P5STGBS
+      y2024: P6STGBS
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Bad"
+        3: "Regular/Neither"
+        4: "Good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Raw 1=Very good...5=Very bad; reverse so higher=better"
+    qc:
+      valid_range: [1, 5]
+
+  - id: econ_personal_current
+    concept: economic_evaluations
+    description: "Current personal/family economic situation (1-5, higher = better)"
+    type: ordinal
+    source:
+      y1995: p4
+      y1996: p4
+      y1997: sp4
+      y1998: sp4
+      y2000: P4ST
+      y2001: p4st
+      y2002: p2std
+      y2003: p4st
+      y2004: p5st
+      y2005: p5st
+      y2006: p5st
+      y2007: null
+      y2008: p7st
+      y2009: p6st
+      y2010: P6ST
+      y2011: P6ST
+      y2013: P6STGBS
+      y2015: null
+      y2016: P7STGBS
+      y2017: P7STGBS
+      y2018: null
+      y2020: P7STGBS
+      y2023: null
+      y2024: null
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very bad"
+        2: "Bad"
+        3: "Regular/Neither"
+        4: "Good"
+        5: "Very good"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Raw 1=Very good...5=Very bad; reverse so higher=better"
+    qc:
+      valid_range: [1, 5]

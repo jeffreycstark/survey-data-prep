@@ -1900,3 +1900,124 @@ validate_harmonization <- function(x, expected_min = 1, expected_max = 4, var_na
     return(TRUE)
   }
 }
+
+recode_afro_dem_sat <- function(x,
+                                data = NULL,
+                                var_name = NULL,
+                                missing_codes = c(-1, 0, 8, 9, 98, 99, 998, 999),
+                                validate_all = NULL) {
+  #' Recode Afrobarometer dem_satisfaction (R2-R8)
+  #'
+  #' R2-R8 raw: 0=Not a democracy (→NA), 1-4=satisfaction scale
+  #' 0 is treated as missing because it means "country is not a democracy"
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 1:4 ~ x,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_dem_pref_r1 <- function(x,
+                                     data = NULL,
+                                     var_name = NULL,
+                                     missing_codes = c(-1, 8, 9, 98, 99, 998, 999),
+                                     validate_all = NULL) {
+  #' Recode Afrobarometer R1 dem_support_preferable
+  #'
+  #' R1 raw: 1=Dem pref, 2=Doesn't matter, 3=Non-dem pref
+  #' Target: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter
+  #' Swap positions 2 and 3
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,
+    x == 2 ~ 3,
+    x == 3 ~ 2,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_dem_pref_r2_r8 <- function(x,
+                                        data = NULL,
+                                        var_name = NULL,
+                                        missing_codes = c(-1, 8, 9, 98, 99, 998, 999),
+                                        validate_all = NULL) {
+  #' Recode Afrobarometer R2-R8 dem_support_preferable
+  #'
+  #' R2-R8 raw: 1=Doesn't matter, 2=Non-dem pref, 3=Dem pref
+  #' Target: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter
+  #' Reverse: 1->3, 2->2, 3->1
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 3,
+    x == 2 ~ 2,
+    x == 3 ~ 1,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_reject_auth <- function(x,
+                                    data = NULL,
+                                    var_name = NULL,
+                                    missing_codes = c(-1, 8, 9, 98, 99, 997, 998),
+                                    validate_all = NULL) {
+  #' Afrobarometer reject authoritarian rule items
+  #'
+  #' Raw: 1=Strongly disapprove, 2=Disapprove, 3=Neither, 4=Approve, 5=Strongly approve
+  #' (of authoritarian alternative)
+  #' Target: REVERSE so higher = MORE REJECTION (pro-democracy)
+  #' 1->5, 2->4, 3->3, 4->2, 5->1
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 1:5 ~ 6 - x,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_educ_detailed <- function(x,
+                                       data = NULL,
+                                       var_name = NULL,
+                                       missing_codes = c(-1, 8, 9, 10, 98, 99, 998, 999),
+                                       validate_all = NULL) {
+  #' Afrobarometer detailed education (0-9) -> condensed (0-3)
+  #'
+  #' Raw: 0=No formal, 1=Informal only, 2=Some primary, 3=Primary complete,
+  #'       4=Some secondary, 5=Secondary complete, 6=Post-sec non-univ,
+  #'       7=Some university, 8=University complete, 9=Post-graduate
+  #' Target: 0=No formal, 1=Primary, 2=Secondary, 3=Post-secondary
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% c(0, 1) ~ 0,     # No formal / informal only
+    x %in% c(2, 3)  ~ 1,    # Some/complete primary
+    x %in% c(4, 5)  ~ 2,    # Some/complete secondary
+    x %in% c(6, 7, 8, 9) ~ 3,  # Post-secondary
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_r1_trust <- function(x,
+                                  data = NULL,
+                                  var_name = NULL,
+                                  missing_codes = c(-1, 8, 9, 98, 99, 998, 999),
+                                  validate_all = NULL) {
+  #' Afrobarometer R1 trust: already 1-4 scale, just clean missing codes
+  #'
+  #' R1 raw: 1=Not at all, 2=Distrust somewhat, 3=Trust somewhat, 4=Trust a lot
+  #' Target: 1-4 (same direction, identity after missing cleanup)
+
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 1:4 ~ x,
+    TRUE ~ NA_real_
+  )
+}

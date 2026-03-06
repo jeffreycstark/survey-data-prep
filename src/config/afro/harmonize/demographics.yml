@@ -1,46 +1,132 @@
-# Afrobarometer R9 Demographics (Interview Date)
-# Wave: w9 (Round 9, 2021-2023)
-#
-# DATEINTR is a Date object — extract month and year components
-# using the same functions as ABS W3.
+# Afrobarometer Demographics
+# Rounds 1-9
 #
 # MISSING VALUES:
-# -1=Missing
+# Standard Afro: -1=Missing, 8/98=Refused, 9/99/999=Don't know, 998=Refused
+# R1 age: 101=Refused, 999=Missing; educ: 10=DK, 98=Refused, 99=Missing
 
 missing_conventions:
   treat_as_na:
-    codes: [-1]
+    codes: [-1, 8, 9, 10, 98, 99, 101, 998, 999]
     description: "Afrobarometer standard missing codes"
 
 variables:
+  - id: age
+    concept: demographics
+    description: "Age of respondent in years"
+    type: continuous
+    source:
+      w1: age
+      w2: q80
+      w3: q1
+      w4: Q1
+      w5: Q1
+      w6: Q1
+      w7: Q1
+      w8: Q1
+      w9: Q1
+    scale:
+      min: 18
+      max: 110
+    harmonize:
+      default:
+        method: identity
+        note: "Continuous age in years. Clean missing codes."
+    qc:
+      valid_range: [18, 110]
+
+  - id: education_level
+    concept: demographics
+    description: "Education level (0=No formal, 1=Primary, 2=Secondary, 3=Post-secondary)"
+    type: ordinal
+    note: "R1 uses educ (0-3); R2 q84, R3 q90, R4 Q89 (0-9 detailed, collapse); R5-R9 EDUC_COND (0-3)"
+    source:
+      w1: educ
+      w2: q84
+      w3: q90
+      w4: Q89
+      w5: EDUC_COND
+      w6: EDUC_COND
+      w7: EDUC_COND
+      w8: EDUC_COND
+      w9: EDUC_COND
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "No formal schooling"
+        1: "Primary"
+        2: "Secondary"
+        3: "Post-secondary"
+    harmonize:
+      default:
+        method: identity
+        note: "R1, R5-R9 already 0-3"
+      exceptions:
+        w2:
+          method: r_function
+          fn: recode_afro_educ_detailed
+          note: "R2 q84: 0-9 -> 0-3"
+        w3:
+          method: r_function
+          fn: recode_afro_educ_detailed
+          note: "R3 q90: 0-9 -> 0-3"
+        w4:
+          method: r_function
+          fn: recode_afro_educ_detailed
+          note: "R4 Q89: 0-9 -> 0-3"
+    qc:
+      valid_range: [0, 3]
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urban or rural PSU (1=Urban, 2=Rural)"
+    type: nominal
+    source:
+      w1: urbrur
+      w2: urbrur
+      w3: urbrur
+      w4: URBRUR
+      w5: URBRUR
+      w6: URBRUR
+      w7: URBRUR
+      w8: URBRUR
+      w9: URBRUR
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Urban"
+        2: "Rural"
+    harmonize:
+      default:
+        method: identity
+        note: "1=Urban, 2=Rural. Peri-urban (3) -> 1 (Urban)."
+    qc:
+      valid_range: [1, 2]
+
   - id: int_month
     concept: identifiers
     description: "Interview month (1-12)"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: DATEINTR
-    note: "DATEINTR is a Date object — month extracted via extract_month_from_date()"
+    note: "DATEINTR is a Date object in R9. Earlier rounds not yet mapped."
     scale:
       min: 1
       max: 12
-      labels:
-        1: "January"
-        2: "February"
-        3: "March"
-        4: "April"
-        5: "May"
-        6: "June"
-        7: "July"
-        8: "August"
-        9: "September"
-        10: "October"
-        11: "November"
-        12: "December"
     harmonize:
       default:
         method: r_function
         fn: extract_month_from_date
-        note: "DATEINTR is a Date object — extract month component"
     qc:
       valid_range: [1, 12]
 
@@ -49,30 +135,43 @@ variables:
     description: "Interview year"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: DATEINTR
-    note: "DATEINTR is a Date object — year extracted via extract_year_from_date()"
+    note: "DATEINTR is a Date object in R9. Earlier rounds not yet mapped."
     scale:
-      min: 2021
+      min: 1999
       max: 2024
     harmonize:
       default:
         method: r_function
         fn: extract_year_from_date
-        note: "DATEINTR is a Date object — extract year component"
     qc:
-      valid_range: [2021, 2024]
+      valid_range: [1999, 2024]
 
   - id: int_date
     concept: identifiers
-    description: "Full interview date (Date class, for sub-monthly event studies)"
+    description: "Full interview date (Date class)"
     type: continuous
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: DATEINTR
-    note: "DATEINTR is a Date object — preserved via extract_date(). Zero missingness."
     harmonize:
       default:
         method: r_function
         fn: extract_date
-        note: "Reads original Date from raw data, bypassing numeric coercion"
     qc:
       skip_range_check: true

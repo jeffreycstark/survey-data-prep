@@ -1,8 +1,8 @@
-# Afrobarometer R9 Democratic Attitudes
-# Wave: w9 (Round 9, 2021-2023)
+# Afrobarometer Democratic Attitudes
+# Waves: w1-w9 (Rounds 1-9)
 #
 # MISSING VALUES:
-# -1=Missing, 8=Refused, 9=Don't know, 98=Refused, 99=Don't know
+# -1=Missing, 8=Refused, 9=Don't know, 98=Refused, 99=Don't know, 998=Refused, 999=Don't know
 
 missing_conventions:
   treat_as_na:
@@ -13,17 +13,24 @@ variables:
   # ===========================================================================
   # Support for Democracy (Churchillian item)
   # ===========================================================================
-  # Q23: Which of these three statements is closest to your own opinion?
-  # 1=Democracy is preferable to any other kind of government
-  # 2=In some circumstances, a non-democratic government can be preferable
-  # 3=For someone like me, it doesn't matter what kind of government we have
-  # Same 1-3 coding as LBS — identity mapping
+  # R1: 1=Dem pref, 2=Doesn't matter, 3=Non-dem pref → recode_afro_dem_pref_r1
+  # R2-R8: 1=Doesn't matter, 2=Non-dem pref, 3=Dem pref → recode_afro_dem_pref_r2_r8
+  # R9: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter → identity
+  # Target: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter
 
   - id: dem_support_preferable
     concept: democratic_attitudes
     description: "Support for democracy: Democracy preferable (1) vs Non-dem sometimes preferable (2) vs Doesn't matter (3)"
     type: nominal
     source:
+      w1: supdem
+      w2: q38
+      w3: q37
+      w4: Q30
+      w5: Q32
+      w6: Q30
+      w7: Q28
+      w8: Q21
       w9: Q23
     scale:
       min: 1
@@ -35,22 +42,56 @@ variables:
     harmonize:
       default:
         method: identity
-        note: "Same 1-3 coding as LBS. Nominal item — no reversal needed."
+        note: "R9 already uses target coding"
+      w1:
+        method: r_function
+        fn: recode_afro_dem_pref_r1
+        note: "R1: 1=Dem,2=Doesn't matter,3=Non-dem → swap 2 and 3"
+      w2:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+        note: "R2: 1=Doesn't matter,2=Non-dem,3=Dem → reverse"
+      w3:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+      w4:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+      w5:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+      w6:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+      w7:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
+      w8:
+        method: r_function
+        fn: recode_afro_dem_pref_r2_r8
     qc:
       valid_range: [1, 3]
 
   # ===========================================================================
   # Satisfaction with Democracy
   # ===========================================================================
-  # Q31: Overall, how satisfied are you with the way democracy works in [country]?
-  # 1=Not at all satisfied, 2=Not very satisfied, 3=Fairly satisfied, 4=Very satisfied
-  # Already coded higher=more satisfied — identity mapping
+  # R1: 0-5 scale (different from target 1-4) → null
+  # R2-R8: 0=Not a democracy(→NA), 1-4 satisfaction → recode_afro_dem_sat
+  # R9: 1-4 → identity
 
   - id: dem_satisfaction
     concept: democratic_attitudes
     description: "Satisfaction with democracy (1-4, higher = more satisfied)"
     type: ordinal
     source:
+      w1: null
+      w2: q40
+      w3: q47
+      w4: Q43
+      w5: Q43
+      w6: Q41
+      w7: Q36
+      w8: Q37
       w9: Q31
     scale:
       min: 1
@@ -63,23 +104,51 @@ variables:
     harmonize:
       default:
         method: identity
-        note: "Already coded 1=Not at all → 4=Very satisfied. No reversal needed."
+        note: "R9 already uses 1-4 target scale"
+      w2:
+        method: r_function
+        fn: recode_afro_dem_sat
+        note: "R2-R8: 0=Not a democracy treated as NA, 1-4 identity"
+      w3:
+        method: r_function
+        fn: recode_afro_dem_sat
+      w4:
+        method: r_function
+        fn: recode_afro_dem_sat
+      w5:
+        method: r_function
+        fn: recode_afro_dem_sat
+      w6:
+        method: r_function
+        fn: recode_afro_dem_sat
+      w7:
+        method: r_function
+        fn: recode_afro_dem_sat
+      w8:
+        method: r_function
+        fn: recode_afro_dem_sat
     qc:
       valid_range: [1, 4]
 
   # ===========================================================================
-  # How Democratic Is Country (qualitative)
+  # How Democratic Is Country (qualitative, 1-4)
   # ===========================================================================
-  # Q30: In your opinion, how much of a democracy is [country] today?
-  # 1=Not a democracy, 2=A democracy with major problems,
-  # 3=A democracy with minor problems, 4=A full democracy
-  # Already coded higher=more democratic — identity mapping
+  # R1: 0-3 scale (different from 1-4 target) → null
+  # R2-R9: 1-4 → identity (8/9=DK handled by missing_conventions)
 
   - id: dem_how_democratic_qual
     concept: democratic_attitudes
     description: "How democratic is the country (1-4, higher = more democratic)"
     type: ordinal
     source:
+      w1: null
+      w2: q37
+      w3: q46
+      w4: Q42A
+      w5: Q42
+      w6: Q40
+      w7: Q35
+      w8: Q36
       w9: Q30
     scale:
       min: 1
@@ -92,7 +161,7 @@ variables:
     harmonize:
       default:
         method: identity
-        note: "Already coded 1=Not a democracy → 4=Full democracy. No reversal needed."
+        note: "R2-R9 all use 1-4 coding. 8=Don't understand, 9=DK handled by missing codes."
     qc:
       valid_range: [1, 4]
 
@@ -104,8 +173,16 @@ variables:
     concept: democratic_attitudes
     description: "How democratic is the country on a 1-10 scale"
     type: ordinal
-    note: "No 10-point version in Afrobarometer R9. Column will be NA."
+    note: "No 10-point version in Afrobarometer. Column will be NA."
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: null
     scale:
       min: 1
@@ -124,8 +201,16 @@ variables:
     concept: democratic_attitudes
     description: "Agreement that democracy is the best system of government"
     type: ordinal
-    note: "No Churchill item in Afrobarometer R9. Column will be NA."
+    note: "No Churchill item in Afrobarometer. Column will be NA."
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: null
     scale:
       min: 1

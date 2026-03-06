@@ -1,0 +1,46 @@
+# Afrobarometer Trust in Traditional Leaders
+# Rounds 2, 4, 6-9
+#
+# Scale: 0=Not at all, 1=Just a little, 2=Somewhat, 3=A lot
+# Same 0-3 scale as other Afro trust items -> shift +1 to 1-4
+#
+# NOT available in R1, R3, R5
+#
+# MISSING VALUES:
+# -1=Missing, 8/98=Refused, 9/99=Don't know, 94/97=Not applicable/Not asked
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 94, 97, 98, 99, 998]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: trust_traditional_leaders
+    concept: institutional_trust
+    description: "Trust in traditional leaders (1-4, higher = more trust)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q43k
+      w3: null
+      w4: Q49I
+      w5: null
+      w6: Q52K
+      w7: Q43J
+      w8: Q41K
+      w9: Q37J
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "Raw 0-3 shifted +1 to match 1-4 trust scale."
+    qc:
+      valid_range: [1, 4]

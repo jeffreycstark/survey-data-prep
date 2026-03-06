@@ -1,0 +1,39 @@
+# concept_groups_afro.yml
+# Concept group definitions for Afrobarometer slope prospector analysis
+
+concept_groups:
+
+  institutional_trust_executive:
+    - trust_president
+    - trust_police
+    - trust_armed_forces
+
+  institutional_trust_intermediary:
+    - trust_parliament
+    - trust_political_parties
+    - trust_courts
+    - trust_elections
+
+  institutional_trust_civil_society:
+    - trust_churches
+    - trust_traditional_leaders
+
+  democratic_attitudes:
+    - dem_support_preferable
+    - dem_satisfaction
+    - dem_how_democratic_qual
+
+  authoritarian_rejection:
+    - reject_one_party
+    - reject_military_rule
+    - reject_one_man_rule
+
+  economic_evaluations:
+    - econ_national_current
+    - econ_living_conditions
+
+  corruption_experience:
+    - bribe_document
+    - bribe_police
+    - bribe_school
+    - bribe_medical

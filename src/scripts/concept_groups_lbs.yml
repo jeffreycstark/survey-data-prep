@@ -1,0 +1,40 @@
+# concept_groups_lbs.yml
+# Concept group definitions for LBS slope prospector analysis
+
+concept_groups:
+
+  institutional_trust_core:
+    - trust_churches
+    - trust_armed_forces
+    - trust_police
+    - trust_courts
+    - trust_political_parties
+    - trust_parliament
+
+  institutional_trust_executive:
+    - trust_government
+    - trust_president
+    - trust_elections
+
+  media_trust:
+    - trust_newspapers
+    - trust_television
+    - trust_radio
+
+  democratic_attitudes:
+    - dem_always_preferable
+    - dem_satisfaction
+    - dem_best_system
+    - dem_how_democratic_10pt
+
+  democratic_support_sparse:
+    - dem_nondem_ok
+    - dem_military_support
+    - dem_solves_problems
+
+  economic_evaluations:
+    - econ_national_current
+    - econ_personal_current
+
+  social_trust:
+    - trust_generalized_binary

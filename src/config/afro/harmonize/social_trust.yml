@@ -1,11 +1,8 @@
-# Afrobarometer R9 Social Trust
-# Wave: w9 (Round 9, 2021-2023)
+# Afrobarometer Social Trust
+# Waves: w1-w9 (Rounds 1-9)
 #
-# No binary generalized trust item available in Afrobarometer R9.
+# No binary generalized trust item available in Afrobarometer.
 # Column will be NA for cross-survey compatibility.
-#
-# MISSING VALUES:
-# -1=Missing, 8=Refused, 9=Don't know, 998=Refused, 999=Don't know
 
 missing_conventions:
   treat_as_na:
@@ -17,8 +14,16 @@ variables:
     concept: social_trust
     description: "Most people can be trusted vs. You must be very careful"
     type: nominal
-    note: "No binary generalized trust item in Afrobarometer R9. Column will be NA."
+    note: "No binary generalized trust item in Afrobarometer. Column will be NA."
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: null
       w9: null
     scale:
       min: 0

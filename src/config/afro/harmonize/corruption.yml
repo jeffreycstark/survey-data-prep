@@ -1,0 +1,164 @@
+# Afrobarometer Corruption Experience
+# Rounds 2-9
+#
+# Bribery experience items: "How often, if ever, did you have to pay a bribe?"
+# Scale: 0=Never, 1=Once or twice, 2=A few times, 3=Often
+# Higher = more bribery experience
+#
+# R1 has different items (pfpcr1-5 perception; no comparable bribery experience)
+#
+# MISSING VALUES:
+# -1=Missing, 7=Not applicable/No experience, 8/98=Refused, 9/99=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 7, 8, 9, 98, 99, 998]
+    description: "Afrobarometer standard missing codes; 7=Not applicable treated as NA"
+
+variables:
+  - id: bribe_document
+    concept: corruption_experience
+    description: "Pay bribe for document or permit (0-3, higher = more often)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q59a
+      w3: q57a
+      w4: Q51A
+      w5: Q61A
+      w6: Q55F
+      w7: Q49K
+      w8: Q44I
+      w9: Q42C
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "Never"
+        1: "Once or twice"
+        2: "A few times"
+        3: "Often"
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 scale consistent R2-R9. Clean missing codes."
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_police
+    concept: corruption_experience
+    description: "Pay bribe to avoid problem with police (0-3, higher = more often)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q59e
+      w3: q57e
+      w4: Q51C
+      w5: Q61D
+      w6: Q55J
+      w7: Q49T
+      w8: Q44N
+      w9: Q43E
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "Never"
+        1: "Once or twice"
+        2: "A few times"
+        3: "Often"
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 scale consistent R2-R9."
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_school
+    concept: corruption_experience
+    description: "Pay bribe for school placement/services (0-3, higher = more often)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q59b
+      w3: q57b
+      w4: null
+      w5: Q61E
+      w6: Q55B
+      w7: Q49C
+      w8: Q44C
+      w9: Q40C
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "Never"
+        1: "Once or twice"
+        2: "A few times"
+        3: "Often"
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 scale consistent. R4 not asked."
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_medical
+    concept: corruption_experience
+    description: "Pay bribe for medical care (0-3, higher = more often)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: q57d
+      w4: null
+      w5: Q61C
+      w6: Q55D
+      w7: Q49G
+      w8: Q44F
+      w9: Q41C
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "Never"
+        1: "Once or twice"
+        2: "A few times"
+        3: "Often"
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 scale consistent. R2/R4 not asked."
+    qc:
+      valid_range: [0, 3]
+
+  - id: corruption_level
+    concept: corruption_perception
+    description: "Level of corruption compared to a year ago (1-5, 1=Increased a lot, 5=Decreased a lot)"
+    type: ordinal
+    note: "Only available R7-R9 consistently. Sparse earlier."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: null
+      w8: Q43A
+      w9: Q39A
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Increased a lot"
+        2: "Increased somewhat"
+        3: "Stayed the same"
+        4: "Decreased somewhat"
+        5: "Decreased a lot"
+    harmonize:
+      default:
+        method: identity
+        note: "1-5 identity. Higher = less corruption."
+    qc:
+      valid_range: [1, 5]

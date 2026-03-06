@@ -1,0 +1,107 @@
+# LBS Corruption
+# Waves: 24 years (1995-2024)
+#
+# Corruption experience: "Have you or a family member known of a corruption act?"
+# Scale varies: typically 1=Yes, 2=No (binary) in most waves
+#
+# Corruption trend: "Has corruption increased or decreased?"
+# Scale: 1=Increased a lot ... 5=Decreased a lot (identity, higher = less corruption)
+#
+# MISSING VALUES:
+# -5 through -1 are LBS standard missing codes
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes"
+
+variables:
+  - id: corruption_experience
+    concept: corruption
+    description: "Have you or a family member known of a corruption act in the last 12 months? (1=Yes, 2=No)"
+    type: nominal
+    note: "Sparse coverage. Not asked every year."
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: p18nb
+      y2002: p8stb
+      y2003: null
+      y2004: null
+      y2005: p82stb
+      y2006: p68st.b
+      y2007: p71st.b
+      y2008: p72st.d
+      y2009: p73st.d
+      y2010: P70ST.E
+      y2011: P80ST.F
+      y2013: P63TGBSM
+      y2015: P66ST
+      y2016: P38STA
+      y2017: null
+      y2018: null
+      y2020: P68ST
+      y2023: null
+      y2024: P50ST.B
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Yes"
+        2: "No"
+    harmonize:
+      default:
+        method: identity
+        note: "1=Yes, 2=No binary. Identity mapping."
+    qc:
+      valid_range: [1, 2]
+
+  - id: corruption_progress
+    concept: corruption
+    description: "Progress reducing corruption in state institutions in last 2 years (1-5, higher = more progress)"
+    type: ordinal
+    note: "Sparse coverage pre-2003."
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: p77n
+      y2004: p54st
+      y2005: p83st
+      y2006: p33st
+      y2007: p72st
+      y2008: p73st
+      y2009: p74st
+      y2010: P68ST
+      y2011: P81ST
+      y2013: P69ST
+      y2015: P67ST
+      y2016: P20TIA
+      y2017: P38ST
+      y2018: null
+      y2020: P70ST
+      y2023: P60ST
+      y2024: null
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Nothing"
+        2: "A little"
+        3: "Some"
+        4: "Much"
+        5: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Raw typically 1=A lot...5=Nothing; reverse so higher=more progress"
+    qc:
+      valid_range: [1, 5]

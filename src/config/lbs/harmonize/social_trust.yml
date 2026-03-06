@@ -1,14 +1,13 @@
 # LBS Social / Interpersonal Trust
-# Waves: w1=2015, w2=2016, w3=2018, w4=2020, w5=2023
+# Waves: 24 years (1995-2024)
 #
 # SCALE DIRECTION:
 # Generalized trust binary:
 #   1=Most people can be trusted, 2=One can never be too careful
-#   Identity (no reversal needed) — matches WVS coding
+#   Recode to 1=Trusted, 0=Careful
 #
 # MISSING VALUES:
 # All waves: negative values are missing
-# -1=Don't know, -2=No answer, -3=Not applicable, -4=Not asked, -5=DK/NA combined
 
 missing_conventions:
   treat_as_na:
@@ -18,14 +17,33 @@ missing_conventions:
 variables:
   - id: trust_generalized_binary
     concept: social_trust
-    description: "Most people can be trusted vs. One can never be too careful in dealing with others"
+    description: "Most people can be trusted vs. One can never be too careful"
     type: nominal
     source:
-      w1: P15STGBS
-      w2: P12STGBS
-      w3: P11STGBS
-      w4: P9STGBS
-      w5: P9STGBS
+      y1995: null
+      y1996: p12
+      y1997: sp21
+      y1998: sp20
+      y2000: P17ST
+      y2001: p42st
+      y2002: p29st
+      y2003: p20st
+      y2004: p43st
+      y2005: p14st
+      y2006: p45st
+      y2007: p23st
+      y2008: p21wvsst
+      y2009: p58st
+      y2010: P55ST
+      y2011: P25ST
+      y2013: P29STGBS
+      y2015: P15STGBS
+      y2016: P12STGBS
+      y2017: P13STGBS
+      y2018: P11STGBS
+      y2020: P9STGBS
+      y2023: P9STGBS
+      y2024: P10STGBS
     scale:
       min: 0
       max: 1
@@ -40,5 +58,6 @@ variables:
     qc:
       valid_range: [0, 1]
       validate:
-        - waves: [w1, w2, w3, w4, w5]
+        - waves: [y1996, y1997, y1998, y2000, y2001, y2002, y2003, y2004, y2005, y2006, y2007, y2008, y2009, y2010, y2011, y2013, y2015, y2016, y2017, y2018, y2020, y2023, y2024]
           phrase: "trust.*people|interpersonal"
+
