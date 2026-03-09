@@ -1,13 +1,19 @@
 # KAMOS: Load raw wave files
 #
-# Returns a named list: list(w1 = df, w4 = df)
+# Returns a named list: list(w1 = df, w2 = df, w3 = df, w4 = df)
 #
-# Source files:
-#   data/kamos/raw/wave1/KAMOS 1-1 data e.sav   (n=2000, 2016)
-#   data/kamos/raw/wave4/KAMOS 4-1 (E).sav       (n=1500, 2019)
+# Source files (all from data/kamos/raw/all_waves/):
+#   KAMOS_1-1_2016.02.16-2016.05.16_data.sav  (n=2000, Feb–May 2016)
+#   KAMOS_2-1_2017.05.16-2017.07.10_data.sav  (n=2000, May–Jul 2017)
+#   KAMOS_3-1_2018.04.23-2018.06.22_data.sav  (n=2010, Apr–Jun 2018)
+#   KAMOS_4-1_2019.04.20-2019.06.20_data.sav  (n=1500, Apr–Jun 2019)
 #
-# NOTE: No wave 2 or wave 3 data is available in this repository.
-# Waves are named w1 and w4 to match the original KAMOS numbering.
+# W2 and W3 have trust, economy, and political items but LIMITED demographics:
+#   - age_1 is categorical (1-5 age bracket), not raw age
+#   - gender is NOT available
+#   - education, income, marital status available with different var names in W3
+# These waves are used for descriptive trust trajectories; controlled models
+# remain on W1/W4 which have full demographics.
 
 library(here)
 library(haven)
@@ -16,20 +22,29 @@ load_kamos_waves <- function() {
 
   cat("\n── Loading KAMOS raw waves ──\n")
 
-  w1_path <- here("data", "kamos", "raw", "wave1", "KAMOS 1-1 data e.sav")
-  w4_path <- here("data", "kamos", "raw", "wave4", "KAMOS 4-1 (E).sav")
+  raw_dir <- here("data", "kamos", "raw", "all_waves")
+  w1_path <- file.path(raw_dir, "KAMOS_1-1_2016.02.16-2016.05.16_data.sav")
+  w2_path <- file.path(raw_dir, "KAMOS_2-1_2017.05.16-2017.07.10_data.sav")
+  w3_path <- file.path(raw_dir, "KAMOS_3-1_2018.04.23-2018.06.22_data.sav")
+  w4_path <- file.path(raw_dir, "KAMOS_4-1_2019.04.20-2019.06.20_data.sav")
 
-  for (p in c(w1_path, w4_path)) {
+  for (p in c(w1_path, w2_path, w3_path, w4_path)) {
     if (!file.exists(p)) stop("File not found: ", p)
   }
 
   w1 <- read_sav(w1_path)
   cat(sprintf("  w1: %s rows, %d cols\n", format(nrow(w1), big.mark = ","), ncol(w1)))
 
+  w2 <- read_sav(w2_path)
+  cat(sprintf("  w2: %s rows, %d cols\n", format(nrow(w2), big.mark = ","), ncol(w2)))
+
+  w3 <- read_sav(w3_path)
+  cat(sprintf("  w3: %s rows, %d cols\n", format(nrow(w3), big.mark = ","), ncol(w3)))
+
   w4 <- read_sav(w4_path)
   cat(sprintf("  w4: %s rows, %d cols\n", format(nrow(w4), big.mark = ","), ncol(w4)))
 
-  list(w1 = w1, w4 = w4)
+  list(w1 = w1, w2 = w2, w3 = w3, w4 = w4)
 }
 
 # When run directly, print a quick summary

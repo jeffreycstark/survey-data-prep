@@ -25,6 +25,8 @@ variables:
     type: ordinal
     source:
       w1: econ
+      w2: econ
+      w3: econ
       w4: econ
     scale:
       min: 1
@@ -47,6 +49,8 @@ variables:
     type: ordinal
     source:
       w1: famfin
+      w2: famfin
+      w3: famfin
       w4: famfin
     scale:
       min: 1
@@ -64,6 +68,8 @@ variables:
     type: ordinal
     source:
       w1: socmob
+      w2: socmob
+      w3: socmob
       w4: socmob
     scale:
       min: 1
@@ -81,6 +87,8 @@ variables:
     type: ordinal
     source:
       w1: Socmob2
+      w2: socmob2
+      w3: socmob2
       w4: socmob2
     scale:
       min: 1
@@ -97,6 +105,8 @@ variables:
     type: continuous
     source:
       w1: Ecequal
+      w2: Ecequal
+      w3: Ecequal
       w4: ecequal
     scale:
       min: 0
@@ -115,6 +125,8 @@ variables:
     type: ordinal
     source:
       w1: socconse
+      w2: socconse
+      w3: socconse
       w4: socconse
     scale:
       min: 1
@@ -132,6 +144,8 @@ variables:
     type: ordinal
     source:
       w1: npride
+      w2: npride
+      w3: npride
       w4: npride
     scale:
       min: 1
@@ -149,6 +163,8 @@ variables:
     type: ordinal
     source:
       w1: curevent
+      w2: curevent
+      w3: curevent
       w4: curevent
     scale:
       min: 1

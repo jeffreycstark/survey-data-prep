@@ -36,6 +36,8 @@ variables:
     type: ordinal
     source:
       w1: polviews
+      w2: polviews
+      w3: polviews
       w4: polviews
     scale:
       min: 1
@@ -59,6 +61,8 @@ variables:
     type: ordinal
     source:
       w1: polisat
+      w2: polisat
+      w3: polisat
       w4: polisat
     scale:
       min: 1
@@ -81,6 +85,8 @@ variables:
     type: categorical
     source:
       w1: polisys
+      w2: polisys
+      w3: polisys
       w4: polisys
     harmonize:
       default:
@@ -95,6 +101,8 @@ variables:
     description: "Current party identification (nominal; party labels differ across waves)"
     note: |
       W1 codes: 1=Saenuri, 2=Deobureo Minjudang, 3=Gungminui Dang, 4=other, 5=none
+      W2 codes: partyid1 (different coding; needs cross-wave recode)
+      W3 codes: partyid (different coding; needs cross-wave recode)
       W4 codes: 1=Deobureo Minjudang, 2=Jayu Hanguk Dang (was Saenuri), 3=Bareun Mirae,
                 4=Jeongui Dang, 5=other, 6=none
       Do NOT compare raw codes across waves. Recode to conservative/progressive/other
@@ -102,6 +110,8 @@ variables:
     type: categorical
     source:
       w1: partyid
+      w2: partyid1
+      w3: partyid
       w4: partyid3
     harmonize:
       default:
@@ -116,6 +126,8 @@ variables:
     type: categorical
     source:
       w1: Partyid2
+      w2: partyid2
+      w3: partyid2
       w4: partyid4
     harmonize:
       default:
@@ -132,6 +144,8 @@ variables:
     type: continuous
     source:
       w1: Partyatt_1
+      w2: null
+      w3: null
       w4: null
     scale:
       min: 0
@@ -149,6 +163,8 @@ variables:
     type: continuous
     source:
       w1: Partyatt_2
+      w2: null
+      w3: null
       w4: null
     scale:
       min: 0
@@ -165,6 +181,8 @@ variables:
     type: continuous
     source:
       w1: Partyatt_3
+      w2: null
+      w3: null
       w4: null
     scale:
       min: 0
@@ -181,6 +199,8 @@ variables:
     type: continuous
     source:
       w1: Partyatt_4
+      w2: null
+      w3: null
       w4: null
     scale:
       min: 0
@@ -201,6 +221,8 @@ variables:
     type: binary
     source:
       w1: Vote14_2
+      w2: null
+      w3: null
       w4: vote16
     harmonize:
       default:
@@ -215,6 +237,8 @@ variables:
     type: binary
     source:
       w1: Vote14_1
+      w2: null
+      w3: null
       w4: vote15
     harmonize:
       default:
@@ -229,6 +253,8 @@ variables:
     type: binary
     source:
       w1: Vote14_3
+      w2: null
+      w3: null
       w4: vote17
     harmonize:
       default:

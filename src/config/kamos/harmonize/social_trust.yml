@@ -20,6 +20,8 @@ variables:
     type: continuous
     source:
       w1: Soctrus
+      w2: Soctrust
+      w3: Soctrust
       w4: Soctrust
     scale:
       min: 0
@@ -37,6 +39,8 @@ variables:
     type: continuous
     source:
       w1: cittrust
+      w2: cittrust
+      w3: cittrust
       w4: cittrust
     scale:
       min: 0

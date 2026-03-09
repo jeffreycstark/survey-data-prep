@@ -1,16 +1,24 @@
 # KAMOS: Create final combined dataset
 #
 # Loads per-wave master files from outputs/kamos/,
-# adds country and year identifiers, assigns W4 weight = 1.0 (no weight
-# variable found in W4 raw data), and saves kamos_harmonized.rds / .parquet.
+# adds country and year identifiers, fixes missing weights,
+# and saves kamos_harmonized.rds / .parquet.
 #
 # SURVEY YEARS:
-#   W1 → 2016  (fieldwork year; no interview date variable available)
-#   W4 → 2019  (confirmed via `year` variable in W4 raw data)
+#   W1 → 2016  (Feb–May; during active protest period)
+#   W2 → 2017  (May–Jul; post-impeachment, early Moon administration)
+#   W3 → 2018  (Apr–Jun; Moon governance midpoint)
+#   W4 → 2019  (Apr–Jun; before Cho Kuk affair)
 #
 # WEIGHT NOTE:
 #   W1 uses wt2 (trimmed post-stratification weight, mean ≈ 1, range 0.72–1.81)
+#   W2 uses wt (post-stratification weight)
+#   W3 uses wt (post-stratification weight)
 #   W4 has no weight variable — all W4 respondents get weight = 1.0
+#
+# DEMOGRAPHICS NOTE:
+#   W2/W3 have limited demographics (no gender, age is categorical 1-5).
+#   Trust, economy, and political attitude items are fully available.
 
 library(here)
 library(dplyr)
@@ -27,7 +35,7 @@ cat(strrep("=", 70), "\n\n")
 
 output_dir <- here("outputs", "kamos")
 wave_files <- sort(list.files(output_dir,
-                               pattern = "^master_w(1|4)\\.rds$",
+                               pattern = "^master_w[1-4]\\.rds$",
                                full.names = TRUE))
 
 if (length(wave_files) == 0) {
@@ -51,7 +59,7 @@ for (f in wave_files) {
 
 cat("\nAdding country and year identifiers...\n")
 
-survey_years <- c(w1 = 2016L, w4 = 2019L)
+survey_years <- c(w1 = 2016L, w2 = 2017L, w3 = 2018L, w4 = 2019L)
 
 for (wave_name in names(wave_list)) {
   wave_list[[wave_name]]$country <- "KOR"
@@ -63,10 +71,11 @@ for (wave_name in names(wave_list)) {
 # FIX W4 WEIGHT (no weight in raw data → assign 1.0)
 # ==============================================================================
 
-if ("w4" %in% names(wave_list)) {
-  if (all(is.na(wave_list[["w4"]]$weight))) {
-    cat("\nW4 weight is all NA — assigning 1.0 for unweighted analysis\n")
-    wave_list[["w4"]]$weight <- 1.0
+# Fix missing weights: W4 has no weight variable
+for (wn in names(wave_list)) {
+  if (all(is.na(wave_list[[wn]]$weight))) {
+    cat(sprintf("\n%s weight is all NA — assigning 1.0 for unweighted analysis\n", wn))
+    wave_list[[wn]]$weight <- 1.0
   }
 }
 

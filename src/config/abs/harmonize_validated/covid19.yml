@@ -228,6 +228,302 @@ variables:
       validate:
         - waves: [w6]
           phrase: "trust.*covid|covid.*information"
+  # ===========================================================================
+  # GROUP 4: COVID Restriction Acceptance (q143a-e, W6 only)
+  # Scale: 1=Always, 2=Sometimes, 3=Never → reversed so high=more accepting
+  # ===========================================================================
+  - id: covid_restrict_postpone_elections
+    concept: covid19
+    description: "When there is a public health challenge like COVID, is it justifiable for the government to postpone elections?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q143a
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Sometimes"
+        3: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw: 1=Always → 3=Never; reverse so high=more accepting of restrictions"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "postpone.*election"
+  - id: covid_restrict_limit_assembly
+    concept: covid19
+    description: "When there is a public health challenge like COVID, is it justifiable for the government to limit freedom of speech or assembly?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q143b
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Sometimes"
+        3: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw: 1=Always → 3=Never; reverse so high=more accepting of restrictions"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "freedom.*speech|assembly"
+  - id: covid_restrict_censor_media
+    concept: covid19
+    description: "When there is a public health challenge like COVID, is it justifiable for the government to censor the media?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q143c
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Sometimes"
+        3: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw: 1=Always → 3=Never; reverse so high=more accepting of restrictions"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "censor.*media"
+  - id: covid_restrict_track_location
+    concept: covid19
+    description: "When there is a public health challenge like COVID, is it justifiable for the government to track citizens' locations at all times?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q143d
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Sometimes"
+        3: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw: 1=Always → 3=Never; reverse so high=more accepting of restrictions"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "track.*location"
+  - id: covid_restrict_lockdown
+    concept: covid19
+    description: "When there is a public health challenge like COVID, is it justifiable for the government to impose a lockdown for a long time?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q143e
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Never"
+        2: "Sometimes"
+        3: "Always"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+        note: "Raw: 1=Always → 3=Never; reverse so high=more accepting of restrictions"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w6]
+          phrase: "lockdown"
+  # ===========================================================================
+  # GROUP 5: Emergency Powers Support (q172a-e, W6 only)
+  # Scale: 1=Very justified → 4=Not at all; reversed so high=more support
+  # ===========================================================================
+  - id: emergency_powers_health_crisis
+    concept: covid19
+    description: "Would a public health crisis like COVID-19 justify the government's use of emergency powers to constrain rights and freedom?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more support for emergency powers"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "public health|covid"
+  - id: emergency_powers_economic_crisis
+    concept: covid19
+    description: "Would an economic crisis that has caused the loss of many jobs justify the government's use of emergency powers to constrain rights and freedom?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172b
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more support for emergency powers"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "economic crisis|loss.*jobs"
+  - id: emergency_powers_corruption
+    concept: covid19
+    description: "Would widespread corruption that the president/PM claims can only be reduced by increasing executive power justify the government's use of emergency powers?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172c
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more support for emergency powers"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "corruption|executive power"
+  - id: emergency_powers_security_crisis
+    concept: covid19
+    description: "Would a security crisis due to social unrest or terrorism justify the government's use of emergency powers to constrain rights and freedom?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172d
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more support for emergency powers"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "security.*crisis|unrest|terrorism"
+  - id: emergency_powers_war
+    concept: covid19
+    description: "Would the country being at war justify the government's use of emergency powers to constrain rights and freedom?"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172e
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more support for emergency powers"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "war"
+  # ===========================================================================
+  # GROUP 6: Economic Security / Fairness
+  # ===========================================================================
   - id: income_fairness
     concept: covid19
     description: "Considering all your effort, is the income your family receives fair?"

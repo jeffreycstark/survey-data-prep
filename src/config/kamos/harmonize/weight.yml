@@ -8,6 +8,8 @@
 # (max ~12) can inflate variance substantially. Use wt1 for design-based
 # variance estimation.
 #
+# W2 : wt (post-stratification weight)
+# W3 : wt (post-stratification weight)
 # W4 : NO weight variable found in data file. Unweighted analysis only for W4.
 #      weight is set to 1.0 for all W4 respondents in 99_create_final_dataset.R.
 
@@ -19,11 +21,13 @@ missing_conventions:
 variables:
   - id: weight
     concept: weight
-    description: "Post-stratification survey weight (W1=wt2 trimmed; W4=1.0 constant)"
-    note: "W1 wt2 range 0.72-1.81 mean≈1. W4 has no weight; constant 1.0 assigned."
+    description: "Post-stratification survey weight (W1=wt2; W2/W3=wt; W4=1.0 constant)"
+    note: "W1 wt2 range 0.72-1.81 mean≈1. W2/W3 wt. W4 has no weight; constant 1.0 assigned."
     type: continuous
     source:
       w1: wt2
+      w2: wt
+      w3: wt
       w4: null
     harmonize:
       default:

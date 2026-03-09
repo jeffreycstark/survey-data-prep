@@ -22,9 +22,12 @@ variables:
   - id: gender
     concept: demographics
     description: "Respondent gender (1=male, 0=female)"
+    note: "W2/W3 do not include gender. Set to null (will be NA)."
     type: categorical
     source:
       w1: gender
+      w2: null
+      w3: null
       w4: sex
     scale:
       labels:
@@ -45,9 +48,12 @@ variables:
   - id: age
     concept: demographics
     description: "Respondent age in years"
+    note: "W2/W3 age_1 is categorical (1-5 bracket), not raw years. Set to null."
     type: continuous
     source:
       w1: age_1
+      w2: null
+      w3: null
       w4: age
     harmonize:
       default:
@@ -61,6 +67,8 @@ variables:
     type: continuous
     source:
       w1: ybirth
+      w2: null
+      w3: null
       w4: birth
     harmonize:
       default:
@@ -74,6 +82,8 @@ variables:
     type: ordinal
     source:
       w1: edlevel
+      w2: edlevel
+      w3: edu
       w4: edlevel
     scale:
       min: 1
@@ -101,6 +111,8 @@ variables:
     type: ordinal
     source:
       w1: Income
+      w2: Income
+      w3: inc
       w4: income
     scale:
       min: 1
@@ -117,6 +129,8 @@ variables:
     type: categorical
     source:
       w1: marstat
+      w2: marstat
+      w3: mar
       w4: marstat
     scale:
       labels:
@@ -137,6 +151,8 @@ variables:
     type: categorical
     source:
       w1: job
+      w2: job
+      w3: job
       w4: job
     harmonize:
       default:
@@ -150,6 +166,8 @@ variables:
     type: categorical
     source:
       w1: area
+      w2: null
+      w3: null
       w4: area
     scale:
       labels:
@@ -182,6 +200,8 @@ variables:
     type: continuous
     source:
       w1: class
+      w2: class
+      w3: class
       w4: class
     scale:
       min: 0
