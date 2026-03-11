@@ -1,5 +1,5 @@
 # WVS Democratic Support / Political System Preferences
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # "Having a political system where [X]" — how good or bad?
@@ -32,6 +32,11 @@ variables:
     description: "Having a strong leader who does not have to bother with parliament and elections"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V154
+      w4: V164
+      w5: V148
       w6: V127
       w7: Q235
     scale:
@@ -58,6 +63,11 @@ variables:
     description: "Having experts, not government, make decisions according to what they think is best for the country"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V155
+      w4: V165
+      w5: V149
       w6: V128
       w7: Q236
     scale:
@@ -84,6 +94,11 @@ variables:
     description: "Having the army rule"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V156
+      w4: V166
+      w5: V150
       w6: V129
       w7: Q237
     scale:
@@ -110,6 +125,11 @@ variables:
     description: "Having a democratic political system"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V157
+      w4: V167
+      w5: V151
       w6: V130
       w7: Q238
     scale:
@@ -136,6 +156,11 @@ variables:
     description: "Having a system governed by religious law in which there are no political parties or elections"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: null
       w7: Q239
     note: "Wave 6 did not include religious law as a political system option"

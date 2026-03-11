@@ -55,6 +55,29 @@ abs_econdev_authpref <- abs_econdev_authpref %>%
 
 cat("  Labels zapped successfully\n")
 
+# Add ISO 3166 alpha-3 country codes
+abs_econdev_authpref <- abs_econdev_authpref %>%
+  mutate(country_iso = case_when(
+    country ==  1 ~ "JPN",
+    country ==  2 ~ "HKG",
+    country ==  3 ~ "KOR",
+    country ==  4 ~ "CHN",
+    country ==  5 ~ "MNG",
+    country ==  6 ~ "PHL",
+    country ==  7 ~ "TWN",
+    country ==  8 ~ "THA",
+    country ==  9 ~ "IDN",
+    country == 10 ~ "SGP",
+    country == 11 ~ "VNM",
+    country == 12 ~ "KHM",
+    country == 13 ~ "MYS",
+    country == 14 ~ "MMR",
+    country == 15 ~ "AUS",
+    country == 18 ~ "IND",
+    TRUE ~ NA_character_
+  ))
+cat("  Added country_iso (ISO 3166 alpha-3)\n")
+
 # Rescale education to 0-1 (ABS raw: 1-10)
 if ("education_level" %in% names(abs_econdev_authpref)) {
   abs_econdev_authpref <- abs_econdev_authpref %>%

@@ -1,5 +1,5 @@
 # WVS Social / Interpersonal Trust
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Interpersonal trust items (4pt):
@@ -29,6 +29,11 @@ variables:
     description: "Would you say that most people can be trusted or that you need to be very careful in dealing with people?"
     type: nominal
     source:
+      w1: V27
+      w2: V94
+      w3: V27
+      w4: V25
+      w5: V23
       w6: V24
       w7: Q57
     scale:
@@ -56,6 +61,11 @@ variables:
     description: "How much do you trust people in your family?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V125
       w6: V102
       w7: Q58
     scale:
@@ -82,6 +92,11 @@ variables:
     description: "How much do you trust people in your neighborhood?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V126
       w6: V103
       w7: Q59
     scale:
@@ -108,6 +123,11 @@ variables:
     description: "How much do you trust people you know personally?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V127
       w6: V104
       w7: Q60
     scale:
@@ -133,6 +153,11 @@ variables:
     description: "How much do you trust people you meet for the first time?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V128
       w6: V105
       w7: Q61
     scale:
@@ -158,6 +183,11 @@ variables:
     description: "How much do you trust people of another religion?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V129
       w6: V106
       w7: Q62
     scale:
@@ -183,6 +213,11 @@ variables:
     description: "How much do you trust people of another nationality?"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V130
       w6: V107
       w7: Q63
     scale:

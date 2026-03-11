@@ -1,5 +1,5 @@
 # WVS National Pride / National Identity
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Raw: 1=Very proud, 2=Quite proud, 3=Not very proud, 4=Not at all proud
@@ -22,6 +22,11 @@ variables:
     description: "How proud are you to be [nationality]?"
     type: ordinal
     source:
+      w1: V205
+      w2: V322
+      w3: V205
+      w4: V216
+      w5: V209
       w6: V211
       w7: Q254
     scale:

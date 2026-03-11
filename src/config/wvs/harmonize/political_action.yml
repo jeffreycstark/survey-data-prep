@@ -1,5 +1,5 @@
 # WVS Political Action
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Raw: 1=Have done, 2=Might do, 3=Would never do
@@ -21,6 +21,11 @@ variables:
     description: "Signing a petition"
     type: ordinal
     source:
+      w1: V118
+      w2: V242
+      w3: V118
+      w4: V134
+      w5: V96
       w6: V85
       w7: Q209
     scale:
@@ -46,6 +51,11 @@ variables:
     description: "Joining in boycotts"
     type: ordinal
     source:
+      w1: V119
+      w2: V243
+      w3: V119
+      w4: V135
+      w5: V97
       w6: V86
       w7: Q210
     scale:
@@ -71,6 +81,11 @@ variables:
     description: "Attending peaceful demonstrations"
     type: ordinal
     source:
+      w1: V120
+      w2: V244
+      w3: V120
+      w4: V136
+      w5: V98
       w6: V87
       w7: Q211
     scale:
@@ -96,6 +111,11 @@ variables:
     description: "Joining unofficial strikes"
     type: ordinal
     source:
+      w1: V121
+      w2: V245
+      w3: V121
+      w4: V137
+      w5: null
       w6: V88
       w7: Q212
     scale:
@@ -121,9 +141,14 @@ variables:
     description: "Any other act of protest"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V99
       w6: V89
       w7: null
-    note: "Wave 7 did not include 'any other act of protest' as a separate item"
+    note: "Available in W5 and W6 only. W1-W4 and W7 did not include 'any other act of protest' as a separate item"
     scale:
       min: 1
       max: 3

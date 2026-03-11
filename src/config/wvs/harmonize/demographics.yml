@@ -1,5 +1,5 @@
 # WVS Demographics
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION & NOTES:
 #
@@ -40,6 +40,11 @@ variables:
     description: "Sex of respondent (1=Male, 0=Female)"
     type: nominal
     source:
+      w1: V214
+      w2: V353
+      w3: V214
+      w4: V223
+      w5: V235
       w6: V240
       w7: Q260
     scale:
@@ -64,6 +69,11 @@ variables:
     description: "Age of respondent (years)"
     type: continuous
     source:
+      w1: V216
+      w2: V355
+      w3: V216
+      w4: V225
+      w5: V237
       w6: V242
       w7: Q262
     scale:
@@ -81,6 +91,11 @@ variables:
     description: "Highest educational level attained (harmonized 3-level: 1=Primary or less, 2=Secondary, 3=Tertiary)"
     type: ordinal
     source:
+      w1: null
+      w2: V375
+      w3: V217
+      w4: V226
+      w5: V238
       w6: V248
       w7: Q275
     scale:
@@ -94,6 +109,58 @@ variables:
       default:
         method: identity
       by_wave:
+        w2:
+          method: recode
+          mapping:
+            1: 1
+            2: 1
+            3: 1
+            4: 2
+            5: 2
+            6: 2
+            7: 2
+            8: 3
+            9: 3
+          note: "W2 V375: same 1-9 scheme as W6"
+        w3:
+          method: recode
+          mapping:
+            1: 1
+            2: 1
+            3: 1
+            4: 2
+            5: 2
+            6: 2
+            7: 2
+            8: 3
+            9: 3
+          note: "W3 V217: same 1-9 scheme as W6"
+        w4:
+          method: recode
+          mapping:
+            1: 1
+            2: 1
+            3: 1
+            4: 2
+            5: 2
+            6: 2
+            7: 2
+            8: 3
+            9: 3
+          note: "W4 V226: same 1-9 scheme as W6"
+        w5:
+          method: recode
+          mapping:
+            1: 1
+            2: 1
+            3: 1
+            4: 2
+            5: 2
+            6: 2
+            7: 2
+            8: 3
+            9: 3
+          note: "W5 V238: same 1-9 scheme as W6"
         w6:
           method: recode
           mapping:
@@ -128,6 +195,11 @@ variables:
     description: "On this card is an income scale on which 1 indicates the lowest income group and 10 the highest. Which group does your household fall into?"
     type: ordinal
     source:
+      w1: V227
+      w2: V363
+      w3: V227
+      w4: V236
+      w5: V253
       w6: V239
       w7: Q288
     scale:
@@ -151,6 +223,11 @@ variables:
     description: "People sometimes describe themselves as belonging to the working class, the middle class, or the upper or lower class. Would you describe yourself as belonging to the..."
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V226
+      w4: V235
+      w5: V252
       w6: V238
       w7: Q287
     scale:
@@ -178,6 +255,11 @@ variables:
     description: "Current legal marital status"
     type: nominal
     source:
+      w1: V89
+      w2: V181
+      w3: V89
+      w4: V106
+      w5: V55
       w6: V57
       w7: Q273
     scale:
@@ -193,7 +275,16 @@ variables:
     harmonize:
       default:
         method: identity
-        note: "Both waves use same 1-6 categories; no transformation needed"
+        note: "W1-W3, W6-W7 use same 1-6 categories; no transformation needed"
+      by_wave:
+        w4:
+          method: r_function
+          fn: recode_marital_w4w5
+          note: "W4 V106 has extra codes 7 (combined) and 10 (living apart)"
+        w5:
+          method: r_function
+          fn: recode_marital_w4w5
+          note: "W5 V55 has extra codes 7 (combined) and 8 (living apart)"
     qc:
       valid_range: [1, 6]
       validate:
@@ -205,6 +296,11 @@ variables:
     description: "Employment status of respondent"
     type: nominal
     source:
+      w1: V220
+      w2: V358
+      w3: V220
+      w4: V229
+      w5: V241
       w6: V229
       w7: Q279
     scale:

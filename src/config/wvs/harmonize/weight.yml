@@ -1,5 +1,5 @@
 # WVS Survey Weights
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # Individual country weights normalize to mean ~1 within each country.
 # W6: V258, W7: W_WEIGHT
@@ -19,14 +19,19 @@ variables:
     description: "Individual country weight (normalizes to mean ~1 within country)"
     type: continuous
     source:
+      w1: V236
+      w2: V376
+      w3: V236
+      w4: V245
+      w5: V259
       w6: V258
       w7: W_WEIGHT
     scale:
       min: 0
-      max: 25
+      max: 35
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [0, 25]
+      valid_range: [0, 35]
     tags: [sampling, weight]

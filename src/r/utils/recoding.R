@@ -1609,6 +1609,25 @@ recode_gender_binary <- function(x,
   )
 }
 
+#' Recode WVS W4/W5 marital status (extra codes) to standard 1-6
+#'
+#' W4/W5 have extra codes: 7=combined divorced/sep/widow, 8/10=living apart
+#' Maps: 1-6 pass through, 7→3 (Divorced), 8→4 (Separated), 10→4 (Separated)
+recode_marital_w4w5 <- function(x,
+                                data = NULL,
+                                var_name = NULL,
+                                missing_codes = c(-5, -4, -3, -2, -1),
+                                validate_all = NULL) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 1:6 ~ as.numeric(x),
+    x == 7 ~ 3,   # Combined divorced/separated/widow → Divorced
+    x == 8 ~ 4,   # Living apart → Separated
+    x == 10 ~ 4,  # Living apart (W4 code) → Separated
+    TRUE ~ NA_real_
+  )
+}
+
 #' Recode urban/rural to 1=Urban, 0=Rural
 #'
 #' Default (W1-W3): 1=Urban, 2=Rural

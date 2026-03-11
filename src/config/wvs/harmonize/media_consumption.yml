@@ -1,5 +1,5 @@
 # WVS Media Consumption / Information Sources
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Raw: 1=Daily, 2=Weekly, 3=Monthly, 4=Less than monthly, 5=Never
@@ -7,9 +7,10 @@
 # All items need safe_reverse_5pt so higher = more frequent use
 #
 # NOTE ON WAVE DIFFERENCES:
+# W1-W5: null for all items (W5 uses binary scale, W1-W4 have no per-medium items; incompatible)
 # W6 includes magazines (V218) which W7 dropped
 # W7 includes social media (Q207) which W6 did not have
-# All other items are present in both waves
+# All other items are present in both W6 and W7
 #
 # MISSING VALUES:
 # W6 parquet: negatives already converted to NA
@@ -26,6 +27,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Daily newspaper"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V217
       w7: Q201
     scale:
@@ -53,6 +59,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Magazines"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V218
       w7: null
     note: "Wave 7 dropped magazines as a separate information source"
@@ -81,6 +92,11 @@ variables:
     description: "How often do you use the following sources to obtain information: TV news"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V219
       w7: Q202
     scale:
@@ -108,6 +124,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Radio"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V220
       w7: Q203
     scale:
@@ -135,6 +156,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Mobile phone"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V221
       w7: Q204
     scale:
@@ -162,6 +188,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Email"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V222
       w7: Q205
     scale:
@@ -189,6 +220,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Internet"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V223
       w7: Q206
     scale:
@@ -216,6 +252,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Social media (Facebook, Twitter, etc.)"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: null
       w7: Q207
     note: "Wave 6 did not include social media as a separate information source"
@@ -244,6 +285,11 @@ variables:
     description: "How often do you use the following sources to obtain information: Talk with friends or colleagues"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V224
       w7: Q208
     scale:

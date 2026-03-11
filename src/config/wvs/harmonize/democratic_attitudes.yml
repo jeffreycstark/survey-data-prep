@@ -1,5 +1,5 @@
 # WVS Democratic Attitudes
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # All items on 1-10 scale already coded higher = more democratic/important
@@ -20,6 +20,11 @@ variables:
     description: "How important is it for you to live in a country that is governed democratically? (1=Not at all important, 10=Absolutely important)"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V162
       w6: V140
       w7: Q250
     scale:
@@ -43,6 +48,11 @@ variables:
     description: "How democratically is this country being governed today? (1=Not at all democratic, 10=Completely democratic)"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V163
       w6: V141
       w7: Q251
     scale:
@@ -66,6 +76,11 @@ variables:
     description: "How satisfied are you with how the political system is functioning in your country? (1=Not satisfied at all, 10=Completely satisfied)"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: null
       w7: Q252
     note: "Wave 6 did not include satisfaction with political system as a separate item"

@@ -1,5 +1,5 @@
 # WVS Institutional Trust (Confidence in Institutions)
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Raw: 1=A great deal, 2=Quite a lot, 3=Not very much, 4=None at all
@@ -21,6 +21,11 @@ variables:
     description: "Confidence in the churches/religious organizations"
     type: ordinal
     source:
+      w1: V135
+      w2: V272
+      w3: V135
+      w4: V147
+      w5: V131
       w6: V108
       w7: Q64
     scale:
@@ -47,6 +52,11 @@ variables:
     description: "Confidence in the armed forces"
     type: ordinal
     source:
+      w1: V136
+      w2: V273
+      w3: V136
+      w4: V148
+      w5: V132
       w6: V109
       w7: Q65
     scale:
@@ -72,6 +82,11 @@ variables:
     description: "Confidence in the press"
     type: ordinal
     source:
+      w1: V138
+      w2: V276
+      w3: V138
+      w4: V149
+      w5: V133
       w6: V110
       w7: Q66
     scale:
@@ -97,6 +112,11 @@ variables:
     description: "Confidence in television"
     type: ordinal
     source:
+      w1: null
+      w2: V283
+      w3: V139
+      w4: V150
+      w5: V134
       w6: V111
       w7: Q67
     scale:
@@ -122,6 +142,11 @@ variables:
     description: "Confidence in labor unions"
     type: ordinal
     source:
+      w1: V140
+      w2: V277
+      w3: V140
+      w4: V151
+      w5: V135
       w6: V112
       w7: Q68
     scale:
@@ -147,6 +172,11 @@ variables:
     description: "Confidence in the police"
     type: ordinal
     source:
+      w1: V141
+      w2: V278
+      w3: V141
+      w4: V152
+      w5: V136
       w6: V113
       w7: Q69
     scale:
@@ -172,6 +202,11 @@ variables:
     description: "Confidence in the courts"
     type: ordinal
     source:
+      w1: V137
+      w2: V275
+      w3: V137
+      w4: null
+      w5: V137
       w6: V114
       w7: Q70
     scale:
@@ -197,6 +232,11 @@ variables:
     description: "Confidence in the government (in your nation's capital)"
     type: ordinal
     source:
+      w1: null
+      w2: V289
+      w3: V142
+      w4: V153
+      w5: V138
       w6: V115
       w7: Q71
     scale:
@@ -222,6 +262,11 @@ variables:
     description: "Confidence in political parties"
     type: ordinal
     source:
+      w1: null
+      w2: V285
+      w3: V143
+      w4: V154
+      w5: V139
       w6: V116
       w7: Q72
     scale:
@@ -247,6 +292,11 @@ variables:
     description: "Confidence in parliament"
     type: ordinal
     source:
+      w1: V144
+      w2: V279
+      w3: V144
+      w4: V155
+      w5: V140
       w6: V117
       w7: Q73
     scale:
@@ -272,6 +322,11 @@ variables:
     description: "Confidence in the civil service"
     type: ordinal
     source:
+      w1: V145
+      w2: V280
+      w3: V145
+      w4: V156
+      w5: V141
       w6: V118
       w7: Q74
     scale:
@@ -297,6 +352,11 @@ variables:
     description: "Confidence in universities"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V119
       w7: Q75
     scale:
@@ -322,6 +382,11 @@ variables:
     description: "Confidence in elections"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: null
       w7: Q76
     note: "Wave 6 did not include elections as a separate confidence item"
@@ -348,6 +413,11 @@ variables:
     description: "Confidence in major companies"
     type: ordinal
     source:
+      w1: V146
+      w2: V281
+      w3: V146
+      w4: V157
+      w5: V142
       w6: V120
       w7: Q77
     scale:
@@ -373,6 +443,11 @@ variables:
     description: "Confidence in banks"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
       w6: V121
       w7: Q78
     scale:
@@ -398,6 +473,11 @@ variables:
     description: "Confidence in environmental organizations"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V147
+      w4: V158
+      w5: V143
       w6: V122
       w7: Q79
     scale:
@@ -423,6 +503,11 @@ variables:
     description: "Confidence in women's organizations"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V148
+      w4: V159
+      w5: V144
       w6: V123
       w7: Q80
     scale:
@@ -448,6 +533,11 @@ variables:
     description: "Confidence in charitable or humanitarian organizations"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V145
       w6: V124
       w7: Q81
     scale:
@@ -473,6 +563,11 @@ variables:
     description: "Confidence in the United Nations"
     type: ordinal
     source:
+      w1: null
+      w2: null
+      w3: V150
+      w4: V162
+      w5: V147
       w6: V126
       w7: Q83
     scale:

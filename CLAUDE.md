@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 6-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 16 years: 2003-2023) + V-Dem v15 (scaffold)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 2 waves, 186,785 respondents); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (47 vars, 16 years 2003–2023, 22,071 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 16 years: 2003-2023) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (47 vars, 16 years 2003–2023, 22,071 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
 
 ---
 
@@ -84,7 +84,7 @@ src/
 │   │   ├── harmonize/          # ABS YAML specs (27 files)
 │   │   └── harmonize_validated/
 │   ├── wvs/                    # WVS-specific config
-│   │   └── harmonize/          # WVS YAML specs (11 files, 61 vars)
+│   │   └── harmonize/          # WVS YAML specs (11 files, 62 vars, W1-W7)
 │   ├── lbs/                    # LBS-specific config
 │   │   └── harmonize/          # LBS YAML specs (5 files, 20 vars)
 │   ├── afro/                   # Afrobarometer-specific config
@@ -108,7 +108,7 @@ data/
 │       └── README.md
 ├── wvs/                        # World Values Survey
 │   └── raw/
-│       ├── wave6/, wave7/      # WVS waves (parquet)
+│       ├── wave1/ ... wave7/   # WVS waves (W1-W5: SPSS .sav, W6-W7: parquet)
 ├── lbs/                        # Latinobarómetro
 │   └── raw/
 │       ├── 2015/ ... 2023/     # LBS waves (SPSS .sav, English)
@@ -135,7 +135,7 @@ outputs/
 ├── master_w*.rds               # ABS per-wave harmonized data
 ├── abs_harmonized.rds          # Combined ABS dataset
 ├── wvs/                        # WVS per-wave master files
-│   └── master_w6.rds, master_w7.rds
+│   └── master_w1.rds ... master_w7.rds
 ├── lbs/                        # LBS per-wave master files
 │   └── master_w1.rds ... master_w5.rds
 ├── afro/                       # Afro per-wave master files
@@ -178,7 +178,7 @@ Rscript src/r/data_prep_modules/2_harmonize_all.R
 Rscript src/r/data_prep_modules/99_create_final_dataset.R
 ```
 
-**WVS** (2 waves, parquet → harmonize):
+**WVS** (7 waves, W1-W5 SPSS + W6-W7 parquet → harmonize):
 ```bash
 Rscript src/r/data_prep_modules/wvs/2_harmonize_all.R
 Rscript src/r/data_prep_modules/wvs/99_create_final_dataset.R
@@ -271,21 +271,22 @@ d <- readRDS("data/processed/wvs_harmonized.rds")
 # Or: arrow::read_parquet("data/processed/wvs_harmonized.parquet")
 ```
 
-**186,785 respondents, 84 countries, 61 harmonized variables across waves 6-7.**
+**446,767 respondents, 108 countries, 62 harmonized variables across waves 1-7.**
 
 | Category | Variables | Scale |
 |----------|-----------|-------|
-| Institutional Trust (19) | trust_churches, trust_armed_forces, trust_press, trust_television, trust_labor_unions, trust_police, trust_courts, trust_government, trust_political_parties, trust_parliament, trust_civil_service, trust_universities, trust_elections (W7), trust_major_companies, trust_banks, trust_environmental_orgs, trust_womens_orgs, trust_charitable_orgs, trust_united_nations | 1-4, higher=more trust |
-| Social Trust (7) | trust_generalized_binary (1-2), trust_family, trust_neighborhood, trust_people_personally, trust_first_time, trust_another_religion, trust_another_nationality | 1-4, higher=more trust |
-| Democratic Attitudes (3) | dem_importance_democracy, dem_how_democratic, dem_satisfaction_political_system (W7) | 1-10, higher=more |
-| Democratic Support (5) | dem_strong_leader, dem_experts_rule, dem_army_rule, dem_democratic_system, dem_religious_law (W7) | 1-4, higher=more support for that system |
-| Life Satisfaction (2) | happiness, life_satisfaction | 1-4 / 1-10, higher=better |
-| Political Engagement (2) | pol_interest, pol_discuss_friends (W7) | 1-4 / 1-3, higher=more |
-| Political Action (5) | action_petition, action_boycotts, action_demonstrations, action_strikes, action_other_protest (W6) | 1-3, higher=more active |
-| Media Consumption (9) | info_newspaper, info_magazines (W6), info_television, info_radio, info_mobile_phone, info_email, info_internet, info_social_media (W7), info_talk_friends | 1-5, higher=more frequent |
-| National Identity (1) | national_pride | 1-4, higher=more proud |
-| Demographics (7) | sex, age, education_level (1-3 harmonized), income_scale (1-10), social_class, marital_status, employment_status | varies |
-| Weights (1) | weight | continuous, mean ~1; raw: V258 (W6), W_WEIGHT (W7) |
+| Institutional Trust (19) | trust_churches, trust_armed_forces, trust_press, trust_television, trust_labor_unions, trust_police, trust_courts, trust_government, trust_political_parties, trust_parliament, trust_civil_service, trust_universities, trust_elections (W7), trust_major_companies, trust_banks, trust_environmental_orgs, trust_womens_orgs, trust_charitable_orgs, trust_united_nations | 1-4, higher=more trust; W1-W7 (most items) |
+| Social Trust (7) | trust_generalized_binary (1-2, W1-W7), trust_family, trust_neighborhood, trust_people_personally, trust_first_time, trust_another_religion, trust_another_nationality (W5-W7) | 1-4, higher=more trust |
+| Democratic Attitudes (3) | dem_importance_democracy (W5-W7), dem_how_democratic (W5-W7), dem_satisfaction_political_system (W7) | 1-10, higher=more |
+| Democratic Support (5) | dem_strong_leader (W3-W7), dem_experts_rule (W3-W7), dem_army_rule (W3-W7), dem_democratic_system (W3-W7), dem_religious_law (W7) | 1-4, higher=more support for that system |
+| Life Satisfaction (2) | happiness (W1-W7), life_satisfaction (W1-W7) | 1-4 / 1-10, higher=better |
+| Political Engagement (2) | pol_interest (W1-W7), pol_discuss_friends (W1-W4, W7) | 1-4 / 1-3, higher=more |
+| Political Action (5) | action_petition (W1-W7), action_boycotts (W1-W7), action_demonstrations (W1-W7), action_strikes (W1-W4, W6), action_other_protest (W5-W6) | 1-3, higher=more active |
+| Media Consumption (9) | info_newspaper, info_magazines (W6), info_television, info_radio, info_mobile_phone, info_email, info_internet, info_social_media (W7), info_talk_friends | 1-5, higher=more frequent; W6-W7 only (W1-W5 incompatible scales) |
+| National Identity (1) | national_pride (W1-W7) | 1-4, higher=more proud |
+| Demographics (7) | sex (W1-W7), age (W1-W7), education_level (W2-W7, 1-3 harmonized), income_scale (W1-W7, 1-10), social_class (W2-W7), marital_status (W1-W7), employment_status (W1-W7) | varies |
+| Derived (1) | education_level_01 (0-1 rescaled from education_level) | 0-1 continuous |
+| Weights (1) | weight | continuous, mean ~1; wave-specific raw sources |
 
 Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU")
 

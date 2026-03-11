@@ -1,5 +1,5 @@
 # WVS Political Interest / Engagement
-# Waves 6-7 harmonization
+# Waves 1-7 harmonization
 #
 # SCALE DIRECTION:
 # Interest in politics (4pt):
@@ -27,6 +27,11 @@ variables:
     description: "How interested would you say you are in politics?"
     type: ordinal
     source:
+      w1: V117
+      w2: V241
+      w3: V117
+      w4: V133
+      w5: V95
       w6: V84
       w7: Q199
     scale:
@@ -53,9 +58,14 @@ variables:
     description: "When you get together with your friends, would you say you discuss political matters frequently, occasionally, or never?"
     type: ordinal
     source:
+      w1: V37
+      w2: V10
+      w3: V37
+      w4: V32
+      w5: null
       w6: null
       w7: Q200
-    note: "Wave 6 did not include a direct 'discuss politics with friends' item in this format. W6 V224 covers frequency of talking with friends generally (see media_consumption.yml)."
+    note: "Available in W1-W4 and W7. W5 and W6 did not include a direct 'discuss politics with friends' item in this format. W6 V224 covers frequency of talking with friends generally (see media_consumption.yml)."
     scale:
       min: 1
       max: 3
