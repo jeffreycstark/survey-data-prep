@@ -25,6 +25,11 @@
 #   1=Full time, 2=Part time, 3=Self employed, 4=Retired, 5=Housewife,
 #   6=Student, 7=Unemployed, 8=Other
 #
+# Urban/Rural: 0=Rural, 1=Urban (matching ABS coding)
+#   W5 V263: 1=Urban, 2=Rural, 3=Mix → recode 1→1, 2→0, 3→NA
+#   W6: No direct binary (only V253 town size) → null
+#   W7 H_URBRURAL: 1=Urban, 2=Rural → recode 1→1, 2→0
+#
 # MISSING VALUES:
 # W6 parquet: negatives already converted to NA
 # W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
@@ -324,3 +329,40 @@ variables:
       validate:
         - waves: [w6, w7]
           phrase: "employ"
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urban or rural residence (0=Rural, 1=Urban, matching ABS coding)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: V263
+      w6: null
+      w7: H_URBRURAL
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Rural"
+        1: "Urban"
+    harmonize:
+      default:
+        method: identity
+      by_wave:
+        w5:
+          method: recode
+          mapping:
+            1: 1
+            2: 0
+          note: "W5 V263: 1=Urban→1, 2=Rural→0, 3=Mix→NA (not mapped)"
+        w7:
+          method: recode
+          mapping:
+            1: 1
+            2: 0
+          note: "W7 H_URBRURAL: 1=Urban→1, 2=Rural→0"
+    qc:
+      valid_range: [0, 1]
