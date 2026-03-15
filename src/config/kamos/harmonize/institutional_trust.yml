@@ -71,10 +71,10 @@ variables:
     qc:
       valid_range: [0, 10]
 
-  - id: trust_legislature
+  - id: trust_judiciary
     concept: institutional_trust
-    description: "Trust in the legislature / parliamentary process (0-10)"
-    note: "Distinct from trust_national_assembly; appears separately in codebook"
+    description: "Trust in the judiciary / courts (사법부) (0-10)"
+    note: "English KAMOS codebook mistranslates 사법부 as 'legislature'; confirmed from Korean-language questionnaire. Source variable 'legtrust' retains original codebook name."
     type: continuous
     source:
       w1: legtrust
