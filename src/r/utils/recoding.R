@@ -1628,6 +1628,25 @@ recode_marital_w4w5 <- function(x,
   )
 }
 
+#' Recode continuous age to 5-category bracket (matching KAMOS W2/W3 de2)
+#'
+#' 1=18-29, 2=30-39, 3=40-49, 4=50-59, 5=60+
+recode_age_to_5cat <- function(x,
+                                missing_codes = c(97, 98, 99),
+                                ...) {
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    is.na(x) ~ NA_real_,
+    x < 18 ~ NA_real_,
+    x <= 29 ~ 1,
+    x <= 39 ~ 2,
+    x <= 49 ~ 3,
+    x <= 59 ~ 4,
+    x >= 60 ~ 5,
+    TRUE ~ NA_real_
+  )
+}
+
 #' Recode urban/rural to 1=Urban, 0=Rural
 #'
 #' Default (W1-W3): 1=Urban, 2=Rural

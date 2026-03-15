@@ -22,26 +22,26 @@ variables:
   - id: gender
     concept: demographics
     description: "Respondent gender (1=male, 0=female)"
-    note: "W2/W3 do not include gender. Set to null (will be NA)."
     type: categorical
     source:
       w1: gender
-      w2: null
-      w3: null
+      w2: de1
+      w3: de1
       w4: sex
     scale:
       labels:
         1: "male"
         0: "female"
     harmonize:
-      w1:
-        method: r_function
-        fn: recode_kamos_gender_w1
-        note: "W1 codes 1=female, 2=male — recoded to 1=male, 0=female"
-      w4:
+      default:
         method: r_function
         fn: recode_gender_binary
-        note: "W4 codes 1=male, 2=female — recoded to 1=male, 0=female"
+        note: "W2/W3/W4 code 1=male, 2=female — recoded to 1=male, 0=female"
+      by_wave:
+        w1:
+          method: r_function
+          fn: recode_kamos_gender_w1
+          note: "W1 codes 1=female, 2=male — recoded to 1=male, 0=female"
     qc:
       valid_range: [0, 1]
 
@@ -75,6 +75,40 @@ variables:
         method: identity
     qc:
       valid_range: [1920, 2006]
+
+  - id: age_5cat
+    concept: demographics
+    description: "Age bracket (1=18-29, 2=30s, 3=40s, 4=50s, 5=60+)"
+    type: ordinal
+    source:
+      w1: age_1
+      w2: de2
+      w3: de2
+      w4: age
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "18-29"
+        2: "30-39"
+        3: "40-49"
+        4: "50-59"
+        5: "60+"
+    harmonize:
+      default:
+        method: identity
+        note: "W2/W3 de2 already coded 1-5 brackets"
+      by_wave:
+        w1:
+          method: r_function
+          fn: recode_age_to_5cat
+          note: "W1 age_1 is continuous years — categorized to 5 brackets"
+        w4:
+          method: r_function
+          fn: recode_age_to_5cat
+          note: "W4 age is continuous years — categorized to 5 brackets"
+    qc:
+      valid_range: [1, 5]
 
   - id: education
     concept: demographics

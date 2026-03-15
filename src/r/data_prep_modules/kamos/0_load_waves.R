@@ -8,12 +8,11 @@
 #   KAMOS_3-1_2018.04.23-2018.06.22_data.sav  (n=2010, Apr–Jun 2018)
 #   KAMOS_4-1_2019.04.20-2019.06.20_data.sav  (n=1500, Apr–Jun 2019)
 #
-# W2 and W3 have trust, economy, and political items but LIMITED demographics:
-#   - age_1 is categorical (1-5 age bracket), not raw age
-#   - gender is NOT available
+# W2 and W3 have trust, economy, and political items with PARTIAL demographics:
+#   - age: de2 is categorical (1-5 age bracket), not raw age (no continuous age)
+#   - gender: de1 (1=male, 2=female) — available in both waves
 #   - education, income, marital status available with different var names in W3
-# These waves are used for descriptive trust trajectories; controlled models
-# remain on W1/W4 which have full demographics.
+#   - no birth year, no region
 
 library(here)
 library(haven)
