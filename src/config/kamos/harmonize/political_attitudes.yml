@@ -1,7 +1,7 @@
 # KAMOS Political Attitudes and Behaviour
 #
 # ideology      : 1=extremely liberal → 5=extremely conservative
-# pol_sat       : 1=very satisfied    → 4=very unsatisfied  (REVERSED: higher=worse)
+# pol_sat       : reversed so 4=very satisfied (higher=more satisfied)
 # pol_system    : 1-5 categorical (preferred system of government)
 # party_id      : current party identification (NOMINAL — different parties in W1 vs W4;
 #                 do NOT compute cross-wave means)
@@ -56,8 +56,8 @@ variables:
 
   - id: pol_satisfaction
     concept: political_attitudes
-    description: "Satisfaction with current state of Korean politics (1=very satisfied, 4=very unsatisfied)"
-    note: "DIRECTION: higher values = LESS satisfied"
+    description: "Satisfaction with current state of Korean politics (1=very unsatisfied, 4=very satisfied)"
+    note: "DIRECTION: higher = more satisfied (reversed from raw)"
     type: ordinal
     source:
       w1: polisat
@@ -68,13 +68,15 @@ variables:
       min: 1
       max: 4
       labels:
-        1: "very satisfied"
-        2: "somewhat satisfied"
-        3: "somewhat unsatisfied"
-        4: "very unsatisfied"
+        1: "very unsatisfied"
+        2: "somewhat unsatisfied"
+        3: "somewhat satisfied"
+        4: "very satisfied"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very satisfied → 4=very unsatisfied; reversed so 4=very satisfied"
     qc:
       valid_range: [1, 4]
 
