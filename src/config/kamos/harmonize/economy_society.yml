@@ -6,9 +6,9 @@
 #   social_conflict_severity: 1=very severe → 4=not serious at all (higher = LESS severe)
 #
 #   econ_equality, subjective_class: 0-10 scales (already in demographics.yml)
-#   news_interest: 1=very interested → 4=not interested at all (higher = LESS interested)
+#   news_interest: reversed so 4=very interested (higher = MORE interested)
 #
-# These scales are kept as-is (not reversed) for fidelity. Document direction
+# Economic scales are kept as-is (not reversed) for fidelity. Document direction
 # clearly in any paper or analysis.
 
 missing_conventions:
@@ -158,8 +158,8 @@ variables:
 
   - id: news_interest
     concept: media
-    description: "Interest in current events / news (1=very interested, 4=not interested)"
-    note: "DIRECTION: higher = less interested"
+    description: "Interest in current events / news (1=not interested, 4=very interested)"
+    note: "DIRECTION: higher = more interested (reversed from raw)"
     type: ordinal
     source:
       w1: curevent
@@ -169,8 +169,15 @@ variables:
     scale:
       min: 1
       max: 4
+      labels:
+        1: "not interested at all"
+        2: "not very interested"
+        3: "somewhat interested"
+        4: "very interested"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very interested → 4=not at all; reversed so 4=very interested"
     qc:
       valid_range: [1, 4]
