@@ -137,6 +137,42 @@ variables:
     qc:
       skip_range_check: true
 
+  - id: party_bloc
+    concept: political_attitudes
+    description: "Party identification collapsed to ideological bloc (1=conservative, 2=progressive, 3=none/other)"
+    note: |
+      Recoded from party_id raw values. Party names differ across waves but blocs are stable:
+        Conservative: Saenuri (W1) → Liberty Korea Party (W2-W4)
+        Progressive:  Minjoo Party (W1-W4)
+        None/other:   People's Party, Bareun, Justice, other, none
+    type: categorical
+    source:
+      w1: partyid
+      w2: partyid1
+      w3: partyid
+      w4: partyid3
+    scale:
+      labels:
+        1: "conservative"
+        2: "progressive"
+        3: "none/other"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_party_bloc_w3w4
+        note: "W3/W4 coding: 1=Minjoo, 2=LKP, 3-6=other/none"
+      by_wave:
+        w1:
+          method: r_function
+          fn: recode_party_bloc_w1
+          note: "W1 coding: 1=Saenuri, 2=Minjoo, 3-5=other/none"
+        w2:
+          method: r_function
+          fn: recode_party_bloc_w2
+          note: "W2 coding: 1=Minjoo, 2=LKP, 3-7=other/none"
+    qc:
+      valid_range: [1, 3]
+
   # ── Party Thermometers (W1 only) ─────────────────────────────────────────────
 
   - id: party_att_saenuri

@@ -2059,3 +2059,44 @@ recode_afro_r1_trust <- function(x,
     TRUE ~ NA_real_
   )
 }
+
+# ── KAMOS party bloc recoding ──────────────────────────────────────────────────
+# Recodes raw party identification to 3-category bloc:
+#   1 = conservative, 2 = progressive, 3 = none/other
+# Party codes differ across waves so each wave needs its own function.
+
+recode_party_bloc_w1 <- function(x, missing_codes = c(97, 98, 99), ...) {
+  # W1: 1=Saenuri(cons), 2=Minjoo(prog), 3=People's, 4=other, 5=none
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,  # conservative
+    x == 2 ~ 2,  # progressive
+    x %in% c(3, 4, 5) ~ 3,  # none/other
+    TRUE ~ NA_real_
+  )
+}
+
+recode_party_bloc_w2 <- function(x, missing_codes = c(97, 98, 99), ...) {
+  # W2: 1=Minjoo(prog), 2=LKP(cons), 3=People's, 4=Bareun, 5=Justice, 6=other, 7=none
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 2 ~ 1,  # conservative
+    x == 1 ~ 2,  # progressive
+    x %in% c(3, 4, 5, 6, 7) ~ 3,  # none/other
+    TRUE ~ NA_real_
+  )
+}
+
+recode_party_bloc_w3w4 <- function(x, missing_codes = c(97, 98, 99), ...) {
+  # W3/W4: 1=Minjoo(prog), 2=LKP(cons), 3=Bareun Mirae, 4=Justice, 5=other, 6=none
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 2 ~ 1,  # conservative
+    x == 1 ~ 2,  # progressive
+    x %in% c(3, 4, 5, 6) ~ 3,  # none/other
+    TRUE ~ NA_real_
+  )
+}
