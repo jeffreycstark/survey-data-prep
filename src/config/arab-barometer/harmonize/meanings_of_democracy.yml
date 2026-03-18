@@ -1,0 +1,58 @@
+# Arab Barometer: Meanings / Features of Democracy
+# Waves: w2-w5, w7-w8 (W1 no Tunisia, W6 deprioritized)
+#
+# The "most important features" forced-choice item (Q515) is only in W2-W3.
+# These are baseline-only items — cannot track change over time.
+#
+# MISSING VALUES: same as democratic_attitudes.yml
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999]
+    description: "Arab Barometer missing codes (varies by wave)"
+
+variables:
+  # ===========================================================================
+  # Most Important Features of Democracy (Q515) — W2-W3 ONLY
+  # ===========================================================================
+  # Forced-choice: "Which is the most important feature of democracy?"
+  # Value labels not embedded in SPSS metadata — need questionnaire.
+  # Typically: 1=Ability to change govt through elections,
+  # 2=Freedom to criticize govt, 3=Narrowing income gap,
+  # 4=Providing basic necessities (varies by wave)
+
+  - id: dem_feature_1st
+    concept: meanings_of_democracy
+    description: "Most important feature of democracy — 1st choice (categorical, see codebook)"
+    type: nominal
+    source:
+      w2: q5151
+      w3: q5151
+      w4: null
+      w5: null
+      w7: null
+      w8: null
+    note: "W2-W3 only. Value labels vary — decode from questionnaire PDF."
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: dem_feature_2nd
+    concept: meanings_of_democracy
+    description: "Most important feature of democracy — 2nd choice (categorical, see codebook)"
+    type: nominal
+    source:
+      w2: q5152
+      w3: q5152
+      w4: null
+      w5: null
+      w7: null
+      w8: null
+    note: "W2-W3 only."
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]

@@ -1,0 +1,304 @@
+# Arab Barometer Democratic Attitudes
+# Waves: w2-w5, w7-w8 (W1 no Tunisia, W6 deprioritized COVID split)
+#
+# SCALE NOTE: All Q516 items use 1=Strongly agree, 2=Agree, 3=Disagree,
+# 4=Strongly disagree. For the critique items (econ weak, indecisive, order),
+# HIGHER = more pro-democracy (disagrees with critique). For the Churchillian
+# item (q5164/Q516_4), HIGHER = LESS pro-democracy (disagrees that dem is best).
+# We REVERSE the Churchillian item so higher = more pro-democracy across all.
+#
+# MISSING VALUES:
+# W2-W3: 0=missing, 8=don't know, 9=declined
+# W4: 98=don't know, 99=decline
+# W5+: 98=don't know, 99=refused, -8=DK, -9=refusal
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999]
+    description: "Arab Barometer missing codes (varies by wave)"
+
+variables:
+  # ===========================================================================
+  # Democracy Critiques Battery (Q516) — CORE TIME SERIES
+  # ===========================================================================
+
+  - id: dem_critique_economy
+    concept: democratic_attitudes
+    description: "Under democracy, economic performance is weak (1-4; 1=strongly agree, 4=strongly disagree; higher=more pro-democracy)"
+    type: ordinal
+    source:
+      w2: q5161
+      w3: q5161
+      w4: q5161
+      w5: Q516_1
+      w7: Q516_1
+      w8: Q516_1
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly agree (anti-dem)"
+        2: "Agree"
+        3: "Disagree"
+        4: "Strongly disagree (pro-dem)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_critique_indecisive
+    concept: democratic_attitudes
+    description: "Democratic regimes are indecisive and full of problems (1-4; higher=more pro-democracy)"
+    type: ordinal
+    source:
+      w2: q5162
+      w3: q5162
+      w4: q5162
+      w5: Q516_2
+      w7: Q516_2
+      w8: Q516_2
+    scale:
+      min: 1
+      max: 4
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_critique_order
+    concept: democratic_attitudes
+    description: "Democratic systems not effective at maintaining order/stability (1-4; higher=more pro-democracy)"
+    type: ordinal
+    source:
+      w2: q5163
+      w3: q5163
+      w4: q5163
+      w5: null
+      w7: Q516_3
+      w8: Q516_3
+    scale:
+      min: 1
+      max: 4
+    note: "Missing in W5"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_best_system
+    concept: democratic_attitudes
+    description: "Democracy may have problems but is better than other systems (1-4; higher=more pro-democracy). REVERSED from raw."
+    type: ordinal
+    source:
+      w2: q5164
+      w3: q5164
+      w4: q5164
+      w5: Q516_4
+      w7: Q516_4
+      w8: Q516_4
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree (anti-dem)"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree (pro-dem)"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=strongly agree → reversed so 4=strongly agree (pro-dem), matching critique polarity"
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_critique_not_ready
+    concept: democratic_attitudes
+    description: "Citizens in your country not prepared for democratic system (1-4; higher=more pro-democracy)"
+    type: ordinal
+    source:
+      w2: q5165
+      w3: q5165
+      w4: q5165
+      w5: null
+      w7: null
+      w8: null
+    scale:
+      min: 1
+      max: 4
+    note: "W2-W4 only"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: dem_critique_values
+    concept: democratic_attitudes
+    description: "Democracy negatively affects social/ethical values (1-4; higher=more pro-democracy)"
+    type: ordinal
+    source:
+      w2: q5167
+      w3: q5167
+      w4: null
+      w5: null
+      w7: null
+      w8: null
+    scale:
+      min: 1
+      max: 4
+    note: "W2-W3 only"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  # ===========================================================================
+  # Regime Type Suitability (Q518)
+  # ===========================================================================
+  # 1=Very suitable ... 4=Not suitable at all
+  # REVERSE so higher=more support for that regime type
+
+  - id: regime_parliamentary_dem
+    concept: democratic_attitudes
+    description: "Parliamentary democracy with all parties competing — suitability (1-4; higher=more suitable). REVERSED."
+    type: ordinal
+    source:
+      w2: q5181
+      w3: q5181
+      w4: null
+      w5: null
+      w7: null
+      w8: Q518_1
+    scale:
+      min: 1
+      max: 4
+    note: "W2, W3, W8 only"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very suitable → reversed so 4=very suitable"
+    qc:
+      valid_range: [1, 4]
+
+  - id: regime_strong_authority
+    concept: democratic_attitudes
+    description: "Strong authority without parliament/elections — suitability (1-4; higher=more suitable). REVERSED."
+    type: ordinal
+    source:
+      w2: q5183
+      w3: q5183
+      w4: q5183
+      w5: null
+      w7: null
+      w8: Q518_3
+    scale:
+      min: 1
+      max: 4
+    note: "W2-W4 and W8. Gap at W5/W7."
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very suitable → reversed so 4=very suitable"
+    qc:
+      valid_range: [1, 4]
+
+  - id: regime_islamic_law
+    concept: democratic_attitudes
+    description: "System governed by Islamic law, no parties/elections — suitability (1-4; higher=more suitable). REVERSED."
+    type: ordinal
+    source:
+      w2: q5184
+      w3: q5184
+      w4: q5184
+      w5: null
+      w7: null
+      w8: Q518_4
+    scale:
+      min: 1
+      max: 4
+    note: "W2-W4 and W8. Gap at W5/W7."
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very suitable → reversed so 4=very suitable"
+    qc:
+      valid_range: [1, 4]
+
+  # ===========================================================================
+  # Democratic Assessment (Q511, Q512)
+  # ===========================================================================
+
+  - id: dem_extent_country
+    concept: democratic_attitudes
+    description: "To what extent is your country democratic (0-10; higher=more democratic)"
+    type: ordinal
+    source:
+      w2: q511
+      w3: q511
+      w4: q511
+      w5: null
+      w7: null
+      w8: null
+    scale:
+      min: 0
+      max: 10
+    note: "W2-W4 only"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  - id: dem_suitable_country
+    concept: democratic_attitudes
+    description: "To what extent is democracy suitable for your country (0-10; higher=more suitable)"
+    type: ordinal
+    source:
+      w2: q512
+      w3: q512
+      w4: q512
+      w5: null
+      w7: null
+      w8: Q512
+    scale:
+      min: 0
+      max: 10
+    note: "W2-W4 and W8"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+
+  # ===========================================================================
+  # Order vs Democracy (W7 only)
+  # ===========================================================================
+
+  - id: order_over_democracy
+    concept: democratic_attitudes
+    description: "As long as govt maintains order, doesn't matter if democratic (1-4; 1=strongly agree, 4=strongly disagree)"
+    type: ordinal
+    source:
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w7: Q533_5
+      w8: null
+    scale:
+      min: 1
+      max: 4
+    note: "W7 only. Higher = more pro-democracy (disagrees that order > democracy)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]

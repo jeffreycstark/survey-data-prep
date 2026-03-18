@@ -1,0 +1,77 @@
+# Arab Barometer Demographics
+# Waves: w2-w5, w7-w8
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]
+    description: "Arab Barometer missing codes"
+
+variables:
+  - id: gender
+    concept: demographics
+    description: "Gender (1=Male, 2=Female)"
+    type: nominal
+    source:
+      w2: null
+      w3: q1002
+      w4: q1002
+      w5: Q1002
+      w7: Q1002
+      w8: Q1002
+    note: "W2 gender variable name unclear — inspect further"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: education_level
+    concept: demographics
+    description: "Highest level of education (raw coding varies by wave — needs harmonization)"
+    type: ordinal
+    source:
+      w2: null
+      w3: q1003
+      w4: q1003
+      w5: Q1003
+      w7: Q1003
+      w8: Q1003
+    note: "W2 edu variable unclear. Scale differs across waves — will need custom recode."
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urban/Rural residence"
+    type: nominal
+    source:
+      w2: q13
+      w3: q13
+      w4: q13
+      w5: null
+      w7: Q13
+      w8: Q13
+    note: "W5 urban/rural variable not found in standard location"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: weight
+    concept: demographics
+    description: "Survey weight"
+    type: continuous
+    source:
+      w2: wt
+      w3: wt
+      w4: wt
+      w5: wt
+      w7: WT
+      w8: WT
+    harmonize:
+      default:
+        method: identity
