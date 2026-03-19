@@ -12,13 +12,13 @@ variables:
     description: "Gender (1=Male, 2=Female)"
     type: nominal
     source:
-      w2: null
+      w2: q1002
       w3: q1002
       w4: q1002
       w5: Q1002
       w7: Q1002
       w8: Q1002
-    note: "W2 gender variable name unclear — inspect further"
+    note: "W2 uses 0=missing,1=male,2=female; W5 has extra codes 3=MALE,5=FEMALE (cleaned by missing_conventions + valid_range)"
     harmonize:
       default:
         method: identity
@@ -30,13 +30,13 @@ variables:
     description: "Highest level of education (raw coding varies by wave — needs harmonization)"
     type: ordinal
     source:
-      w2: null
+      w2: q1003
       w3: q1003
       w4: q1003
       w5: Q1003
       w7: Q1003
       w8: Q1003
-    note: "W2 edu variable unclear. Scale differs across waves — will need custom recode."
+    note: "Scale differs across waves — will need custom recode for cross-wave comparison."
     harmonize:
       default:
         method: identity
@@ -51,10 +51,10 @@ variables:
       w2: q13
       w3: q13
       w4: q13
-      w5: null
+      w5: q13
       w7: Q13
       w8: Q13
-    note: "W5 urban/rural variable not found in standard location"
+    note: "W5 uses lowercase q13, labeled 'SETTLEMENT'"
     harmonize:
       default:
         method: identity
