@@ -11,6 +11,32 @@ missing_conventions:
     description: "Afrobarometer standard missing codes"
 
 variables:
+  - id: gender
+    concept: demographics
+    description: "Gender of respondent (1=Male, 2=Female)"
+    type: nominal
+    source:
+      w1: gender
+      w2: q96
+      w3: q101
+      w4: Q101
+      w5: Q101
+      w6: Q101
+      w7: Q101
+      w8: Q101
+      w9: Q100
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
   - id: age
     concept: demographics
     description: "Age of respondent in years"
