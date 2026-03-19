@@ -167,6 +167,19 @@ for (wave_name in names(wave_list)) {
 }
 
 # ==============================================================================
+# COERCE int_date TO CONSISTENT TYPE BEFORE BINDING
+# ==============================================================================
+# int_date is Date in waves with dates, NA/double in waves without.
+# Coerce all to Date so bind_rows doesn't choke on mixed types.
+for (wn in names(wave_list)) {
+  if ("int_date" %in% names(wave_list[[wn]])) {
+    if (!inherits(wave_list[[wn]]$int_date, "Date")) {
+      wave_list[[wn]]$int_date <- as.Date(NA)
+    }
+  }
+}
+
+# ==============================================================================
 # COMBINE WAVES
 # ==============================================================================
 

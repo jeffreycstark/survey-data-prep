@@ -1417,14 +1417,18 @@ extract_month_from_date <- function(x,
                                     data = NULL,
                                     var_name = NULL,
                                     validate_all = NULL) {
-  # Try to get original Date from data if available
+  # Try to get original Date/character from data if available
   if (!is.null(data) && !is.null(var_name) && var_name %in% names(data)) {
     orig <- data[[var_name]]
+    # Parse character dates (e.g., "2021-10-16" from Arab Barometer W7/W8)
+    if (is.character(orig)) {
+      orig <- suppressWarnings(as.Date(orig))
+    }
     if (inherits(orig, "Date")) {
       months <- as.integer(format(orig, "%m"))
       years <- as.integer(format(orig, "%Y"))
       # Filter out obviously wrong dates
-      months[years < 2000 | years > 2030] <- NA_integer_
+      months[is.na(years) | years < 2000 | years > 2030] <- NA_integer_
       return(as.numeric(months))
     }
   }
@@ -1447,8 +1451,16 @@ extract_month_from_date <- function(x,
     return(as.numeric(months))
   }
 
-  # If nothing works, return NA
+  # Fallback: if x is character (e.g., "2021-10-16"), parse to Date then extract
+  if (is.character(x)) {
+    dates <- suppressWarnings(as.Date(x))
+    months <- as.integer(format(dates, "%m"))
+    years <- as.integer(format(dates, "%Y"))
+    months[is.na(years) | years < 2000 | years > 2030] <- NA_integer_
+    return(as.numeric(months))
+  }
 
+  # If nothing works, return NA
   rep(NA_real_, length(x))
 }
 
@@ -1465,15 +1477,19 @@ extract_date <- function(x,
                          data = NULL,
                          var_name = NULL,
                          validate_all = NULL) {
-  #' Extract Date from a Date column, preserving class
+  #' Extract Date from a Date or character column, preserving class
   #'
   #' The harmonization engine coerces to numeric (days since epoch).
   #' This function reads the original Date from data[[var_name]].
+  #' Also handles character dates (e.g., "2021-10-16").
   #' @return Date vector
 
-  # Get original Date from raw data
+  # Get original Date/character from raw data
   if (!is.null(data) && !is.null(var_name) && var_name %in% names(data)) {
     orig <- data[[var_name]]
+    if (is.character(orig)) {
+      return(suppressWarnings(as.Date(orig)))
+    }
     if (inherits(orig, "Date")) {
       return(orig)
     }
@@ -1482,6 +1498,11 @@ extract_date <- function(x,
   # Fallback: convert numeric (days since epoch) back to Date
   if (is.numeric(x)) {
     return(as.Date(x, origin = "1970-01-01"))
+  }
+
+  # Fallback: parse character strings (e.g., "2021-10-16")
+  if (is.character(x)) {
+    return(suppressWarnings(as.Date(x)))
   }
 
   rep(as.Date(NA), length(x))
@@ -1509,13 +1530,15 @@ extract_year_from_date <- function(x,
                                    data = NULL,
                                    var_name = NULL,
                                    validate_all = NULL) {
-  # Try to get original Date from data if available
+  # Try to get original Date/character from data if available
   if (!is.null(data) && !is.null(var_name) && var_name %in% names(data)) {
     orig <- data[[var_name]]
+    if (is.character(orig)) {
+      orig <- suppressWarnings(as.Date(orig))
+    }
     if (inherits(orig, "Date")) {
       years <- as.integer(format(orig, "%Y"))
-      # Filter out obviously wrong dates
-      years[years < 2000 | years > 2030] <- NA_integer_
+      years[is.na(years) | years < 2000 | years > 2030] <- NA_integer_
       return(as.numeric(years))
     }
   }
@@ -1533,6 +1556,14 @@ extract_year_from_date <- function(x,
     years <- as.integer(format(dates, "%Y"))
     # Filter out obviously wrong dates
     years[years < 2000 | years > 2030] <- NA_integer_
+    return(as.numeric(years))
+  }
+
+  # Fallback: if x is character (e.g., "2021-10-16"), parse to Date then extract
+  if (is.character(x)) {
+    dates <- suppressWarnings(as.Date(x))
+    years <- as.integer(format(dates, "%Y"))
+    years[is.na(years) | years < 2000 | years > 2030] <- NA_integer_
     return(as.numeric(years))
   }
 

@@ -61,6 +61,69 @@ variables:
     qc:
       valid_range: [1, 2]
 
+  - id: int_date
+    concept: identifiers
+    description: "Full interview date (Date class)"
+    type: continuous
+    source:
+      w2: null
+      w3: date
+      w4: null
+      w5: null
+      w7: DATE
+      w8: DATE
+    note: "W3=Date class, W7/W8=character 'YYYY-MM-DD'. W2/W4/W5 have no date variable."
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_date
+    qc:
+      skip_range_check: true
+
+  - id: int_month
+    concept: identifiers
+    description: "Interview month (1-12)"
+    type: ordinal
+    source:
+      w2: null
+      w3: date
+      w4: null
+      w5: null
+      w7: DATE
+      w8: DATE
+    note: "Extracted from date/DATE. W2/W4/W5 have no date variable."
+    scale:
+      min: 1
+      max: 12
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_month_from_date
+    qc:
+      valid_range: [1, 12]
+
+  - id: int_year
+    concept: identifiers
+    description: "Interview year"
+    type: ordinal
+    source:
+      w2: null
+      w3: date
+      w4: null
+      w5: null
+      w7: DATE
+      w8: DATE
+    note: "Extracted from date/DATE. W2/W4/W5 have no date variable."
+    scale:
+      min: 2010
+      max: 2025
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_year_from_date
+    qc:
+      valid_range: [2010, 2025]
+
   - id: weight
     concept: demographics
     description: "Survey weight"

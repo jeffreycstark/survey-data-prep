@@ -173,15 +173,15 @@ variables:
     type: ordinal
     source:
       w1: null
-      w2: null
-      w3: null
-      w4: null
-      w5: null
-      w6: null
-      w7: null
-      w8: null
+      w2: dateintr
+      w3: dateintr
+      w4: DATEINTR
+      w5: DATEINTR
+      w6: DATEINTR
+      w7: DATEINTR
+      w8: DATEINTR
       w9: DATEINTR
-    note: "DATEINTR is a Date object in R9. Earlier rounds not yet mapped."
+    note: "DATEINTR is Date class in R2-R9. R1 has no date variable."
     scale:
       min: 1
       max: 12
@@ -198,15 +198,15 @@ variables:
     type: ordinal
     source:
       w1: null
-      w2: null
-      w3: null
-      w4: null
-      w5: null
-      w6: null
-      w7: null
-      w8: null
+      w2: dateintr
+      w3: dateintr
+      w4: DATEINTR
+      w5: DATEINTR
+      w6: DATEINTR
+      w7: DATEINTR
+      w8: DATEINTR
       w9: DATEINTR
-    note: "DATEINTR is a Date object in R9. Earlier rounds not yet mapped."
+    note: "DATEINTR is Date class in R2-R9. R1 has no date variable."
     scale:
       min: 1999
       max: 2024
@@ -223,14 +223,15 @@ variables:
     type: continuous
     source:
       w1: null
-      w2: null
-      w3: null
-      w4: null
-      w5: null
-      w6: null
-      w7: null
-      w8: null
+      w2: dateintr
+      w3: dateintr
+      w4: DATEINTR
+      w5: DATEINTR
+      w6: DATEINTR
+      w7: DATEINTR
+      w8: DATEINTR
       w9: DATEINTR
+    note: "Date class in R2-R9. R1 has no date variable."
     harmonize:
       default:
         method: r_function
