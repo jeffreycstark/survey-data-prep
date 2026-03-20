@@ -1,0 +1,108 @@
+# Arab Barometer Economic Evaluations
+# Waves: w2-w5, w7-w8
+#
+# Q101 = current national economic situation (ALL 6 WAVES)
+# Q102 = future economic outlook (ALL 6 WAVES)
+# Q101A = past economic situation (W4-W5 only)
+#
+# SCALE NOTE:
+# Q101: 1=Very good, 2=Good, 3=Bad, 4=Very bad → higher = WORSE
+# Q102: 1=Much better, 2=Somewhat better, 3=Same, 4=Somewhat worse, 5=Much worse → higher = WORSE
+#
+# MISSING VALUES:
+# W2-W3: 0=missing, 8=DK, 9=decline
+# W4+: 98=DK, 99=refused
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]
+    description: "Arab Barometer missing codes"
+
+variables:
+  # ===========================================================================
+  # Current National Economic Situation (Q101) — ALL WAVES
+  # ===========================================================================
+  # 1=Very good, 2=Good, 3=Bad, 4=Very bad
+  # Keep raw direction (higher = worse) for now — matches Afro econ_national_current
+
+  - id: econ_national_current
+    concept: economic_evaluations
+    description: "Current national economic situation (1-4; 1=very good, 4=very bad; higher=worse)"
+    type: ordinal
+    source:
+      w2: q101
+      w3: q101
+      w4: q101
+      w5: Q101
+      w7: Q101
+      w8: Q101
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very good"
+        2: "Good"
+        3: "Bad"
+        4: "Very bad"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  # ===========================================================================
+  # Future Economic Outlook (Q102) — ALL WAVES
+  # ===========================================================================
+  # 1=Much better, 2=Somewhat better, 3=Same, 4=Somewhat worse, 5=Much worse
+  # Higher = more pessimistic
+
+  - id: econ_national_future
+    concept: economic_evaluations
+    description: "Future national economic outlook 2-5 years (1-5; 1=much better, 5=much worse; higher=more pessimistic)"
+    type: ordinal
+    source:
+      w2: q102
+      w3: q102
+      w4: q102
+      w5: Q102
+      w7: Q102
+      w8: Q102
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much better"
+        2: "Somewhat better"
+        3: "Almost the same"
+        4: "Somewhat worse"
+        5: "Much worse"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  # ===========================================================================
+  # Past Economic Situation (Q101A) — W4-W5 ONLY
+  # ===========================================================================
+
+  - id: econ_national_past
+    concept: economic_evaluations
+    description: "Economic situation compared to 5 years ago (1-5; 1=much better, 5=much worse; W4-W5 only)"
+    type: ordinal
+    source:
+      w2: null
+      w3: null
+      w4: q101a
+      w5: Q101A
+      w7: null
+      w8: null
+    scale:
+      min: 1
+      max: 5
+    note: "W4-W5 only."
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
