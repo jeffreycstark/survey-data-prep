@@ -5,9 +5,14 @@
 # Q102 = future economic outlook (ALL 6 WAVES)
 # Q101A = past economic situation (W4-W5 only)
 #
-# SCALE NOTE:
+# RAW SCALE:
 # Q101: 1=Very good, 2=Good, 3=Bad, 4=Very bad → higher = WORSE
 # Q102: 1=Much better, 2=Somewhat better, 3=Same, 4=Somewhat worse, 5=Much worse → higher = WORSE
+#
+# HARMONIZED DIRECTION (reversed to match Afro convention):
+# Q101: 1=Very bad, 4=Very good → higher = BETTER
+# Q102: 1=Much worse, 5=Much better → higher = MORE OPTIMISTIC
+# Q101A: 1=Much worse, 5=Much better → higher = MORE IMPROVEMENT
 #
 # MISSING VALUES:
 # W2-W3: 0=missing, 8=DK, 9=decline
@@ -22,12 +27,11 @@ variables:
   # ===========================================================================
   # Current National Economic Situation (Q101) — ALL WAVES
   # ===========================================================================
-  # 1=Very good, 2=Good, 3=Bad, 4=Very bad
-  # Keep raw direction (higher = worse) for now — matches Afro econ_national_current
+  # Raw: 1=Very good, 4=Very bad → REVERSED so higher = better
 
   - id: econ_national_current
     concept: economic_evaluations
-    description: "Current national economic situation (1-4; 1=very good, 4=very bad; higher=worse)"
+    description: "Current national economic situation (1-4; higher=better). REVERSED from raw."
     type: ordinal
     source:
       w2: q101
@@ -40,25 +44,26 @@ variables:
       min: 1
       max: 4
       labels:
-        1: "Very good"
-        2: "Good"
-        3: "Bad"
-        4: "Very bad"
+        1: "Very bad"
+        2: "Bad"
+        3: "Good"
+        4: "Very good"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=very good → reversed so 4=very good (higher=better, matches Afro)"
     qc:
       valid_range: [1, 4]
 
   # ===========================================================================
   # Future Economic Outlook (Q102) — ALL WAVES
   # ===========================================================================
-  # 1=Much better, 2=Somewhat better, 3=Same, 4=Somewhat worse, 5=Much worse
-  # Higher = more pessimistic
+  # Raw: 1=Much better, 5=Much worse → REVERSED so higher = more optimistic
 
   - id: econ_national_future
     concept: economic_evaluations
-    description: "Future national economic outlook 2-5 years (1-5; 1=much better, 5=much worse; higher=more pessimistic)"
+    description: "Future national economic outlook 2-5 years (1-5; higher=more optimistic). REVERSED from raw."
     type: ordinal
     source:
       w2: q102
@@ -71,24 +76,27 @@ variables:
       min: 1
       max: 5
       labels:
-        1: "Much better"
-        2: "Somewhat better"
+        1: "Much worse"
+        2: "Somewhat worse"
         3: "Almost the same"
-        4: "Somewhat worse"
-        5: "Much worse"
+        4: "Somewhat better"
+        5: "Much better"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Raw 1=much better → reversed so 5=much better (higher=more optimistic)"
     qc:
       valid_range: [1, 5]
 
   # ===========================================================================
   # Past Economic Situation (Q101A) — W4-W5 ONLY
   # ===========================================================================
+  # Raw: 1=Much better, 5=Much worse → REVERSED so higher = more improvement
 
   - id: econ_national_past
     concept: economic_evaluations
-    description: "Economic situation compared to 5 years ago (1-5; 1=much better, 5=much worse; W4-W5 only)"
+    description: "Economic situation compared to 5 years ago (1-5; higher=more improvement; W4-W5 only). REVERSED from raw."
     type: ordinal
     source:
       w2: null
@@ -100,9 +108,17 @@ variables:
     scale:
       min: 1
       max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "About the same"
+        4: "Somewhat better"
+        5: "Much better"
     note: "W4-W5 only."
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_5pt
+        note: "Raw 1=much better → reversed so 5=much better (higher=more improvement)"
     qc:
       valid_range: [1, 5]
