@@ -61,6 +61,38 @@ variables:
     qc:
       valid_range: [18, 110]
 
+  - id: age_cohort
+    concept: demographics
+    description: "Age cohort (1=18-29, 2=30-39, 3=40-49, 4=50-59, 5=60+)"
+    type: ordinal
+    note: "Derived from continuous age variable. Same source columns as age."
+    source:
+      w1: age
+      w2: q80
+      w3: q1
+      w4: Q1
+      w5: Q1
+      w6: Q1
+      w7: Q1
+      w8: Q1
+      w9: Q1
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "18-29 (youth)"
+        2: "30-39"
+        3: "40-49"
+        4: "50-59"
+        5: "60+"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_age_cohort
+        note: "Bins continuous age into 5 cohorts"
+    qc:
+      valid_range: [1, 5]
+
   - id: education_level
     concept: demographics
     description: "Education level (0=No formal, 1=Primary, 2=Secondary, 3=Post-secondary)"

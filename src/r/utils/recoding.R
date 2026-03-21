@@ -2131,3 +2131,293 @@ recode_party_bloc_w3w4 <- function(x, missing_codes = c(97, 98, 99), ...) {
     TRUE ~ NA_real_
   )
 }
+
+# ==============================================================================
+# AGE COHORT
+# ==============================================================================
+
+#' Recode continuous age to age cohort bins
+#'
+#' @param x Numeric age vector
+#' @return Numeric cohort code: 1=18-29, 2=30-39, 3=40-49, 4=50-59, 5=60+
+recode_age_cohort <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    is.na(x) ~ NA_real_,
+    x < 18  ~ NA_real_,
+    x <= 29 ~ 1,
+    x <= 39 ~ 2,
+    x <= 49 ~ 3,
+    x <= 59 ~ 4,
+    x >= 60 ~ 5,
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# PARTY CLOSENESS — AFROBAROMETER
+# ==============================================================================
+
+#' Recode Afro party closeness to binary (1=Yes close, 0=No)
+#'
+#' R1: pidcls 1=Yes, 2=No, 3=DK, 98=Refused, 99=Missing
+#' R2: q87a  0=No, party codes (50+)=Yes, 995=Other, 998=Refused, 999=DK
+#' R3-R9: qXX 0=No, 1=Yes, 8=Refused, 9=DK
+recode_afro_party_close_r1 <- function(x, missing_codes = c(-1, 3, 98, 99, 998, 999), ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,
+    x == 2 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_party_close_r2 <- function(x, missing_codes = c(-1, 998, 999), ...) {
+  # R2 q87a: combined var — 0=No party, party codes (1+)=Yes, 995=Other party (still Yes)
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 0 ~ 0,     # No, not close to any party
+    x >= 1 ~ 1,     # Any party code = close to a party
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_party_close <- function(x, missing_codes = c(-1, 8, 9, 98, 99, 998, 999), ...) {
+  # R3-R9: 0=No, 1=Yes
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 1,
+    x == 0 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# PARTY CLOSENESS — ARAB BAROMETER
+# ==============================================================================
+
+#' Recode Arab Barometer party closeness to binary
+#'
+#' q503/Q503A: nominal party codes (country-specific).
+#' We recode to binary: has a party = 1, no party / none = 0.
+#' Convention: "no party" codes vary by wave (often 0, high codes like 97/98/99).
+recode_arab_party_close_binary <- function(x, missing_codes = c(-1, -8, -9, 98, 99, 997, 998, 999), ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    is.na(x) ~ NA_real_,
+    x == 0 ~ 0,   # 0 = no party / none
+    TRUE ~ 1       # any non-zero, non-missing code = has a party
+  )
+}
+
+# ==============================================================================
+# EMPLOYMENT STATUS — AFROBAROMETER
+# ==============================================================================
+
+#' Recode Afro employment to 3-category (labor force status)
+#'
+#' R2: q89 0=No not looking, 1=No looking, 2=Yes PT not looking,
+#'         3=Yes PT looking, 4=Yes FT not looking, 5=Yes FT looking
+#' R5-R9: Q96/Q93A 0=No not looking, 1=No looking, 2=Yes part-time, 3=Yes full-time
+#'
+#' Target: 0=Out of labor force, 1=Unemployed (looking), 2=Employed
+recode_afro_employment_r2 <- function(x, missing_codes = c(-1, 9, 60, 98, 998, 999), ...) {
+  # R2: 6-category → 3-category
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 0 ~ 0,           # No, not looking → out of labor force
+    x == 1 ~ 1,           # No, looking → unemployed
+    x %in% 2:5 ~ 2,       # Yes (any PT/FT) → employed
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_employment <- function(x, missing_codes = c(-1, 8, 9, 98, 99, 998, 999, 9994), ...) {
+  # R3-R9: 4-category → 3-category
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 0 ~ 0,           # No, not looking → out of labor force
+    x == 1 ~ 1,           # No, looking → unemployed
+    x %in% 2:3 ~ 2,       # Yes, PT or FT → employed
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# EMPLOYMENT STATUS — ARAB BAROMETER
+# ==============================================================================
+
+#' Recode Arab Barometer employment to 3-category (labor force status)
+#'
+#' W2-W4 (q1004): 1=Yes, 2=No (binary; no looking/not-looking distinction)
+#'   → Employed=2, Not employed=0 (cannot distinguish unemployed vs OLF)
+#' W5-W8 (Q1005): 1=Employed, 2=Self-employed, 3=Retired, 4=Housewife,
+#'   5=Student, 6=Unemployed, 7=Other
+#'
+#' Target: 0=Out of labor force, 1=Unemployed, 2=Employed
+#' Flag Tataouine respondents (Tunisia only, R5/R6/R9 governorate data)
+recode_afro_tataouine_r5 <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(x == 1600 ~ 1, x %in% 1580:1603 ~ 0, TRUE ~ NA_real_)
+}
+
+recode_afro_tataouine_r6 <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(x == 1599 ~ 1, x %in% 1580:1603 ~ 0, TRUE ~ NA_real_)
+}
+
+recode_afro_tataouine_r9 <- function(x, ...) {
+  x <- toupper(trimws(as.character(x)))
+  tun_names <- c("TUNIS","ARIANA","L'ARIANA","BEN AROUS","MANOUBA","NABEUL",
+                  "ZAGHOUAN","BIZERTE","SOUSSE","MONASTIR","MAHDIA","SFAX",
+                  "GABES","MEDENINE","BEJA","JENDOUBA","LE KEF","KEF","SILIANA",
+                  "KAIROUAN","KASSERINE","SIDI BOUZID","GAFSA","TOZEUR","KEBILI",
+                  "TATAOUINE")
+  dplyr::case_when(x == "TATAOUINE" ~ 1, x %in% tun_names ~ 0, TRUE ~ NA_real_)
+}
+
+recode_arab_employment_w2w4 <- function(x, missing_codes = c(0, -1, -8, -9, 8, 9, 98, 99, 997, 998, 999), ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x == 1 ~ 2,  # Yes → employed
+    x == 2 ~ 0,  # No → OLF (W2-W4 cannot distinguish unemployed vs OLF)
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# TUNISIA COASTAL / INTERIOR — AFROBAROMETER
+# ==============================================================================
+
+#' Recode Afro REGION to coastal/interior for Tunisia
+#'
+#' Tunisia-specific. Returns NA for all non-Tunisia region codes.
+#' coastal=1: Tunis, Ariana, Ben Arous, Manouba, Nabeul, Zaghouan,
+#'            Bizerte, Sousse, Monastir, Mahdia, Sfax, Gabes, Medenine
+#' interior=0: Beja, Jendouba, Le Kef, Siliana, Kairouan, Kasserine,
+#'             Sidi Bouzid, Gafsa, Tozeur, Kebili, Tataouine
+#'
+#' NOTE: Tataouine is INTERIOR despite being in the "South East" region.
+#' R7-R8 use region-level codes where South East is indivisible —
+#' ~16 Tataouine respondents will be misclassified as coastal in R7-R8.
+#' R5-R6 and R9 have governorate-level resolution, so Tataouine is correct.
+
+recode_afro_coastal_tun_r5 <- function(x, ...) {
+  # R5 governorate codes:
+  # Coastal: Tunis(1580), Ariana(1581), Ben Arous(1582), Manouba(1583),
+  #   Nabeul(1584), Zaghouan(1585), Bizerte(1586),
+  #   Sousse(1591), Monastir(1592), Mahdia(1593), Sfax(1594),
+  #   Gabes(1598), Medenine(1599)
+  # Interior: Beja(1587), Jendouba(1588), Le Kef(1589), Siliana(1590),
+  #   Kairouan(1595), Kasserine(1596), Sidi Bouzid(1597),
+  #   Tataouine(1600), Gafsa(1601), Tozeur(1602), Kebili(1603)
+  x <- as.numeric(x)
+  coastal_r5 <- c(1580:1586, 1591:1594, 1598, 1599)
+  interior_r5 <- c(1587:1590, 1595:1597, 1600:1603)
+  dplyr::case_when(
+    x %in% coastal_r5  ~ 1,
+    x %in% interior_r5 ~ 0,
+    TRUE ~ NA_real_  # non-Tunisia codes
+  )
+}
+
+recode_afro_coastal_tun_r6 <- function(x, ...) {
+  # R6 governorate codes (DIFFERENT ORDER from R5):
+  # Coastal: Tunis(1580), Ariana(1581), Manouba(1582), Ben Arous(1583),
+  #   Sfax(1584), Sousse(1585), Nabeul(1586), Bizerte(1587),
+  #   Zaghouan(1588), Monastir(1596), Mahdia(1597),
+  #   Medenine(1598), Gabes(1601)
+  # Interior: Sidi Bouzid(1589), Le Kef(1590), Kasserine(1591),
+  #   Jendouba(1592), Beja(1593), Siliana(1594), Kairouan(1595),
+  #   Tataouine(1599), Gafsa(1600), Tozeur(1602), Kebili(1603)
+  x <- as.numeric(x)
+  coastal_r6 <- c(1580:1588, 1596, 1597, 1598, 1601)
+  interior_r6 <- c(1589:1595, 1599, 1600, 1602, 1603)
+  dplyr::case_when(
+    x %in% coastal_r6  ~ 1,
+    x %in% interior_r6 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+# --- Coarse versions: Tataouine treated as coastal (matching R7-R8 region grouping) ---
+# Used by tunisia_coastal (consistent across R5-R9)
+
+recode_afro_coastal_tun_r5_coarse <- function(x, ...) {
+  # R5: same as precise but Tataouine(1600) → coastal to match region grouping
+  x <- as.numeric(x)
+  coastal_r5 <- c(1580:1586, 1591:1594, 1598:1600)  # includes Tataouine
+  interior_r5 <- c(1587:1590, 1595:1597, 1601:1603)
+  dplyr::case_when(
+    x %in% coastal_r5  ~ 1,
+    x %in% interior_r5 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_coastal_tun_r6_coarse <- function(x, ...) {
+  # R6: same as precise but Tataouine(1599) → coastal to match region grouping
+  x <- as.numeric(x)
+  coastal_r6 <- c(1580:1588, 1596:1599, 1601)  # includes Tataouine
+  interior_r6 <- c(1589:1595, 1600, 1602, 1603)
+  dplyr::case_when(
+    x %in% coastal_r6  ~ 1,
+    x %in% interior_r6 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_afro_coastal_tun_r7r8 <- function(x, ...) {
+  # R7-R8 region-level codes (no governorate resolution):
+  # 1580=Great Tunis (coastal), 1581=North East (coastal),
+  # 1582=North West (interior), 1583=Center East (coastal),
+  # 1584=Center West (interior),
+  # 1585=South East (coastal — but includes ~16 Tataouine interior respondents),
+  # 1586=South West (interior)
+  # WARNING: Tataouine misclassified as coastal (~16/wave)
+  x <- as.numeric(x)
+  coastal_r7 <- c(1580, 1581, 1583, 1585)
+  interior_r7 <- c(1582, 1584, 1586)
+  dplyr::case_when(
+    x %in% coastal_r7  ~ 1,
+    x %in% interior_r7 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+#' Recode R9 LOCATION.LEVEL.1 (character governorate names) to coastal/interior
+recode_afro_coastal_tun_r9 <- function(x, ...) {
+  x <- toupper(trimws(as.character(x)))
+  coastal_names <- c("TUNIS", "ARIANA", "L'ARIANA", "BEN AROUS",
+                     "MANOUBA", "NABEUL", "ZAGHOUAN", "BIZERTE",
+                     "SOUSSE", "MONASTIR", "MAHDIA", "SFAX",
+                     "GABES", "MEDENINE")
+  interior_names <- c("BEJA", "JENDOUBA", "LE KEF", "KEF", "SILIANA",
+                       "KAIROUAN", "KASSERINE", "SIDI BOUZID",
+                       "GAFSA", "TOZEUR", "KEBILI", "TATAOUINE")
+  dplyr::case_when(
+    x %in% coastal_names  ~ 1,
+    x %in% interior_names ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+recode_arab_employment_w5w8 <- function(x, missing_codes = c(0, -1, -8, -9, 98, 99, 100, 997, 998, 999), ...) {
+  # Q1005: 1=Employed, 2=Self-employed, 3=Retired, 4=Housewife,
+  #         5=Student, 6=Unemployed, 7/90=Other
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% 1:2 ~ 2,            # employed or self-employed
+    x == 6 ~ 1,                 # unemployed
+    x %in% c(3,4,5,7,90) ~ 0,  # OLF (retired, housewife, student, other)
+    TRUE ~ NA_real_
+  )
+}

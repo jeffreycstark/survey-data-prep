@@ -1,0 +1,51 @@
+# Afrobarometer Party Closeness
+# Rounds 1-9
+#
+# QUESTION: "Do you feel close to any particular political party?"
+# R1: pidcls (1=Yes, 2=No, 3=DK, 98=Refused, 99=Missing)
+# R2: q87a (0=No party, party codes 50+=Yes; 998=Refused, 999=DK)
+# R3-R9: q85/Q85/Q89A/Q90A/Q88A/Q91A/Q89A (0=No, 1=Yes, 8=Refused, 9=DK)
+#
+# Target: 1=Yes (close to a party), 0=No
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 998, 999]
+    description: "Afrobarometer standard missing codes"
+
+variables:
+  - id: party_close
+    concept: political_engagement
+    description: "Feel close to any political party (1=Yes, 0=No)"
+    type: nominal
+    source:
+      w1: pidcls
+      w2: q87a
+      w3: q85
+      w4: Q85
+      w5: Q89A
+      w6: Q90A
+      w7: Q88A
+      w8: Q91A
+      w9: Q89A
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_party_close
+        note: "R3-R9: 0=No, 1=Yes → identity after missing cleanup"
+      w1:
+        method: r_function
+        fn: recode_afro_party_close_r1
+        note: "R1: 1=Yes, 2=No → recode to 1/0"
+      w2:
+        method: r_function
+        fn: recode_afro_party_close_r2
+        note: "R2: combined var — 0=No party, any party code=Yes"
+    qc:
+      valid_range: [0, 1]

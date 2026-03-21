@@ -1,0 +1,131 @@
+# Afrobarometer Tunisia Coastal/Interior Regional Proxy
+# Rounds 5-9 (Tunisia first appears in R5)
+#
+# Tunisia-specific. Returns NA for all non-Tunisia respondents.
+#
+# Coastal (1): Tunis, Ariana, Ben Arous, Manouba, Nabeul, Zaghouan,
+#              Bizerte, Sousse, Monastir, Mahdia, Sfax, Gabes, Medenine
+# Interior (0): Beja, Jendouba, Le Kef, Siliana, Kairouan, Kasserine,
+#               Sidi Bouzid, Gafsa, Tozeur, Kebili, Tataouine
+#
+# Two variables:
+#   tunisia_coastal — from REGION (all R5-R9; ~16 Tataouine resp/wave misclassified)
+#   tunisia_coastal_gov — from governorate-level data (R5, R6, R9 only; precise)
+#   tataouine — dummy for Tataouine respondents (R5, R6, R9 only; for subsetting/interaction)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1]
+    description: "Missing indicator only; non-Tunisia codes return NA via recode function"
+
+variables:
+  - id: tunisia_coastal
+    concept: geography
+    description: "Tunisia coastal vs interior from REGION (1=Coastal, 0=Interior). NA for non-Tunisia."
+    type: nominal
+    note: "Coarse: uses 7-region REGION variable in all rounds. Tataouine (~16/wave) misclassified as coastal because South East region is indivisible."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: REGION
+      w6: REGION
+      w7: REGION
+      w8: REGION
+      w9: REGION
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Interior"
+        1: "Coastal"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_coastal_tun_r7r8
+        note: "Region-level codes → coastal/interior (Tataouine misclassified in South East)"
+      w5:
+        method: r_function
+        fn: recode_afro_coastal_tun_r5_coarse
+        note: "R5 governorate codes collapsed to region-level coastal/interior (Tataouine misclassified to match R7-R8)"
+      w6:
+        method: r_function
+        fn: recode_afro_coastal_tun_r6_coarse
+        note: "R6 governorate codes collapsed to region-level coastal/interior (Tataouine misclassified to match R7-R8)"
+    qc:
+      valid_range: [0, 1]
+
+  - id: tunisia_coastal_gov
+    concept: geography
+    description: "Tunisia coastal vs interior from governorate data (1=Coastal, 0=Interior). R5, R6, R9 only."
+    type: nominal
+    note: "Precise: uses governorate-level resolution. Tataouine correctly classified as interior. R7-R8 null (no governorate variable). Use for robustness check against tunisia_coastal."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: REGION
+      w6: REGION
+      w7: null
+      w8: null
+      w9: LOCATION.LEVEL.1
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Interior"
+        1: "Coastal"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_coastal_tun_r5
+        note: "Governorate-level codes → coastal/interior (precise)"
+      w6:
+        method: r_function
+        fn: recode_afro_coastal_tun_r6
+        note: "R6 governorate codes, different order from R5 (precise)"
+      w9:
+        method: r_function
+        fn: recode_afro_coastal_tun_r9
+        note: "R9 character governorate names via LOCATION.LEVEL.1 (precise)"
+    qc:
+      valid_range: [0, 1]
+
+  - id: tataouine
+    concept: geography
+    description: "Tataouine governorate dummy (1=Tataouine, 0=Other Tunisia governorate). R5, R6, R9 only."
+    type: nominal
+    note: "For dropping or interacting with coastal. NA for non-Tunisia and for R7-R8 (no governorate data)."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: REGION
+      w6: REGION
+      w7: null
+      w8: null
+      w9: LOCATION.LEVEL.1
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Other Tunisia governorate"
+        1: "Tataouine"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_tataouine_r5
+        note: "R5 governorate codes: 1600=Tataouine"
+      w6:
+        method: r_function
+        fn: recode_afro_tataouine_r6
+        note: "R6 governorate codes: 1599=Tataouine"
+      w9:
+        method: r_function
+        fn: recode_afro_tataouine_r9
+        note: "R9 character governorate names"
+    qc:
+      valid_range: [0, 1]

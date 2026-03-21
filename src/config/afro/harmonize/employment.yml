@@ -1,0 +1,49 @@
+# Afrobarometer Employment Status
+# Rounds 2-9 (R1 has no employment status item)
+#
+# QUESTION: "Do you have a job that pays a cash income?"
+# R2: q89 (0=No not looking, 1=No looking, 2=Yes PT not looking,
+#          3=Yes PT looking, 4=Yes FT not looking, 5=Yes FT looking)
+# R5-R9: Q96/Q95/Q94/Q95A/Q93A (0=No not looking, 1=No looking,
+#                                 2=Yes part-time, 3=Yes full-time)
+#
+# Target: 0=Out of labor force, 1=Unemployed (looking), 2=Employed
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 998, 999, 9994]
+    description: "Afrobarometer standard missing codes (9994=Not asked in country)"
+
+variables:
+  - id: employment_status
+    concept: demographics
+    description: "Employment status (0=Out of labor force, 1=Unemployed, 2=Employed)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q89
+      w3: q94
+      w4: Q94
+      w5: Q96
+      w6: Q95
+      w7: Q94
+      w8: Q95A
+      w9: Q93A
+    scale:
+      min: 0
+      max: 2
+      labels:
+        0: "Out of labor force (not looking)"
+        1: "Unemployed (looking for work)"
+        2: "Employed (part-time or full-time)"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_afro_employment
+        note: "R3-R9: 0=OLF, 1=Unemployed, 2-3=Employed"
+      w2:
+        method: r_function
+        fn: recode_afro_employment_r2
+        note: "R2: 6-cat (0-5) → 3-cat (0=OLF, 1=Unemployed, 2-5=Employed)"
+    qc:
+      valid_range: [0, 2]

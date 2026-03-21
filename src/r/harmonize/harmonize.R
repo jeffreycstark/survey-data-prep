@@ -101,9 +101,12 @@ harmonize_variable <- function(
     }
 
     # Convert to numeric (handle haven_labelled from SPSS imports)
+    # Exception: preserve character columns when recode function expects strings
     x <- df[[src]]
     if (inherits(x, "haven_labelled")) {
       x <- as.numeric(haven::zap_labels(x))
+    } else if (is.character(x)) {
+      # Keep as character — recode function handles conversion
     } else {
       x <- suppressWarnings(as.numeric(x))
     }
@@ -130,7 +133,9 @@ harmonize_variable <- function(
       ))
     }
 
-    x <- apply_missing(x, missing_codes)
+    if (!is.character(x)) {
+      x <- apply_missing(x, missing_codes)
+    }
 
     # ---- select harmonization rule ----
     default_rule <- var_spec$harmonize$default %||% list(method = "identity")

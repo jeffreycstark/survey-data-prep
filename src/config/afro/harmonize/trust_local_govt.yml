@@ -1,0 +1,45 @@
+# Afrobarometer Trust in Local Government
+# Rounds 2-9 (R1 has no trust item for local govt — only performance rating)
+#
+# QUESTION: "How much do you trust your elected local government council?"
+# R2: q43e (0-3 scale: 0=Not at all, 1=A little bit, 2=A lot, 3=A very great deal)
+# R3-R9: q55d/Q49D/Q59E/Q52E/Q43D/Q41D/Q37D (same 0-3 scale)
+#
+# Same trust scale as other Afro institutional trust items.
+# Target: 1-4 (1=Not at all, 4=A lot) via +1 shift
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 7, 8, 9, 98, 99, 998, 999]
+    description: "Afrobarometer standard missing codes (7=Not applicable)"
+
+variables:
+  - id: trust_local_govt
+    concept: institutional_trust
+    description: "Trust in elected local government council (1-4; higher=more trust)"
+    type: ordinal
+    source:
+      w1: null
+      w2: q43e
+      w3: q55d
+      w4: Q49D
+      w5: Q59E
+      w6: Q52E
+      w7: Q43D
+      w8: Q41D
+      w9: Q37D
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all"
+        2: "Just a little"
+        3: "Somewhat"
+        4: "A lot"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_0_3_to_1_4
+        note: "R2-R9: raw 0-3 scale shifted +1 to 1-4"
+    qc:
+      valid_range: [1, 4]

@@ -1,0 +1,44 @@
+# Arab Barometer Party Closeness
+# Waves: w2-w5, w7-w8
+#
+# QUESTION: "Which of the existing parties is closest to representing your
+#            political, social, and economic aspirations?"
+# All waves: 0=No party, country-specific party codes = has a party
+#
+# W2-W4: q503 (0=no party, 1+=party codes)
+# W5: Q503A (0=no party, 10001+=country-prefixed party codes)
+# W7: Q503A_1
+# W8: Q503A_2
+#
+# Target: 1=Has a party, 0=No party
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -8, -9, 98, 99, 997, 998, 999]
+    description: "Arab Barometer missing codes"
+
+variables:
+  - id: party_close
+    concept: political_engagement
+    description: "Feel close to any political party (1=Yes, 0=No)"
+    type: nominal
+    source:
+      w2: q503
+      w3: q503
+      w4: q503
+      w5: Q503A
+      w7: Q503A_1
+      w8: Q503A_2
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_arab_party_close_binary
+        note: "All waves: 0=no party → 0; any non-zero non-missing code → 1"
+    qc:
+      valid_range: [0, 1]

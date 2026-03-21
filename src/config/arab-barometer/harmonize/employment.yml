@@ -1,0 +1,58 @@
+# Arab Barometer Employment Status
+# Waves: w2-w5, w7-w8
+#
+# W2-W4 (q1004): "Do you work?" 1=Yes, 2=No (binary)
+#   Cannot distinguish unemployed vs out-of-labor-force.
+#   Coded: Yes → 2 (Employed), No → 0 (OLF)
+#
+# W5-W8 (Q1005): Categorical:
+#   1=Employed, 2=Self-employed, 3=Retired, 4=Housewife,
+#   5=Student, 6=Unemployed, 7/90=Other
+#   Coded: 1-2 → 2 (Employed), 6 → 1 (Unemployed), rest → 0 (OLF)
+#
+# Target: 0=Out of labor force, 1=Unemployed, 2=Employed
+# NOTE: W2-W4 cannot separate unemployed (code 1) from OLF (code 0) —
+#       both map to 0. Use caution comparing W2-W4 vs W5-W8.
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]
+    description: "Arab Barometer missing codes"
+
+variables:
+  - id: employment_status
+    concept: demographics
+    description: "Employment status (0=Out of labor force, 1=Unemployed, 2=Employed)"
+    type: ordinal
+    note: "W2-W4 binary (yes/no work) cannot distinguish unemployed vs OLF — both code to 0."
+    source:
+      w2: q1004
+      w3: q1004
+      w4: q1004
+      w5: Q1005
+      w7: Q1005
+      w8: Q1005
+    scale:
+      min: 0
+      max: 2
+      labels:
+        0: "Out of labor force (not looking)"
+        1: "Unemployed (looking for work)"
+        2: "Employed"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_arab_employment_w5w8
+        note: "W5-W8: 1-2=Employed, 6=Unemployed, rest=OLF"
+      w2:
+        method: r_function
+        fn: recode_arab_employment_w2w4
+        note: "W2: 1=Yes→Employed, 2=No→OLF (cannot distinguish unemployed)"
+      w3:
+        method: r_function
+        fn: recode_arab_employment_w2w4
+      w4:
+        method: r_function
+        fn: recode_arab_employment_w2w4
+    qc:
+      valid_range: [0, 2]

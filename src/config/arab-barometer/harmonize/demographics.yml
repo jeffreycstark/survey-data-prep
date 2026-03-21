@@ -25,6 +25,57 @@ variables:
     qc:
       valid_range: [1, 2]
 
+  - id: age
+    concept: demographics
+    description: "Age of respondent in years"
+    type: continuous
+    source:
+      w2: q1001
+      w3: q1001
+      w4: q1001
+      w5: Q1001
+      w7: Q1001
+      w8: Q1001
+    note: "W7-W8 also have Q1001YEAR (birth year) and Q1001APPROX; we use Q1001 (direct age). 0 and 999 treated as NA via missing_conventions."
+    scale:
+      min: 18
+      max: 110
+    harmonize:
+      default:
+        method: identity
+        note: "Continuous age in years. Missing codes cleaned by valid_range."
+    qc:
+      valid_range: [18, 110]
+
+  - id: age_cohort
+    concept: demographics
+    description: "Age cohort (1=18-29, 2=30-39, 3=40-49, 4=50-59, 5=60+)"
+    type: ordinal
+    note: "Derived from continuous age. Same source columns as age."
+    source:
+      w2: q1001
+      w3: q1001
+      w4: q1001
+      w5: Q1001
+      w7: Q1001
+      w8: Q1001
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "18-29 (youth)"
+        2: "30-39"
+        3: "40-49"
+        4: "50-59"
+        5: "60+"
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_age_cohort
+        note: "Bins continuous age into 5 cohorts"
+    qc:
+      valid_range: [1, 5]
+
   - id: education_level
     concept: demographics
     description: "Highest level of education (raw coding varies by wave — needs harmonization)"

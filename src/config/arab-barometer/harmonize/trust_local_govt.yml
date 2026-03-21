@@ -1,0 +1,43 @@
+# Arab Barometer Trust in Local Government
+# Waves: w5, w7, w8 only
+#
+# QUESTION: "To what extent do you trust [local government]?"
+# Q201A_5: 1=A great deal, 2=Quite a lot, 3=Not a lot, 4=No trust at all
+# REVERSED via safe_reverse_4pt so higher = more trust (matching convention)
+#
+# W2-W3: No comparable trust item (W3 q2035 is performance evaluation, different scale)
+# W4: No local govt trust item
+# W5-W8: Q201A_5 (standard trust 1-4 scale)
+
+missing_conventions:
+  treat_as_na:
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]
+    description: "Arab Barometer missing codes"
+
+variables:
+  - id: trust_local_govt
+    concept: institutional_trust
+    description: "Trust in local government (1-4; higher=more trust). REVERSED."
+    type: ordinal
+    source:
+      w2: null
+      w3: null
+      w4: null
+      w5: Q201A_5
+      w7: Q201A_5
+      w8: Q201A_5
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "No trust at all"
+        2: "Not a lot of trust"
+        3: "Quite a lot of trust"
+        4: "A great deal of trust"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=great trust → reversed so 4=great trust"
+    qc:
+      valid_range: [1, 4]
