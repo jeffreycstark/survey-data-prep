@@ -352,7 +352,7 @@ d <- readRDS("data/processed/kamos_harmonized.rds")
 
 | Category | Variables | Scale |
 |----------|-----------|-------|
-| Institutional Trust (8) | trust_central_govt, trust_local_govt, trust_national_assembly, trust_legislature, trust_private_enterprise, trust_media, trust_ngo, trust_religious | 0-10, higher=more trust |
+| Institutional Trust (8) | trust_central_govt, trust_local_govt, trust_national_assembly, trust_judiciary, trust_private_enterprise, trust_media, trust_ngo, trust_religious | 0-10, higher=more trust |
 | Social Trust (2) | trust_society, trust_citizens | 0-10, higher=more trust |
 | Demographics (9) | gender, age, birth_year, education (1-8), income (1-11), marital_status, employment (nominal), region (1-17 nominal), subjective_class (0-10) | varies |
 | Political Attitudes (6) | ideology (1=far left–5=far right), pol_satisfaction (1=satisfied–4=unsatisfied), pol_system_pref (1-5 categorical), party_id (nominal), party_id_lean (nominal), party thermometers W1 only: party_att_saenuri, party_att_minjoo, party_att_peoples, party_att_justice (0-10) | varies |
