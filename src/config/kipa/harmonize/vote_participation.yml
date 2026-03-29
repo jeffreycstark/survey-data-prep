@@ -1,0 +1,146 @@
+# KIPA Social Cohesion Survey (KSIS) — Vote Participation
+# Years: 2013-2024 (12 years; 2011-2012 excluded — different instrument)
+#
+# Vote items reference the MOST RECENT election of each type at survey time.
+# Coding: 1=voted, 2=did not vote, 3=ineligible (no voting rights)
+# Harmonization: recode to binary (1=voted, NA=did not/ineligible)
+#
+# Vote importance: 1-7 scale (higher = more important)
+#
+# Election reference per year:
+#   Presidential: 18th (2013-16), 19th (2017-21), 20th (2022-24)
+#   National Assembly: 19th (2013), 20th (2016-19), 21st (2020-23), 22nd (2024)
+#   Local: 6th (2014-17), 7th (2018-21), 8th (2022-24)
+#
+# MISSING VALUES:
+# 8/9 = DK/NR → treat as NA
+
+missing_conventions:
+  treat_as_na:
+    codes: [8, 9]
+    description: "KIPA: 8=DK, 9=NR"
+
+variables:
+  - id: voted_presidential
+    concept: vote_participation
+    description: "Voted in most recent presidential election (1=voted, 2=did not, 3=ineligible)"
+    type: nominal
+    note: "References different presidential elections depending on survey year. Available all 12 years."
+    source:
+      y2013: q19
+      y2014: q19
+      y2015: q21
+      y2016: q21
+      y2017: q21
+      y2018: q24
+      y2019: q24
+      y2020: q23
+      y2021: q24
+      y2022: q23
+      y2023: q19_2
+      y2024: q19_3
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Voted"
+        2: "Did not vote"
+        3: "Ineligible (no voting rights)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: voted_assembly
+    concept: vote_participation
+    description: "Voted in most recent National Assembly election (1=voted, 2=did not, 3=ineligible)"
+    type: nominal
+    note: "Not available in 2014, 2015, 2017. Available 10 of 12 years."
+    source:
+      y2013: q20
+      # y2014: not available
+      # y2015: not available
+      y2016: q23
+      # y2017: not available
+      y2018: q25
+      y2019: q25
+      y2020: q21
+      y2021: q22
+      y2022: q24
+      y2023: q19_3
+      y2024: q19_1
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Voted"
+        2: "Did not vote"
+        3: "Ineligible (no voting rights)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: voted_local
+    concept: vote_participation
+    description: "Voted in most recent local election (1=voted, 2=did not, 3=ineligible)"
+    type: nominal
+    note: "Not available in 2013, 2017. Available 10 of 12 years."
+    source:
+      # y2013: not available
+      y2014: q20
+      y2015: q22
+      y2016: q22
+      # y2017: not available
+      y2018: q23
+      y2019: q23
+      y2020: q22
+      y2021: q23
+      y2022: q22
+      y2023: q19_1
+      y2024: q19_2
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Voted"
+        2: "Did not vote"
+        3: "Ineligible (no voting rights)"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: vote_importance
+    concept: vote_participation
+    description: "Importance of participating in elections as a good citizen (1=not at all important, 7=very important)"
+    type: ordinal
+    note: "Available all 12 years. 9=DK/NR."
+    source:
+      y2013: q16_1
+      y2014: q16_1
+      y2015: q18_1
+      y2016: q18_1
+      y2017: q18_1
+      y2018: q20_1
+      y2019: q20_1
+      y2020: q18_1
+      y2021: q18_1
+      y2022: q18_1
+      y2023: q15_1
+      y2024: q15_1
+    scale:
+      min: 1
+      max: 7
+      labels:
+        1: "Not at all important"
+        4: "Average"
+        7: "Very important"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 7]

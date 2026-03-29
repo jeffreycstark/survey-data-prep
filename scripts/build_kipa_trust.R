@@ -98,55 +98,215 @@ bonus_crosswalk <- list(
   "2011" = list(gen_trust = "T12_1", ideology = NULL, pol_sat = NULL,
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "sex", age = "age", region = "region_1",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                # Economic evaluations (not available in 2011)
+                econ_nat_sat = NULL, econ_nat_prosp = NULL,
+                econ_pers_stab = NULL, econ_pers_prosp = NULL,
+                mobility_self = NULL, mobility_child = NULL,
+                # Political/democratic prospects (not available in 2011)
+                pol_prosp = NULL, dem_prosp = NULL,
+                # Vote participation (not available in 2011)
+                vote_pres = NULL, vote_assembly = NULL,
+                vote_local = NULL, vote_importance = NULL,
+                # Social engagement (not available in 2011)
+                national_pride = NULL, belong_province = NULL,
+                belong_city = NULL, belong_town = NULL,
+                grp_party = NULL, grp_labor = NULL, grp_religion = NULL,
+                grp_hobby = NULL, grp_civic = NULL, grp_community = NULL,
+                grp_alumni = NULL, grp_volunteer = NULL, grp_social_econ = NULL,
+                pol_interest = NULL),
   "2013" = list(gen_trust = "q28", ideology = "q22", pol_sat = "q4",
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "d1", age = "d2", region = "ara",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                econ_nat_sat = "q6", econ_nat_prosp = "q7",
+                econ_pers_stab = "q42", econ_pers_prosp = NULL,
+                mobility_self = "q3_3", mobility_child = "q3_4",
+                pol_prosp = "q5", dem_prosp = NULL,
+                vote_pres = "q19", vote_assembly = "q20",
+                vote_local = NULL, vote_importance = "q16_1",
+                national_pride = "q3_1", belong_province = "q3_2",
+                belong_city = NULL, belong_town = NULL,
+                grp_party = "q15_1", grp_labor = "q15_2", grp_religion = "q15_3",
+                grp_hobby = "q15_4", grp_civic = "q15_5", grp_community = "q15_6",
+                grp_alumni = "q15_7", grp_volunteer = NULL, grp_social_econ = NULL,
+                pol_interest = NULL),
   "2014" = list(gen_trust = "q28", ideology = "q22", pol_sat = "q4",
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "d1", age = "d2", region = "ara",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                econ_nat_sat = "q6", econ_nat_prosp = NULL,
+                econ_pers_stab = "q44", econ_pers_prosp = NULL,
+                mobility_self = "q3_3", mobility_child = "q3_4",
+                pol_prosp = NULL, dem_prosp = NULL,
+                vote_pres = "q19", vote_assembly = NULL,
+                vote_local = "q20", vote_importance = "q16_1",
+                national_pride = "q3_1", belong_province = "q3_2",
+                belong_city = NULL, belong_town = NULL,
+                grp_party = "q15_1", grp_labor = "q15_2", grp_religion = "q15_3",
+                grp_hobby = "q15_4", grp_civic = "q15_5", grp_community = "q15_6",
+                grp_alumni = "q15_7", grp_volunteer = NULL, grp_social_econ = NULL,
+                pol_interest = NULL),
   "2015" = list(gen_trust = "q30", ideology = "q24", pol_sat = "q6",
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "d1", age = "d2", region = "ara",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q47", econ_pers_prosp = NULL,
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q21", vote_assembly = NULL,
+                vote_local = "q22", vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = NULL),
   "2016" = list(gen_trust = "q31", ideology = "q25", pol_sat = "q6",
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "d1", age = "d2", region = "ara",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q49", econ_pers_prosp = NULL,
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q21", vote_assembly = "q23",
+                vote_local = "q22", vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = NULL),
   "2017" = list(gen_trust = "q30", ideology = "q24", pol_sat = "q6",
                 dem_sat = NULL, efficacy = NULL, income_hh = NULL,
                 sex = "d1", age = "d2", region = "ara",
-                education = NULL, weight = NULL),
+                education = NULL, weight = NULL,
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q48", econ_pers_prosp = NULL,
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q21", vote_assembly = "q22",
+                vote_local = NULL, vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = NULL),
   "2018" = list(gen_trust = "q33", ideology = "q27", pol_sat = "q6",
                 dem_sat = "q8", efficacy = "q21_1", income_hh = "d12_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q10", econ_nat_prosp = "q11",
+                econ_pers_stab = "q51", econ_pers_prosp = "q52",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = "q9",
+                vote_pres = "q24", vote_assembly = "q25",
+                vote_local = "q23", vote_importance = "q20_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q19_1", grp_labor = "q19_2", grp_religion = "q19_3",
+                grp_hobby = "q19_4", grp_civic = "q19_5", grp_community = "q19_6",
+                grp_alumni = "q19_7", grp_volunteer = "q19_8", grp_social_econ = "q19_9",
+                pol_interest = NULL),
   "2019" = list(gen_trust = "q33", ideology = "q27", pol_sat = "q6",
                 dem_sat = "q8", efficacy = "q21_1", income_hh = "d12_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q10", econ_nat_prosp = "q11",
+                econ_pers_stab = "q52", econ_pers_prosp = "q53",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = "q9",
+                vote_pres = "q24", vote_assembly = "q25",
+                vote_local = "q23", vote_importance = "q20_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q19_1", grp_labor = "q19_2", grp_religion = "q19_3",
+                grp_hobby = "q19_4", grp_civic = "q19_5", grp_community = "q19_6",
+                grp_alumni = "q19_7", grp_volunteer = "q19_8", grp_social_econ = "q19_9",
+                pol_interest = NULL),
   "2020" = list(gen_trust = "q31", ideology = "q25", pol_sat = "q6",
                 dem_sat = "q8", efficacy = "q19_1", income_hh = "d12_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q10", econ_nat_prosp = "q11",
+                econ_pers_stab = "q51", econ_pers_prosp = "q52",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = "q9",
+                vote_pres = "q23", vote_assembly = "q21",
+                vote_local = "q22", vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = NULL),
   "2021" = list(gen_trust = "q33", ideology = "q26", pol_sat = "q6",
                 dem_sat = "q8", efficacy = "q20_1", income_hh = "d12_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q10", econ_nat_prosp = "q11",
+                econ_pers_stab = "q54", econ_pers_prosp = "q55",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = "q9",
+                vote_pres = "q24", vote_assembly = "q22",
+                vote_local = "q23", vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = "q19"),
   "2022" = list(gen_trust = "q33", ideology = "q26", pol_sat = "q6",
                 dem_sat = "q8", efficacy = "q20_1", income_hh = "d12_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q10", econ_nat_prosp = "q11",
+                econ_pers_stab = "q55", econ_pers_prosp = "q56",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = "q9",
+                vote_pres = "q23", vote_assembly = "q24",
+                vote_local = "q22", vote_importance = "q18_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q17_1", grp_labor = "q17_2", grp_religion = "q17_3",
+                grp_hobby = "q17_4", grp_civic = "q17_5", grp_community = "q17_6",
+                grp_alumni = "q17_7", grp_volunteer = "q17_8", grp_social_econ = "q17_9",
+                pol_interest = "q19"),
   "2023" = list(gen_trust = "q28", ideology = "q21", pol_sat = "q6",
                 dem_sat = NULL, efficacy = "q17_1", income_hh = "d11_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2"),
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q51", econ_pers_prosp = "q52",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q19_2", vote_assembly = "q19_3",
+                vote_local = "q19_1", vote_importance = "q15_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q14_1", grp_labor = "q14_2", grp_religion = "q14_3",
+                grp_hobby = "q14_4", grp_civic = "q14_5", grp_community = "q14_6",
+                grp_alumni = "q14_7", grp_volunteer = "q14_8", grp_social_econ = "q14_9",
+                pol_interest = "q16"),
   "2024" = list(gen_trust = "q28", ideology = "q21", pol_sat = "q6",
                 dem_sat = NULL, efficacy = "q17_1", income_hh = "d11_2",
                 sex = "d1", age = "d2", region = "ara",
-                education = "d5_1_1", weight = "wt2")
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q52", econ_pers_prosp = "q53",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q19_3", vote_assembly = "q19_1",
+                vote_local = "q19_2", vote_importance = "q15_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q14_1", grp_labor = "q14_2", grp_religion = "q14_3",
+                grp_hobby = "q14_4", grp_civic = "q14_5", grp_community = "q14_6",
+                grp_alumni = "q14_7", grp_volunteer = "q14_8", grp_social_econ = "q14_9",
+                pol_interest = "q16")
 )
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -301,6 +461,73 @@ for (yr in years_to_process) {
   }
   dem_sat <- safe_extract(raw, dem_sat_var)
 
+  # ── Economic evaluations (0-10 scale, higher=better) ──
+  econ_nat_sat    <- safe_extract(raw, cw$econ_nat_sat)
+  econ_nat_prosp  <- safe_extract(raw, cw$econ_nat_prosp)
+  econ_pers_stab  <- safe_extract(raw, cw$econ_pers_stab)
+  econ_pers_prosp <- safe_extract(raw, cw$econ_pers_prosp)
+
+  # Clean 0-10 economic vars: 98/99 → NA
+  for (nm in c("econ_nat_sat", "econ_nat_prosp", "econ_pers_stab", "econ_pers_prosp")) {
+    vals <- get(nm)
+    vals[vals >= 98] <- NA
+    assign(nm, vals)
+  }
+
+  # Social mobility (1-4 scale, higher=more possible); 9=DK/NR
+  mobility_self  <- safe_extract(raw, cw$mobility_self)
+  mobility_child <- safe_extract(raw, cw$mobility_child)
+  mobility_self[mobility_self >= 9]   <- NA
+  mobility_child[mobility_child >= 9] <- NA
+
+  # ── Political/democratic prospects (0-10 scale) ──
+  pol_prosp <- safe_extract(raw, cw$pol_prosp)
+  dem_prosp <- safe_extract(raw, cw$dem_prosp)
+  pol_prosp[pol_prosp >= 98] <- NA
+  dem_prosp[dem_prosp >= 98] <- NA
+
+  # ── Vote participation (1=voted, 2=did not, 3=ineligible) ──
+  vote_pres     <- safe_extract(raw, cw$vote_pres)
+  vote_assembly <- safe_extract(raw, cw$vote_assembly)
+  vote_local    <- safe_extract(raw, cw$vote_local)
+
+  # Clean vote vars: 8/9 → NA
+  for (nm in c("vote_pres", "vote_assembly", "vote_local")) {
+    vals <- get(nm)
+    vals[vals >= 8] <- NA
+    assign(nm, vals)
+  }
+
+  # Vote importance (1-7, higher=more important); 9=DK/NR
+  vote_importance <- safe_extract(raw, cw$vote_importance)
+  vote_importance[vote_importance >= 9] <- NA
+
+  # ── Social engagement: belonging, national pride, social groups, pol interest ──
+  national_pride   <- safe_extract(raw, cw$national_pride)
+  belong_province  <- safe_extract(raw, cw$belong_province)
+  belong_city      <- safe_extract(raw, cw$belong_city)
+  belong_town      <- safe_extract(raw, cw$belong_town)
+  pol_interest_val <- safe_extract(raw, cw$pol_interest)
+
+  # Clean 1-4 belonging/pride/interest vars: 8/9 → NA
+  for (nm in c("national_pride", "belong_province", "belong_city",
+               "belong_town", "pol_interest_val")) {
+    vals <- get(nm)
+    vals[vals >= 8] <- NA
+    assign(nm, vals)
+  }
+
+  # Social group activity (1-5 scale); 8/9=DK/NR
+  grp_names <- c("grp_party", "grp_labor", "grp_religion", "grp_hobby",
+                  "grp_civic", "grp_community", "grp_alumni",
+                  "grp_volunteer", "grp_social_econ")
+  grp_vals <- list()
+  for (gn in grp_names) {
+    v <- safe_extract(raw, cw[[gn]])
+    v[v >= 8] <- NA
+    grp_vals[[gn]] <- v
+  }
+
   # ── Demographics ──
   sex       <- safe_extract(raw, cw$sex)
   age_group <- safe_extract(raw, cw$age)
@@ -322,9 +549,35 @@ for (yr in years_to_process) {
       weight            = weight,
       trust_generalized = gen_trust,
       dem_satisfaction   = dem_sat,
+      dem_prospect      = dem_prosp,
       ideology          = ideology,
       pol_satisfaction   = pol_sat,
+      pol_prospect      = pol_prosp,
       pol_efficacy      = efficacy,
+      econ_nat_sat      = econ_nat_sat,
+      econ_nat_prospect = econ_nat_prosp,
+      econ_pers_stability = econ_pers_stab,
+      econ_pers_prospect  = econ_pers_prosp,
+      mobility_self     = mobility_self,
+      mobility_children = mobility_child,
+      voted_presidential = vote_pres,
+      voted_assembly    = vote_assembly,
+      voted_local       = vote_local,
+      vote_importance   = vote_importance,
+      national_pride    = national_pride,
+      belong_province   = belong_province,
+      belong_city       = belong_city,
+      belong_town       = belong_town,
+      grp_party         = grp_vals$grp_party,
+      grp_labor         = grp_vals$grp_labor,
+      grp_religion      = grp_vals$grp_religion,
+      grp_hobby         = grp_vals$grp_hobby,
+      grp_civic         = grp_vals$grp_civic,
+      grp_community     = grp_vals$grp_community,
+      grp_alumni        = grp_vals$grp_alumni,
+      grp_volunteer     = grp_vals$grp_volunteer,
+      grp_social_econ   = grp_vals$grp_social_econ,
+      pol_interest      = pol_interest_val,
       stringsAsFactors  = FALSE
     ),
     inst_df,
@@ -378,10 +631,20 @@ print(means_df[, print_cols], row.names = FALSE)
 
 cat("\n── Variable Coverage by Year ──\n\n")
 core_hon <- gsub("^trust_", "honesty_", core_inst)
-for (v in c(core_inst, "trust_financial", "trust_public_enterprises",
-            core_hon[1:4],  # honesty for top institutions
-            "trust_generalized", "dem_satisfaction", "ideology",
-            "pol_satisfaction", "pol_efficacy")) {
+coverage_vars <- c(
+  core_inst, "trust_financial", "trust_public_enterprises",
+  core_hon[1:4],
+  "trust_generalized", "dem_satisfaction", "dem_prospect",
+  "ideology", "pol_satisfaction", "pol_prospect", "pol_efficacy",
+  "econ_nat_sat", "econ_nat_prospect", "econ_pers_stability", "econ_pers_prospect",
+  "mobility_self", "mobility_children",
+  "voted_presidential", "voted_assembly", "voted_local", "vote_importance",
+  "national_pride", "belong_province", "belong_city", "belong_town",
+  "grp_party", "grp_religion", "grp_hobby", "grp_civic", "grp_volunteer",
+  "pol_interest"
+)
+for (v in coverage_vars) {
+  if (!v %in% names(combined)) next
   non_na <- tapply(!is.na(combined[[v]]), combined$year, sum)
   pct <- round(100 * non_na / tapply(rep(1, nrow(combined)), combined$year, sum), 0)
   coverage <- paste(sprintf("%d:%d%%", as.integer(names(pct)), pct), collapse = " ")
