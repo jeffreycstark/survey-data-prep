@@ -167,7 +167,49 @@ Raw Survey Data (data/{survey}/raw/)
 Harmonized Output (data/processed/)
            ↓
 Generate Reports (src/r/harmonize/report_harmonization.R)
+           ↓
+Build Verbatim Dictionary (see below)
 ```
+
+### Verbatim Question Dictionary (mandatory for every survey)
+
+Every harmonized survey **must** have a verbatim question dictionary CSV that maps harmonized variable names to the literal questionnaire text. This is the single source of truth for Appendix A in all papers.
+
+**Standard format** (follows `data/abs/questionnaire_text/abs_verbatim_items.csv`):
+
+| Column | Content |
+|--------|---------|
+| `wave` | Wave/year identifier (w1, y2013, etc.) |
+| `question_id` | Raw variable name in source data (q43, q5_3, etc.) |
+| `harmonized_name` | Standardized variable name in harmonized dataset |
+| `section` | Questionnaire section heading |
+| `stem_text` | Battery stem question (for sub-items) |
+| `item_text` | Verbatim question text as read to respondent |
+| `response_scale` | Response options with numeric codes |
+| `notes` | "Not included in this wave" for gaps, translation issues, known errata |
+
+**Rules:**
+- One row per harmonized_name × wave/year (include rows where variable is absent)
+- Source verbatim text from official questionnaire documents (PDF, HWP, DOC), **not** SPSS variable labels
+- For battery questions, split into `stem_text` (parent) and `item_text` (sub-item)
+- Store original questionnaire files in `data/{survey}/questionnaires/originals/`
+- Store extracted text in `data/{survey}/questionnaires/`
+- Dictionary CSV goes in `data/{survey}/questionnaire_text/{survey}_verbatim_items.csv`
+- Document known errata in `notes` (e.g., KIPA English SPSS mislabels 사법부/judiciary as "legislature")
+
+**Current status:**
+
+| Survey | Dictionary | Status |
+|--------|-----------|--------|
+| ABS | `data/abs/questionnaire_text/abs_verbatim_items.csv` | Complete |
+| KIPA/KSIS | `data/processed/kipa_question_dictionary.csv` | Complete (needs migration to standard format) |
+| WVS | — | Needs creation |
+| LBS | — | Needs creation |
+| Afrobarometer | — | Needs creation |
+| KAMOS | — | Needs creation |
+| KGSS | — | Needs creation |
+
+**Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder-SKILL.md`). The skill filters to variables used in a given paper and generates formatted Appendix A prose. This repo owns the ground truth; paper repos only format and present.
 
 ### Running the Pipelines
 
