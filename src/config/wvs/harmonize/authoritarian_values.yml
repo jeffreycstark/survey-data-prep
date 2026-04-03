@@ -1,0 +1,315 @@
+# WVS Authoritarian Values & Emancipative Orientations
+# Items measuring underlying value orientations that predict authoritarian
+# preferences — Inglehart/Welzel modernization theory constructs.
+#
+# GROUP 1: Respect for Authority (W1-W7, all waves)
+#   "Would greater respect for authority be a good or bad thing?"
+#   Raw: 1=Good thing, 2=Don't mind, 3=Bad thing
+#   Keep raw direction: 1=pro-authority (most authoritarian), 3=anti-authority
+#   NOTE: Do NOT reverse — 1=Good is the authoritarian pole. Researchers can
+#   recode as needed for their models.
+#
+# GROUP 2: Child Qualities (W1-W7, all waves)
+#   "Which qualities do you consider especially important for children?"
+#   Binary: 1=Mentioned, 2=Not mentioned
+#   Obedience = authoritarian socialization; Independence/Imagination = emancipative
+#
+# GROUP 3: Post-Materialist Index (W1-W7, all waves)
+#   Y002: 4-item index (1=Materialist, 2=Mixed, 3=Post-materialist)
+#   Y001: 12-item index (0-5, W2-W7)
+#   Materialists prioritize order/security; post-materialists prioritize voice/freedom
+#
+# GROUP 4: Freedom of Choice / Locus of Control (W1-W7, all waves)
+#   "How much freedom of choice and control over your life?"
+#   1=None at all, 10=A great deal — identity
+#
+# GROUP 5: Freedom vs. Security / Freedom vs. Equality (W7 / W2+W7)
+#
+# MISSING VALUES:
+# W1-W5 SPSS: -4=Not asked, -2=No answer, -1=Don't know
+# W6-W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  # ===========================================================================
+  # GROUP 1: Respect for Authority
+  # ===========================================================================
+  - id: respect_authority
+    concept: authoritarian_values
+    description: "Would greater respect for authority be a good thing, bad thing, or don't you mind?"
+    type: ordinal
+    source:
+      w1: V114
+      w2: V268
+      w3: V114
+      w4: V130
+      w5: V78
+      w6: V69
+      w7: Q45
+    note: "All 7 waves. 1=Good thing (pro-authority), 3=Bad thing (anti-authority). Core Inglehart item."
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Good thing"
+        2: "Don't mind"
+        3: "Bad thing"
+    harmonize:
+      default:
+        method: identity
+        note: "Raw coding retained: 1=pro-authority, 3=anti-authority"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "respect.*authority"
+
+  # ===========================================================================
+  # GROUP 2: Child Qualities (authoritarian socialization)
+  # Binary: 1=Mentioned, 2=Not mentioned
+  # ===========================================================================
+  - id: child_obedience
+    concept: authoritarian_values
+    description: "Important child quality: obedience"
+    type: nominal
+    source:
+      w1: V24
+      w2: V236
+      w3: V24
+      w4: V24
+      w5: V21
+      w6: V21
+      w7: Q17
+    note: "All 7 waves. 1=Mentioned (authoritarian socialization). Adorno F-scale correlate."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Mentioned"
+        2: "Not mentioned"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary: 1=obedience mentioned, 2=not mentioned"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "obedience"
+
+  - id: child_independence
+    concept: emancipative_values
+    description: "Important child quality: independence"
+    type: nominal
+    source:
+      w1: V15
+      w2: V227
+      w3: V15
+      w4: V15
+      w5: V12
+      w6: V12
+      w7: Q8
+    note: "All 7 waves. 1=Mentioned (emancipative). Inverse of authoritarian socialization."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Mentioned"
+        2: "Not mentioned"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary: 1=independence mentioned, 2=not mentioned"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "independence"
+
+  - id: child_imagination
+    concept: emancipative_values
+    description: "Important child quality: imagination"
+    type: nominal
+    source:
+      w1: V18
+      w2: V230
+      w3: V18
+      w4: V18
+      w5: V15
+      w6: V15
+      w7: Q11
+    note: "All 7 waves. 1=Mentioned (emancipative/creative)."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Mentioned"
+        2: "Not mentioned"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary: 1=imagination mentioned, 2=not mentioned"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "imagination"
+
+  # ===========================================================================
+  # GROUP 3: Post-Materialist Indices (pre-computed)
+  # ===========================================================================
+  - id: postmaterialist_4item
+    concept: emancipative_values
+    description: "Inglehart 4-item post-materialist index"
+    type: ordinal
+    source:
+      w1: Y002
+      w2: Y002
+      w3: Y002
+      w4: Y002
+      w5: Y002
+      w6: Y002
+      w7: Y002
+    note: "All 7 waves. Pre-computed by WVS from aims-of-country battery. Materialists prioritize order/security."
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Materialist"
+        2: "Mixed"
+        3: "Post-materialist"
+    harmonize:
+      default:
+        method: identity
+        note: "Pre-computed index; higher = more post-materialist (less authoritarian)"
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "post.*materialist|materialist"
+
+  - id: postmaterialist_12item
+    concept: emancipative_values
+    description: "Inglehart 12-item post-materialist index"
+    type: ordinal
+    source:
+      w1: null
+      w2: Y001
+      w3: Y001
+      w4: Y001
+      w5: Y001
+      w6: Y001
+      w7: Y001
+    note: "W2-W7. Pre-computed 0-5 index. More granular than 4-item version."
+    scale:
+      min: 0
+      max: 5
+      labels:
+        0: "Materialist"
+        5: "Post-materialist"
+    harmonize:
+      default:
+        method: identity
+        note: "Pre-computed index; higher = more post-materialist"
+    qc:
+      valid_range: [0, 5]
+      validate:
+        - waves: [w2, w3, w4, w5, w6, w7]
+          phrase: "materialist.*12"
+
+  # ===========================================================================
+  # GROUP 4: Freedom of Choice / Locus of Control
+  # ===========================================================================
+  - id: freedom_of_choice
+    concept: emancipative_values
+    description: "How much freedom of choice and control you feel you have over the way your life turns out"
+    type: ordinal
+    source:
+      w1: V66
+      w2: V95
+      w3: V66
+      w4: V82
+      w5: V46
+      w6: V55
+      w7: Q48
+    note: "All 7 waves. Low perceived control predicts fatalism and authoritarian deference."
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "None at all"
+        10: "A great deal"
+    harmonize:
+      default:
+        method: identity
+        note: "1-10 scale; higher = more perceived freedom/control"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "freedom.*choice|freedom.*control"
+
+  # ===========================================================================
+  # GROUP 5: Freedom vs. Security / Freedom vs. Equality
+  # ===========================================================================
+  - id: freedom_vs_equality
+    concept: emancipative_values
+    description: "Which is more important: freedom or equality?"
+    type: nominal
+    source:
+      w1: null
+      w2: V247
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: Q149
+    note: "W2 and W7 only. W2 has 3 categories (adds Neither); W7 is binary."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Freedom"
+        2: "Equality"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary: 1=Freedom, 2=Equality. W2 code 3 (Neither) treated as NA."
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w2, w7]
+          phrase: "freedom.*equality"
+
+  - id: freedom_vs_security
+    concept: emancipative_values
+    description: "Which is more important: freedom or security?"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+      w7: Q150
+    note: "W7 only. Choosing security over freedom signals authoritarian preference."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Freedom"
+        2: "Security"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary: 1=Freedom, 2=Security"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w7]
+          phrase: "freedom.*security"

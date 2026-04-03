@@ -203,11 +203,12 @@ Every harmonized survey **must** have a verbatim question dictionary CSV that ma
 |--------|-----------|--------|
 | ABS | `data/abs/questionnaire_text/abs_verbatim_items.csv` | Complete |
 | KIPA/KSIS | `data/processed/kipa_question_dictionary.csv` | Complete (needs migration to standard format) |
-| WVS | — | Needs creation |
-| LBS | — | Needs creation |
-| Afrobarometer | — | Needs creation |
-| KAMOS | — | Needs creation |
-| KGSS | — | Needs creation |
+| WVS | `data/wvs/questionnaire_text/wvs_verbatim_items.csv` | Complete (79 vars, 7 waves, 553 rows) |
+| LBS | `data/lbs/questionnaire_text/lbs_verbatim_items.csv` | Complete (30 vars, 24 waves, 720 rows) |
+| Afrobarometer | `data/afro/questionnaire_text/afro_verbatim_items.csv` | Complete (46 vars, 9 rounds, 414 rows; text from R9 codebook) |
+| KAMOS | `data/kamos/questionnaire_text/kamos_verbatim_items.csv` | Complete (42 vars, 2 waves, 84 rows; Korean+English) |
+| Arab Barometer | `data/arab-barometer/questionnaire_text/arab_barometer_verbatim_items.csv` | Complete (44 vars, 6 waves, 264 rows; W1 PDF + SPSS labels) |
+| KGSS | `data/kgss/questionnaire_text/kgss_verbatim_items.csv` | Complete (48 vars, 16 years, 768 rows) |
 
 **Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder-SKILL.md`). The skill filters to variables used in a given paper and generates formatted Appendix A prose. This repo owns the ground truth; paper repos only format and present.
 

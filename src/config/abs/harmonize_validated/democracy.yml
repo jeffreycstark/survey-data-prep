@@ -89,12 +89,12 @@ variables:
     type: ordinal
     source:
       w1: q099
-      w2: null
+      w2: q95
       w3: null
       w4: null
       w5: null
       w6: null
-    note: "Wave 1 only - retrospective rating of authoritarian period"
+    note: "W1-W2 - retrospective rating of authoritarian period"
     scale:
       min: 1
       max: 10
@@ -107,7 +107,7 @@ variables:
     qc:
       valid_range: [1, 10]
       validate:
-        - waves: [w1]
+        - waves: [w1, w2]
           phrase: "authoritarian|previous.*government"
   - id: dem_country_future
     concept: democracy

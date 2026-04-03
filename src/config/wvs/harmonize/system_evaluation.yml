@@ -1,0 +1,279 @@
+# WVS System Evaluation: Political System Rating & Democracy Critique
+# Waves 3-4 only (these batteries were dropped from W5 onward)
+#
+# GROUP 1: Political System Rating (Past / Present / Future)
+# "Where on this scale would you put [X]?"
+# Scale: 1=Very bad, 10=Very good — identity (no reversal needed)
+# The gap between past and present ratings is a direct measure of
+# authoritarian nostalgia in post-transition countries.
+#
+# GROUP 2: Democracy Critique Battery
+# "Do you agree or disagree with the following?"
+# Raw: 1=Strongly agree, 2=Agree, 3=Disagree, 4=Strongly disagree
+# For critique items (econ, indecisive, order): reverse so high = more critical
+# For normative item (better than alternatives): reverse so high = more support
+#
+# MISSING VALUES:
+# W3 SPSS: -4=Not asked, -2=No answer, -1=Don't know
+# W4 SPSS: -4=Not asked, -2=No answer, -1=Don't know
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  # ===========================================================================
+  # GROUP 1: Political System Rating (1-10 scale)
+  # ===========================================================================
+  - id: system_rating_previous
+    concept: system_evaluation
+    description: "Rating of previous political system (1=Very bad, 10=Very good)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V151
+      w4: V163
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Core authoritarian nostalgia measure."
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Very bad"
+        10: "Very good"
+    harmonize:
+      default:
+        method: identity
+        note: "1-10 scale, higher = better rating of previous system"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4]
+          phrase: "previous.*system|system.*before"
+
+  - id: system_rating_present
+    concept: system_evaluation
+    description: "Rating of political system as it is today (1=Very bad, 10=Very good)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V152
+      w4: V163A
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Compare with system_rating_previous for nostalgia gap."
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Very bad"
+        10: "Very good"
+    harmonize:
+      default:
+        method: identity
+        note: "1-10 scale, higher = better rating of current system"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4]
+          phrase: "system.*today|governing country"
+
+  - id: system_rating_future
+    concept: system_evaluation
+    description: "Rating of political system as expected in ten years (1=Very bad, 10=Very good)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V153
+      w4: V163B
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. W4 has only 3 countries (Argentina, S. Africa, Tanzania)."
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Very bad"
+        10: "Very good"
+    harmonize:
+      default:
+        method: identity
+        note: "1-10 scale, higher = better rating of expected future system"
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w3, w4]
+          phrase: "ten years|future"
+
+  # ===========================================================================
+  # GROUP 2: Democracy Critique Battery (1-4 agree/disagree)
+  # Raw: 1=Strongly agree → 4=Strongly disagree
+  # Target: reverse so high = more agreement with the statement
+  # ===========================================================================
+  - id: democrit_econ_runs_badly
+    concept: democracy_critique
+    description: "In democracy, the economic system runs badly"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V160
+      w4: V169
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Higher = more agreement = more critical of democracy."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more critical"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "economic.*runs badly"
+
+  - id: democrit_indecisive
+    concept: democracy_critique
+    description: "Democracies are indecisive and have too much squabbling"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V161
+      w4: V170
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Higher = more agreement = more critical of democracy."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more critical"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "indecisive|squabbling"
+
+  - id: democrit_bad_at_order
+    concept: democracy_critique
+    description: "Democracies aren't good at maintaining order"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V162
+      w4: V171
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Higher = more agreement = more critical of democracy."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more critical"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "maintaining order|good at.*order"
+
+  - id: democrit_better_than_alternatives
+    concept: democracy_critique
+    description: "Democracy may have problems but it's better than any other form of government"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: V163
+      w4: V172
+      w5: null
+      w6: null
+      w7: null
+    note: "W3-W4 only. Higher = more agreement = more pro-democracy (normative commitment)."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more support for democracy"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3, w4]
+          phrase: "better than.*form|problems.*better"
+
+  # ===========================================================================
+  # GROUP 3: Related items (W2-W4)
+  # ===========================================================================
+  - id: country_run_by_big_interests
+    concept: system_evaluation
+    description: "Country is run by a few big interests, or for the benefit of all people"
+    type: nominal
+    source:
+      w1: null
+      w2: V288
+      w3: V166
+      w4: V175
+      w5: null
+      w6: null
+      w7: null
+    note: "W2-W4 only. Binary: 1=Big interests, 2=All people."
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Run by a few big interests"
+        2: "Run for all the people"
+    harmonize:
+      default:
+        method: identity
+        note: "Binary item; 1=big interests (elite capture), 2=all people"
+    qc:
+      valid_range: [1, 2]
+      validate:
+        - waves: [w2, w3, w4]
+          phrase: "big interests|benefit.*all"

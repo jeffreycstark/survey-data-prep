@@ -184,7 +184,7 @@ variables:
       w3: null
       w4: null
       w5: q171
-      w6: q171
+      w6: null # W6 q171 is a DIFFERENT item (order/stability over democracy); W5-only
     # Verified 2025-01-11:
     # W5/W6: 1=Strongly agree → 4=Strongly disagree
     # Target: high = more critical of democracy readiness (authoritarian)
@@ -283,7 +283,7 @@ variables:
       w3: null
       w4: null
       w5: q169
-      w6: q169
+      w6: null # W6 q169 is a DIFFERENT item (econ justifies no elections); W5-only
     # Verified 2025-01-11:
     # W5/W6: 1=Strongly agree → 4=Strongly disagree
     # Target: high = more critical of democracy (authoritarian)
@@ -316,7 +316,7 @@ variables:
       w3: null
       w4: null
       w5: q170
-      w6: q170
+      w6: null # W6 q170 is a DIFFERENT item (rule-breaking leader); W5-only
     # Verified 2025-01-11:
     # W5/W6: 1=Strongly agree → 4=Strongly disagree
     # Target: high = more critical of democracy (authoritarian)
@@ -352,7 +352,7 @@ variables:
       w3: null
       w4: null
       w5: q168
-      w6: q168
+      w6: null # W6 q168 is a DIFFERENT item (leader govern by decree); W5-only
     # Verified 2025-01-11:
     # W5/W6: 1=Strongly agree → 4=Strongly disagree
     # Target: high = more critical of democracy (authoritarian)
@@ -617,3 +617,276 @@ variables:
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "morally.*upright|upright.*leader|decide everything"
+  # ===========================================================================
+  # GROUP 5: W6 New Authoritarian Preference Items (q168-q171)
+  # NOTE: These replaced the W5 democracy critique battery at the same question
+  # numbers. The W5 items (poor economy, indecisive, ineffective stability,
+  # citizens not ready) are NOT the same as these W6 items.
+  # ===========================================================================
+  - id: auth_leader_decree
+    concept: authoritarian_preference
+    description: "In order to solve the country's urgent problems, a leader can govern by decrees and disregard parliament"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q168
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "decrees.*disregard.*parliament|leader.*govern.*decrees"
+  - id: auth_econ_no_elections
+    concept: authoritarian_preference
+    description: "As long as government can solve economic problems, it does not matter if it holds regular elections"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q169
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "economic.*election|solve.*economic"
+  - id: auth_leader_break_rules
+    concept: authoritarian_preference
+    description: "This country needs a leader who can break the rules if necessary to get things done"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q170
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "leader.*break.*rules|rules.*get things done"
+  - id: auth_order_over_democracy
+    concept: authoritarian_preference
+    description: "As long as government can maintain order and stability, it does not matter if democratic or undemocratic"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q171
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strongly disagree"
+        2: "Somewhat disagree"
+        3: "Somewhat agree"
+        4: "Strongly agree"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Strongly agree → 4=Strongly disagree; reverse so high=more authoritarian"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "order.*stability.*democratic|maintain order"
+  # ===========================================================================
+  # GROUP 6: W6 Emergency Powers Battery (q172a-e)
+  # "Which circumstance would justify the government's use of emergency powers
+  #  to constrain rights and freedoms?"
+  # Convention: HIGH = more acceptance of emergency powers (reversed from raw)
+  # ===========================================================================
+  - id: emergency_pandemic
+    concept: emergency_powers
+    description: "A public health crisis like the Covid-19 pandemic justifies emergency powers constraining rights"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172a
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more acceptance"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "pandemic|public health|Covid"
+  - id: emergency_economic
+    concept: emergency_powers
+    description: "An economic crisis causing many job losses justifies emergency powers constraining rights"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172b
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more acceptance"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "economic crisis|loss.*jobs"
+  - id: emergency_corruption
+    concept: emergency_powers
+    description: "Widespread corruption that the president/PM claims can only be reduced by increasing executive power"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172c
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more acceptance"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "corruption.*executive|increasing executive"
+  - id: emergency_security
+    concept: emergency_powers
+    description: "A security crisis due to social unrest or terrorism justifies emergency powers constraining rights"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172d
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more acceptance"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "security.*terrorism|social unrest"
+  - id: emergency_war
+    concept: emergency_powers
+    description: "The country being at war justifies emergency powers constraining rights"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: q172e
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Not at all justified"
+        2: "Not very justified"
+        3: "Somewhat justified"
+        4: "Very justified"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw: 1=Very justified → 4=Not at all; reverse so high=more acceptance"
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6]
+          phrase: "war"
