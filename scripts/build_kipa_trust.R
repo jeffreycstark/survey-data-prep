@@ -306,6 +306,24 @@ bonus_crosswalk <- list(
                 grp_party = "q14_1", grp_labor = "q14_2", grp_religion = "q14_3",
                 grp_hobby = "q14_4", grp_civic = "q14_5", grp_community = "q14_6",
                 grp_alumni = "q14_7", grp_volunteer = "q14_8", grp_social_econ = "q14_9",
+                pol_interest = "q16"),
+  # 2025: q19 voting items renumbered — 21st presidential election (June 2025 snap election)
+  # is now q19_1; 22nd assembly (April 2024) is q19_2; 8th local (June 2022) is q19_3
+  "2025" = list(gen_trust = "q28", ideology = "q21", pol_sat = "q6",
+                dem_sat = NULL, efficacy = "q17_1", income_hh = "d11_2",
+                sex = "d1", age = "d2", region = "ara",
+                education = "d5_1_1", weight = "wt2",
+                econ_nat_sat = "q8", econ_nat_prosp = "q9",
+                econ_pers_stab = "q52", econ_pers_prosp = "q53",
+                mobility_self = "q5_3", mobility_child = "q5_4",
+                pol_prosp = "q7", dem_prosp = NULL,
+                vote_pres = "q19_1", vote_assembly = "q19_2",
+                vote_local = "q19_3", vote_importance = "q15_1",
+                national_pride = "q5_1", belong_province = "q5_2",
+                belong_city = "q5_2_1", belong_town = "q5_2_2",
+                grp_party = "q14_1", grp_labor = "q14_2", grp_religion = "q14_3",
+                grp_hobby = "q14_4", grp_civic = "q14_5", grp_community = "q14_6",
+                grp_alumni = "q14_7", grp_volunteer = "q14_8", grp_social_econ = "q14_9",
                 pol_interest = "q16")
 )
 
@@ -362,7 +380,7 @@ rescale_5_to_4 <- function(x) {
 # ── Process each year ────────────────────────────────────────────────────────
 
 # Skip 2012 (no institutional trust battery)
-years_to_process <- c(2011, 2013:2024)
+years_to_process <- c(2011, 2013:2025)
 all_years <- list()
 
 for (yr in years_to_process) {
@@ -668,7 +686,7 @@ cat(sprintf("  %s (%s bytes)\n", out_pqt, format(file.size(out_pqt), big.mark = 
 write.csv(means_df, out_csv, row.names = FALSE)
 cat(sprintf("  %s\n", out_csv))
 
-cat(sprintf("\n══ Done: %s respondents, %d years (2011, 2013-2024), %d variables ══\n\n",
+cat(sprintf("\n══ Done: %s respondents, %d years (2011, 2013-2025), %d variables ══\n\n",
             format(nrow(combined), big.mark = ","),
             length(unique(combined$year)),
             ncol(combined)))
