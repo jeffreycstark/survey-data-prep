@@ -20,11 +20,11 @@ concept_groups:
     - trust_central_govt
     - trust_local_govt
 
-  # ── INSTITUTIONAL TRUST: LEGISLATIVE ───────────────────────────────────────
-  # National Assembly + legislature (may overlap depending on wave coding).
-  institutional_trust_legislative:
+  # ── INSTITUTIONAL TRUST: LEGISLATIVE & JUDICIAL ──────────────────────────
+  # National Assembly + judiciary (사법부; English codebook mistranslated as "legislature").
+  institutional_trust_legislative_judicial:
     - trust_national_assembly
-    - trust_legislature
+    - trust_judiciary
 
   # ── INSTITUTIONAL TRUST: CIVIL SOCIETY ─────────────────────────────────────
   # Non-state institutions. Divergence here (e.g. media falling while NGOs
