@@ -13,49 +13,8 @@ source(here::here("src/r/data_prep_modules/2_harmonize_all.R"))
 # Load LBS wave loader
 source(here::here("src/r/data_prep_modules/lbs/0_load_waves.R"))
 
-# ==============================================================================
-# LBS-SPECIFIC FUNCTIONS
-# ==============================================================================
-
-#' List LBS YAML spec files
-#'
-#' @return Character vector of YAML file paths
-list_lbs_specs <- function() {
-  config_dir <- here::here("src", "config", "lbs", "harmonize")
-  files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
-
-  # Exclude template/doc files
-  exclude_patterns <- c("MODEL_VARIABLE", "TEMPLATE", "README")
-  files <- files[!grepl(paste(exclude_patterns, collapse = "|"), files, ignore.case = TRUE)]
-
-  files
-}
-
-
-#' Run LBS harmonization pipeline
-#'
-#' Loads LBS waves, harmonizes all specs, returns wide format.
-#'
-#' @param output_format "wide" (list of wave dfs) or "long" (single stacked df)
-#' @param silent Suppress messages
-#' @return Harmonized data
 run_lbs_harmonization <- function(output_format = "wide", silent = FALSE) {
-
-  # Load waves
-  waves <- load_lbs_waves()
-
-  # Get LBS spec files
-  specs <- list_lbs_specs()
-
-  # Harmonize all specs (uses shared harmonize_spec from ABS module)
-  results <- harmonize_all_specs(waves, specs = specs, silent = silent)
-
-  # Format output
-  if (output_format == "wide") {
-    stack_harmonized_wide(results, waves)
-  } else {
-    stack_harmonized(results, waves)
-  }
+  run_survey_harmonization("lbs", load_lbs_waves, output_format, silent)
 }
 
 # ==============================================================================
@@ -72,7 +31,7 @@ if (sys.nframe() == 0) {
   waves <- load_lbs_waves()
 
   # Get specs
-  specs <- list_lbs_specs()
+  specs <- list_survey_specs("lbs")
   cat(sprintf("\nFound %d YAML specs: %s\n\n",
               length(specs),
               paste(basename(specs), collapse = ", ")))

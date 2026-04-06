@@ -13,49 +13,8 @@ source(here::here("src/r/data_prep_modules/2_harmonize_all.R"))
 # Load Afro wave loader
 source(here::here("src/r/data_prep_modules/afro/0_load_waves.R"))
 
-# ==============================================================================
-# AFRO-SPECIFIC FUNCTIONS
-# ==============================================================================
-
-#' List Afrobarometer YAML spec files
-#'
-#' @return Character vector of YAML file paths
-list_afro_specs <- function() {
-  config_dir <- here::here("src", "config", "afro", "harmonize")
-  files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
-
-  # Exclude template/doc files
-  exclude_patterns <- c("MODEL_VARIABLE", "TEMPLATE", "README")
-  files <- files[!grepl(paste(exclude_patterns, collapse = "|"), files, ignore.case = TRUE)]
-
-  files
-}
-
-
-#' Run Afrobarometer harmonization pipeline
-#'
-#' Loads Afro waves, harmonizes all specs, returns wide format.
-#'
-#' @param output_format "wide" (list of wave dfs) or "long" (single stacked df)
-#' @param silent Suppress messages
-#' @return Harmonized data
 run_afro_harmonization <- function(output_format = "wide", silent = FALSE) {
-
-  # Load waves
-  waves <- load_afro_waves()
-
-  # Get Afro spec files
-  specs <- list_afro_specs()
-
-  # Harmonize all specs (uses shared harmonize_spec from ABS module)
-  results <- harmonize_all_specs(waves, specs = specs, silent = silent)
-
-  # Format output
-  if (output_format == "wide") {
-    stack_harmonized_wide(results, waves)
-  } else {
-    stack_harmonized(results, waves)
-  }
+  run_survey_harmonization("afro", load_afro_waves, output_format, silent)
 }
 
 # ==============================================================================
@@ -72,7 +31,7 @@ if (sys.nframe() == 0) {
   waves <- load_afro_waves()
 
   # Get specs
-  specs <- list_afro_specs()
+  specs <- list_survey_specs("afro")
   cat(sprintf("\nFound %d YAML specs: %s\n\n",
               length(specs),
               paste(basename(specs), collapse = ", ")))

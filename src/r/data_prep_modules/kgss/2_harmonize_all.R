@@ -13,32 +13,8 @@ source(here::here("src/r/data_prep_modules/2_harmonize_all.R"))
 # Load KGSS wave loader
 source(here::here("src/r/data_prep_modules/kgss/0_load_waves.R"))
 
-# ==============================================================================
-# KGSS-SPECIFIC FUNCTIONS
-# ==============================================================================
-
-#' List KGSS YAML spec files
-list_kgss_specs <- function() {
-  config_dir <- here::here("src", "config", "kgss", "harmonize")
-  files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
-  exclude_patterns <- c("MODEL_VARIABLE", "TEMPLATE", "README")
-  files[!grepl(paste(exclude_patterns, collapse = "|"), files, ignore.case = TRUE)]
-}
-
-#' Run KGSS harmonization pipeline
-#'
-#' @param output_format "wide" (list of wave dfs) or "long" (single stacked df)
-#' @param silent Suppress messages
-#' @return Harmonized data
 run_kgss_harmonization <- function(output_format = "wide", silent = FALSE) {
-  waves <- load_kgss_waves()
-  specs <- list_kgss_specs()
-  results <- harmonize_all_specs(waves, specs = specs, silent = silent)
-  if (output_format == "wide") {
-    stack_harmonized_wide(results, waves)
-  } else {
-    stack_harmonized(results, waves)
-  }
+  run_survey_harmonization("kgss", load_kgss_waves, output_format, silent)
 }
 
 # ==============================================================================
@@ -53,7 +29,7 @@ if (sys.nframe() == 0) {
 
   waves <- load_kgss_waves()
 
-  specs <- list_kgss_specs()
+  specs <- list_survey_specs("kgss")
   cat(sprintf("\nFound %d YAML specs: %s\n\n",
               length(specs),
               paste(basename(specs), collapse = ", ")))

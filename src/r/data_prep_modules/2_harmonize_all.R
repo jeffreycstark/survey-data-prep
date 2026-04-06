@@ -201,6 +201,41 @@ stack_harmonized_wide <- function(harmonized_results, waves) {
 
 
 # ==============================================================================
+# GENERIC SURVEY HELPERS (used by per-survey 2_harmonize_all.R files)
+# ==============================================================================
+
+#' List YAML spec files for any survey
+#'
+#' @param survey Survey directory name under src/config/ (e.g. "afro", "wvs")
+#' @return Character vector of YAML file paths (excludes template/doc files)
+list_survey_specs <- function(survey) {
+  config_dir <- here::here("src", "config", survey, "harmonize")
+  files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
+  exclude_patterns <- c("MODEL_VARIABLE", "TEMPLATE", "README")
+  files[!grepl(paste(exclude_patterns, collapse = "|"), files, ignore.case = TRUE)]
+}
+
+#' Generic harmonization pipeline for any survey
+#'
+#' @param survey Survey directory name (used to locate YAML specs)
+#' @param load_fn Zero-argument function that returns the named list of wave data frames
+#' @param output_format "wide" (list of wave dfs) or "long" (single stacked df)
+#' @param silent Suppress messages
+#' @return Harmonized data
+run_survey_harmonization <- function(survey, load_fn,
+                                     output_format = "wide", silent = FALSE) {
+  waves <- load_fn()
+  specs <- list_survey_specs(survey)
+  results <- harmonize_all_specs(waves, specs = specs, silent = silent)
+  if (output_format == "wide") {
+    stack_harmonized_wide(results, waves)
+  } else {
+    stack_harmonized(results, waves)
+  }
+}
+
+
+# ==============================================================================
 # CONVENIENCE WRAPPER
 # ==============================================================================
 

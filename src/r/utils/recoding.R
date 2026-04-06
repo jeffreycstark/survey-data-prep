@@ -1,6 +1,30 @@
 # R/recoding.R
 # Recoding functions for Asian Barometer analysis
 
+# Private helper: validate variable label against expected semantic patterns.
+# Called by safe_reverse_*pt(), safe_*pt_none(), and no_verify() before recoding.
+.validate_semantic_label <- function(validate_all, data, var_name) {
+  if (is.null(validate_all)) return(invisible(NULL))
+  if (is.null(data) || is.null(var_name)) {
+    stop("❌ validate_all requires both `data` and `var_name`")
+  }
+  if (!var_name %in% names(data)) {
+    stop(glue::glue("❌ {var_name}: variable not found in data"))
+  }
+  qtext <- attr(data[[var_name]], "label")
+  if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
+    stop(glue::glue("❌ {var_name}: missing question label for validation"))
+  }
+  for (pattern in validate_all) {
+    if (!grepl(pattern, qtext, ignore.case = TRUE)) {
+      stop(glue::glue(
+        "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
+      ))
+    }
+  }
+  invisible(NULL)
+}
+
 safe_reverse_3pt <- function(x,
                               data = NULL,
                               var_name = NULL,
@@ -8,30 +32,7 @@ safe_reverse_3pt <- function(x,
                               validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- reversal logic ----
   dplyr::case_when(
@@ -48,30 +49,7 @@ safe_reverse_4pt <- function(x,
                               validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- reversal logic ----
   dplyr::case_when(
@@ -128,30 +106,7 @@ safe_reverse_5pt <- function(x,
                               validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- reversal logic ----
   dplyr::case_when(
@@ -172,30 +127,7 @@ safe_3pt_none <- function(x,
                            validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- identity logic (no reversal) ----
   dplyr::case_when(
@@ -212,30 +144,7 @@ safe_4pt_none <- function(x,
                            validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- identity logic (no reversal) ----
   dplyr::case_when(
@@ -252,30 +161,7 @@ safe_5pt_none <- function(x,
                            validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- identity logic (no reversal) ----
   dplyr::case_when(
@@ -296,30 +182,7 @@ safe_reverse_6pt <- function(x,
                               validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- reversal logic ----
   dplyr::case_when(
@@ -336,30 +199,7 @@ safe_6pt_none <- function(x,
                            validate_all = NULL) {
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- identity logic (no reversal) ----
   dplyr::case_when(
@@ -400,30 +240,7 @@ safe_6pt_to_4pt <- function(x,
   #'   2,1 → 1 (None at all)
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- first handle missing codes ----
   x_clean <- dplyr::case_when(
@@ -492,30 +309,7 @@ recode_has_party <- function(x,
   #'   - Missing codes -> NA
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # No party codes: 90 = "Don't feel close to any political party"
   # Some waves may use country-specific "no party" codes (1595, 1597)
@@ -562,30 +356,7 @@ middle_identity_5pt <- function(x,
   #' So semantic order becomes: 1 < 2 < 3 (was 5) < 4 (was 3) < 5 (was 4)
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- remap with middle value (5) moved to center (3) ----
   dplyr::case_when(
@@ -617,30 +388,7 @@ middle_reverse_5pt <- function(x,
   #' So original high (1) becomes low (5), and middle stays at center (3)
 
   # ---- semantic validation (optional but recommended) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- reverse with middle value (5) staying at center (3) ----
   dplyr::case_when(
@@ -1207,30 +955,7 @@ no_verify <- function(x,
                       validate_all = NULL) {
 
   # ---- semantic validation (optional) ----
-  if (!is.null(validate_all)) {
-
-    if (is.null(data) || is.null(var_name)) {
-      stop("❌ validate_all requires both `data` and `var_name`")
-    }
-
-    if (!var_name %in% names(data)) {
-      stop(glue::glue("❌ {var_name}: variable not found in data"))
-    }
-
-    qtext <- attr(data[[var_name]], "label")
-
-    if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
-      stop(glue::glue("❌ {var_name}: missing question label for validation"))
-    }
-
-    for (pattern in validate_all) {
-      if (!grepl(pattern, qtext, ignore.case = TRUE)) {
-        stop(glue::glue(
-          "❌ {var_name}: expected concept '{pattern}' not found in question text:\n'{qtext}'"
-        ))
-      }
-    }
-  }
+  .validate_semantic_label(validate_all, data, var_name)
 
   # ---- pass-through: only convert missing codes to NA ----
   dplyr::if_else(x %in% missing_codes, NA_real_, as.numeric(x))
