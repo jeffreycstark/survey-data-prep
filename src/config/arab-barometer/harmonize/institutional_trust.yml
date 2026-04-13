@@ -90,8 +90,12 @@ variables:
       w4: q2014
       w5: Q201A_42
       w7: null
-      w8: null
-    note: "W7-W8: police var name differs by country (Q201A_42A_MOR etc). Need wave-specific handling."
+      w8: Q201B_4
+    note: |
+      W7 has NO comparable trust_police item: the only police variable is
+      Q201A_42A_MOR (Morocco-only, 62% coverage within Morocco, 0% all other
+      countries including Tunisia). AB W7 dropped the generic police battery.
+      W8 restored it as Q201B_4 (Tunisia 100%, cross-country ~95-100%).
     harmonize:
       default:
         method: r_function
@@ -108,9 +112,13 @@ variables:
       w3: null
       w4: q20120
       w5: Q201B_20
-      w7: Q201B_20
+      w7: null
       w8: null
-    note: "Spotty coverage. W3 missing. W8 may use different var name."
+    note: |
+      Spotty coverage. W3 missing. W5 uses a half-sample split-ballot
+      (Tunisia ~50% response). W7 and W8 omit the generic political-parties
+      trust item entirely (no Q201B_20; only country-specific sectarian-party
+      items like Q201B_12 "main Sunni party" / Q201B_14 "main Shia party").
     harmonize:
       default:
         method: r_function
@@ -180,10 +188,17 @@ variables:
       w2: null
       w3: null
       w4: null
-      w5: null
-      w7: null
+      w5: Q201B_31
+      w7: Q201A_31B
       w8: Q201A_31B
-    note: "W8 only. Earlier waves did not separate head of state from government."
+    note: |
+      W5 Q201B_31 = "President/Prime Minister" (combined item; half-sample
+      split ballot, ~50% within-country coverage). W7/W8 Q201A_31B =
+      "President/Head of State" (separate from Q201A_31C = Prime Minister).
+      W2-W4 did not include a separate head-of-state item. Country coverage
+      varies by constitutional form: populated in presidential/semi-presidential
+      systems (Tunisia, Iraq, Palestine, Mauritania, Egypt in some waves),
+      not in pure parliamentary monarchies (Jordan, Morocco, Kuwait).
     harmonize:
       default:
         method: r_function

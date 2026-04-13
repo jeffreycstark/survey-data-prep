@@ -1,0 +1,82 @@
+# WVS Interview date / year of survey
+#
+# Adds int_year (and int_month where available) across WVS W1-W7.
+#
+# SOURCES BY WAVE:
+#
+# int_year:
+#   W1 V237 (Year survey)           1981-1984
+#   W2 V377 (Year survey)           1989-1993
+#   W3 V238 (Year of survey)        1994-1998
+#   W4 V246 (Year survey)           1999-2004
+#   W5 V260 (Year survey)           2005-2009
+#   W6 V262 (Year survey)           2010-2014
+#   W7 S025 (Country+year code)     2017-2023 — last 4 digits = year;
+#                                               preferred over J_INTDATE because
+#                                               J_INTDATE carries -5/-4 codes.
+#
+# int_month (sparse — only where interview-date is populated in source):
+#   W1, W2, W3: not available
+#   W4 V247 (Interview date, YYYYMMDD int)   ~12% coverage
+#   W5 V261 (Interview date, YYYYMMDD int)   ~6% coverage
+#   W6 V261 (Interview date, YYYYMMDD int)   ~50% coverage
+#   W7 J_INTDATE (Interview date, YYYYMMDD)  ~94% coverage
+#
+# MISSING VALUES: WVS standard [-5,-4,-3,-2,-1] stripped by engine before
+# extraction, so negative sentinels in J_INTDATE/V261/V247 become NA.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: int_year
+    concept: interview_date
+    description: "Year of interview / year of survey fieldwork"
+    type: continuous
+    source:
+      w1: V237
+      w2: V377
+      w3: V238
+      w4: V246
+      w5: V260
+      w6: V262
+      w7: S025
+    scale:
+      min: 1981
+      max: 2030
+    harmonize:
+      default:
+        method: identity
+        note: "Year-labelled source columns contain the survey year directly"
+      by_wave:
+        w7:
+          method: r_function
+          fn: extract_year_from_s025
+          note: "W7 S025 = country_iso3n*10000 + year; last 4 digits = year"
+    qc:
+      valid_range: [1981, 2030]
+
+  - id: int_month
+    concept: interview_date
+    description: "Month of interview (1-12). Sparse; populated only where source has YYYYMMDD interview date."
+    type: continuous
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: V247
+      w5: V261
+      w6: V261
+      w7: J_INTDATE
+    scale:
+      min: 1
+      max: 12
+    harmonize:
+      default:
+        method: r_function
+        fn: extract_month_from_yyyymmdd
+        note: "Source is a YYYYMMDD integer; extract month component"
+    qc:
+      valid_range: [1, 12]

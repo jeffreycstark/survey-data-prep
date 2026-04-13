@@ -164,16 +164,20 @@ variables:
       w5: null
       w7: DATE
       w8: DATE
-    note: "Extracted from date/DATE. W2/W4/W5 have no date variable."
+    note: |
+      W3/W7/W8 extract directly from the raw date column. W2/W4/W5 have no
+      interview-date variable in the raw AB files; int_year for those waves
+      is filled in 99_create_final_dataset.R using a country × wave fieldwork
+      crosswalk (derived from published AB methodology reports).
     scale:
-      min: 2010
+      min: 2006
       max: 2025
     harmonize:
       default:
         method: r_function
         fn: extract_year_from_date
     qc:
-      valid_range: [2010, 2025]
+      valid_range: [2006, 2025]
 
   - id: weight
     concept: demographics

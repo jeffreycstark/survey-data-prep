@@ -167,6 +167,47 @@ for (wave_name in names(wave_list)) {
 }
 
 # ==============================================================================
+# FILL int_year FOR W2/W4/W5 FROM FIELDWORK CROSSWALK
+# ==============================================================================
+# W2, W4, W5 raw AB files contain no interview-date column. Populate int_year
+# (and int_month where known from AB methodology reports) using a country ×
+# wave crosswalk. W3/W7/W8 retain their date-derived int_year.
+#
+# Sources: Arab Barometer methodology reports (abvvi methodology pdf,
+# waveV methodology pdf, waveIV methodology pdf, aboutarabbarometer.org).
+# Where a wave straddled a calendar boundary, the year listed below is the
+# one during which the majority of interviews took place.
+
+ab_fieldwork_year <- function(wave, country_iso3) {
+  # Returns integer fieldwork year, or NA if unknown
+  cross <- list(
+    w2 = c(ALG = 2011L, EGY = 2011L, IRQ = 2011L, JOR = 2010L, LBN = 2010L,
+           PSE = 2010L, SAU = 2011L, SDN = 2011L, TUN = 2011L, YEM = 2011L,
+           DZA = 2011L),
+    w4 = c(ALG = 2016L, DZA = 2016L, EGY = 2016L, IRQ = 2016L, JOR = 2016L,
+           KWT = 2016L, LBN = 2016L, MAR = 2016L, PSE = 2016L, TUN = 2016L),
+    w5 = c(ALG = 2019L, DZA = 2019L, EGY = 2019L, IRQ = 2018L, JOR = 2018L,
+           KWT = 2019L, LBN = 2018L, LBY = 2019L, MAR = 2018L, PSE = 2018L,
+           QAT = 2018L, SDN = 2018L, TUN = 2018L, YEM = 2019L)
+  )
+  if (!wave %in% names(cross)) return(NA_integer_)
+  table <- cross[[wave]]
+  out <- unname(table[country_iso3])
+  # Fallback to wave default if country not in crosswalk
+  default <- switch(wave, w2 = 2011L, w4 = 2016L, w5 = 2018L, NA_integer_)
+  ifelse(is.na(out), default, out)
+}
+
+for (wave_name in c("w2", "w4", "w5")) {
+  if (!wave_name %in% names(wave_list)) next
+  df <- wave_list[[wave_name]]
+  df$int_year <- ab_fieldwork_year(wave_name, df$country)
+  wave_list[[wave_name]] <- df
+  cat(sprintf("  %s int_year filled from crosswalk (%d non-NA / %d)\n",
+              wave_name, sum(!is.na(df$int_year)), nrow(df)))
+}
+
+# ==============================================================================
 # COERCE int_date TO CONSISTENT TYPE BEFORE BINDING
 # ==============================================================================
 # int_date is Date in waves with dates, NA/double in waves without.

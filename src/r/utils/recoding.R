@@ -1296,6 +1296,44 @@ extract_year_from_date <- function(x,
   rep(NA_real_, length(x))
 }
 
+#' Extract year from a YYYYMMDD integer (e.g., WVS W4 V247 = 20000816 -> 2000)
+extract_year_from_yyyymmdd <- function(x,
+                                       data = NULL,
+                                       var_name = NULL,
+                                       validate_all = NULL) {
+  x <- suppressWarnings(as.numeric(x))
+  years <- x %/% 10000
+  years[is.na(years) | years < 1981 | years > 2030] <- NA_real_
+  years
+}
+
+#' Extract month from a YYYYMMDD integer (e.g., 20000816 -> 8)
+extract_month_from_yyyymmdd <- function(x,
+                                        data = NULL,
+                                        var_name = NULL,
+                                        validate_all = NULL) {
+  x <- suppressWarnings(as.numeric(x))
+  years <- x %/% 10000
+  months <- (x %/% 100) %% 100
+  bad <- is.na(months) | years < 1981 | years > 2030 | months < 1 | months > 12
+  months[bad] <- NA_real_
+  months
+}
+
+#' Extract year from a WVS S025 integer (country_iso3n * 10000 + year)
+#'
+#' S025 packs country and year (e.g., 202018 = country 20, year 2018). The year
+#' is the last four digits.
+extract_year_from_s025 <- function(x,
+                                   data = NULL,
+                                   var_name = NULL,
+                                   validate_all = NULL) {
+  x <- suppressWarnings(as.numeric(x))
+  years <- x %% 10000
+  years[is.na(years) | years < 1981 | years > 2030] <- NA_real_
+  years
+}
+
 # ── KAMOS-specific recoding functions ─────────────────────────────────────────
 
 # recode_kamos_gender_w1
