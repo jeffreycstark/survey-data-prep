@@ -1,5 +1,5 @@
 # KGSS Political Attitudes
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # Variables:
 #   CURGOV   - Assessment of current government (1=very good, 5=very poor)
@@ -120,6 +120,7 @@ variables:
       w2018: PARTYLR
       w2021: PARTYLR
       w2023: PARTYLR
+      w2025: PARTYLR
     scale:
       min: 1
       max: 5
@@ -157,6 +158,7 @@ variables:
       w2018: KRPROUD
       w2021: KRPROUD
       w2023: KRPROUD
+      w2025: KRPROUD
     scale:
       min: 1
       max: 4
@@ -264,6 +266,7 @@ variables:
       w2018: NORTHWHO
       w2021: NORTHWHO
       w2023: NORTHWHO
+      w2025: NORTHWHO
     scale:
       min: 1
       max: 4
@@ -334,6 +337,7 @@ variables:
       w2018: UNIFI
       w2021: UNIFI
       w2023: UNIFI
+      w2025: UNIFI
     scale:
       min: 1
       max: 4

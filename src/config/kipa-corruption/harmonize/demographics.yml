@@ -1,0 +1,149 @@
+# KIPA Corruption — Respondent demographics
+#
+# Variable names shift across three naming regimes:
+#   - cumulative (2004-2007):  sex / age / edu / inc
+#   - 2008 + 2022-2023:        dq1 / dq2 / dq3 / dq4
+#   - 2009-2021:               sex / age (or age_re) / edu / inc
+#
+# For age, the 2013-2016 waves have BOTH a continuous-years variable (age) AND
+# a categorical 1-5 variable (age_re). We use the categorical throughout for
+# cross-wave comparability; continuous-years is not harmonized here.
+#
+# 2011-2012 also have age1 (continuous) alongside age (categorical).
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -9, 8, 9, 88, 99]
+    description: "KIPA corruption: common sentinel missing codes"
+
+variables:
+  - id: sex
+    concept: demographics
+    description: "Respondent sex (1=male, 2=female)"
+    type: binary
+    source:
+      w2004: sex
+      w2005: sex
+      w2006: sex
+      w2007: sex
+      w2008: dq1
+      w2009: sex
+      w2010: sex
+      w2011: sex
+      w2012: sex
+      w2013: sex
+      w2014: sex
+      w2015: sex
+      w2016: sex
+      w2017: sex
+      w2018: sex
+      w2019: sex
+      w2020: sex
+      w2021: sex
+      w2022: dq1
+      w2023: dq1
+    scale: {min: 1, max: 2, labels: {1: "Male", 2: "Female"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: age_cat
+    concept: demographics
+    description: "Respondent age in 5 categories (per KIPA coding; typically 20s/30s/40s/50s/60+)"
+    type: ordinal
+    note: "Categorical age. 2013-2016 switched the primary `age` variable to continuous years and added `age_re` as the categorical — we use `age_re` for those waves. 2011-2012 also have `age1` (continuous) alongside categorical `age`. From 2017 onward `age` is categorical again."
+    source:
+      w2004: age
+      w2005: age
+      w2006: age
+      w2007: age
+      w2008: dq2
+      w2009: age
+      w2010: age
+      w2011: age
+      w2012: age
+      w2013: age_re
+      w2014: age_re
+      w2015: age_re
+      w2016: age_re
+      w2017: age
+      w2018: age
+      w2019: age
+      w2020: age
+      w2021: age
+      w2022: dq2
+      w2023: dq2
+    scale: {min: 1, max: 5, labels: {1: "20s or younger", 5: "60+ (exact KIPA boundaries vary slightly by wave)"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]   # Allow up to 6 — some waves may use 6 categories
+
+  - id: education
+    concept: demographics
+    description: "Respondent education level (categorical; scale interpretation varies slightly across KIPA waves)"
+    type: ordinal
+    note: "KIPA education scale is typically 1=middle school or less → higher = more education. Exact categories and boundaries may differ slightly across years; treat as ordinal but verify specific category meanings against codebook for cross-wave trend analysis."
+    source:
+      w2004: edu
+      w2005: edu
+      w2006: edu
+      w2007: edu
+      w2008: dq3
+      w2009: edu
+      w2010: edu
+      w2011: edu
+      w2012: edu
+      w2013: edu
+      w2014: edu
+      w2015: edu
+      w2016: edu
+      w2017: edu
+      w2018: edu
+      w2019: edu
+      w2020: edu
+      w2021: edu
+      w2022: dq3
+      w2023: dq3
+    scale: {min: 1, max: 10, labels: {1: "Lowest", 10: "Highest"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: income
+    concept: demographics
+    description: "Respondent monthly household income (categorical; scale boundaries vary by wave due to inflation/KIPA revisions)"
+    type: ordinal
+    note: "Household income is categorical with boundaries updated periodically in KIPA — treat as ordinal-within-wave and exercise caution in cross-wave comparisons. Number of categories varies (roughly 8–12)."
+    source:
+      w2004: inc
+      w2005: inc
+      w2006: inc
+      w2007: inc
+      w2008: dq4
+      w2009: inc
+      w2010: inc
+      w2011: inc
+      w2012: inc
+      w2013: inc
+      w2014: inc
+      w2015: inc
+      w2016: inc
+      w2017: inc
+      w2018: inc
+      w2019: inc
+      w2020: inc
+      w2021: inc
+      w2022: dq4
+      w2023: dq4
+    scale: {min: 1, max: 12, labels: {1: "Lowest", 12: "Highest"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]

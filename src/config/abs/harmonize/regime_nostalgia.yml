@@ -1,0 +1,289 @@
+# ABS Nostalgia Battery — Regime Evaluation Variables
+# For use in: paper-bank/papers/13_authoritarian_attraction
+#
+# PURPOSE:
+#   These variables operationalize "authoritarian nostalgia" in the ABS —
+#   the retrospective idealization of the pre-democratic period. The core
+#   measure is the democracy_scale_past minus democracy_scale_now gap:
+#   respondents who rate the past system more highly than the present one
+#   are expressing nostalgia in the direct sense.
+#
+#   In the attraction paper, the key question is whether the no-memory cohort
+#   shows HIGHER nostalgia (past > now) despite lacking direct authoritarian
+#   experience. If yes, nostalgia is a mediator. If the no-memory group is
+#   LESS nostalgic despite being more open to authoritarian alternatives in
+#   the abstract, that is the cleanest empirical signature of
+#   attraction-as-abstraction.
+#
+# VARIABLES:
+#   GROUP 1 — Democracy scale battery (all waves, all countries)
+#     democracy_scale_past    : How democratic was the country 10 years ago? (1-10)
+#     democracy_scale_now     : How democratic is the country today? (1-10)
+#     democracy_scale_future  : How democratic will the country be in 10 years? (1-10)
+#     nostalgia_gap           : DERIVED = democracy_scale_past - democracy_scale_now
+#                               Positive = past rated higher = nostalgia
+#
+#   GROUP 2 — Authoritarian era evaluation (W1 only)
+#     dem_country_authoritarian : How democratic was the country under the
+#                                 previous (authoritarian) regime? (1-10)
+#                                 W1 asks about the period BEFORE transition,
+#                                 not just 10 years ago — making it the most
+#                                 direct measure of authoritarian-era evaluation.
+#                                 NOTE: Verify exact W1 question text — may be
+#                                 the same as democracy_scale_past in W1 context
+#                                 (since W1 was fielded ~2001-2003, "10 years ago"
+#                                 ≈ 1991-1993, close to transition for most countries).
+#
+#   GROUP 3 — Regime performance comparison (economy)
+#     econ_country_past       : Country economy vs a few years ago (1-5, all waves)
+#                               Supplementary nostalgia proxy — economic retrospection.
+#
+# SCALE DIRECTIONS (after harmonization, higher = more of concept):
+#   democracy_scale_*   : 1=completely undemocratic, 10=completely democratic
+#                         NO REVERSAL — higher = more democratic
+#   nostalgia_gap       : DERIVED, positive = nostalgic, negative = progressive
+#   econ_country_past   : harmonize to 1=much worse, 5=much better
+#                         (W4 raw is reversed: needs safe_reverse_5pt)
+#
+# MISSING VALUES:
+#   Standard ABS codes: -1=Don't know, -2=No answer, 97=N/A, 98=Refused, 99=Missing
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, 97, 98, 99]
+    description: "Standard ABS missing codes across all waves"
+
+variables:
+
+  # ===========================================================================
+  # GROUP 1: Democracy Scale Battery
+  # All waves, all countries. Core nostalgia operationalization.
+  # ===========================================================================
+
+  - id: democracy_scale_past
+    concept: regime_nostalgia
+    description: "How democratic was the political system 10 years ago? (1=completely undemocratic, 10=completely democratic)"
+    type: ordinal
+    source:
+      w1: q099
+      w2: q95
+      w3: q92
+      w4: q95
+      w5: q102
+      w6: q93
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "All waves: 1=undemocratic, 10=democratic. Higher = more democratic past."
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "10 years ago|ten years ago|previous|past"
+    tags: [nostalgia, regime_evaluation, core]
+
+  - id: democracy_scale_now
+    concept: regime_evaluation
+    description: "How democratic is the political system today? (1=completely undemocratic, 10=completely democratic)"
+    type: ordinal
+    source:
+      w1: q100
+      w2: q96
+      w3: q91
+      w4: q94
+      w5: q101
+      w6: q92
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "All waves: 1=undemocratic, 10=democratic. Higher = more democratic now."
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "today|now|current|at present"
+    tags: [regime_evaluation, core]
+
+  - id: democracy_scale_future
+    concept: regime_evaluation
+    description: "How democratic will the political system be in 10 years? (1=completely undemocratic, 10=completely democratic)"
+    type: ordinal
+    source:
+      w1: q102
+      w2: null
+      w3: q93
+      w4: q96
+      w5: q103
+      w6: q94
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "W1, W3-W6 only (W2 absent). 1=undemocratic, 10=democratic."
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w3, w4, w5, w6]
+          phrase: "10 years|ten years|future|will be"
+    tags: [regime_evaluation]
+
+  # ===========================================================================
+  # DERIVED VARIABLE (compute in R after harmonization, not in YAML)
+  #
+  # nostalgia_gap = democracy_scale_past - democracy_scale_now
+  #
+  # Interpretation:
+  #   > 0  : Respondent rates past as more democratic than present = NOSTALGIA
+  #   = 0  : Equal ratings = no directional preference
+  #   < 0  : Respondent rates present as more democratic than past = PROGRESS
+  #
+  # In R:
+  #   dat <- dat |>
+  #     mutate(nostalgia_gap = democracy_scale_past - democracy_scale_now,
+  #            nostalgic     = as.integer(nostalgia_gap > 0))
+  # ===========================================================================
+
+  # ===========================================================================
+  # GROUP 2: Authoritarian Era Evaluation (W1 only)
+  # NOTE: In W1 (fielded ~2001-2003), "10 years ago" places respondents'
+  # reference point at ~1991-1993 — which is close to or within the
+  # authoritarian period for Indonesia (1998), Philippines (1986),
+  # Korea/Taiwan (1987), and Mongolia (1990). So democracy_scale_past
+  # in W1 IS effectively an evaluation of the authoritarian era for
+  # these countries.
+  #
+  # If a separate "under the previous regime" item exists in W1, add it here.
+  # From the crosswalk search, no distinct "dem_country_authoritarian" variable
+  # was found — confirm with questionnaire whether q099 W1 asks specifically
+  # about "the previous system" vs. "10 years ago."
+  # ===========================================================================
+
+  - id: dem_country_authoritarian
+    concept: regime_nostalgia
+    description: "How democratic was the country under the previous (authoritarian) regime? W1 only — verify question text distinguishes from democracy_scale_past."
+    type: ordinal
+    source:
+      w1: q099
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Completely undemocratic"
+        10: "Completely democratic"
+    harmonize:
+      default:
+        method: identity
+        note: "W1 only. Verify: is q099 W1 'previous regime' or '10 years ago'? If identical to democracy_scale_past W1, drop this variable and use democracy_scale_past W1 directly."
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1]
+          phrase: "previous|former|before|authoritarian|regime"
+    tags: [nostalgia, regime_evaluation, w1_only, verify_question_text]
+    note: "REQUIRES VERIFICATION. Check W1 questionnaire to confirm q099 asks about 'previous regime' specifically vs. '10 years ago'. If the latter, democracy_scale_past already captures this for W1."
+
+  # ===========================================================================
+  # GROUP 3: Economic Retrospection (supplementary nostalgia proxy)
+  # All waves. "Compared to a few years ago, how is the country's economy?"
+  # Higher = better than before. Lower = worse than before.
+  # Economic nostalgia = lower scores (things were better before).
+  # ===========================================================================
+
+  - id: econ_country_past
+    concept: regime_nostalgia
+    description: "Country economy compared to a few years ago (1=much worse, 5=much better)"
+    type: ordinal
+    source:
+      w1: q002
+      w2: q2
+      w3: q2
+      w4: q2
+      w5: q2
+      w6: q2
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "About the same"
+        4: "Somewhat better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+        note: "W1-W3, W5-W6: 1=much worse, 5=much better."
+      exceptions:
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+          note: "W4 raw is reversed (1=much better, 5=much worse); reverse to match other waves."
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "economy|economic.*few years|years ago"
+    tags: [nostalgia, economic_retrospection]
+
+  # ===========================================================================
+  # GROUP 4: Family economic retrospection (individual-level economic nostalgia)
+  # Parallel to econ_country_past but for family finances.
+  # ===========================================================================
+
+  - id: econ_family_past
+    concept: economic_retrospection
+    description: "Family economic situation compared to a few years ago (1=much worse, 5=much better)"
+    type: ordinal
+    source:
+      w1: q005
+      w2: q5
+      w3: q5
+      w4: q5
+      w5: q5
+      w6: q5
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        2: "Somewhat worse"
+        3: "About the same"
+        4: "Somewhat better"
+        5: "Much better"
+    harmonize:
+      default:
+        method: identity
+        note: "W1-W3, W5-W6: 1=much worse, 5=much better."
+      exceptions:
+        w4:
+          method: r_function
+          fn: safe_reverse_5pt
+          note: "W4 raw is reversed; reverse to match other waves."
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6]
+          phrase: "family.*economy|household.*few years|family.*years ago"
+    tags: [economic_retrospection]

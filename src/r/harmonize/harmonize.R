@@ -87,6 +87,38 @@ harmonize_variable <- function(
 
   out <- list()
 
+  # ---- pre-flight: detect probable missing wave entries ----
+  # If a wave is NOT in var_spec$source, but a raw variable referenced in
+  # OTHER waves' source mappings exists in this wave's data with valid
+  # responses, warn — likely a forgotten YAML entry that produces silent NA.
+  # Skips when skip_unmapped_check: true is set in var_spec$qc.
+  if (!isTRUE(var_spec$qc$skip_unmapped_check)) {
+    mapped_srcs <- unique(unlist(var_spec$source, use.names = FALSE))
+    mapped_srcs <- mapped_srcs[!is.na(mapped_srcs) & nzchar(mapped_srcs)]
+    for (wave_name in names(waves)) {
+      if (wave_name %in% names(var_spec$source)) next
+      df <- waves[[wave_name]]
+      for (src_name in mapped_srcs) {
+        if (!(src_name %in% names(df))) next
+        col <- df[[src_name]]
+        if (inherits(col, "haven_labelled")) col <- haven::zap_labels(col)
+        n_valid <- if (is.character(col)) {
+          sum(!is.na(col) & nzchar(col))
+        } else {
+          v <- suppressWarnings(as.numeric(col))
+          sum(!is.na(v) & !(v %in% c(-1, -8)))
+        }
+        if (n_valid > 0) {
+          warning(sprintf(
+            "[harmonize] %s: wave '%s' is unmapped but raw var '%s' exists with %d valid values — probable missing source entry (output will be NA for this wave)",
+            var_spec$id, wave_name, src_name, n_valid
+          ), call. = FALSE)
+          break  # one warning per missing wave is enough
+        }
+      }
+    }
+  }
+
   for (wave_name in names(waves)) {
 
     df <- waves[[wave_name]]

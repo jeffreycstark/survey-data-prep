@@ -1,0 +1,595 @@
+# KGSS ISSP National Identity module (2003 / 2013 / 2023, with bonus 2025 for PROUD* items)
+#
+# Five variable families:
+#
+#   (1) General national pride (5 items)  — agree/disagree with broad national-identity statements
+#   (2) Domain-specific pride (10 items)  — pride in democracy, economy, science, sports, etc.
+#   (3) "True Korean" criteria (6 items)  — importance of birthplace, citizenship, ancestry, etc.
+#   (4) International relations (6 items) — protectionism vs globalism attitudes
+#   (5) Immigration attitudes (5 items)   — economic/cultural/social effects of immigration
+#
+# SCALE SUMMARY:
+#   5-point agree (general pride / international / immigration items except imm_limit_number):
+#     Raw 1=매우 찬성 (strongly agree) → 5=매우 반대 (strongly disagree). REVERSED so higher = more agreement.
+#   5-point LETIN1 (imm_limit_number):
+#     Raw 1=많이 늘어야 (much more) → 5=많이 줄어야 (much less). REVERSED so higher = want FEWER immigrants.
+#   4-point domain pride (PROUD*):
+#     Raw 1=매우 자랑스럽다 (very proud) → 4=전혀 자랑스럽지 않다 (not at all). REVERSED so higher = more proud.
+#   4-point true-Korean criteria (KR*):
+#     Raw 1=매우 중요 (very important) → 4=전혀 중요하지 않음 (not at all). REVERSED so higher = more important.
+#
+# WAVE COVERAGE:
+#   Core ISSP National Identity: 2003, 2013, 2023
+#   Domain pride items (PROUD*): ALSO in 2025 — 4 waves of identical items
+#   Some true-Korean and immigration items also appeared in 2010
+#
+# SEMANTIC NOTE on natid_shame (KRSHAMED): statement is "there are things in Korea that make me ashamed."
+# Reversed so higher = more agreement = MORE shame. This is deliberately inverse to the other pride items.
+#
+# MISSING VALUES:
+# -8 = DK, -1 = IAP; 8/9/88/98/99 = legacy DK/IAP sentinels
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9, 88, 98, 99]
+    description: "KGSS: -8=DK, -1=IAP; legacy 8/9/88/98/99 sentinels"
+
+variables:
+  # -------- (1) GENERAL NATIONAL PRIDE (5 items, 2003/2013/2023) --------
+  - id: natid_korean_over_other
+    concept: national_identity
+    description: "Agree: 'Rather be Korean than any other nationality' (1-5, higher=more agreement)"
+    type: ordinal
+    note: "KRCITIZN. Raw 1=strongly agree, 5=strongly disagree. Reversed so high=agree."
+    source:
+      w2003: KRCITIZN
+      w2013: KRCITIZN
+      w2023: KRCITIZN
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: natid_shame
+    concept: national_identity
+    description: "Agree: 'There are things in Korea today that make me ashamed' (1-5, higher=more shame)"
+    type: ordinal
+    note: "KRSHAMED. Reversed so high=more agreement = more shame. This item is INVERSELY valenced to the other pride items."
+    source:
+      w2003: KRSHAMED
+      w2013: KRSHAMED
+      w2023: KRSHAMED
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: natid_world_like_kr
+    concept: national_identity
+    description: "Agree: 'World would be better if people everywhere were more like Koreans' (1-5, higher=more agreement)"
+    type: ordinal
+    note: "BELIKEKR. Reversed so high=agree."
+    source:
+      w2003: BELIKEKR
+      w2013: BELIKEKR
+      w2023: BELIKEKR
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: natid_kr_better_than_most
+    concept: national_identity
+    description: "Agree: 'Generally, Korea is a better country than most others' (1-5, higher=more agreement)"
+    type: ordinal
+    note: "KRBETTER. Reversed so high=agree."
+    source:
+      w2003: KRBETTER
+      w2013: KRBETTER
+      w2023: KRBETTER
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: natid_right_or_wrong
+    concept: national_identity
+    description: "Agree: 'People should support their country even when it is in the wrong' (1-5, higher=more agreement)"
+    type: ordinal
+    note: "IFWRONG. Classic ISSP blind-patriotism item. Reversed so high=agree."
+    source:
+      w2003: IFWRONG
+      w2013: IFWRONG
+      w2023: IFWRONG
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  # -------- (2) DOMAIN-SPECIFIC PRIDE (10 items, 2003/2013/2023/2025 — 4 waves) --------
+  - id: pride_democracy
+    concept: national_identity
+    description: "Pride in Korea's democracy (1-4, higher=more proud after reversal)"
+    type: ordinal
+    note: "PROUDDEM. Raw 1=very proud, 4=not at all proud. Reversed so high=more proud."
+    source:
+      w2003: PROUDDEM
+      w2013: PROUDDEM
+      w2023: PROUDDEM
+      w2025: PROUDDEM
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_pol_influence
+    concept: national_identity
+    description: "Pride in Korea's international political influence (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDPOL
+      w2013: PROUDPOL
+      w2023: PROUDPOL
+      w2025: PROUDPOL
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_economy
+    concept: national_identity
+    description: "Pride in Korea's economic achievements (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDECO
+      w2013: PROUDECO
+      w2023: PROUDECO
+      w2025: PROUDECO
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_social_security
+    concept: national_identity
+    description: "Pride in Korea's social security system (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDSSS
+      w2013: PROUDSSS
+      w2023: PROUDSSS
+      w2025: PROUDSSS
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_science
+    concept: national_identity
+    description: "Pride in Korea's scientific and technological achievements (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDSCI
+      w2013: PROUDSCI
+      w2023: PROUDSCI
+      w2025: PROUDSCI
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_sports
+    concept: national_identity
+    description: "Pride in Korea's sports achievements (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDSPT
+      w2013: PROUDSPT
+      w2023: PROUDSPT
+      w2025: PROUDSPT
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_arts
+    concept: national_identity
+    description: "Pride in Korea's arts and literature achievements (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDART
+      w2013: PROUDART
+      w2023: PROUDART
+      w2025: PROUDART
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_military
+    concept: national_identity
+    description: "Pride in Korea's military (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDMIL
+      w2013: PROUDMIL
+      w2023: PROUDMIL
+      w2025: PROUDMIL
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_history
+    concept: national_identity
+    description: "Pride in Korea's history (1-4, higher=more proud)"
+    type: ordinal
+    source:
+      w2003: PROUDHIS
+      w2013: PROUDHIS
+      w2023: PROUDHIS
+      w2025: PROUDHIS
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: pride_fairness
+    concept: national_identity
+    description: "Pride in fairness of Korean society (1-4, higher=more proud)"
+    type: ordinal
+    note: "PROUDGRP. Koreans' pride in how fairly their society treats groups."
+    source:
+      w2003: PROUDGRP
+      w2013: PROUDGRP
+      w2023: PROUDGRP
+      w2025: PROUDGRP
+    scale: {min: 1, max: 4, labels: {1: "Not at all proud", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  # -------- (3) "TRUE KOREAN" CRITERIA (6 items, mostly 2003/2010/2013/2023) --------
+  - id: truekr_born_here
+    concept: national_identity
+    description: "Importance of being born in Korea to being truly Korean (1-4, higher=more important)"
+    type: ordinal
+    note: "KRBORNIN. Ethnic-nationalism marker. Reversed so high=more important."
+    source:
+      w2003: KRBORNIN
+      w2010: KRBORNIN
+      w2013: KRBORNIN
+      w2023: KRBORNIN
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: truekr_citizenship
+    concept: national_identity
+    description: "Importance of holding Korean citizenship to being truly Korean (1-4, higher=more important)"
+    type: ordinal
+    note: "KRCIT. Civic-nationalism marker."
+    source:
+      w2003: KRCIT
+      w2010: KRCIT
+      w2013: KRCIT
+      w2023: KRCIT
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: truekr_ancestors
+    concept: national_identity
+    description: "Importance of having Korean ancestors to being truly Korean (1-4, higher=more important)"
+    type: ordinal
+    note: "KRANCSTR. Core ethnic-nationalism item."
+    source:
+      w2003: KRANCSTR
+      w2010: KRANCSTR
+      w2013: KRANCSTR
+      w2023: KRANCSTR
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: truekr_feels_kr
+    concept: national_identity
+    description: "Importance of feeling Korean to being truly Korean (1-4, higher=more important)"
+    type: ordinal
+    note: "KRFEEL. Civic/subjective-identity marker."
+    source:
+      w2003: KRFEEL
+      w2010: KRFEEL
+      w2013: KRFEEL
+      w2023: KRFEEL
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: truekr_respects_law
+    concept: national_identity
+    description: "Importance of respecting Korean political institutions/laws (1-4, higher=more important)"
+    type: ordinal
+    note: "KRGOVT. Civic-nationalism marker."
+    source:
+      w2003: KRGOVT
+      w2010: KRGOVT
+      w2013: KRGOVT
+      w2023: KRGOVT
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: truekr_confucian
+    concept: national_identity
+    description: "Importance of following Confucian teachings to being truly Korean (1-4, higher=more important)"
+    type: ordinal
+    note: "KRCONFUC. Korea-specific item (not in cross-national ISSP) capturing traditional-cultural nationalism."
+    source:
+      w2003: KRCONFUC
+      w2013: KRCONFUC
+      w2023: KRCONFUC
+    scale: {min: 1, max: 4, labels: {1: "Not at all important", 4: "Very important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  # -------- (4) INTERNATIONAL RELATIONS (6 items, 2003/2013/2023) --------
+  - id: intl_limit_imports
+    concept: national_identity
+    description: "Agree: 'Korea should limit imports to protect national economy' (1-5, higher=more protectionist)"
+    type: ordinal
+    note: "IMPORTS. Reversed so high=agree=protectionist. Note: also fielded in 2021 (caught by unmapped-wave warning)."
+    source:
+      w2003: IMPORTS
+      w2013: IMPORTS
+      w2021: IMPORTS
+      w2023: IMPORTS
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: intl_world_govt_env
+    concept: national_identity
+    description: "Agree: 'International orgs should have authority to address env problems' (1-5, higher=more pro-globalism)"
+    type: ordinal
+    note: "WRLDGOVT. Reversed so high=agree=pro-international cooperation."
+    source:
+      w2003: WRLDGOVT
+      w2013: WRLDGOVT
+      w2023: WRLDGOVT
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: intl_own_way
+    concept: national_identity
+    description: "Agree: 'Korea should pursue its own interests even if conflict with others' (1-5, higher=more nationalist)"
+    type: ordinal
+    note: "KROWNWAY. Reversed so high=agree=nationalist."
+    source:
+      w2003: KROWNWAY
+      w2013: KROWNWAY
+      w2023: KROWNWAY
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: intl_no_foreign_land
+    concept: national_identity
+    description: "Agree: 'Foreigners should not be allowed to buy land in Korea' (1-5, higher=more restrictive)"
+    type: ordinal
+    note: "FORLAND. Reversed so high=agree=restrict."
+    source:
+      w2003: FORLAND
+      w2013: FORLAND
+      w2023: FORLAND
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: intl_kr_tv
+    concept: national_identity
+    description: "Agree: 'TV should prioritize Korean films and programs' (1-5, higher=more cultural protectionist)"
+    type: ordinal
+    note: "KRTV. Reversed so high=agree."
+    source:
+      w2003: KRTV
+      w2013: KRTV
+      w2023: KRTV
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: intl_foreign_co_harmful
+    concept: national_identity
+    description: "Agree: 'Foreign companies have harmful effect on Korean economy' (1-5, higher=more nationalist)"
+    type: ordinal
+    note: "INTLINCS. Reversed so high=agree=anti-foreign-capital."
+    source:
+      w2003: INTLINCS
+      w2013: INTLINCS
+      w2023: INTLINCS
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  # -------- (5) IMMIGRATION ATTITUDES (5 items) --------
+  - id: imm_crime
+    concept: national_identity
+    description: "Agree: 'Immigrants increase crime rate' (1-5, higher=more anti-immigrant)"
+    type: ordinal
+    note: "IMMCRIME. Reversed so high=agree=negative view."
+    source:
+      w2003: IMMCRIME
+      w2013: IMMCRIME
+      w2023: IMMCRIME
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: imm_help_econ
+    concept: national_identity
+    description: "Agree: 'Immigrants help the Korean economy' (1-5, higher=more pro-immigrant)"
+    type: ordinal
+    note: "IMMECON. Reversed so high=agree=positive economic view. Available 2003/2010/2013/2023."
+    source:
+      w2003: IMMECON
+      w2010: IMMECON
+      w2013: IMMECON
+      w2023: IMMECON
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: imm_take_jobs
+    concept: national_identity
+    description: "Agree: 'Immigrants take jobs from Koreans' (1-5, higher=more anti-immigrant)"
+    type: ordinal
+    note: "IMMJOBS. Reversed so high=agree=negative view. Available 2003/2010/2013/2023."
+    source:
+      w2003: IMMJOBS
+      w2010: IMMJOBS
+      w2013: IMMJOBS
+      w2023: IMMJOBS
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: imm_cultural_contrib
+    concept: national_identity
+    description: "Agree: 'Immigrants contribute culturally to Korea' (1-5, higher=more pro-immigrant)"
+    type: ordinal
+    note: "IMMIDEAS. Reversed so high=agree=positive cultural view. Available 2003/2010/2013/2023."
+    source:
+      w2003: IMMIDEAS
+      w2010: IMMIDEAS
+      w2013: IMMIDEAS
+      w2023: IMMIDEAS
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: imm_limit_number
+    concept: national_identity
+    description: "Should the number of immigrants be increased or reduced (1-5, higher=want FEWER immigrants)"
+    type: ordinal
+    note: "LETIN1. Raw scale ALREADY oriented 1=많이 늘어야 (much more) → 5=많이 줄어야 (much less), so no reversal needed. Higher = more restrictive preference."
+    source:
+      w2003: LETIN1
+      w2013: LETIN1
+      w2023: LETIN1
+    scale: {min: 1, max: 5, labels: {1: "Increase much more", 5: "Reduce much more"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]

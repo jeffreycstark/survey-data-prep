@@ -1,0 +1,220 @@
+# KGSS Corruption / Bribery / 청탁 items
+#
+# Three variable families:
+#
+#   (1) Govt anti-corruption performance  — evaluation of govt efforts on corruption/tax/election integrity
+#   (2) Corruption perceptions / norms    — beliefs about politician, official, and societal corruption
+#   (3) 청탁 (favor-seeking / patronage)  — direct experience of request-peddling (2006 only)
+#
+# ⚠ DIRECTION IS MIXED — read each variable's note carefully.
+#   Some harmonized variables are "higher = more corruption" (perception items);
+#   others are "higher = better govt effort / more fairness" (evaluative items).
+#   There is no single global convention for this module.
+#
+# KGSS has NO direct respondent-experience bribery items (e.g., "did YOU pay a bribe"). All items
+# here are third-person perceptions, evaluations, or norms. Teacher-specific bribery (촌지 culture)
+# is NOT covered in KGSS; see specialized education-sector surveys for that.
+#
+# MISSING VALUES:
+# -8 = DK, -1 = IAP; legacy 8/9/88/98/99 sentinels
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9, 88, 98, 99]
+    description: "KGSS: -8=DK, -1=IAP; legacy 8/9/88/98/99 sentinels"
+
+variables:
+  # -------- (1) GOVT ANTI-CORRUPTION / FAIRNESS PERFORMANCE --------
+  - id: corr_anticorrupt_policy
+    concept: corruption
+    description: "Evaluation of current govt's anti-corruption policy (1-5, higher=better performance after reversal)"
+    type: ordinal
+    note: "CORRUPT. Raw 1=매우 잘하고 있다 (very well), 5=매우 잘 못하고 있다 (very poorly). Reversed so high=favorable evaluation. Fielded 2003/2004/2005/2010 (early cluster; not re-fielded after 2010)."
+    source:
+      w2003: CORRUPT
+      w2004: CORRUPT
+      w2005: CORRUPT
+      w2010: CORRUPT
+    scale: {min: 1, max: 5, labels: {1: "Very poorly", 5: "Very well"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_tax_fairness_policy
+    concept: corruption
+    description: "Evaluation of current govt's tax fairness policy (1-5, higher=better performance after reversal)"
+    type: ordinal
+    note: "TAXFAIR. Raw 1=very well, 5=very poorly. Reversed. Same early cluster as CORRUPT."
+    source:
+      w2003: TAXFAIR
+      w2004: TAXFAIR
+      w2005: TAXFAIR
+      w2010: TAXFAIR
+    scale: {min: 1, max: 5, labels: {1: "Very poorly", 5: "Very well"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_election_transparency
+    concept: corruption
+    description: "Perceived transparency of National Assembly election vote count and announcement (1-5, higher=more transparent after reversal)"
+    type: ordinal
+    note: "Uses ELECVOTE (2004 general election, asked in 2004) and ELECVOT14 (2014 general election, asked in 2014). Raw scales identical: 1=매우 투명 (very transparent), 5=매우 불투명 (very opaque). Reversed so high=transparent."
+    source:
+      w2004: ELECVOTE
+      w2014: ELECVOT14
+    scale: {min: 1, max: 5, labels: {1: "Very opaque", 5: "Very transparent"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  # -------- (2) CORRUPTION PERCEPTIONS / NORMS --------
+  - id: corr_politicians
+    concept: corruption
+    description: "Perceived corruption among politicians (1-5, higher=more perceived corruption)"
+    type: ordinal
+    note: "POLCORRU. Raw 1=거의 없다 (almost none), 5=거의 대부분이다 (almost all). Identity — higher already means more corruption."
+    source:
+      w2006: POLCORRU
+      w2014: POLCORRU
+      w2016: POLCORRU
+    scale: {min: 1, max: 5, labels: {1: "Almost no one corrupt", 5: "Almost all corrupt"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_officials
+    concept: corruption
+    description: "Perceived corruption among civil servants (1-5, higher=more perceived corruption)"
+    type: ordinal
+    note: "OFFCORRU. Same scale as POLCORRU. Identity."
+    source:
+      w2006: OFFCORRU
+      w2014: OFFCORRU
+      w2016: OFFCORRU
+    scale: {min: 1, max: 5, labels: {1: "Almost no one corrupt", 5: "Almost all corrupt"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_officials_bribe
+    concept: corruption
+    description: "Reported frequency of civil servants requesting bribes (1-5, higher=more often)"
+    type: ordinal
+    note: "OFFBRIBE. Raw 1=전혀 없었다 (never happened), 5=매우 자주 있었다 (very often). Identity."
+    source:
+      w2006: OFFBRIBE
+      w2016: OFFBRIBE
+    scale: {min: 1, max: 5, labels: {1: "Never", 5: "Very often"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_cant_succeed_without
+    concept: corruption
+    description: "Agree: 'You cannot succeed in this society without being corrupt' (1-5, higher=more agreement)"
+    type: ordinal
+    note: "CRRPTSUCD. Raw 1=매우 동의 (strongly agree), 5=매우 반대 (strongly disagree). Reversed so high=agree=cynical view."
+    source:
+      w2009: CRRPTSUCD
+      w2014: CRRPTSUCD
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_bribe_success
+    concept: corruption
+    description: "Importance of bribery as a factor in life success (1-5, higher=more important after reversal)"
+    type: ordinal
+    note: "SUCDBRIB. Raw 1=절대적으로 중요 (absolutely important), 5=전혀 중요하지 않다 (not at all). Reversed so high=more important=more cynical about success pathways. FIVE WAVES (2009/2014/2021/2023/2025) — best longitudinal coverage of any corruption item."
+    source:
+      w2009: SUCDBRIB
+      w2014: SUCDBRIB
+      w2021: SUCDBRIB
+      w2023: SUCDBRIB
+      w2025: SUCDBRIB
+    scale: {min: 1, max: 5, labels: {1: "Not at all important", 5: "Absolutely important"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  # -------- (3) 청탁 / PATRONAGE / OFFICIAL CONDUCT (2006 only) --------
+  - id: corr_receive_requests
+    concept: corruption
+    description: "How often respondent receives 청탁 (informal requests/favor-seeking) (1-4, higher=more often)"
+    type: ordinal
+    note: "ASKTAKE. Raw 1=전혀 받지 않는다 (never receive), 4=자주 받는다 (often receive). Identity. **Single-wave item (2006 only)** — KGSS has not re-fielded 청탁 measurement since."
+    source:
+      w2006: ASKTAKE
+    scale: {min: 1, max: 4, labels: {1: "Never", 4: "Often"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: corr_have_connections
+    concept: corruption
+    description: "Whether respondent has people they can ask for favors (청탁 capacity) (1-4, higher=more connections)"
+    type: ordinal
+    note: "ASKGIVE. Raw 1=전혀 없다 (none), 4=많이 있다 (many). Identity. Single-wave (2006)."
+    source:
+      w2006: ASKGIVE
+    scale: {min: 1, max: 4, labels: {1: "None", 4: "Many"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: corr_officials_fair
+    concept: corruption
+    description: "Perceived fairness of civil servants toward citizens (1-5, higher=more fair after reversal)"
+    type: ordinal
+    note: "OFFEQUIT. Raw 1=항상 공정 (always fair), 5=전혀 공정하지 않다 (never fair). Reversed. Single-wave (2006)."
+    source:
+      w2006: OFFEQUIT
+    scale: {min: 1, max: 5, labels: {1: "Never fair", 5: "Always fair"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: corr_officials_nepotism
+    concept: corruption
+    description: "Disagree: 'Civil servants treat people differently based on personal connections' (1-4, higher=LESS nepotism after reversal)"
+    type: ordinal
+    note: "OFFNEPOT. Raw 1=당연히 그렇다 (definitely yes, they do), 4=당연히 그렇지 않다 (definitely not). Reversed so high=less perceived nepotism. Single-wave (2006)."
+    source:
+      w2006: OFFNEPOT
+    scale: {min: 1, max: 4, labels: {1: "Definitely biased", 4: "Definitely impartial"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]

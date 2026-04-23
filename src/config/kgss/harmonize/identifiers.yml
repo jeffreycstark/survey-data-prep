@@ -1,5 +1,5 @@
 # KGSS Technical / Administrative Variables
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # NOTE: No interview date variable exists in the cumulative file.
 #
@@ -37,6 +37,7 @@ variables:
       w2018: RESPID
       w2021: RESPID
       w2023: RESPID
+      w2025: RESPID
     harmonize:
       default:
         method: identity
@@ -62,6 +63,7 @@ variables:
       w2018: YRRESPID
       w2021: YRRESPID
       w2023: YRRESPID
+      w2025: YRRESPID
     harmonize:
       default:
         method: identity
@@ -88,6 +90,7 @@ variables:
       w2018: SAMPLEAB
       w2021: SAMPLEAB
       w2023: SAMPLEAB
+      w2025: SAMPLEAB
     scale:
       min: 1
       max: 2

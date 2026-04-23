@@ -1,0 +1,325 @@
+# KIPA Corruption — anti-corruption policy, punishment, and institutional surveillance
+#
+# Three item families:
+#
+#   (1) Government anti-corruption policy effectiveness — 5 years (2014-16, 2020-23)
+#   (2) Punishment level perceptions (3 items)          — 10-13 years each
+#   (3) Institutional surveillance / control (7 items)  — 13 years (2011-2023)
+#
+# All items use 1-6 scales in the direction of "more of the concept":
+#   - Govt policy: higher = more effective
+#   - Punishment: higher = stronger/stricter punishment
+#   - Surveillance: higher = institution functions better as a corruption check
+#
+# Variable-name renaming across years is extensive for these items — more so
+# than for the core perception items. See each variable's source map.
+#
+# Known scope shifts:
+#   - corr_surveil_judiciary: 2011-2017 captured 사법기관 (broad — courts + prosecutors).
+#     2018-2020 split this into 사법부 (courts only, c175) + 검찰/경찰 (c176).
+#     We map to the COURTS-ONLY variant post-2018 (c175, a3705, q33_5, q34_5).
+#   - corr_surveil_internal_audit: 2011-2013 was 부처내부 감사; 2014+ 정부부처 내부 감사기관.
+#     Same concept, label wording drifted slightly.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -9, 8, 9, 88, 99]
+    description: "KIPA corruption: common sentinel missing codes"
+
+variables:
+  # -------- (1) GOVT ANTI-CORRUPTION POLICY EFFECTIVENESS --------
+  - id: corr_govt_policy_effectiveness
+    concept: anti_corruption_policy
+    description: "Effectiveness of the current government's anti-corruption policy/effort (1-6, higher=more effective)"
+    type: ordinal
+    note: "Sparse: 5 years (2014-2016, 2020-2023). Earlier years (2004-2013) used different framing — a composite 'year-over-year change in anti-corruption environment' (a031-a035) rather than a single policy-effectiveness item. 2017-2019 not mapped here."
+    source:
+      w2014: a18
+      w2015: a18
+      w2016: a18
+      w2020: a17
+      w2021: a35
+      w2022: q34
+      w2023: q35
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  # -------- (2) PUNISHMENT LEVELS --------
+  - id: corr_punishment_bribe_giver
+    concept: anti_corruption_policy
+    description: "Perceived punishment level for bribe-givers in Korean society (1-6, higher=stronger punishment after 2011-2013 reversal)"
+    type: ordinal
+    note: "Long time series: 2011-2023 (13 years). 2011-2013 used a1021; 2014-2020 renamed to a103; 2021 renamed to a103a; 2022-2023 as q26. NOT in cumulative 2004-2007 or 2008-2010. **SCALE REVERSAL IN 2014**: KIPA flipped the 1-6 scale direction when renaming a1021 → a103 (caught by QA year-over-year check — 2013 mean 4.73 vs 2014 mean 2.20, same substantive perception of 'weak'). We apply safe_reverse_6pt to 2011-2013 so all waves use the post-2014 convention: higher = stronger punishment."
+    source:
+      w2011: a1021
+      w2012: a1021
+      w2013: a1021
+      w2014: a103
+      w2015: a103
+      w2016: a103
+      w2017: a103
+      w2018: a103
+      w2019: a103
+      w2020: a103
+      w2021: a103a
+      w2022: q26
+      w2023: q26
+    scale: {min: 1, max: 6, labels: {1: "Very weak", 6: "Very strong"}}
+    harmonize:
+      default:
+        method: identity
+      by_wave:
+        w2011:
+          method: r_function
+          fn: safe_reverse_6pt
+        w2012:
+          method: r_function
+          fn: safe_reverse_6pt
+        w2013:
+          method: r_function
+          fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_punishment_corrupt_official
+    concept: anti_corruption_policy
+    description: "Perceived punishment level for bribe-receiving officials (1-6, higher=stronger punishment)"
+    type: ordinal
+    note: "10 years (2014-2023). Introduced as a separate item in 2014 when punishment-of-giver and punishment-of-receiver were split. 2011-2013 had a103 with related but different wording ('view on corrupt-official punishment') that is NOT mapped here to avoid the wording-drift contamination."
+    source:
+      w2014: a104
+      w2015: a104
+      w2016: a104
+      w2017: a104
+      w2018: a104
+      w2019: a104
+      w2020: a104
+      w2021: a104a
+      w2022: q27
+      w2023: q27
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_punishment_relative_strength
+    concept: anti_corruption_policy
+    description: "Relative punishment strength: bribe-giver vs. corrupt-official (direction/meaning depends on KIPA coding — see note)"
+    type: ordinal
+    note: "2011-2013 = a1023; 2014-2021 = a105; 2022-2023 = q28. KIPA's coding convention for this item: typically 1=bribe-givers punished much more, 3=equal, 5=corrupt officials punished much more (or similar — verify against codebook before interpreting means)."
+    source:
+      w2011: a1023
+      w2012: a1023
+      w2013: a1023
+      w2014: a105
+      w2015: a105
+      w2016: a105
+      w2017: a105
+      w2018: a105
+      w2019: a105
+      w2020: a105
+      w2021: a105
+      w2022: q28
+      w2023: q28
+    scale: {min: 1, max: 5}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # -------- (3) INSTITUTIONAL SURVEILLANCE --------
+  # All items use 1-6 scale: higher = institution functions better as corruption check.
+  - id: corr_surveil_party
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of political parties (1-6, higher=functions better)"
+    type: ordinal
+    source:
+      w2011: a171
+      w2012: a171
+      w2013: a171
+      w2014: a161
+      w2015: a161
+      w2016: a161
+      w2017: a161
+      w2018: a161
+      w2019: a161
+      w2020: a161
+      w2021: a3701
+      w2022: q33_1
+      w2023: q34_1
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_assembly
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of the National Assembly (1-6, higher=functions better)"
+    type: ordinal
+    source:
+      w2011: a172
+      w2012: a172
+      w2013: a172
+      w2014: a162
+      w2015: a162
+      w2016: a162
+      w2017: a162
+      w2018: a162
+      w2019: a162
+      w2020: a162
+      w2021: a3702
+      w2022: q33_2
+      w2023: q34_2
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_civsoc
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of civil society / civic groups (1-6, higher=functions better)"
+    type: ordinal
+    source:
+      w2011: a173
+      w2012: a173
+      w2013: a173
+      w2014: a163
+      w2015: a163
+      w2016: a163
+      w2017: a163
+      w2018: a163
+      w2019: a163
+      w2020: a163
+      w2021: a3703
+      w2022: q33_3
+      w2023: q34_3
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_media
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of press/media (1-6, higher=functions better)"
+    type: ordinal
+    source:
+      w2011: a174
+      w2012: a174
+      w2013: a174
+      w2014: a164
+      w2015: a164
+      w2016: a164
+      w2017: a164
+      w2018: a164
+      w2019: a164
+      w2020: a164
+      w2021: a3704
+      w2022: q33_4
+      w2023: q34_4
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_judiciary
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of the judiciary (1-6, higher=functions better)"
+    type: ordinal
+    note: "SCOPE SHIFT: 2011-2017 captured 사법기관 (broad: courts + prosecutors). 2018-2020 split this into judiciary-only (c175) + prosecutors/police (c176); 2021+ went back to a single item (사법부 only). We use the courts-only variant consistently from 2018 forward — be mindful when interpreting 2011-2017 vs 2018+ trends."
+    source:
+      w2011: a175
+      w2012: a175
+      w2013: a175
+      w2014: a165
+      w2015: a165
+      w2016: a165
+      w2017: a165
+      w2018: c175
+      w2019: c175
+      w2020: c175
+      w2021: a3705
+      w2022: q33_5
+      w2023: q34_5
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_internal_audit
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of govt ministries' internal audit (1-6, higher=functions better)"
+    type: ordinal
+    note: "Label wording drifted: 2011-2013 = 부처내부 (ministry-internal); 2014+ = 정부부처 내부 감사기관 (govt ministries' internal audit agencies). Same concept."
+    source:
+      w2011: a176
+      w2012: a176
+      w2013: a176
+      w2014: a166
+      w2015: a166
+      w2016: a166
+      w2017: a166
+      w2018: a166
+      w2019: a166
+      w2020: a166
+      w2021: a3708
+      w2022: q33_8
+      w2023: q34_8
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_surveil_boa
+    concept: anti_corruption_policy
+    description: "Anti-corruption surveillance function of the Board of Audit and Inspection (감사원) (1-6, higher=functions better)"
+    type: ordinal
+    source:
+      w2011: a177
+      w2012: a177
+      w2013: a177
+      w2014: a167
+      w2015: a167
+      w2016: a167
+      w2017: a167
+      w2018: a167
+      w2019: a167
+      w2020: a167
+      w2021: a3709
+      w2022: q33_9
+      w2023: q34_9
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true

@@ -1,5 +1,5 @@
 # KGSS Social Trust
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # Variables from the GSS trust battery:
 #   FAIR:     People's fairness (1=take advantage, 2=fair, 3=depends) — 3-point
@@ -39,6 +39,7 @@ variables:
       w2018: FAIR
       w2021: FAIR
       w2023: FAIR
+      w2025: FAIR
     scale:
       min: 1
       max: 3
@@ -56,7 +57,7 @@ variables:
     concept: social_trust
     description: "Generalized trust: can most people be trusted? (binary, 3 cats)"
     type: ordinal
-    note: "1=people can almost always be trusted, 2=can usually be trusted, 3=usually can't be careful, 4=almost always can't be careful. CANTRUST is more granular than TRUST (1/2/3)."
+    note: "Raw CANTRUST: 1=almost always trust → 4=almost always can't. Reversed via safe_reverse_4pt so higher=more trust, consistent with trust_fair and trust_reliable. CANTRUST is more granular than TRUST (1/2/3)."
     source:
       w2003: CANTRUST
       w2004: CANTRUST
@@ -74,17 +75,20 @@ variables:
       w2018: CANTRUST
       w2021: CANTRUST
       w2023: CANTRUST
+      w2025: CANTRUST
     scale:
       min: 1
       max: 4
+      direction: higher_is_more_trust
       labels:
-        1: "People can almost always be trusted"
-        2: "People can usually be trusted"
-        3: "Usually can't be too careful"
-        4: "Almost always can't be too careful"
+        1: "Almost always can't be too careful"
+        2: "Usually can't be too careful"
+        3: "People can usually be trusted"
+        4: "People can almost always be trusted"
     harmonize:
       default:
-        method: identity
+        method: recode
+        fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
 
@@ -110,6 +114,7 @@ variables:
       w2018: RELIABLE
       w2021: RELIABLE
       w2023: RELIABLE
+      w2025: RELIABLE
     scale:
       min: 0
       max: 10

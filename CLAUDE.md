@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 16 years: 2003-2023) + V-Dem v15 (scaffold)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (47 vars, 16 years 2003–2023, 22,071 respondents); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 17 years: 2003-2025) + KIPA Corruption Survey (20 years: 2004-2023) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (138 vars, 17 years 2003–2025, 23,282 respondents); KIPA Corruption (36 vars, 20 years 2004–2023, 18,000 respondents; NOT general-population — sample = corporate employees + self-employed with gov-business contact); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
 
 ---
 
@@ -121,7 +121,7 @@ data/
 │       └── wave4/              # KAMOS W4 2019 (SPSS .sav, n=1500)
 ├── kgss/                       # Korea General Social Survey
 │   └── raw/
-│       └── Eng_data_CUM0062_V3.sav  # Cumulative file (n=22,071, 3,353 cols, 2003-2023)
+│       └── kor_data_CUM0074.sav  # Cumulative file (n=23,282, 3,491 cols, 2003-2025)
 ├── v-dem/                      # Varieties of Democracy
 │   └── raw/
 │       └── v15/                # V-Dem v15 (RDS, 27,913 rows × 4,607 cols)
@@ -248,11 +248,17 @@ Rscript src/r/data_prep_modules/kamos/2_harmonize_all.R
 Rscript src/r/data_prep_modules/kamos/99_create_final_dataset.R
 ```
 
-**KGSS** (16 years 2003–2023, single cumulative SPSS → split by year → harmonize):
+**KGSS** (17 years 2003–2025, single cumulative SPSS → split by year → harmonize):
 ```bash
 Rscript src/r/data_prep_modules/kgss/0_load_waves.R
 Rscript src/r/data_prep_modules/kgss/2_harmonize_all.R
 Rscript src/r/data_prep_modules/kgss/99_create_final_dataset.R
+```
+
+**KIPA Corruption** (20 years 2004–2023, annual SPSS per year + one cumulative split by year):
+```bash
+Rscript src/r/data_prep_modules/kipa-corruption/2_harmonize_all.R
+Rscript src/r/data_prep_modules/kipa-corruption/99_create_final_dataset.R
 ```
 
 **V-Dem** (country-year panel, scaffold):
@@ -423,7 +429,7 @@ d <- readRDS("data/processed/kgss_harmonized.rds")
 # Or: arrow::read_parquet("data/processed/kgss_harmonized.parquet")
 ```
 
-**22,071 respondents, South Korea only (KOR), 47 harmonized variables across 16 survey years (2003–2023; no 2015, 2017, 2019–2020, 2022).**
+**23,282 respondents, South Korea only (KOR), 138 harmonized variables across 17 survey years (2003–2025; no 2015, 2017, 2019–2020, 2022, 2024). `pol_govt_eval` (CURGOV) dropped in 2025.**
 
 ⚠️ **Scale warning**: `conf_*` variables are **1–3** (not 1–4 like ABS/WVS/LBS trust vars); do not compare without rescaling.
 
@@ -432,15 +438,60 @@ d <- readRDS("data/processed/kgss_harmonized.rds")
 | Institutional Confidence (20) | conf_business, conf_legislature, conf_judiciary, conf_science, conf_military, conf_finance, conf_bluehouse, conf_civil_society, conf_clergy, conf_education, conf_labor, conf_press, conf_television, conf_medicine, conf_govt_national, conf_govt_local, conf_research, conf_prosecutors, conf_statistics, conf_election_commission | 1–3, higher=more confidence |
 | Social Trust (3) | trust_fair (1–3), trust_generalized (1–4), trust_reliable (0–10) | varies; higher=more trust |
 | Political Attitudes (9) | pol_govt_eval, pol_econ_sat (1–5 higher=worse), pol_ideology (1–5 liberal–conservative), pol_national_pride (1–4 higher=less proud), pol_econ_prospect, pol_pol_prospect (1–5 higher=worse), pol_northkorea_view, pol_nk_defectors, pol_unification | varies |
+| Political Behavior / Partisanship (9) | party_id, party_pref (nominal year-specific codes — NOT comparable across waves), voted_presidential, voted_general, voted_local (1=voted, 2=did not), pol_satisfaction, econ_hh_satisfaction, econ_hh_outlook, pol_outlook (all 1–5 reversed, higher=better) | varies |
+| Civic Attitudes — ISSP Citizenship (20) | cit_virtue_paytaxes, cit_virtue_obeylaws, cit_virtue_watchgov, cit_virtue_helpkr, cit_right_solok, cit_right_minorities, cit_right_polopts, cit_right_oppsegov (1–7 higher=more important), pol_efficacy_internal, pol_efficacy_external (1–5 reversed, higher=more efficacy), dem_now, dem_10yrs_past, dem_10yrs_future (0–10 higher=more democratic), action_petition, action_boycott, action_demonstration, action_rally, action_contact_gov (1–4 reversed, higher=more active), admin_service (1–4 reversed, higher=better), admin_corruption (1–5 higher=more corrupt) | varies |
+| Role of Government (18) | gov_resp_jobs, gov_resp_prices, gov_resp_healthcare, gov_resp_elderly, gov_resp_industry, gov_resp_unemploy, gov_resp_incomegap, gov_resp_students, gov_resp_housing, gov_resp_environment (1–4 reversed, higher=more state role; 2006/2016 only), gov_spend_environment, gov_spend_health, gov_spend_police, gov_spend_education, gov_spend_defense, gov_spend_pension, gov_spend_unemployment, gov_spend_culture (1–5 reversed, higher=spend more; 7 waves 2006/2014/2016/2018/2021/2023/2025) | varies |
+| National Identity — ISSP (32) | **General pride (5, 2003/2013/2023)**: natid_korean_over_other, natid_shame, natid_world_like_kr, natid_kr_better_than_most, natid_right_or_wrong (1–5 reversed, higher=more agreement; `natid_shame` inversely valenced). **Domain pride (10, 2003/2013/2023/2025)**: pride_democracy, pride_pol_influence, pride_economy, pride_social_security, pride_science, pride_sports, pride_arts, pride_military, pride_history, pride_fairness (1–4 reversed, higher=more proud). **"True Korean" criteria (6, 2003/2010/2013/2023)**: truekr_born_here, truekr_citizenship, truekr_ancestors, truekr_feels_kr, truekr_respects_law, truekr_confucian (1–4 reversed, higher=more important). **International relations (6, 2003/2013/2021/2023)**: intl_limit_imports, intl_world_govt_env, intl_own_way, intl_no_foreign_land, intl_kr_tv, intl_foreign_co_harmful (1–5 reversed, higher=agree). **Immigration (5, 2003/2010/2013/2023)**: imm_crime, imm_help_econ, imm_take_jobs, imm_cultural_contrib (1–5 reversed, higher=agree), imm_limit_number (1–5 identity, higher=want fewer immigrants — scale direction differs from other imm_* items) | varies |
+| Corruption / Bribery / 청탁 (12) | **Govt anti-corruption performance (3)**: corr_anticorrupt_policy (2003–2010), corr_tax_fairness_policy (2003–2010), corr_election_transparency (2004/2014) — all 1–5 reversed, higher=better govt performance. **Corruption perceptions (5)**: corr_politicians (2006/2014/2016), corr_officials (2006/2014/2016), corr_officials_bribe (2006/2016) — 1–5 identity, higher=MORE corruption; corr_cant_succeed_without (2009/2014), corr_bribe_success (2009/2014/2021/2023/2025, **5 waves**) — 1–5 reversed, higher=more cynical. **청탁 / patronage (4, all 2006 only)**: corr_receive_requests, corr_have_connections (1–4 identity); corr_officials_fair (1–5 reversed, higher=more fair), corr_officials_nepotism (1–4 reversed, higher=LESS nepotism). **⚠ Directions are mixed across this module — read each variable's note** | varies |
 | Demographics (12) | age, sex, education, marital_status, employment, income, region, urban_rural, religion, religious_attendance, subjective_class_6pt (1–6 higher=lower class), subjective_rank_10pt (1–10 higher=higher class) | varies |
-| Identifiers (3) | resp_id (within-year), yr_resp_id (cross-year unique, format YYYYnnnnn), questionnaire_form (1=A, 2=B; sparse) | nominal |
-| Weight (1) | weight | continuous, mean=1; raw: FINALWT (range ~0.20–4.59) |
+| Identifiers (3) | resp_id (within-year), yr_resp_id (cross-year unique, format YYYYnnnnn), questionnaire_form (1=A, 2=B; 2016+ only) | nominal |
+| Weight (1) | weight | continuous, mean=1; raw: FINALWT (range ~0.29–5.29) |
 
 Country identifier: `country` = "KOR" (all rows)
-Wave column: `wave` = calendar year integer (2003, 2004, ..., 2023), **not** a sequential wave index.
-KGSS missing value conventions: -8=DK, -1=IAP treated as NA.
+Wave column: `wave` = calendar year integer (2003, 2004, ..., 2025), **not** a sequential wave index.
+KGSS missing value conventions: -8=DK, -1=IAP treated as NA; legacy 88/98/99 sentinels also treated as NA in newer specs.
 conf_bluehouse = confidence in the Blue House (Korea's presidential executive office).
 **No interview date variable** exists in the cumulative file; year is the only temporal identifier.
+
+**⚠️ party_id / party_pref caveats**: These are NOMINAL raw codes that DIFFER per wave (Korean party system reshuffles regularly — e.g., Saenuri dissolved 2017, 조국혁신당 emerged 2024). Use within a single wave or construct per-wave camp mappings for longitudinal analysis.
+
+**Widest-coverage new variables**: `gov_spend_*` items (7 waves: 2006/2014/2016/2018/2021/2023/2025) and `pol_satisfaction`, `econ_hh_satisfaction`, `econ_hh_outlook` (10+ waves each) offer the strongest time-series leverage among the expansion.
+
+### KIPA Corruption Survey (공직부패의 실태에 관한 설문조사) — initial
+
+```r
+d <- readRDS("data/processed/kipa_corruption_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/kipa_corruption_harmonized.parquet")
+```
+
+**18,000 respondents, South Korea only (KOR), 36 harmonized variables across 20 survey years (2004–2023).** Conducted annually by 한국행정연구원 (KIPA) since 1999; KOSSDA holds 2004-2023. The 2004-2007 cumulative file is split by year internally (n=500 each). 2008-2023 are annual (n=1,000 each).
+
+**⚠️ SAMPLE POPULATION**: This is **NOT a general-population survey**. Respondents are corporate employees (일반기업체 종사자) and self-employed workers (자영업자) who have business contact with government agencies, sampled via stratified proportional design. **Cannot be row-bound with KGSS/KAMOS/KIPA-social** — it's a different universe. Use it as a parallel specialty survey for corruption-specific analysis or to triangulate KGSS corruption perception items.
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Corruption perception (3) | corr_prevalence_perception (money/favor-giving to officials perceived as common), corr_seriousness_perception (corruption as social problem), corr_change_vs_last_year (direction of change, ~3.5 midpoint = same) | 1–6, higher=more corruption/worse |
+| Corruption experience (1) | corr_bribery_experience_1yr (personally gave money/favors to officials in past year) | 1=yes, 2=no; NOT available in 2022-2023 (question restructured) |
+| Sector corruption — public/private (2) | corr_sector_public, corr_sector_private | 1–6, higher=more corrupt |
+| Sector corruption — admin functions (11) | corr_func_tax, corr_func_police, corr_func_fire, corr_func_legal (⚠ scope narrows 2022+: 법조 → 검찰), corr_func_environment, corr_func_health, corr_func_food_safety, corr_func_construction, corr_func_procurement, corr_func_education, corr_func_welfare, corr_func_customs | 1–6, higher=more corrupt; 18 of 20 years (2008-2009 use q7_* structure not mapped) |
+| Sector corruption — admin agencies (3) | corr_agency_central_hq, corr_agency_central_branch, corr_agency_local_frontline | 1–6, higher=more corrupt; 18 of 20 years |
+| Demographics (4) | sex (1=M, 2=F), age_cat (1–5 categorical), education (categorical), income (categorical, ~1–10; boundaries vary by wave due to inflation) | varies |
+| Anti-corruption policy — govt effectiveness (1) | corr_govt_policy_effectiveness | 1–6, higher=more effective; 5 years (2014-2016, 2020-2023) |
+| Anti-corruption policy — punishment (3) | corr_punishment_bribe_giver (13 yrs), corr_punishment_corrupt_official (10 yrs, 2014+), corr_punishment_relative_strength (13 yrs, 1-5 scale with directional KIPA coding — verify codebook) | 1–6 / 1–5 |
+| Anti-corruption policy — surveillance (7) | corr_surveil_party, corr_surveil_assembly, corr_surveil_civsoc, corr_surveil_media, corr_surveil_judiciary (⚠ 2018-2020 splits judiciary from prosecutors; we keep judiciary-only post-split), corr_surveil_internal_audit, corr_surveil_boa | 1–6, higher=functions better as corruption check; 13 years (2011-2023) |
+
+Data directory: `data/kipa-corruption/raw/unzipped/<handle>/`. Year-to-handle mapping lives in `src/r/data_prep_modules/kipa-corruption/0_load_waves.R`.
+
+**Raw variable naming: two families across years**:
+- "a-family" (`a01`, `a02`, `a03`, `a13`, …): used 2010–2021 + the 2004–2007 cumulative
+- "q-family" (`q1`, `q2`, `q3`, `q9`, `q13`, …): used 2008, 2009, 2022, 2023
+
+Semantic content is stable across the naming shift. In 2022–2023 the wording was slightly broadened to include 향응/편의 (entertainment/favors) alongside 금품 (money), reflecting the Kim Young-ran Act's expanded definition. The harmonization maps per-wave raw names to stable harmonized IDs.
+
+**Substantive signal in the 4 vars**:
+- `corr_bribery_experience_1yr` shows a dramatic drop after the Kim Young-ran Act (2016): from ~3–14% of respondents reporting having given a bribe in 2004–2015 to <1% in 2018–2020. Consistent with post-law reported behavior changes.
+- `corr_prevalence_perception` declines ~3.6 (2009) → ~2.9 (2020–2023).
+- `corr_change_vs_last_year` drops from above-midpoint (worse) to ~2.7 (better) after 2016.
 
 ### V-Dem Core Dataset (scaffold)
 

@@ -1,0 +1,559 @@
+# KIPA Corruption — sector-level and agency-level corruption perceptions
+#
+# Three item families:
+#
+#   (1) Public vs private sector (2 items)           — all 20 years
+#   (2) Administrative function areas (11 items)     — cum + 2010–2023
+#   (3) Administrative agency levels (3 items)       — cum + 2010–2023
+#
+# All items use the same 1-6 scale: higher = more corruption perceived
+# in that sector/function/agency. No reversal needed.
+#
+# The 2022-2023 waves expanded / reorganized the function list:
+#   - Added: 노동 (labor), 국방 (defense)
+#   - Dropped: 병무 (military service admin), 교정 (corrections)
+#   - Renamed: 법조 (legal profession broad) → 검찰 (prosecutors only) for q23_4
+# Only the items present in BOTH naming schemes are harmonized here.
+#
+# 2008-2009 use a different question structure (q7_* for function items) and
+# are NOT mapped in this initial pass. Coverage: 18 of 20 years for functions.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -9, 8, 9, 88, 99]
+    description: "KIPA corruption: common sentinel missing codes"
+
+variables:
+  # -------- (1) PUBLIC vs PRIVATE SECTOR --------
+  - id: corr_sector_public
+    concept: sector_corruption
+    description: "Perceived corruption in public sector / administrative agencies (1-6, higher=more corrupt)"
+    type: ordinal
+    note: "a0611 (cum, 2010-2021) / q11_1 (2022-2023). All 20 years covered."
+    source:
+      w2004: a0611
+      w2005: a0611
+      w2006: a0611
+      w2007: a0611
+      w2010: a0611
+      w2011: a0611
+      w2012: a0611
+      w2013: a0611
+      w2014: a0611
+      w2015: a0611
+      w2016: a0611
+      w2017: a0611
+      w2018: a0611
+      w2019: a0611
+      w2020: a0611
+      w2021: a0611
+      w2022: q11_1
+      w2023: q11_1
+    scale: {min: 1, max: 6, labels: {1: "Not at all corrupt", 6: "Very corrupt"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true  # 2008/2009 use q7_* structure — intentionally unmapped
+
+  - id: corr_sector_private
+    concept: sector_corruption
+    description: "Perceived corruption in private sector / businesses (1-6, higher=more corrupt)"
+    type: ordinal
+    note: "a0612 (cum, 2010-2021) / q11_2 (2022-2023)."
+    source:
+      w2004: a0612
+      w2005: a0612
+      w2006: a0612
+      w2007: a0612
+      w2010: a0612
+      w2011: a0612
+      w2012: a0612
+      w2013: a0612
+      w2014: a0612
+      w2015: a0612
+      w2016: a0612
+      w2017: a0612
+      w2018: a0612
+      w2019: a0612
+      w2020: a0612
+      w2021: a0612
+      w2022: q11_2
+      w2023: q11_2
+    scale: {min: 1, max: 6, labels: {1: "Not at all corrupt", 6: "Very corrupt"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  # -------- (2) ADMINISTRATIVE FUNCTION AREAS --------
+  # Template: a07xx family (cum + 2010-2021) / q23_xx (2022-2023)
+  - id: corr_func_tax
+    concept: sector_corruption
+    description: "Perceived corruption in tax administration (세무) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0701
+      w2005: a0701
+      w2006: a0701
+      w2007: a0701
+      w2010: a0701
+      w2011: a0701
+      w2012: a0701
+      w2013: a0701
+      w2014: a0701
+      w2015: a0701
+      w2016: a0701
+      w2017: a0701
+      w2018: a0701
+      w2019: a0701
+      w2020: a0701
+      w2021: a0701
+      w2022: q23_1
+      w2023: q23_1
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_police
+    concept: sector_corruption
+    description: "Perceived corruption in police (경찰) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0702
+      w2005: a0702
+      w2006: a0702
+      w2007: a0702
+      w2010: a0702
+      w2011: a0702
+      w2012: a0702
+      w2013: a0702
+      w2014: a0702
+      w2015: a0702
+      w2016: a0702
+      w2017: a0702
+      w2018: a0702
+      w2019: a0702
+      w2020: a0702
+      w2021: a0702
+      w2022: q23_2
+      w2023: q23_2
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_fire
+    concept: sector_corruption
+    description: "Perceived corruption in fire services (소방) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0703
+      w2005: a0703
+      w2006: a0703
+      w2007: a0703
+      w2010: a0703
+      w2011: a0703
+      w2012: a0703
+      w2013: a0703
+      w2014: a0703
+      w2015: a0703
+      w2016: a0703
+      w2017: a0703
+      w2018: a0703
+      w2019: a0703
+      w2020: a0703
+      w2021: a0703
+      w2022: q23_3
+      w2023: q23_3
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_legal
+    concept: sector_corruption
+    description: "Perceived corruption in legal / prosecutorial profession (1-6, higher=more corrupt)"
+    type: ordinal
+    note: "**SCOPE SHIFT**: a0704 (cum, 2010-2021) was 법조 (legal profession broadly: judges, prosecutors, lawyers). 2022-2023 q23_4 narrows to 검찰 (prosecutors only). Trend comparison across the 2022 boundary should be interpreted cautiously."
+    source:
+      w2004: a0704
+      w2005: a0704
+      w2006: a0704
+      w2007: a0704
+      w2010: a0704
+      w2011: a0704
+      w2012: a0704
+      w2013: a0704
+      w2014: a0704
+      w2015: a0704
+      w2016: a0704
+      w2017: a0704
+      w2018: a0704
+      w2019: a0704
+      w2020: a0704
+      w2021: a0704
+      w2022: q23_4
+      w2023: q23_4
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_environment
+    concept: sector_corruption
+    description: "Perceived corruption in environmental administration (환경) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0705
+      w2005: a0705
+      w2006: a0705
+      w2007: a0705
+      w2010: a0705
+      w2011: a0705
+      w2012: a0705
+      w2013: a0705
+      w2014: a0705
+      w2015: a0705
+      w2016: a0705
+      w2017: a0705
+      w2018: a0705
+      w2019: a0705
+      w2020: a0705
+      w2021: a0705
+      w2022: q23_5
+      w2023: q23_5
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_health
+    concept: sector_corruption
+    description: "Perceived corruption in health/medical administration (보건/의료) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0706
+      w2005: a0706
+      w2006: a0706
+      w2007: a0706
+      w2010: a0706
+      w2011: a0706
+      w2012: a0706
+      w2013: a0706
+      w2014: a0706
+      w2015: a0706
+      w2016: a0706
+      w2017: a0706
+      w2018: a0706
+      w2019: a0706
+      w2020: a0706
+      w2021: a0706
+      w2022: q23_6
+      w2023: q23_6
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_food_safety
+    concept: sector_corruption
+    description: "Perceived corruption in food-safety/hygiene administration (식품/위생) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0707
+      w2005: a0707
+      w2006: a0707
+      w2007: a0707
+      w2010: a0707
+      w2011: a0707
+      w2012: a0707
+      w2013: a0707
+      w2014: a0707
+      w2015: a0707
+      w2016: a0707
+      w2017: a0707
+      w2018: a0707
+      w2019: a0707
+      w2020: a0707
+      w2021: a0707
+      w2022: q23_7
+      w2023: q23_7
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_construction
+    concept: sector_corruption
+    description: "Perceived corruption in construction administration (건축/건설/공사) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0708
+      w2005: a0708
+      w2006: a0708
+      w2007: a0708
+      w2010: a0708
+      w2011: a0708
+      w2012: a0708
+      w2013: a0708
+      w2014: a0708
+      w2015: a0708
+      w2016: a0708
+      w2017: a0708
+      w2018: a0708
+      w2019: a0708
+      w2020: a0708
+      w2021: a0708
+      w2022: q23_8
+      w2023: q23_8
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_procurement
+    concept: sector_corruption
+    description: "Perceived corruption in procurement (조달/발주) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0709
+      w2005: a0709
+      w2006: a0709
+      w2007: a0709
+      w2010: a0709
+      w2011: a0709
+      w2012: a0709
+      w2013: a0709
+      w2014: a0709
+      w2015: a0709
+      w2016: a0709
+      w2017: a0709
+      w2018: a0709
+      w2019: a0709
+      w2020: a0709
+      w2021: a0709
+      w2022: q23_9
+      w2023: q23_9
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_education
+    concept: sector_corruption
+    description: "Perceived corruption in education administration (교육) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0710
+      w2005: a0710
+      w2006: a0710
+      w2007: a0710
+      w2010: a0710
+      w2011: a0710
+      w2012: a0710
+      w2013: a0710
+      w2014: a0710
+      w2015: a0710
+      w2016: a0710
+      w2017: a0710
+      w2018: a0710
+      w2019: a0710
+      w2020: a0710
+      w2021: a0710
+      w2022: q23_13
+      w2023: q23_13
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_welfare
+    concept: sector_corruption
+    description: "Perceived corruption in social welfare administration (사회복지) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0712
+      w2005: a0712
+      w2006: a0712
+      w2007: a0712
+      w2010: a0712
+      w2011: a0712
+      w2012: a0712
+      w2013: a0712
+      w2014: a0712
+      w2015: a0712
+      w2016: a0712
+      w2017: a0712
+      w2018: a0712
+      w2019: a0712
+      w2020: a0712
+      w2021: a0712
+      w2022: q23_11
+      w2023: q23_11
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_func_customs
+    concept: sector_corruption
+    description: "Perceived corruption in customs/immigration (출입국관리) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0713
+      w2005: a0713
+      w2006: a0713
+      w2007: a0713
+      w2010: a0713
+      w2011: a0713
+      w2012: a0713
+      w2013: a0713
+      w2014: a0713
+      w2015: a0713
+      w2016: a0713
+      w2017: a0713
+      w2018: a0713
+      w2019: a0713
+      w2020: a0713
+      w2021: a0713
+      w2022: q23_10
+      w2023: q23_10
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  # -------- (3) ADMINISTRATIVE AGENCY LEVELS --------
+  - id: corr_agency_central_hq
+    concept: sector_corruption
+    description: "Perceived corruption at central-government HQ agencies (중앙행정기관 본청) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0811
+      w2005: a0811
+      w2006: a0811
+      w2007: a0811
+      w2010: a0811
+      w2011: a0811
+      w2012: a0811
+      w2013: a0811
+      w2014: a0811
+      w2015: a0811
+      w2016: a0811
+      w2017: a0811
+      w2018: a0811
+      w2019: a0811
+      w2020: a0811
+      w2021: a0811
+      w2022: q22_1
+      w2023: q22_1
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_agency_central_branch
+    concept: sector_corruption
+    description: "Perceived corruption at central-government regional branches (중앙행정기관 지방관청) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0812
+      w2005: a0812
+      w2006: a0812
+      w2007: a0812
+      w2010: a0812
+      w2011: a0812
+      w2012: a0812
+      w2013: a0812
+      w2014: a0812
+      w2015: a0812
+      w2016: a0812
+      w2017: a0812
+      w2018: a0812
+      w2019: a0812
+      w2020: a0812
+      w2021: a0812
+      w2022: q22_2
+      w2023: q22_2
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: corr_agency_local_frontline
+    concept: sector_corruption
+    description: "Perceived corruption at frontline local-government agencies (최일선 지방행정기관) (1-6, higher=more corrupt)"
+    type: ordinal
+    source:
+      w2004: a0815
+      w2005: a0815
+      w2006: a0815
+      w2007: a0815
+      w2010: a0815
+      w2011: a0815
+      w2012: a0815
+      w2013: a0815
+      w2014: a0815
+      w2015: a0815
+      w2016: a0815
+      w2017: a0815
+      w2018: a0815
+      w2019: a0815
+      w2020: a0815
+      w2021: a0815
+      w2022: q22_4
+      w2023: q22_4
+    scale: {min: 1, max: 6}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true

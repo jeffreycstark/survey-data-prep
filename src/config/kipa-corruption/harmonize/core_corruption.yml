@@ -1,0 +1,163 @@
+# KIPA Corruption Survey — Core repeat-key items (2004-2023)
+#
+# These are the "반복핵심" (repeat-core) items that appear in most or all 20
+# survey waves. Variable names shifted between two naming families:
+#   - "a-family" (a01, a02, a03, a13, ...): used 2010-2021 and in the 2004-2007
+#     cumulative file
+#   - "q-family" (q1, q2, q3, q9, q13, ...): used 2008, 2009, and 2022-2023
+#
+# The semantic content is essentially stable — KIPA preserved the repeat-core
+# question wording across both naming conventions. The harmonization maps each
+# wave to the correct raw name.
+#
+# SAMPLE POPULATION: This is NOT a general-population survey. Respondents are
+# corporate employees and self-employed workers who have business contact with
+# government agencies — sampled via stratified proportional design. The data
+# cannot be row-bound with KGSS/KAMOS/KIPA-social.
+#
+# MISSING VALUES: Most items use default missing handling (no special codes
+# beyond NA). 2018-2020 show a few observations coded 3 on a13 (expected 1/2);
+# these are likely "해당없음" filter responses and are treated as NA by the QC
+# range check.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -9, 8, 9, 88, 99]
+    description: "KIPA corruption: common sentinel missing codes"
+
+variables:
+  # -------- Perception of public-sector corruption --------
+  - id: corr_prevalence_perception
+    concept: corruption_perception
+    description: "Perceived prevalence of money/entertainment/favor-giving to officials (1-6, higher=more prevalent)"
+    type: ordinal
+    note: "Raw a01 (2010-2021, cumulative) / q1 (2008, 2009, 2022, 2023). Wording shifted slightly post-2022 to include 향응/편의 (entertainment/favors) alongside 금품 (money), reflecting the Kim Young-ran Act's broader definition."
+    source:
+      w2004: a01
+      w2005: a01
+      w2006: a01
+      w2007: a01
+      w2008: q1
+      w2009: q1
+      w2010: a01
+      w2011: a01
+      w2012: a01
+      w2013: a01
+      w2014: a01
+      w2015: a01
+      w2016: a01
+      w2017: a01
+      w2018: a01
+      w2019: a01
+      w2020: a01
+      w2021: a01
+      w2022: q1
+      w2023: q1
+    scale: {min: 1, max: 6, labels: {1: "Not at all prevalent", 6: "Very prevalent"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  - id: corr_seriousness_perception
+    concept: corruption_perception
+    description: "Perceived seriousness of public-sector corruption as a social problem (1-6, higher=more serious)"
+    type: ordinal
+    note: "Raw a02 / q2. Same naming convention split as corr_prevalence_perception."
+    source:
+      w2004: a02
+      w2005: a02
+      w2006: a02
+      w2007: a02
+      w2008: q2
+      w2009: q2
+      w2010: a02
+      w2011: a02
+      w2012: a02
+      w2013: a02
+      w2014: a02
+      w2015: a02
+      w2016: a02
+      w2017: a02
+      w2018: a02
+      w2019: a02
+      w2020: a02
+      w2021: a02
+      w2022: q2
+      w2023: q2
+    scale: {min: 1, max: 6, labels: {1: "Not at all serious", 6: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  - id: corr_change_vs_last_year
+    concept: corruption_perception
+    description: "Change in corruption level compared to one year ago (1-6, higher=corruption increased)"
+    type: ordinal
+    note: "Raw a03 (a-family) / q3 (2008-2009) / q9 (2022-2023). Semantics preserved across all three variants. Midpoint ~3-4 = 'about the same'; values below midpoint indicate perceived improvement, above midpoint indicate perceived worsening."
+    source:
+      w2004: a03
+      w2005: a03
+      w2006: a03
+      w2007: a03
+      w2008: q3
+      w2009: q3
+      w2010: a03
+      w2011: a03
+      w2012: a03
+      w2013: a03
+      w2014: a03
+      w2015: a03
+      w2016: a03
+      w2017: a03
+      w2018: a03
+      w2019: a03
+      w2020: a03
+      w2021: a03
+      w2022: q9
+      w2023: q9
+    scale: {min: 1, max: 6, labels: {1: "Much lower", 6: "Much higher"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  # -------- Personal bribery experience (binary) --------
+  - id: corr_bribery_experience_1yr
+    concept: corruption_experience
+    description: "Personal experience of giving money/entertainment/favors to officials in past 1 year (1=yes, 2=no)"
+    type: binary
+    note: "Raw a13 (2010-2021, cumulative) / q13 (2008, 2009). **NOT available in 2022-2023** — KIPA restructured the experience section; the 2022-2023 q13 variable captures a broader 'contact with officials' concept, not direct bribery. To harmonize 2022-2023 will require investigation of qa14+ item sequence. Some waves (2018-2020) show occasional value 3; likely a skip-filter artifact treated as NA by range check."
+    source:
+      w2004: a13
+      w2005: a13
+      w2006: a13
+      w2007: a13
+      w2008: q13
+      w2009: q13
+      w2010: a13
+      w2011: a13
+      w2012: a13
+      w2013: a13
+      w2014: a13
+      w2015: a13
+      w2016: a13
+      w2017: a13
+      w2018: a13
+      w2019: a13
+      w2020: a13
+      w2021: a13
+    scale: {min: 1, max: 2, labels: {1: "Yes, gave bribe", 2: "No"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      # q13 in 2022-2023 is a DIFFERENT concept ("contact with officials"), not
+      # bribery experience. Suppress the engine's unmapped-wave warning since
+      # we've already decided not to map those waves here.
+      skip_unmapped_check: true

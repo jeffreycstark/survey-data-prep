@@ -1,5 +1,5 @@
 # KGSS Demographics
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # Core demographic variables repeated annually in the KGSS.
 #
@@ -49,6 +49,7 @@ variables:
       w2018: AGE
       w2021: AGE
       w2023: AGE
+      w2025: AGE
     harmonize:
       default:
         method: identity
@@ -76,6 +77,7 @@ variables:
       w2018: SEX
       w2021: SEX
       w2023: SEX
+      w2025: SEX
     scale:
       min: 1
       max: 2
@@ -109,6 +111,7 @@ variables:
       w2018: EDUC
       w2021: EDUC
       w2023: EDUC
+      w2025: EDUC
     scale:
       min: 0
       max: 8
@@ -149,6 +152,7 @@ variables:
       w2018: MARITAL
       w2021: MARITAL
       w2023: MARITAL
+      w2025: MARITAL
     scale:
       min: 1
       max: 6
@@ -186,6 +190,7 @@ variables:
       w2018: EMPLY
       w2021: EMPLY
       w2023: EMPLY
+      w2025: EMPLY
     scale:
       min: 1
       max: 2
@@ -220,6 +225,7 @@ variables:
       w2018: INCOME
       w2021: INCOME
       w2023: INCOME
+      w2025: INCOME
     harmonize:
       default:
         method: identity
@@ -247,6 +253,7 @@ variables:
       w2018: REGION
       w2021: REGION
       w2023: REGION
+      w2025: REGION
     scale:
       min: 1
       max: 7
@@ -285,6 +292,7 @@ variables:
       w2018: URBAN
       w2021: URBAN
       w2023: URBAN
+      w2025: URBAN
     scale:
       min: 0
       max: 1
@@ -318,6 +326,7 @@ variables:
       w2018: RELIG
       w2021: RELIG
       w2023: RELIG
+      w2025: RELIG
     harmonize:
       default:
         method: identity
@@ -346,6 +355,7 @@ variables:
       w2018: ATTEND
       w2021: ATTEND
       w2023: ATTEND
+      w2025: ATTEND
     scale:
       min: 1
       max: 8
@@ -424,6 +434,7 @@ variables:
       w2018: RANK
       w2021: RANK
       w2023: RANK
+      w2025: RANK
     scale:
       min: 1
       max: 10

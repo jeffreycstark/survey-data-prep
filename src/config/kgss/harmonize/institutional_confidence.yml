@@ -1,5 +1,5 @@
 # KGSS Institutional Confidence
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # SCALE DIRECTION:
 # Raw: 1=A great deal of confidence, 2=Only some confidence, 3=Hardly any confidence
@@ -40,6 +40,7 @@ variables:
       w2018: CONBUS
       w2021: CONBUS
       w2023: CONBUS
+      w2025: CONBUS
     scale:
       min: 1
       max: 3
@@ -76,6 +77,7 @@ variables:
       w2018: CONLEGIS
       w2021: CONLEGIS
       w2023: CONLEGIS
+      w2025: CONLEGIS
     scale:
       min: 1
       max: 3
@@ -111,6 +113,7 @@ variables:
       w2018: CONJUDGE
       w2021: CONJUDGE
       w2023: CONJUDGE
+      w2025: CONJUDGE
     scale:
       min: 1
       max: 3
@@ -146,6 +149,7 @@ variables:
       w2018: CONSCI
       w2021: CONSCI
       w2023: CONSCI
+      w2025: CONSCI
     scale:
       min: 1
       max: 3
@@ -181,6 +185,7 @@ variables:
       w2018: CONARMY
       w2021: CONARMY
       w2023: CONARMY
+      w2025: CONARMY
     scale:
       min: 1
       max: 3
@@ -216,6 +221,7 @@ variables:
       w2018: CONFINAN
       w2021: CONFINAN
       w2023: CONFINAN
+      w2025: CONFINAN
     scale:
       min: 1
       max: 3
@@ -252,6 +258,7 @@ variables:
       w2018: CONBLUHO
       w2021: CONBLUHO
       w2023: CONBLUHO
+      w2025: CONBLUHO
     scale:
       min: 1
       max: 3
@@ -287,6 +294,7 @@ variables:
       w2018: CONCSO
       w2021: CONCSO
       w2023: CONCSO
+      w2025: CONCSO
     scale:
       min: 1
       max: 3
@@ -322,6 +330,7 @@ variables:
       w2018: CONCLERG
       w2021: CONCLERG
       w2023: CONCLERG
+      w2025: CONCLERG
     scale:
       min: 1
       max: 3
@@ -357,6 +366,7 @@ variables:
       w2018: CONEDUC
       w2021: CONEDUC
       w2023: CONEDUC
+      w2025: CONEDUC
     scale:
       min: 1
       max: 3
@@ -392,6 +402,7 @@ variables:
       w2018: CONLABOR
       w2021: CONLABOR
       w2023: CONLABOR
+      w2025: CONLABOR
     scale:
       min: 1
       max: 3
@@ -427,6 +438,7 @@ variables:
       w2018: CONPRESS
       w2021: CONPRESS
       w2023: CONPRESS
+      w2025: CONPRESS
     scale:
       min: 1
       max: 3
@@ -462,6 +474,7 @@ variables:
       w2018: CONTV
       w2021: CONTV
       w2023: CONTV
+      w2025: CONTV
     scale:
       min: 1
       max: 3
@@ -497,6 +510,7 @@ variables:
       w2018: CONMEDIC
       w2021: CONMEDIC
       w2023: CONMEDIC
+      w2025: CONMEDIC
     scale:
       min: 1
       max: 3
@@ -532,6 +546,7 @@ variables:
       w2018: CONGOVT
       w2021: CONGOVT
       w2023: CONGOVT
+      w2025: CONGOVT
     scale:
       min: 1
       max: 3
@@ -567,6 +582,7 @@ variables:
       w2018: CONLGOVT
       w2021: CONLGOVT
       w2023: CONLGOVT
+      w2025: CONLGOVT
     scale:
       min: 1
       max: 3
@@ -602,6 +618,7 @@ variables:
       w2018: CONRCH
       w2021: CONRCH
       w2023: CONRCH
+      w2025: CONRCH
     scale:
       min: 1
       max: 3
@@ -637,6 +654,7 @@ variables:
       w2018: CONPROS
       w2021: CONPROS
       w2023: CONPROS
+      w2025: CONPROS
     scale:
       min: 1
       max: 3
@@ -672,6 +690,7 @@ variables:
       w2018: CONSTAT
       w2021: CONSTAT
       w2023: CONSTAT
+      w2025: CONSTAT
     scale:
       min: 1
       max: 3
@@ -707,6 +726,7 @@ variables:
       w2018: CONELEC
       w2021: CONELEC
       w2023: CONELEC
+      w2025: CONELEC
     scale:
       min: 1
       max: 3

@@ -1,0 +1,336 @@
+# KGSS ISSP Role of Government module
+#
+# Two variable families:
+#
+#   (1) Government responsibility — "should it be the government's responsibility to ..."
+#       GOVRES1–GOVRES10, fielded in 2006 and 2016.
+#       Raw scale 1-4: 1=당연히 정부의 책임 (definitely govt's responsibility),
+#                       4=당연히 정부의 책임이 아니다 (definitely not).
+#       REVERSED so higher = more state responsibility expected.
+#
+#   (2) Government spending — "should govt spend more or less on ..."
+#       GOVSPD1–GOVSPD8, fielded in 2006, 2014, 2016, 2018, 2021, 2023, 2025 (7 waves — strongest longitudinal coverage in KGSS).
+#       Raw scale 1-5: 1=훨씬 더 늘려야 (much more), 5=훨씬 더 줄여야 (much less).
+#       REVERSED so higher = more spending desired.
+#
+# MISSING VALUES:
+# -8 = DK, -1 = IAP
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 88, 98, 99]
+    description: "KGSS: -8=DK, -1=IAP; legacy 88/98/99 sentinels"
+
+variables:
+  # -------- GOVERNMENT RESPONSIBILITY (2006 & 2016) --------
+  - id: gov_resp_jobs
+    concept: role_of_government
+    description: "Should govt be responsible for providing jobs (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES1
+      w2016: GOVRES1
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_prices
+    concept: role_of_government
+    description: "Should govt be responsible for keeping prices under control (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES2
+      w2016: GOVRES2
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_healthcare
+    concept: role_of_government
+    description: "Should govt be responsible for providing healthcare (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES3
+      w2016: GOVRES3
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_elderly
+    concept: role_of_government
+    description: "Should govt be responsible for decent elderly living standard (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES4
+      w2016: GOVRES4
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_industry
+    concept: role_of_government
+    description: "Should govt be responsible for supporting growing industries (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES5
+      w2016: GOVRES5
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_unemploy
+    concept: role_of_government
+    description: "Should govt be responsible for decent living standard for the unemployed (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES6
+      w2016: GOVRES6
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_incomegap
+    concept: role_of_government
+    description: "Should govt be responsible for reducing income inequality (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES7
+      w2016: GOVRES7
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_students
+    concept: role_of_government
+    description: "Should govt provide financial aid to low-income university students (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES8
+      w2016: GOVRES8
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_housing
+    concept: role_of_government
+    description: "Should govt provide decent housing for the homeless (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES9
+      w2016: GOVRES9
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  - id: gov_resp_environment
+    concept: role_of_government
+    description: "Should govt regulate industry to reduce environmental damage (1-4, higher=more state role)"
+    type: ordinal
+    source:
+      w2006: GOVRES10
+      w2016: GOVRES10
+    scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+
+  # -------- GOVERNMENT SPENDING (2006, 2014, 2016, 2018, 2021, 2023, 2025) --------
+  - id: gov_spend_environment
+    concept: role_of_government
+    description: "Govt should spend more/less on the environment (1-5, higher=spend more)"
+    type: ordinal
+    note: "Raw 1=much more, 5=much less. Reversed so high=spend more."
+    source:
+      w2006: GOVSPD1
+      w2014: GOVSPD1
+      w2016: GOVSPD1
+      w2018: GOVSPD1
+      w2021: GOVSPD1
+      w2023: GOVSPD1
+      w2025: GOVSPD1
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_health
+    concept: role_of_government
+    description: "Govt should spend more/less on health (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD2
+      w2014: GOVSPD2
+      w2016: GOVSPD2
+      w2018: GOVSPD2
+      w2021: GOVSPD2
+      w2023: GOVSPD2
+      w2025: GOVSPD2
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_police
+    concept: role_of_government
+    description: "Govt should spend more/less on police/law enforcement (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD3
+      w2014: GOVSPD3
+      w2016: GOVSPD3
+      w2018: GOVSPD3
+      w2021: GOVSPD3
+      w2023: GOVSPD3
+      w2025: GOVSPD3
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_education
+    concept: role_of_government
+    description: "Govt should spend more/less on education (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD4
+      w2014: GOVSPD4
+      w2016: GOVSPD4
+      w2018: GOVSPD4
+      w2021: GOVSPD4
+      w2023: GOVSPD4
+      w2025: GOVSPD4
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_defense
+    concept: role_of_government
+    description: "Govt should spend more/less on defense/military (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD5
+      w2014: GOVSPD5
+      w2016: GOVSPD5
+      w2018: GOVSPD5
+      w2021: GOVSPD5
+      w2023: GOVSPD5
+      w2025: GOVSPD5
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_pension
+    concept: role_of_government
+    description: "Govt should spend more/less on old-age pensions (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD6
+      w2014: GOVSPD6
+      w2016: GOVSPD6
+      w2018: GOVSPD6
+      w2021: GOVSPD6
+      w2023: GOVSPD6
+      w2025: GOVSPD6
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_unemployment
+    concept: role_of_government
+    description: "Govt should spend more/less on unemployment benefits (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD7
+      w2014: GOVSPD7
+      w2016: GOVSPD7
+      w2018: GOVSPD7
+      w2021: GOVSPD7
+      w2023: GOVSPD7
+      w2025: GOVSPD7
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: gov_spend_culture
+    concept: role_of_government
+    description: "Govt should spend more/less on culture and arts (1-5, higher=spend more)"
+    type: ordinal
+    source:
+      w2006: GOVSPD8
+      w2014: GOVSPD8
+      w2016: GOVSPD8
+      w2018: GOVSPD8
+      w2021: GOVSPD8
+      w2023: GOVSPD8
+      w2025: GOVSPD8
+    scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]

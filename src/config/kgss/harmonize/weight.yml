@@ -1,5 +1,5 @@
 # KGSS Survey Weight
-# Years: 2003-2014, 2016, 2018, 2021, 2023 (16 years)
+# Years: 2003-2014, 2016, 2018, 2021, 2023, 2025 (17 years)
 #
 # FINALWT: Post-stratification weight
 #   Range: ~0.203 to 4.591, mean = 1.0
@@ -35,6 +35,7 @@ variables:
       w2018: FINALWT
       w2021: FINALWT
       w2023: FINALWT
+      w2025: FINALWT
     harmonize:
       default:
         method: identity

@@ -1,0 +1,269 @@
+# KGSS Political Behavior — partisanship, voting, political/economic satisfaction
+#
+# This file covers:
+#   (1) Party identification   — year-suffixed raw variables PRTYIDyy (nominal, wave-incompatible)
+#   (2) Preferred party        — year-suffixed raw variables PRTYPRyy (nominal, wave-incompatible)
+#   (3) Electoral participation — binary "did you vote" in presidential / general / local elections
+#   (4) Political satisfaction  — SATPOL (5pt, reversed so high=more satisfied)
+#   (5) Household economic sat  — SATFIN (5pt, reversed so high=more satisfied)
+#   (6) Household economic outlook — FINPROS (5pt, reversed so high=more optimistic)
+#   (7) Political outlook       — POLPROS (5pt, reversed; sparse, 2004-2014 only)
+#
+# ⚠️ IMPORTANT — party_id / party_pref are NOMINAL and WAVE-INCOMPATIBLE.
+# Each wave stores its year-specific raw party code; party landscapes change
+# across waves (e.g., Saenuri dissolved in 2017; 조국혁신당 emerged in 2024).
+# Do NOT treat these as ordinal or comparable without manual camp-mapping.
+# Use party_id within a single wave only, or construct derived camp vars per paper.
+#
+# ⚠️ voted_* variables: raw coding is 1=투표했다 (voted), 2=투표하지 않았다 (did not vote).
+# Preserved as-is; higher number does NOT mean more voting — it means LESS.
+#
+# MISSING VALUES:
+# -8 = DK (Don't Know)
+# -1 = IAP (Inapplicable / skipped)
+# 8  = DK/no response (legacy code)
+# 9  = IAP (legacy code)
+# Higher sentinel codes (88, 98, 99) filtered via qc.valid_range or function defaults.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9, 88, 98, 99]
+    description: "KGSS: -8=DK, -1=IAP/inapplicable; legacy 8/9/88/98/99"
+
+variables:
+  - id: party_id
+    concept: political_behavior
+    description: "Year-specific party identification (nominal, NOT comparable across waves)"
+    type: nominal
+    note: "Raw per-year codes. Party landscape differs per wave. Apply per-wave camp mapping for longitudinal use."
+    source:
+      w2003: PRTYID03
+      w2004: PRTYID04
+      w2005: PRTYID05
+      w2006: PRTYID06
+      w2007: PRTYID07
+      w2008: PRTYID08
+      w2009: PRTYID09
+      w2010: PRTYID10
+      w2011: PRTYID11
+      w2012: PRTYID12
+      w2013: PRTYID13
+      w2014: PRTYID14
+      w2016: PRTYID16
+      w2018: PRTYID18
+      w2021: PRTYID21
+      w2023: PRTYID23
+      w2025: PRTYID25
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: party_pref
+    concept: political_behavior
+    description: "Preferred party for non-partisans (nominal, NOT comparable across waves)"
+    type: nominal
+    note: "Asked only of respondents who said they had no party ID. Same caveats as party_id."
+    source:
+      w2003: PRTYPR03
+      w2004: PRTYPR04
+      w2005: PRTYPR05
+      w2006: PRTYPR06
+      w2007: PRTYPR07
+      w2008: PRTYPR08
+      w2009: PRTYPR09
+      w2013: PRTYPR13
+      w2014: PRTYPR14
+      w2016: PRTYPR16
+      w2018: PRTYPR18
+      w2021: PRTYPR21
+      w2023: PRTYPR23
+      w2025: PRTYPR25
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: voted_presidential
+    concept: political_behavior
+    description: "Voted in most recent presidential election (binary)"
+    type: binary
+    note: "1=투표했다 (voted), 2=투표하지 않았다 (did not vote). w2003 asks about 2002 pres; w2008/w2010 about 2007 pres; w2013 about 2012 pres."
+    source:
+      w2003: VOTE02
+      w2008: VOTE07
+      w2010: VOTE07
+      w2013: VOTE13
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: voted_general
+    concept: political_behavior
+    description: "Voted in most recent National Assembly (general) election (binary)"
+    type: binary
+    note: "1=투표했다, 2=투표하지 않았다. Waves cover 2004/2008/2012/2016/2020/2024 general elections, asked in the year after each (or same year for 2012/2016)."
+    source:
+      w2005: VOTE04
+      w2008: VOTE08
+      w2009: VOTE08
+      w2012: VOTE12
+      w2016: VOTE16
+      w2021: VOTE20
+      w2025: VOTE24
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: voted_local
+    concept: political_behavior
+    description: "Voted in most recent local election (binary)"
+    type: binary
+    note: "1=투표했다, 2=투표하지 않았다. Waves cover 2006/2010/2014/2018/2022 local elections."
+    source:
+      w2006: VOTE06
+      w2007: VOTE06
+      w2010: VOTE10
+      w2011: VOTE10
+      w2014: VOTE14
+      w2018: VOTE18
+      w2023: VOTE22
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+
+  - id: pol_satisfaction
+    concept: political_behavior
+    description: "Satisfaction with Korean political situation (1=very unsatisfied to 5=very satisfied after reversal)"
+    type: ordinal
+    note: "Raw 1=매우 만족 (very satisfied) → 5=매우 불만족 (very unsatisfied). Reversed so higher = more satisfied."
+    source:
+      w2003: SATPOL
+      w2004: SATPOL
+      w2005: SATPOL
+      w2006: SATPOL
+      w2007: SATPOL
+      w2008: SATPOL
+      w2009: SATPOL
+      w2010: SATPOL
+      w2011: SATPOL
+      w2012: SATPOL
+      w2013: SATPOL
+      w2014: SATPOL
+      w2018: SATPOL
+      w2021: SATPOL
+      w2023: SATPOL
+      w2025: SATPOL
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very unsatisfied"
+        5: "Very satisfied"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: econ_hh_satisfaction
+    concept: political_behavior
+    description: "Satisfaction with current household economic situation (1=very unsatisfied to 5=very satisfied after reversal)"
+    type: ordinal
+    note: "Raw SATFIN 1=매우 만족 (very satisfied) → 5=매우 불만족 (very unsatisfied). Reversed so higher = more satisfied. Sparse in 2007, 2013-2014."
+    source:
+      w2003: SATFIN
+      w2004: SATFIN
+      w2005: SATFIN
+      w2006: SATFIN
+      w2008: SATFIN
+      w2009: SATFIN
+      w2010: SATFIN
+      w2011: SATFIN
+      w2012: SATFIN
+      w2016: SATFIN
+      w2018: SATFIN
+      w2021: SATFIN
+      w2023: SATFIN
+      w2025: SATFIN
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Very unsatisfied"
+        5: "Very satisfied"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: econ_hh_outlook
+    concept: political_behavior
+    description: "10-year household economic outlook (1=much worse to 5=much better after reversal)"
+    type: ordinal
+    note: "Raw FINPROS 1=상당히 좋아질 것 (much better) → 5=상당히 나빠질 것 (much worse). Reversed so higher = more optimistic. Available 2007-2014, 2021-2025."
+    source:
+      w2007: FINPROS
+      w2008: FINPROS
+      w2009: FINPROS
+      w2010: FINPROS
+      w2011: FINPROS
+      w2012: FINPROS
+      w2013: FINPROS
+      w2014: FINPROS
+      w2021: FINPROS
+      w2023: FINPROS
+      w2025: FINPROS
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse"
+        5: "Much better"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+
+  - id: pol_outlook
+    concept: political_behavior
+    description: "5-year political outlook for Korea (1=much worse to 5=much better after reversal)"
+    type: ordinal
+    note: "Raw POLPROS 1=good prospect → 5=poor prospect. Reversed so higher = more optimistic. Sparse: 2004-2014 only."
+    source:
+      w2004: POLPROS
+      w2005: POLPROS
+      w2006: POLPROS
+      w2007: POLPROS
+      w2008: POLPROS
+      w2009: POLPROS
+      w2010: POLPROS
+      w2011: POLPROS
+      w2012: POLPROS
+      w2013: POLPROS
+      w2014: POLPROS
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Much worse outlook"
+        5: "Much better outlook"
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
