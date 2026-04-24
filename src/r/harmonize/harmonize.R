@@ -82,7 +82,8 @@ apply_missing <- function(x, missing_codes) {
 harmonize_variable <- function(
   var_spec,
   waves,
-  missing_conventions
+  missing_conventions,
+  oob_log = NULL
 ) {
 
   out <- list()
@@ -274,10 +275,24 @@ harmonize_variable <- function(
       # Count and coerce out-of-range values to NA
       bad <- !is.na(x_harm) & (x_harm < vr[1] | x_harm > vr[2])
       if (any(bad)) {
+        obs_min <- min(x_harm[bad], na.rm = TRUE)
+        obs_max <- max(x_harm[bad], na.rm = TRUE)
         message(
-          sprintf("   %s (%s): Converting %d out-of-range values to NA [valid: %s-%s]",
-                  var_spec$id, wave_name, sum(bad), vr[1], vr[2])
+          sprintf("   %s (%s): Converting %d out-of-range values to NA [valid: %s-%s, observed: %s-%s]",
+                  var_spec$id, wave_name, sum(bad), vr[1], vr[2], obs_min, obs_max)
         )
+        if (!is.null(oob_log)) {
+          oob_log$records <- c(oob_log$records, list(data.frame(
+            variable  = var_spec$id,
+            wave      = wave_name,
+            n_oob     = sum(bad),
+            obs_min   = obs_min,
+            obs_max   = obs_max,
+            valid_min = vr[1],
+            valid_max = vr[2],
+            stringsAsFactors = FALSE
+          )))
+        }
         x_harm[bad] <- NA_real_
       }
     }

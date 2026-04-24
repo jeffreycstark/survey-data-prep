@@ -152,6 +152,10 @@ variables:
       w2020: a13
       w2021: a13
     scale: {min: 1, max: 2, labels: {1: "Yes, gave bribe", 2: "No"}}
+    missing:
+      # Code 3 appears in gated waves (2018-2020) for respondents routed past
+      # the question by the prior contact-screener. Treat as NA, not a response.
+      codes: [3]
     harmonize:
       default:
         method: identity

@@ -54,7 +54,7 @@ variables:
     concept: anti_corruption_policy
     description: "Perceived punishment level for bribe-givers in Korean society (1-6, higher=stronger punishment after 2011-2013 reversal)"
     type: ordinal
-    note: "Long time series: 2011-2023 (13 years). 2011-2013 used a1021; 2014-2020 renamed to a103; 2021 renamed to a103a; 2022-2023 as q26. NOT in cumulative 2004-2007 or 2008-2010. **SCALE REVERSAL IN 2014**: KIPA flipped the 1-6 scale direction when renaming a1021 → a103 (caught by QA year-over-year check — 2013 mean 4.73 vs 2014 mean 2.20, same substantive perception of 'weak'). We apply safe_reverse_6pt to 2011-2013 so all waves use the post-2014 convention: higher = stronger punishment."
+    note: "Long time series: 2011-2023 (13 years). 2011-2013 used a1021; 2014-2020 renamed to a103; 2021 renamed to a103a; 2022-2023 as q26. NOT in cumulative 2004-2007 or 2008-2010. **SCALE REVERSAL IN 2014**: KIPA flipped the 1-6 scale direction when renaming a1021 → a103 (caught by QA year-over-year check — 2013 mean 4.73 vs 2014 mean 2.20, same substantive perception of 'weak'). We apply safe_reverse_6pt to 2011-2013 so all waves use the post-2014 convention: higher = stronger punishment. **UNRESOLVED**: 2-6 respondents per wave in 2018-2020 have value 7 (outside declared [1,6] range) — currently dropped as OOB. Coincides with the 2018 restructuring of the punishment-relative-strength item to 7-point; possibly a pilot or alternate question version. Requires 2018-2020 codebook review."
     source:
       w2011: a1021
       w2012: a1021
@@ -91,7 +91,7 @@ variables:
     concept: anti_corruption_policy
     description: "Perceived punishment level for bribe-receiving officials (1-6, higher=stronger punishment)"
     type: ordinal
-    note: "10 years (2014-2023). Introduced as a separate item in 2014 when punishment-of-giver and punishment-of-receiver were split. 2011-2013 had a103 with related but different wording ('view on corrupt-official punishment') that is NOT mapped here to avoid the wording-drift contamination."
+    note: "10 years (2014-2023). Introduced as a separate item in 2014 when punishment-of-giver and punishment-of-receiver were split. 2011-2013 had a103 with related but different wording ('view on corrupt-official punishment') that is NOT mapped here to avoid the wording-drift contamination. **UNRESOLVED**: 2-6 respondents per wave in 2018-2020 have value 7 (outside declared [1,6] range) — currently dropped as OOB. See corr_punishment_bribe_giver note; same pattern, same years, same codebook review needed."
     source:
       w2014: a104
       w2015: a104

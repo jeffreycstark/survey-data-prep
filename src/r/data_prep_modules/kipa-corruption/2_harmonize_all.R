@@ -25,7 +25,9 @@ if (sys.nframe() == 0) {
               length(specs),
               paste(basename(specs), collapse = ", ")))
 
-  results <- harmonize_all_specs(waves, specs = specs)
+  results <- harmonize_all_specs(waves, specs = specs,
+                                  oob_log_path = here::here("data", "processed",
+                                                             "kipa_corruption_oob_log.csv"))
   harmonized_wide <- stack_harmonized_wide(results, waves)
 
   cat("\n", strrep("=", 70), "\n", sep = "")

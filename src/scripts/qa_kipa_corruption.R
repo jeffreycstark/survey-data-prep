@@ -158,32 +158,39 @@ for (sp in spec_files) {
 if (scale_flags == 0L) cat("  All variables: scale min/max consistent with valid_range.\n")
 
 # ----------------------------------------------------------------------------
-# 3. Range integrity
+# 3. Range integrity — from harmonization out-of-range log
 # ----------------------------------------------------------------------------
-cat("\n### 3. Range integrity\n")
-spec_files <- list.files(here::here("src", "config", "kipa-corruption", "harmonize"),
-                         pattern = "\\.yml$", full.names = TRUE)
-range_map <- list()
-for (sp in spec_files) {
-  y <- yaml::read_yaml(sp)
-  for (v in y$variables) {
-    vr <- v$qc$valid_range
-    if (!is.null(vr) && length(vr) == 2) range_map[[v$id]] <- as.numeric(vr)
-  }
-}
+# The harmonize engine converts out-of-range values to NA, so checking the
+# processed dataset finds nothing. Instead we read the OOB log written during
+# the last pipeline run, which records: variable, wave, n converted, and the
+# observed min/max of the offending values BEFORE they were set to NA.
+# This is the only place where "values were 12 on a 1-10 scale" is visible.
+cat("\n### 3. Range integrity (from harmonization OOB log)\n")
+oob_log_path <- here::here("data", "processed", "kipa_corruption_oob_log.csv")
 oob_flags <- 0L
-for (v in intersect(names(range_map), survey_vars)) {
-  vr <- range_map[[v]]
-  x <- d[[v]]
-  bad <- !is.na(x) & (x < vr[1] | x > vr[2])
-  if (any(bad)) {
-    oob_flags <- oob_flags + 1L
-    flag(sprintf("%s: %d values outside [%g, %g]",
-                 v, sum(bad), vr[1], vr[2]))
+if (!file.exists(oob_log_path)) {
+  cat("  ⚠ OOB log not found — re-run the harmonization pipeline to generate it.\n")
+  cat("    (Rscript src/r/data_prep_modules/kipa-corruption/2_harmonize_all.R)\n")
+} else {
+  oob_df <- read.csv(oob_log_path, stringsAsFactors = FALSE)
+  if (nrow(oob_df) == 0) {
+    cat("  ✓ No out-of-range conversions recorded in last pipeline run.\n")
+  } else {
+    cat(sprintf("  %d out-of-range event(s) recorded in last pipeline run:\n", nrow(oob_df)))
+    for (i in seq_len(nrow(oob_df))) {
+      r <- oob_df[i, ]
+      oob_flags <- oob_flags + 1L
+      excess <- r$obs_max - r$valid_max
+      direction <- if (r$obs_max > r$valid_max) sprintf("+%g above ceiling", excess) else
+                   sprintf("%g below floor", r$valid_min - r$obs_min)
+      flag(sprintf(
+        "%s (%s): %d values outside [%g, %g] — observed range [%g, %g] (%s). Scale change?",
+        r$variable, r$wave, r$n_oob, r$valid_min, r$valid_max,
+        r$obs_min, r$obs_max, direction
+      ))
+    }
   }
 }
-if (oob_flags == 0L) cat(sprintf("  All %d variables within declared ranges.\n",
-                                  length(range_map)))
 
 # ----------------------------------------------------------------------------
 # 4. Direction sanity — expected-sign correlations
@@ -284,7 +291,8 @@ oddities <- c(
   "Labels in 2009–2021 SAV files are EUC-KR-encoded and show as mojibake when read without encoding handling. Variable names and values are ASCII/numeric, so harmonization works regardless.",
   "Kim Young-ran Act (Sept 2016) is the key policy discontinuity. Expect structural breaks in direct-experience variables around 2016–2017.",
   "`corr_punishment_bribe_giver` had a SCALE-DIRECTION FLIP between 2013 (a1021) and 2014 (a103): pre-2014 coded 1=strong→6=weak, post-2014 coded 1=weak→6=strong. We apply safe_reverse_6pt to 2011-2013 so the harmonized output uses higher=stronger throughout. This was caught by the YoY jump check (Δ=-2.53 SD in 2013→2014 means). When adding new items, watch for undocumented scale flips at variable-renaming boundaries.",
-  "`corr_punishment_relative_strength` had its scale restructured in 2018 from 6-point (1=bribe-givers penalized more, 6=officials penalized more, no midpoint) to 7-point (1=givers more, 4=equal midpoint, 7=officials more). Coverage is therefore 2011-2017 only (7 years). Originally specified as valid_range [1,5] — this was wrong (actual 6-pt scale) and caused 19–45% of rows per wave to be silently dropped. Fixed to valid_range [1,6] and 2018-2023 excluded. Would have been caught by the mapped-wave NA check (sections 2a) and the scale vs valid_range check (section 2b) added after this incident."
+  "`corr_punishment_relative_strength` had its scale restructured in 2018 from 6-point (1=bribe-givers penalized more, 6=officials penalized more, no midpoint) to 7-point (1=givers more, 4=equal midpoint, 7=officials more). Coverage is therefore 2011-2017 only (7 years). Originally specified as valid_range [1,5] — this was wrong (actual 6-pt scale) and caused 19–45% of rows per wave to be silently dropped. Fixed to valid_range [1,6] and 2018-2023 excluded. Would have been caught by the mapped-wave NA check (sections 2a) and the scale vs valid_range check (section 2b) added after this incident.",
+  "`corr_punishment_bribe_giver` and `corr_punishment_corrupt_official` show 2-6 values coded as 7 in 2018-2020 (OOB log: observed [7,7] on valid [1,6] scale). These are tiny counts (n=2–6 per wave out of 1,000). Coincides with the 2018 scale restructuring of `corr_punishment_relative_strength` to 7-point — possible that a small subgroup received a pilot or alternate version of the punishment battery. Requires codebook review for 2018-2020 to determine if value 7 has a defined meaning in those years. Currently dropped as out-of-range."
 )
 for (i in seq_along(oddities)) cat(sprintf("  %2d. %s\n", i, oddities[i]))
 

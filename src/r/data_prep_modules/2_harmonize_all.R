@@ -24,7 +24,7 @@ source(here::here("src/r/data_prep_modules/_yaml_utils.R"))
 #' @param waves List of wave dataframes
 #' @param silent Suppress messages
 #' @return List with harmonized variables and metadata
-harmonize_spec <- function(spec_path, waves, silent = FALSE) {
+harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
 
   spec_name <- tools::file_path_sans_ext(basename(spec_path))
 
@@ -59,7 +59,8 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE) {
       harmonized <- harmonize_variable(
         var_spec = var_spec,
         waves = waves,
-        missing_conventions = missing_conventions
+        missing_conventions = missing_conventions,
+        oob_log = oob_log
       )
 
       results[[var_id]] <- harmonized
@@ -84,7 +85,8 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE) {
 #' @param specs Optional: specific spec files to process (default: all)
 #' @param silent Suppress messages
 #' @return List of harmonization results by spec
-harmonize_all_specs <- function(waves, specs = NULL, silent = FALSE) {
+harmonize_all_specs <- function(waves, specs = NULL, silent = FALSE,
+                                oob_log_path = NULL) {
 
   if (is.null(specs)) {
     specs <- list_yaml_specs()
@@ -95,15 +97,39 @@ harmonize_all_specs <- function(waves, specs = NULL, silent = FALSE) {
     cat("Specs:", paste(basename(specs), collapse = ", "), "\n")
   }
 
+  oob_log <- if (!is.null(oob_log_path)) {
+    e <- new.env(parent = emptyenv())
+    e$records <- list()
+    e
+  } else NULL
+
   results <- list()
 
   for (spec_path in specs) {
     spec_name <- tools::file_path_sans_ext(basename(spec_path))
 
-    result <- harmonize_spec(spec_path, waves, silent = silent)
+    result <- harmonize_spec(spec_path, waves, silent = silent, oob_log = oob_log)
 
     if (!is.null(result)) {
       results[[spec_name]] <- result
+    }
+  }
+
+  if (!is.null(oob_log_path)) {
+    if (length(oob_log$records) > 0) {
+      oob_df <- do.call(rbind, oob_log$records)
+      write.csv(oob_df, oob_log_path, row.names = FALSE)
+      if (!silent) {
+        cat(sprintf("\n⚠  Out-of-range log: %d events written to %s\n",
+                    nrow(oob_df), oob_log_path))
+      }
+    } else {
+      # Write empty log so QA script can distinguish "ran and clean" from "never ran"
+      write.csv(data.frame(variable=character(), wave=character(),
+                            n_oob=integer(), obs_min=numeric(), obs_max=numeric(),
+                            valid_min=numeric(), valid_max=numeric()),
+                oob_log_path, row.names = FALSE)
+      if (!silent) cat(sprintf("\n✅ Out-of-range log: no events (written to %s)\n", oob_log_path))
     }
   }
 
