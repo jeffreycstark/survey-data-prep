@@ -1,0 +1,141 @@
+# KGSS Social Inequality — ISSP Social Inequality module items + related
+#
+# Three variable families:
+#
+#   (1) Income gap attitudes (1 item)        — 4 waves (ISSP rotation)
+#   (2) Meritocracy / success beliefs (2)   — 2-3 waves each (ISSP rotation)
+#   (3) Perceived equality perceptions (3)  — 3 waves (ISSP 2005, 2009, 2014)
+#
+# These items come from ISSP Social Inequality module (fielded in Korea in KGSS).
+# Because ISSP modules rotate on a ~4-year cycle, coverage is sparse vs. the
+# annual core items. Treat as a repeated cross-sectional ISSP series, not a
+# dense panel.
+#
+# ⚠ CLASS (subjective class 6-point) is already in demographics.yml.
+# ⚠ CURRCLSS (perceived class structure shape) excluded — only 1 wave (2009).
+#
+# SCALE DIRECTIONS:
+#   ineq_gap_too_large:    reversed 5pt; higher = more strongly agrees income gap is too large
+#   ineq_success_factor:   categorical 1-3 (NOT ordinal); higher numeric ≠ more of a single concept
+#   ineq_fair_continuum:   identity 1-10; higher = stronger preference for effort-based income differences
+#   ineq_perc_income,
+#   ineq_perc_jobs,
+#   ineq_perc_law:         identity 1-5; higher = perceives more inequality
+#
+# MISSING CONVENTIONS:
+# -8 = DK, -1 = IAP; 8/9 = DK/refusal (same-scale codes); 88 = DK/refusal (INCMFAIR)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9, 88]
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal (scale items); 88=DK/refusal (INCMFAIR 1-10 scale)"
+
+variables:
+
+  # -------- (1) INCOME GAP ATTITUDE --------
+  - id: ineq_gap_too_large
+    concept: social_inequality
+    description: "Agreement that income gap in Korea is too large (1-5, higher=more strongly agrees gap is too large)"
+    type: ordinal
+    note: "4 waves (ISSP rotation: 2003, 2009, 2011, 2014). Raw INCGAP: 1=strongly agree → 5=strongly disagree. Reversed so higher = stronger agreement that income gap is a problem. ISSP phrasing: '소득의 차이가 너무 크다' (Differences in income in Korea are too large)."
+    source:
+      w2003: INCGAP
+      w2009: INCGAP
+      w2011: INCGAP
+      w2014: INCGAP
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagrees gap is too large", 5: "Strongly agrees gap is too large"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # -------- (2) MERITOCRACY / SUCCESS BELIEFS --------
+  - id: ineq_success_factor
+    concept: social_inequality
+    description: "Perceived key to getting ahead: 1=hard work, 2=luck/help from others, 3=equally important (categorical)"
+    type: categorical
+    note: "3 waves (2003, 2014, 2016). ISSP GETAHEAD item: '성공에서 중요한 것은 열심히 일하는 것과 운/도움 중 어느 것인가?' This is a 3-category forced-choice (NOT a Likert scale — category 3 means equally important, not a midpoint on a continuum). Do not compute means across categories without treating as nominal. Use as a distributional/cross-tab variable."
+    source:
+      w2003: GETAHEAD
+      w2014: GETAHEAD
+      w2016: GETAHEAD
+    scale: {min: 1, max: 3, labels: {1: "Hard work more important", 2: "Luck/help from others more important", 3: "Equally important"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      skip_unmapped_check: true
+
+  - id: ineq_fair_continuum
+    concept: social_inequality
+    description: "Income fairness continuum: 1=incomes should be more equal, 10=income differences should reflect individual effort (identity)"
+    type: ordinal
+    note: "2 waves (2011, 2014). ISSP INCMFAIR item. This is a 10-point agree/disagree span between two polar positions (소득이 더 공평해져야 vs. 노력하는 만큼 소득에 차이가 나야). Higher = stronger preference for meritocratic/effort-based income distribution. Sentinel code 88=DK/Refusal (within valid 1-10 range, so treated as NA by missing_conventions)."
+    source:
+      w2011: INCMFAIR
+      w2014: INCMFAIR
+    scale: {min: 1, max: 10, labels: {1: "Incomes should be more equal", 10: "Income differences should reflect effort"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+      skip_unmapped_check: true
+
+  # -------- (3) PERCEIVED EQUALITY --------
+  # All three items use the same 1-5 scale: 1=very equal, 5=very unequal.
+  # Identity direction: higher = perceives more inequality.
+  - id: ineq_perc_income
+    concept: social_inequality
+    description: "Perceived fairness/equality of income and wealth distribution (1-5, higher=perceives more inequality)"
+    type: ordinal
+    note: "3 waves (2005, 2009, 2014). ISSP EQINC: '소득과 재산의 평등성 평가'. 1=매우 평등 (very equal) → 5=매우 불평등 (very unequal). Identity; higher = perceives income distribution as more unequal."
+    source:
+      w2005: EQINC
+      w2009: EQINC
+      w2014: EQINC
+    scale: {min: 1, max: 5, labels: {1: "Very equal", 5: "Very unequal"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: ineq_perc_jobs
+    concept: social_inequality
+    description: "Perceived fairness/equality of job opportunities (1-5, higher=perceives more inequality)"
+    type: ordinal
+    note: "3 waves (2005, 2009, 2014). ISSP EQJOB: '취업기회의 평등성 평가'. 1=매우 평등 (very equal) → 5=매우 불평등 (very unequal)."
+    source:
+      w2005: EQJOB
+      w2009: EQJOB
+      w2014: EQJOB
+    scale: {min: 1, max: 5, labels: {1: "Very equal", 5: "Very unequal"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: ineq_perc_law
+    concept: social_inequality
+    description: "Perceived fairness/equality of legal/law enforcement treatment (1-5, higher=perceives more inequality)"
+    type: ordinal
+    note: "3 waves (2005, 2009, 2014). ISSP EQLAW: '법집행의 평등성 평가'. 1=매우 평등 (very equal) → 5=매우 불평등 (very unequal)."
+    source:
+      w2005: EQLAW
+      w2009: EQLAW
+      w2014: EQLAW
+    scale: {min: 1, max: 5, labels: {1: "Very equal", 5: "Very unequal"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

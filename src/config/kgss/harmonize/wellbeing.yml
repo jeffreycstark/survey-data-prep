@@ -1,0 +1,97 @@
+# KGSS Wellbeing — subjective wellbeing items
+#
+# Three items covering happiness and satisfaction:
+#
+#   (1) Happiness (HAPPINSS)              — 6 waves (2009, 2010, 2016, 2021, 2023, 2025)
+#   (2) Life satisfaction (LIFESAT)       — 6 waves (2006, 2009, 2016, 2021, 2023, 2025)
+#   (3) Financial satisfaction (SATFIN)   — 14 waves (2003-2025 with gaps; strongest series)
+#
+# ⚠ FAMSAT (family life satisfaction) excluded — present in only 1 wave (2012).
+#
+# All raw variables are coded 1=most positive, 5=most negative.
+# All are reversed in harmonization so higher = better wellbeing:
+#   1 = worst (unhappy/dissatisfied) → 5 = best (happy/satisfied).
+#
+# SATFIN is the most analytically useful variable here: 14 waves gives a strong
+# time series spanning the 2008 financial crisis, COVID-19 period, and 2022+ inflation.
+#
+# MISSING CONVENTIONS:
+# -8 = DK, -1 = IAP, 8 = DK/refusal, 9 = IAP (end-of-scale conflicts resolved by sentinel list)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9]
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal or IAP appearing within scale range"
+
+variables:
+
+  - id: wb_happiness
+    concept: wellbeing
+    description: "Subjective happiness (1-5, higher=happier)"
+    type: ordinal
+    note: "6 waves (2009, 2010, 2016, 2021, 2023, 2025). Raw HAPPINSS: 1=매우 행복 (very happy) → 5=매우 불행 (very unhappy). Reversed so higher = happier. Only labeled endpoints; 2, 3, 4 are unlabeled (standard for this ISSP wellbeing format). Comparable to ISSP HAPPY and WVS happiness items on direction (though WVS uses a 4-point scale)."
+    source:
+      w2009: HAPPINSS
+      w2010: HAPPINSS
+      w2016: HAPPINSS
+      w2021: HAPPINSS
+      w2023: HAPPINSS
+      w2025: HAPPINSS
+    scale: {min: 1, max: 5, labels: {1: "Very unhappy", 5: "Very happy"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: wb_life_satisfaction
+    concept: wellbeing
+    description: "Overall life satisfaction (1-5, higher=more satisfied)"
+    type: ordinal
+    note: "6 waves (2006, 2009, 2016, 2021, 2023, 2025). Raw LIFESAT: 1=매우 만족 (very satisfied) → 5=매우 불만족 (very dissatisfied). Reversed so higher = more satisfied. Note that KGSS 2006 is the earliest wave for this item; the 2003-2005 gap is genuine (not in questionnaire). Comparable on direction to WVS life_satisfaction (WVS uses 1-10 scale)."
+    source:
+      w2006: LIFESAT
+      w2009: LIFESAT
+      w2016: LIFESAT
+      w2021: LIFESAT
+      w2023: LIFESAT
+      w2025: LIFESAT
+    scale: {min: 1, max: 5, labels: {1: "Very dissatisfied", 5: "Very satisfied"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: wb_financial_satisfaction
+    concept: wellbeing
+    description: "Satisfaction with household financial situation (1-5, higher=more satisfied)"
+    type: ordinal
+    note: "14 waves (2003-2025 with gaps at 2007, 2013, 2014, 2015, 2017, 2019-2020, 2022, 2024). Raw SATFIN: 1=매우 만족 (very satisfied) → 5=매우 불만족 (very dissatisfied). Reversed so higher = more satisfied. This is the most time-series-dense wellbeing item in KGSS; strong enough for longitudinal trend modeling. Useful for examining 2008 financial crisis, 2016-2020 political cycle, and 2022+ cost-of-living effects."
+    source:
+      w2003: SATFIN
+      w2004: SATFIN
+      w2005: SATFIN
+      w2006: SATFIN
+      w2008: SATFIN
+      w2009: SATFIN
+      w2010: SATFIN
+      w2011: SATFIN
+      w2012: SATFIN
+      w2016: SATFIN
+      w2018: SATFIN
+      w2021: SATFIN
+      w2023: SATFIN
+      w2025: SATFIN
+    scale: {min: 1, max: 5, labels: {1: "Very dissatisfied", 5: "Very satisfied"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
