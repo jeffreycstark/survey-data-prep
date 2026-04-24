@@ -113,9 +113,9 @@ variables:
 
   - id: corr_punishment_relative_strength
     concept: anti_corruption_policy
-    description: "Relative punishment strength: bribe-giver vs. corrupt-official (direction/meaning depends on KIPA coding — see note)"
+    description: "Relative punishment strength: bribe-giver vs. corrupt-official, 6-point scale (1=givers penalized much more, 6=officials penalized much more)"
     type: ordinal
-    note: "2011-2013 = a1023; 2014-2021 = a105; 2022-2023 = q28. KIPA's coding convention for this item: typically 1=bribe-givers punished much more, 3=equal, 5=corrupt officials punished much more (or similar — verify against codebook before interpreting means)."
+    note: "2011-2013 = a1023; 2014-2017 = a105. Raw scale 1-6: 1=금품 제공자에게 더 강하게 (bribe-givers penalized more strongly), 6=뇌물수수 공직자에게 더 강하게 (officials penalized more strongly). **2018-2023 EXCLUDED**: scale restructured to 7-point in 2018 (1=giver more, 4=equal midpoint, 7=official more) — incompatible with 6-pt series. Coverage: 7 years (2011-2017)."
     source:
       w2011: a1023
       w2012: a1023
@@ -124,18 +124,12 @@ variables:
       w2015: a105
       w2016: a105
       w2017: a105
-      w2018: a105
-      w2019: a105
-      w2020: a105
-      w2021: a105
-      w2022: q28
-      w2023: q28
-    scale: {min: 1, max: 5}
+    scale: {min: 1, max: 6, labels: {1: "Bribe-givers penalized much more strongly", 6: "Officials penalized much more strongly"}}
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 5]
+      valid_range: [1, 6]
       skip_unmapped_check: true
 
   # -------- (3) INSTITUTIONAL SURVEILLANCE --------

@@ -202,7 +202,8 @@ Every harmonized survey **must** have a verbatim question dictionary CSV that ma
 | Survey | Dictionary | Status |
 |--------|-----------|--------|
 | ABS | `data/abs/questionnaire_text/abs_verbatim_items.csv` | Complete |
-| KIPA/KSIS | `data/processed/kipa_question_dictionary.csv` | Complete (needs migration to standard format) |
+| KIPA Corruption | `data/kipa-corruption/questionnaire_text/kipa_corruption_verbatim_items.csv` | Complete (36 vars, 20 years, 720 rows; English 2004-2008, Korean 2009-2023; corr_punishment_relative_strength absent 2018-2023 due to scale change) |
+| KIPA/KSIS Social | `data/processed/kipa_question_dictionary.csv` | Complete (needs migration to standard format) |
 | WVS | `data/wvs/questionnaire_text/wvs_verbatim_items.csv` | Complete (79 vars, 7 waves, 553 rows) |
 | LBS | `data/lbs/questionnaire_text/lbs_verbatim_items.csv` | Complete (30 vars, 24 waves, 720 rows) |
 | Afrobarometer | `data/afro/questionnaire_text/afro_verbatim_items.csv` | Complete (46 vars, 9 rounds, 414 rows; text from R9 codebook) |
@@ -477,7 +478,7 @@ d <- readRDS("data/processed/kipa_corruption_harmonized.rds")
 | Sector corruption — admin agencies (3) | corr_agency_central_hq, corr_agency_central_branch, corr_agency_local_frontline | 1–6, higher=more corrupt; 18 of 20 years |
 | Demographics (4) | sex (1=M, 2=F), age_cat (1–5 categorical), education (categorical), income (categorical, ~1–10; boundaries vary by wave due to inflation) | varies |
 | Anti-corruption policy — govt effectiveness (1) | corr_govt_policy_effectiveness | 1–6, higher=more effective; 5 years (2014-2016, 2020-2023) |
-| Anti-corruption policy — punishment (3) | corr_punishment_bribe_giver (13 yrs), corr_punishment_corrupt_official (10 yrs, 2014+), corr_punishment_relative_strength (13 yrs, 1-5 scale with directional KIPA coding — verify codebook) | 1–6 / 1–5 |
+| Anti-corruption policy — punishment (3) | corr_punishment_bribe_giver (13 yrs, 2011-2023), corr_punishment_corrupt_official (10 yrs, 2014-2023), corr_punishment_relative_strength (7 yrs, 2011-2017 only — ⚠ scale restructured to 7-pt in 2018, incompatible with 2011-2017 6-pt series) | 1–6 |
 | Anti-corruption policy — surveillance (7) | corr_surveil_party, corr_surveil_assembly, corr_surveil_civsoc, corr_surveil_media, corr_surveil_judiciary (⚠ 2018-2020 splits judiciary from prosecutors; we keep judiciary-only post-split), corr_surveil_internal_audit, corr_surveil_boa | 1–6, higher=functions better as corruption check; 13 years (2011-2023) |
 
 Data directory: `data/kipa-corruption/raw/unzipped/<handle>/`. Year-to-handle mapping lives in `src/r/data_prep_modules/kipa-corruption/0_load_waves.R`.
