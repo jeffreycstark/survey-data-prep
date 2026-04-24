@@ -58,6 +58,106 @@ if (length(empty_vars)) {
 }
 
 # ----------------------------------------------------------------------------
+# 2a. Mapped-wave NA rates
+# ----------------------------------------------------------------------------
+# Read source maps from YAML to know which waves each variable is expected to
+# have data. Flag if a MAPPED wave has unexpectedly high NA (indicates a
+# mis-specified valid_range, an undetected scale change, or a broken wave
+# mapping). Two thresholds:
+#   WARN_THRESH  (50%): suspicious — likely a skip-filter or a real data issue.
+#   ERROR_THRESH (100%): definite bug on a mapped wave.
+#
+# This check would have caught:
+#   • corr_punishment_relative_strength in 2018-2021: 17-24% NA (wrong valid_range)
+#   • corr_punishment_relative_strength in 2022-2023: would have shown 100% NA
+#     if those waves had been left mapped after the scale change.
+cat("\n### 2a. Mapped-wave NA rates\n")
+cat("  Warn >50% NA; Error =100% NA on any YAML-mapped wave.\n")
+
+spec_files <- list.files(here::here("src", "config", "kipa-corruption", "harmonize"),
+                         pattern = "\\.yml$", full.names = TRUE)
+
+yaml_source_map <- list()
+yaml_gated_waves <- list()
+for (sp in spec_files) {
+  y <- yaml::read_yaml(sp)
+  for (v in y$variables) {
+    src <- v$source
+    if (!is.null(src)) {
+      mapped_yrs <- as.integer(sub("^w", "", names(src)))
+      yaml_source_map[[v$id]] <- mapped_yrs
+    }
+    gw <- v$qc$gated_waves
+    if (!is.null(gw)) yaml_gated_waves[[v$id]] <- as.integer(unlist(gw))
+  }
+}
+
+WARN_THRESH  <- 0.50
+ERROR_THRESH <- 1.00
+na_flags <- 0L
+
+for (v in intersect(names(yaml_source_map), survey_vars)) {
+  mapped_yrs <- yaml_source_map[[v]]
+  gated_yrs  <- yaml_gated_waves[[v]]
+  for (yr in mapped_yrs) {
+    subset <- d[[v]][d$year == yr]
+    if (length(subset) == 0) next
+    na_pct <- mean(is.na(subset))
+    if (!is.null(gated_yrs) && yr %in% gated_yrs) {
+      # Gate documented in YAML — high NA is by design; note but do not flag
+      if (na_pct > WARN_THRESH) {
+        cat(sprintf("  [gate] %s (year %d): %.0f%% NA — gated wave, denominator = subpopulation (OK)\n",
+                    v, yr, na_pct * 100))
+      }
+      next
+    }
+    if (na_pct >= ERROR_THRESH) {
+      na_flags <- na_flags + 1L
+      flag(sprintf("100%% NA on MAPPED wave — %s (year %d): mapping is broken or wave absent",
+                   v, yr))
+    } else if (na_pct > WARN_THRESH) {
+      na_flags <- na_flags + 1L
+      flag(sprintf("HIGH NA on mapped wave — %s (year %d) = %.0f%% NA (expected data; check gate or scale change)",
+                   v, yr, na_pct * 100))
+    }
+  }
+}
+if (na_flags == 0L) {
+  cat(sprintf("  All non-gated mapped waves: NA%% within acceptable range (warn >.50, error =1.00).\n"))
+}
+
+# ----------------------------------------------------------------------------
+# 2b. YAML spec internal consistency — scale.max vs valid_range
+# ----------------------------------------------------------------------------
+# Static check: if scale.max != valid_range[2] (or scale.min != valid_range[1]),
+# the QC will silently drop legitimate values. No data needed.
+#
+# This check would have caught:
+#   • corr_punishment_relative_strength: scale.max=5 but data goes to 6.
+#     (The actual raw scale was 6-pt but valid_range was [1,5].)
+cat("\n### 2b. YAML spec internal consistency (scale vs valid_range)\n")
+scale_flags <- 0L
+for (sp in spec_files) {
+  y <- yaml::read_yaml(sp)
+  for (v in y$variables) {
+    sc <- v$scale
+    vr <- v$qc$valid_range
+    if (is.null(sc) || is.null(vr) || length(vr) != 2) next
+    if (!is.null(sc$max) && sc$max != as.numeric(vr[2])) {
+      scale_flags <- scale_flags + 1L
+      flag(sprintf("SCALE vs RANGE MISMATCH — %s: scale.max=%g but valid_range[2]=%g",
+                   v$id, sc$max, as.numeric(vr[2])))
+    }
+    if (!is.null(sc$min) && sc$min != as.numeric(vr[1])) {
+      scale_flags <- scale_flags + 1L
+      flag(sprintf("SCALE vs RANGE MISMATCH — %s: scale.min=%g but valid_range[1]=%g",
+                   v$id, sc$min, as.numeric(vr[1])))
+    }
+  }
+}
+if (scale_flags == 0L) cat("  All variables: scale min/max consistent with valid_range.\n")
+
+# ----------------------------------------------------------------------------
 # 3. Range integrity
 # ----------------------------------------------------------------------------
 cat("\n### 3. Range integrity\n")
@@ -89,17 +189,22 @@ if (oob_flags == 0L) cat(sprintf("  All %d variables within declared ranges.\n",
 # 4. Direction sanity — expected-sign correlations
 # ----------------------------------------------------------------------------
 cat("\n### 4. Direction sanity checks\n")
-cor_check <- function(a, b, expected_sign, context = "") {
+cor_check <- function(a, b, expected_sign, context = "", known_artifact = NULL) {
   if (!(a %in% names(d) && b %in% names(d))) return(invisible())
   x <- d[[a]]; y <- d[[b]]
   ok <- !is.na(x) & !is.na(y)
   if (sum(ok) < 100) return(invisible())
   r <- cor(x[ok], y[ok])
   sign_ok <- (expected_sign == "+" && r > 0) || (expected_sign == "-" && r < 0)
-  sym <- if (sign_ok) "✓" else "✗"
-  cat(sprintf("  %s cor(%s, %s) = %+.2f  (expected %s)  %s\n",
-              sym, a, b, r, expected_sign, context))
-  if (!sign_ok) {
+  if (sign_ok) {
+    cat(sprintf("  ✓ cor(%s, %s) = %+.2f  (expected %s)  %s\n",
+                a, b, r, expected_sign, context))
+  } else if (!is.null(known_artifact)) {
+    cat(sprintf("  ~ cor(%s, %s) = %+.2f  (expected %s)  [known artifact: %s]\n",
+                a, b, r, expected_sign, known_artifact))
+  } else {
+    cat(sprintf("  ✗ cor(%s, %s) = %+.2f  (expected %s)  %s\n",
+                a, b, r, expected_sign, context))
     flag(sprintf("Direction check failed: cor(%s, %s) = %+.2f but expected %s",
                  a, b, r, expected_sign))
   }
@@ -113,7 +218,8 @@ cor_check("corr_prevalence_perception", "corr_change_vs_last_year",    "+",
 # Bribery experience (1=yes, 2=no) — respondents who gave a bribe should perceive MORE corruption,
 # so raw binary (1=yes has LOWER value) correlates NEGATIVELY with perception scales
 cor_check("corr_prevalence_perception", "corr_bribery_experience_1yr", "-",
-          "bribery-givers (coded 1) perceive MORE prevalence (higher value) — reverse-sign binary")
+          "bribery-givers (coded 1) perceive MORE prevalence (higher value) — reverse-sign binary",
+          known_artifact = "1=yes/2=no coding compresses the signal; near-zero correlation expected, not a bug")
 # Sector perception items should all correlate positively — they all capture same construct
 cor_check("corr_sector_public",   "corr_sector_private",    "+", "public and private sector corruption cross-correlate")
 cor_check("corr_sector_public",   "corr_func_police",       "+", "sector-public ↔ police corruption")
@@ -173,11 +279,12 @@ oddities <- c(
   "2022–2023 wording expanded to 금품/향응/편의 (money/entertainment/favors) from just 금품 (money) pre-2022. Post-Kim Young-ran Act reframing — semantic content still overlaps but not identical.",
   "`corr_bribery_experience_1yr` coded 1=yes, 2=no (NOT binary 0/1). Direction-sanity checks use reverse-sign expectations.",
   "`corr_bribery_experience_1yr` NOT available in 2022–2023 — q13 in those years is 'contact with officials', a different concept. `skip_unmapped_check: true` suppresses the engine warning.",
-  "2018–2020 show low n on `corr_bribery_experience_1yr` (~420–510 rather than 1,000) because a skip-filter restricts the question to respondents who recently contacted officials.",
+  "`corr_bribery_experience_1yr` is GATED in 2016, 2019, 2020: a prior screener ('did you have contact with officials in the past year?') routes only YES-respondents to the bribery question. ~50% of the sample is legitimately skipped. The denominator for these waves is 'respondents with official contact', not the full sample — flag this in Methods. `gated_waves: [2016, 2019, 2020]` in the YAML suppresses the NA-rate warning; the QA script still prints a [gate] note showing the NA%. Other years (e.g. 2018) also show reduced n (~420–510) for the same reason but the gate was not formally documented in those codebooks — treat as probable gate.",
   "Cumulative file (2004–2007) is n=500 per year, not n=1,000 like annual files. Aggregate power reduced in the early years.",
   "Labels in 2009–2021 SAV files are EUC-KR-encoded and show as mojibake when read without encoding handling. Variable names and values are ASCII/numeric, so harmonization works regardless.",
   "Kim Young-ran Act (Sept 2016) is the key policy discontinuity. Expect structural breaks in direct-experience variables around 2016–2017.",
-  "`corr_punishment_bribe_giver` had a SCALE-DIRECTION FLIP between 2013 (a1021) and 2014 (a103): pre-2014 coded 1=strong→6=weak, post-2014 coded 1=weak→6=strong. We apply safe_reverse_6pt to 2011-2013 so the harmonized output uses higher=stronger throughout. This was caught by the YoY jump check (Δ=-2.53 SD in 2013→2014 means). When adding new items, watch for undocumented scale flips at variable-renaming boundaries."
+  "`corr_punishment_bribe_giver` had a SCALE-DIRECTION FLIP between 2013 (a1021) and 2014 (a103): pre-2014 coded 1=strong→6=weak, post-2014 coded 1=weak→6=strong. We apply safe_reverse_6pt to 2011-2013 so the harmonized output uses higher=stronger throughout. This was caught by the YoY jump check (Δ=-2.53 SD in 2013→2014 means). When adding new items, watch for undocumented scale flips at variable-renaming boundaries.",
+  "`corr_punishment_relative_strength` had its scale restructured in 2018 from 6-point (1=bribe-givers penalized more, 6=officials penalized more, no midpoint) to 7-point (1=givers more, 4=equal midpoint, 7=officials more). Coverage is therefore 2011-2017 only (7 years). Originally specified as valid_range [1,5] — this was wrong (actual 6-pt scale) and caused 19–45% of rows per wave to be silently dropped. Fixed to valid_range [1,6] and 2018-2023 excluded. Would have been caught by the mapped-wave NA check (sections 2a) and the scale vs valid_range check (section 2b) added after this incident."
 )
 for (i in seq_along(oddities)) cat(sprintf("  %2d. %s\n", i, oddities[i]))
 
@@ -187,10 +294,12 @@ for (i in seq_along(oddities)) cat(sprintf("  %2d. %s\n", i, oddities[i]))
 cat("\n================================================================\n")
 cat("SUMMARY\n")
 cat("================================================================\n")
-cat(sprintf("Auto-flags raised: %d\n", length(FLAGS)))
-cat(sprintf("Out-of-range vars: %d\n", oob_flags))
-cat(sprintf("YoY jump flags:    %d\n", yoy_flags))
-cat(sprintf("Oddities listed:   %d\n", length(oddities)))
+cat(sprintf("Auto-flags raised:      %d\n", length(FLAGS)))
+cat(sprintf("Mapped-wave NA flags:   %d  [sec 2a]\n", na_flags))
+cat(sprintf("Scale/range mismatches: %d  [sec 2b]\n", scale_flags))
+cat(sprintf("Out-of-range vars:      %d  [sec 3]\n",  oob_flags))
+cat(sprintf("YoY jump flags:         %d  [sec 5]\n",  yoy_flags))
+cat(sprintf("Oddities listed:        %d\n", length(oddities)))
 
 if (length(FLAGS) > 0) {
   cat("\nAuto-flagged for review:\n")

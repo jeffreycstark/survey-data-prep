@@ -131,7 +131,7 @@ variables:
     concept: corruption_experience
     description: "Personal experience of giving money/entertainment/favors to officials in past 1 year (1=yes, 2=no)"
     type: binary
-    note: "Raw a13 (2010-2021, cumulative) / q13 (2008, 2009). **NOT available in 2022-2023** — KIPA restructured the experience section; the 2022-2023 q13 variable captures a broader 'contact with officials' concept, not direct bribery. To harmonize 2022-2023 will require investigation of qa14+ item sequence. Some waves (2018-2020) show occasional value 3; likely a skip-filter artifact treated as NA by range check."
+    note: "Raw a13 (2010-2021, cumulative) / q13 (2008, 2009). **NOT available in 2022-2023** — KIPA restructured the experience section; the 2022-2023 q13 variable captures a broader 'contact with officials' concept, not direct bribery. To harmonize 2022-2023 will require investigation of qa14+ item sequence. Some waves (2018-2020) show occasional value 3; likely a gate-artifact (respondent routed past the question) treated as NA by range check. **Gate**: 2016, 2019, 2020 route the bribery question only to respondents who answered 'yes' to a prior contact-with-officials screener; ~50% of the sample is legitimately skipped. Denominator for these waves is 'respondents with official contact', not full sample."
     source:
       w2004: a13
       w2005: a13
@@ -161,3 +161,7 @@ variables:
       # bribery experience. Suppress the engine's unmapped-wave warning since
       # we've already decided not to map those waves here.
       skip_unmapped_check: true
+      # Gate: in 2016, 2019, 2020 KIPA routed this question only to respondents
+      # who had prior contact with officials (~50% of sample skipped). High NA
+      # on these waves is by design — suppress the NA-rate warning.
+      gated_waves: [2016, 2019, 2020]

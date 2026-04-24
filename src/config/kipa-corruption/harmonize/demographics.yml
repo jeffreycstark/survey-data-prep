@@ -51,9 +51,9 @@ variables:
 
   - id: age_cat
     concept: demographics
-    description: "Respondent age in 5 categories (per KIPA coding; typically 20s/30s/40s/50s/60+)"
+    description: "Respondent age in categorical bands (typically 5-6 categories per KIPA coding; 20s/30s/40s/50s/60+, some waves split 60+ into a 6th band)"
     type: ordinal
-    note: "Categorical age. 2013-2016 switched the primary `age` variable to continuous years and added `age_re` as the categorical — we use `age_re` for those waves. 2011-2012 also have `age1` (continuous) alongside categorical `age`. From 2017 onward `age` is categorical again."
+    note: "Categorical age. 2013-2016 switched the primary `age` variable to continuous years and added `age_re` as the categorical — we use `age_re` for those waves. 2011-2012 also have `age1` (continuous) alongside categorical `age`. From 2017 onward `age` is categorical again. Some waves use a 6th category (60s / 70+); valid_range=[1,6] to avoid silently dropping those rows."
     source:
       w2004: age
       w2005: age
@@ -75,7 +75,7 @@ variables:
       w2021: age
       w2022: dq2
       w2023: dq2
-    scale: {min: 1, max: 5, labels: {1: "20s or younger", 5: "60+ (exact KIPA boundaries vary slightly by wave)"}}
+    scale: {min: 1, max: 6, labels: {1: "20s or younger", 5: "60s", 6: "70+ (present only in waves with 6-band coding)"}}
     harmonize:
       default:
         method: identity
