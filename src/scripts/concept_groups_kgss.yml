@@ -1,0 +1,265 @@
+# concept_groups_kgss.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Concept group definitions for slope_prospector.R — KGSS dataset.
+#
+# Variable names follow the KGSS harmonization specs in src/config/kgss/harmonize/.
+#
+# SCALE NOTE: conf_* confidence variables use a 1-3 scale (NOT 1-4 like
+# ABS/WVS trust vars). Social trust items use mixed scales (1-3, 1-4, 0-10).
+# The prospector normalizes within-variable before computing group coherence,
+# so different scales within a group are OK.
+#
+# WAVE NOTE: KGSS wave = calendar year (2003-2025; 17 survey years).
+# Slopes are expressed as change per year. Many ISSP rotation items (civic,
+# national identity, inequality) appear only every 4-8 years — those with
+# fewer than MIN_WAVES coverage will be dropped by the prospector.
+#
+# KGSS is KOREA ONLY (country=KOR). Prospector outputs that assume multiple
+# countries (clustering, outlier-by-country z-scores) are less meaningful here;
+# the dashboards and structural break outputs are the main targets.
+# ─────────────────────────────────────────────────────────────────────────────
+
+concept_groups:
+
+  # ── INSTITUTIONAL CONFIDENCE: POLITICAL INSTITUTIONS ─────────────────────
+  # Blue House (executive), legislature, judiciary, prosecutors, elections.
+  # All 1-3. The most politically sensitive cluster — divergence between
+  # executive and legislature/judiciary maps onto democratic backsliding patterns.
+  conf_political:
+    - conf_bluehouse
+    - conf_legislature
+    - conf_judiciary
+    - conf_prosecutors
+    - conf_election_commission
+
+  # ── INSTITUTIONAL CONFIDENCE: SECURITY & ECONOMY ──────────────────────────
+  # Military, business, finance, labor, science, research, statistics.
+  # These tend to be more stable; sharp movement signals systemic delegitimation.
+  conf_economy_security:
+    - conf_military
+    - conf_business
+    - conf_finance
+    - conf_labor
+    - conf_science
+    - conf_research
+    - conf_statistics
+
+  # ── INSTITUTIONAL CONFIDENCE: CIVIC & SERVICE ─────────────────────────────
+  # Institutions that mediate between state and citizen.
+  # Press and television often diverge — worth watching separately in dashboards.
+  conf_civic_service:
+    - conf_press
+    - conf_television
+    - conf_civil_society
+    - conf_clergy
+    - conf_education
+    - conf_medicine
+    - conf_govt_national
+    - conf_govt_local
+
+  # ── SOCIAL TRUST ──────────────────────────────────────────────────────────
+  # Mixed scales: trust_fair (1-3), trust_generalized (1-4), trust_reliable (0-10).
+  # All normalized by prospector before coherence check.
+  social_trust:
+    - trust_fair
+    - trust_generalized
+    - trust_reliable
+
+  # ── POLITICAL EVALUATIONS ─────────────────────────────────────────────────
+  # Current government performance and general satisfaction.
+  # All reversed so higher = better/more satisfied in harmonized form.
+  political_evaluations:
+    - pol_govt_eval
+    - pol_satisfaction
+    - pol_econ_sat
+    - econ_hh_satisfaction
+
+  # ── ECONOMIC OUTLOOK ──────────────────────────────────────────────────────
+  # Forward-looking economic expectations (national, household, political).
+  # Divergence between present-satisfaction and future-outlook = pessimism decoupling.
+  economic_outlook:
+    - pol_econ_prospect
+    - pol_pol_prospect
+    - econ_hh_outlook
+    - pol_outlook
+
+  # ── POLITICAL IDEOLOGY & FOREIGN POLICY ───────────────────────────────────
+  # Ideological self-placement + Korea-specific geopolitical attitudes.
+  # Sparse (not all 17 waves) but analytically important.
+  political_ideology:
+    - pol_ideology
+    - pol_northkorea_view
+    - pol_nk_defectors
+    - pol_unification
+
+  # ── POLITICAL EFFICACY ────────────────────────────────────────────────────
+  # Internal (can understand/participate) and external (govt is responsive).
+  # Classic gap: external efficacy often falls faster than internal.
+  political_efficacy:
+    - pol_efficacy_internal
+    - pol_efficacy_external
+
+  # ── DEMOCRACY ASSESSMENT ──────────────────────────────────────────────────
+  # Perceived democracy now, 10 years ago, and 10 years from now (0-10).
+  # Divergence between past/present/future = disillusionment vs. optimism patterns.
+  democracy_assessment:
+    - dem_now
+    - dem_10yrs_past
+    - dem_10yrs_future
+
+  # ── CIVIC VIRTUES (ISSP Citizenship) ──────────────────────────────────────
+  # Importance of paying taxes, obeying laws, monitoring government, helping Koreans.
+  # 1-7 scale; higher = more important. 2004/2014/2023 only.
+  civic_virtues:
+    - cit_virtue_paytaxes
+    - cit_virtue_obeylaws
+    - cit_virtue_watchgov
+    - cit_virtue_helpkr
+
+  # ── CIVIC RIGHTS (ISSP Citizenship) ───────────────────────────────────────
+  # Importance of: right to live as one chooses, minority rights, political views, opposition government.
+  # 1-7 scale; higher = more important. 2004/2014/2023 only.
+  civic_rights:
+    - cit_right_solok
+    - cit_right_minorities
+    - cit_right_polopts
+    - cit_right_oppsegov
+
+  # ── POLITICAL ACTION ──────────────────────────────────────────────────────
+  # Participation in 5 forms. 1-4 reversed so higher = more active.
+  # admin_service and admin_corruption are included here as civic engagement indicators.
+  political_action:
+    - action_petition
+    - action_boycott
+    - action_demonstration
+    - action_rally
+    - action_contact_gov
+
+  # ── ADMINISTRATION ────────────────────────────────────────────────────────
+  # Service quality and corruption in public administration.
+  administration:
+    - admin_service
+    - admin_corruption
+
+  # ── ROLE OF GOVERNMENT: RESPONSIBILITY ────────────────────────────────────
+  # Should govt be responsible for jobs, prices, healthcare, etc.
+  # 1-4 reversed so higher = more state role. 2006/2016 only.
+  govt_responsibility:
+    - gov_resp_jobs
+    - gov_resp_prices
+    - gov_resp_healthcare
+    - gov_resp_elderly
+    - gov_resp_industry
+    - gov_resp_unemploy
+    - gov_resp_incomegap
+    - gov_resp_students
+    - gov_resp_housing
+    - gov_resp_environment
+
+  # ── ROLE OF GOVERNMENT: SPENDING ──────────────────────────────────────────
+  # Should govt spend more on environment, health, police, etc.
+  # 1-5 reversed so higher = wants more spending. Best ISSP time series (7 waves).
+  govt_spending:
+    - gov_spend_environment
+    - gov_spend_health
+    - gov_spend_police
+    - gov_spend_education
+    - gov_spend_defense
+    - gov_spend_pension
+    - gov_spend_unemployment
+    - gov_spend_culture
+
+  # ── NATIONAL PRIDE (ISSP) ─────────────────────────────────────────────────
+  # General national identification items. 1-5 reversed so higher = more agreement.
+  # natid_shame is inversely valenced — see its variable note.
+  # 2003/2013/2023 only.
+  national_pride_general:
+    - natid_korean_over_other
+    - natid_shame
+    - natid_world_like_kr
+    - natid_kr_better_than_most
+    - natid_right_or_wrong
+
+  # ── DOMAIN PRIDE (ISSP) ───────────────────────────────────────────────────
+  # Pride in Korea's democracy, economy, science, arts, sports, etc.
+  # 1-4 reversed so higher = more proud. 2003/2013/2023/2025.
+  national_pride_domains:
+    - pride_democracy
+    - pride_pol_influence
+    - pride_economy
+    - pride_social_security
+    - pride_science
+    - pride_sports
+    - pride_arts
+    - pride_military
+    - pride_history
+    - pride_fairness
+
+  # ── "TRUE KOREAN" CRITERIA (ISSP) ────────────────────────────────────────
+  # Importance of birth, citizenship, ancestry, feeling Korean, etc.
+  # 1-4 reversed so higher = more important criterion. 2003/2010/2013/2023.
+  national_identity_criteria:
+    - truekr_born_here
+    - truekr_citizenship
+    - truekr_ancestors
+    - truekr_feels_kr
+    - truekr_respects_law
+    - truekr_confucian
+
+  # ── INTERNATIONAL ATTITUDES (ISSP) ────────────────────────────────────────
+  # Trade protectionism, world government, sovereignty, foreign investment.
+  # 1-5 reversed so higher = agreement. 2003/2013/2021/2023.
+  international_attitudes:
+    - intl_limit_imports
+    - intl_world_govt_env
+    - intl_own_way
+    - intl_no_foreign_land
+    - intl_kr_tv
+    - intl_foreign_co_harmful
+
+  # ── IMMIGRATION ATTITUDES (ISSP) ──────────────────────────────────────────
+  # Views on immigration's effects and desired levels.
+  # NOTE: imm_limit_number uses identity direction (higher=fewer immigrants wanted);
+  # all others reversed (higher=more positive about immigration). 2003/2010/2013/2023.
+  immigration_attitudes:
+    - imm_crime
+    - imm_help_econ
+    - imm_take_jobs
+    - imm_cultural_contrib
+    - imm_limit_number
+
+  # ── CORRUPTION PERCEPTIONS ────────────────────────────────────────────────
+  # Beliefs about how corrupt politicians, officials, and society are.
+  # Mixed directions — see corruption.yml notes. 2-5 wave coverage each.
+  corruption_perceptions:
+    - corr_politicians
+    - corr_officials
+    - corr_officials_bribe
+    - corr_cant_succeed_without
+    - corr_bribe_success
+
+  # ── CORRUPTION: GOVT PERFORMANCE ─────────────────────────────────────────
+  # Evaluations of govt anti-corruption and transparency efforts.
+  # 1-5 reversed so higher = better govt performance. Sparse (2-4 waves).
+  corruption_performance:
+    - corr_anticorrupt_policy
+    - corr_tax_fairness_policy
+    - corr_election_transparency
+
+  # ── SOCIAL INEQUALITY (ISSP) ──────────────────────────────────────────────
+  # Perceptions of and attitudes toward income inequality.
+  # ineq_success_factor excluded (categorical 1-3, not ordinal).
+  # ineq_fair_continuum excluded here (only 2 waves; below MIN_WAVES=3).
+  social_inequality:
+    - ineq_gap_too_large
+    - ineq_perc_income
+    - ineq_perc_jobs
+    - ineq_perc_law
+
+  # ── WELLBEING ────────────────────────────────────────────────────────────
+  # Subjective happiness and satisfaction. All reversed so higher = better.
+  # wb_financial_satisfaction (14 waves) is the anchor for cross-period comparison.
+  wellbeing:
+    - wb_happiness
+    - wb_life_satisfaction
+    - wb_financial_satisfaction

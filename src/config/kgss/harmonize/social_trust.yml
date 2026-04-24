@@ -87,7 +87,7 @@ variables:
         4: "People can almost always be trusted"
     harmonize:
       default:
-        method: recode
+        method: r_function
         fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
