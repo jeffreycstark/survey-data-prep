@@ -52,9 +52,9 @@ variables:
   # -------- (2) PUNISHMENT LEVELS --------
   - id: corr_punishment_bribe_giver
     concept: anti_corruption_policy
-    description: "Perceived punishment level for bribe-givers in Korean society (1-6, higher=stronger punishment after 2011-2013 reversal)"
+    description: "Perceived punishment level for bribe-givers in Korean society (1–6 pre-2018, 1–7 from 2018; higher=stronger punishment)"
     type: ordinal
-    note: "Long time series: 2011-2023 (13 years). 2011-2013 used a1021; 2014-2020 renamed to a103; 2021 renamed to a103a; 2022-2023 as q26. NOT in cumulative 2004-2007 or 2008-2010. **SCALE REVERSAL IN 2014**: KIPA flipped the 1-6 scale direction when renaming a1021 → a103 (caught by QA year-over-year check — 2013 mean 4.73 vs 2014 mean 2.20, same substantive perception of 'weak'). We apply safe_reverse_6pt to 2011-2013 so all waves use the post-2014 convention: higher = stronger punishment. **UNRESOLVED**: 2-6 respondents per wave in 2018-2020 have value 7 (outside declared [1,6] range) — currently dropped as OOB. Coincides with the 2018 restructuring of the punishment-relative-strength item to 7-point; possibly a pilot or alternate question version. Requires 2018-2020 codebook review."
+    note: "Long time series: 2011-2023 (13 years). 2011-2013 used a1021; 2014-2020 renamed to a103; 2021 renamed to a103a; 2022-2023 as q26. NOT in cumulative 2004-2007 or 2008-2010. **SCALE REVERSAL IN 2014**: KIPA flipped the 1-6 scale direction when renaming a1021 → a103 (caught by QA year-over-year check — 2013 mean 4.73 vs 2014 mean 2.20, same substantive perception of 'weak'). We apply safe_reverse_6pt to 2011-2013 so all waves use the post-2014 convention: higher = stronger punishment. **STRUCTURAL BREAK IN 2018**: KIPA expanded the scale from 6-point to 7-point by inserting a midpoint: 1=매우 낮다 (very low) · 2=낮다 · 3=약간 낮다 · 4=적절하다 (appropriate/just right) · 5=약간 높다 · 6=높다 · 7=매우 높다 (very high). The 6-point pre-2018 scale has no midpoint and forces a directional response. Cross-period trends should normalize to 0-1 before comparison; within-period analysis can use raw values. valid_range_by_wave enforces the correct ceiling per period."
     source:
       w2011: a1021
       w2012: a1021
@@ -69,7 +69,7 @@ variables:
       w2021: a103a
       w2022: q26
       w2023: q26
-    scale: {min: 1, max: 6, labels: {1: "Very weak", 6: "Very strong"}}
+    scale: {min: 1, max: 7, labels: {1: "Very weak", 6: "Very strong (pre-2018) / High (2018+)", 7: "Very strong (2018+ only)"}}
     harmonize:
       default:
         method: identity
@@ -84,14 +84,27 @@ variables:
           method: r_function
           fn: safe_reverse_6pt
     qc:
-      valid_range: [1, 6]
+      valid_range_by_wave:
+        w2011: [1, 6]
+        w2012: [1, 6]
+        w2013: [1, 6]
+        w2014: [1, 6]
+        w2015: [1, 6]
+        w2016: [1, 6]
+        w2017: [1, 6]
+        w2018: [1, 7]
+        w2019: [1, 7]
+        w2020: [1, 7]
+        w2021: [1, 7]
+        w2022: [1, 7]
+        w2023: [1, 7]
       skip_unmapped_check: true
 
   - id: corr_punishment_corrupt_official
     concept: anti_corruption_policy
-    description: "Perceived punishment level for bribe-receiving officials (1-6, higher=stronger punishment)"
+    description: "Perceived punishment level for bribe-receiving officials (1–6 pre-2018, 1–7 from 2018; higher=stronger punishment)"
     type: ordinal
-    note: "10 years (2014-2023). Introduced as a separate item in 2014 when punishment-of-giver and punishment-of-receiver were split. 2011-2013 had a103 with related but different wording ('view on corrupt-official punishment') that is NOT mapped here to avoid the wording-drift contamination. **UNRESOLVED**: 2-6 respondents per wave in 2018-2020 have value 7 (outside declared [1,6] range) — currently dropped as OOB. See corr_punishment_bribe_giver note; same pattern, same years, same codebook review needed."
+    note: "10 years (2014-2023). Introduced as a separate item in 2014 when punishment-of-giver and punishment-of-receiver were split. 2011-2013 had a103 with related but different wording ('view on corrupt-official punishment') that is NOT mapped here to avoid the wording-drift contamination. **STRUCTURAL BREAK IN 2018**: same 6→7 point expansion as corr_punishment_bribe_giver (문14-3 in questionnaire). See that variable's note for scale labels and cross-period comparison guidance. valid_range_by_wave enforces correct ceiling per period."
     source:
       w2014: a104
       w2015: a104
@@ -103,12 +116,22 @@ variables:
       w2021: a104a
       w2022: q27
       w2023: q27
-    scale: {min: 1, max: 6}
+    scale: {min: 1, max: 7}
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 6]
+      valid_range_by_wave:
+        w2014: [1, 6]
+        w2015: [1, 6]
+        w2016: [1, 6]
+        w2017: [1, 6]
+        w2018: [1, 7]
+        w2019: [1, 7]
+        w2020: [1, 7]
+        w2021: [1, 7]
+        w2022: [1, 7]
+        w2023: [1, 7]
       skip_unmapped_check: true
 
   - id: corr_punishment_relative_strength
