@@ -1,0 +1,103 @@
+# KGSS Social Conflict Perception — perceived intensity of group conflict
+#
+# ISSP-style 4-item battery on perceived seriousness of conflict between
+# pairs of social groups. Stem: "다음 사회 집단들 사이의 갈등이 얼마나 심각하다고
+# 생각하십니까?" (How serious is the conflict between the following social groups?).
+#
+# Coverage: 3 waves (2003, 2009, 2014) — ISSP rotation, NOT annual.
+#
+# Other "conflict"-themed items in KGSS that we are NOT including here:
+#   - CONAGE (young vs. older generations): 2003 only — single-wave, dropped.
+#   - GENCONF1-5 (generation conflict perception block): 2018 only — single-wave.
+#     Could be added as a separate spec if a 2018-only paper needs them.
+#   - EQGENDER, EQREGION (perceived equity): 2-wave coverage; conceptually distinct
+#     (perceived fairness, not perceived conflict severity) — left for future.
+#   - LABORRE, EQWLTH, RGIONLSM (government-policy performance on social cleavages):
+#     these evaluate government conflict-management performance, not perceived
+#     conflict intensity. Belong in a future governance/policy spec, not here.
+#
+# RAW SCALE: 1=갈등이 매우 심하다 (very serious) → 4=갈등이 없다 (no conflict)
+# Reversed in harmonization so higher = MORE serious perceived conflict
+# (matches the "perceives more inequality" direction in social_inequality.yml).
+#
+# MISSING CONVENTIONS:
+# -8 = DK, -1 = IAP, 8 = DK/refusal, 9 = IAP
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9]
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal or IAP within scale range"
+
+variables:
+
+  - id: conflict_richpoor
+    concept: social_conflict
+    description: "Perceived seriousness of conflict between rich and poor (1-4, higher=more serious conflict)"
+    type: ordinal
+    note: "3 waves (2003, 2009, 2014). Raw CONWLTH: 1=갈등이 매우 심하다 → 4=갈등이 없다. Reversed so higher = perceives more serious rich-poor conflict. Korean stem: 가난한 사람과 부유한 사람 사이의 갈등."
+    source:
+      w2003: CONWLTH
+      w2009: CONWLTH
+      w2014: CONWLTH
+    scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: conflict_workingclass_middleclass
+    concept: social_conflict
+    description: "Perceived seriousness of conflict between working class and middle class (1-4, higher=more serious)"
+    type: ordinal
+    note: "3 waves (2003, 2009, 2014). Raw CONCLASS: 1=갈등이 매우 심하다 → 4=갈등이 없다. Reversed so higher = perceives more serious working-class–middle-class conflict. Korean stem: 노동자층과 중산층."
+    source:
+      w2003: CONCLASS
+      w2009: CONCLASS
+      w2014: CONCLASS
+    scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: conflict_labor_management
+    concept: social_conflict
+    description: "Perceived seriousness of conflict between management and labor (1-4, higher=more serious)"
+    type: ordinal
+    note: "3 waves (2003, 2009, 2014). Raw CONUNION: 1=갈등이 매우 심하다 → 4=갈등이 없다. Reversed so higher = perceives more serious labor-management conflict. Korean stem: 경영자와 노동자."
+    source:
+      w2003: CONUNION
+      w2009: CONUNION
+      w2014: CONUNION
+    scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: conflict_top_bottom
+    concept: social_conflict
+    description: "Perceived seriousness of conflict between the top and bottom of society (1-4, higher=more serious)"
+    type: ordinal
+    note: "3 waves (2003, 2009, 2014). Raw CONSOC: 1=갈등이 매우 심하다 → 4=갈등이 없다. Reversed so higher = perceives more serious top-vs-bottom conflict. Distinct from conflict_richpoor — this item asks about extremes (최상층 vs 최하층) rather than the rich-poor cleavage. Korean stem: 최상층과 최하층."
+    source:
+      w2003: CONSOC
+      w2009: CONSOC
+      w2014: CONSOC
+    scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true

@@ -1,0 +1,147 @@
+# KGSS Family and Gender Role Attitudes — ISSP-style 5-point items
+#
+# Six attitude items on the gendered division of labor in marriage and family,
+# plus marriage/cohabitation/divorce attitudes. All items are 5-point Likert
+# (1=매우 찬성/동의 → 5=매우 반대), reversed in harmonization so higher = stronger
+# agreement with the (typically traditional / ISSP-Family-module-canonical)
+# wording of the statement.
+#
+# COVERAGE NOTES:
+#   - These items rotate across waves rather than being annual. KGSS fielded the
+#     ISSP Family and Changing Gender Roles module (or close cognates) in 2003,
+#     2008, 2012, 2016, 2018. None of these items appears in every wave.
+#   - The breadwinner item appears under TWO different raw names in different
+#     waves (HUBBYWRK in 2003/2012, HBBYWK08 in 2008/2018) — same construct,
+#     same 5-point agree-disagree scale, slightly different Korean wording (찬성
+#     vs 동의 endpoint labels). Combined here under one harmonized id.
+#   - 7-point variants (SEXROLE1, SEXROLE2, SEXROLE123) are deliberately
+#     EXCLUDED from this spec — no safe_reverse_7pt helper exists yet, and the
+#     2023+ SEXROLE123 reverses scale direction relative to the 2006-2018
+#     SEXROLE1 item. These can be added in a follow-up spec once the helper
+#     exists and the reversed-direction recoding is wired up.
+#
+# RAW SCALE (all items): 1=매우 찬성 → 5=매우 반대 (or 1=매우 동의 → 5=매우 반대)
+# Reversed so harmonized 5 = strongest agreement with the statement, 1 = strongest disagreement.
+#
+# DIRECTION INTERPRETATION:
+#   gender_breadwinner_norm        — high = endorses traditional male-breadwinner / female-homemaker model
+#   gender_both_earn               — high = endorses dual-earner norm
+#   gender_woman_homemaker_pref    — high = endorses "most women really want to stay home with children"
+#   gender_workmom_family_suffers  — high = agrees that full-time working mothers' families suffer
+#   gender_divorce_best_solution   — high = agrees divorce is often the best solution to marital problems
+#   gender_cohab_no_marriage_ok    — high = endorses cohabitation without intent to marry
+#
+# MISSING CONVENTIONS:
+# -8 = DK, -1 = IAP, 8 = DK/refusal, 9 = IAP
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9]
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal or IAP within scale range"
+
+variables:
+
+  - id: gender_breadwinner_norm
+    concept: family_gender
+    description: "Agreement that men should earn money and women should keep the home (1-5, higher=stronger agreement with traditional breadwinner-homemaker model)"
+    type: ordinal
+    note: "4 waves combining two raw variables: HUBBYWRK (2003, 2012; '남자는 돈을 벌고 여자는 가정과 가족을 돌보는 것') and HBBYWK08 (2008, 2018; '남자가 할 일은 돈을 버는 것이고 여자가 할 일은 가정과 가족을 돌보는 것이다'). Construct identical; raw endpoint labels differ slightly (찬성/반대 vs 동의/반대) but both are 5-point monotone agreement scales. Reversed so higher = stronger endorsement of traditional gender division of labor. Direct ISSP MAHOME analogue."
+    source:
+      w2003: HUBBYWRK
+      w2008: HBBYWK08
+      w2012: HUBBYWRK
+      w2018: HBBYWK08
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: gender_both_earn
+    concept: family_gender
+    description: "Agreement that both men and women should contribute to household income (1-5, higher=stronger agreement with dual-earner norm)"
+    type: ordinal
+    note: "2 waves (2003, 2012). Raw TWOINCS: '남자와 여자 모두 돈을 버는 것' (Both men and women should earn money). 1=매우 찬성 → 5=매우 반대; reversed so higher = stronger dual-earner endorsement. Pairs analytically with gender_breadwinner_norm — agreement on both should be lower than agreement on either alone."
+    source:
+      w2003: TWOINCS
+      w2012: TWOINCS
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: gender_woman_homemaker_pref
+    concept: family_gender
+    description: "Agreement that what most women really want is to stay home and raise children (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "2 waves (2003, 2012). Raw HOMEKID: '대부분의 여성이 진정으로 원하는 것은 집에 머무르며 자녀를 키우는 것' (Most women really want to stay home and raise children). Reversed so higher = stronger agreement with this traditional view of women's preferences. Direct ISSP HUSBJOB cognate (women want home, not career)."
+    source:
+      w2003: HOMEKID
+      w2012: HOMEKID
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: gender_workmom_family_suffers
+    concept: family_gender
+    description: "Agreement that families of full-time working mothers suffer (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "3 waves (2003, 2012, 2016) — best wave coverage in this module. Raw FAMSUFFR: '전일제 취업 여성의 가정은 어려움 겪을 것' (Families of full-time working women will have difficulties). Reversed so higher = stronger agreement that working motherhood harms the family. Closest ISSP analogue: FAMSUFFER / HUBBYJOB items on working mothers harming children."
+    source:
+      w2003: FAMSUFFR
+      w2012: FAMSUFFR
+      w2016: FAMSUFFR
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: gender_divorce_best_solution
+    concept: family_gender
+    description: "Agreement that divorce is usually the best solution to marital problems (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "2 waves (2003, 2012). Raw DIVBEST: '이혼은 부부 사이 문제의 가장 좋은 해결책' (Divorce is the best solution to problems between spouses). Reversed so higher = more permissive view of divorce."
+    source:
+      w2003: DIVBEST
+      w2012: DIVBEST
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: gender_cohab_no_marriage_ok
+    concept: family_gender
+    description: "Agreement that cohabitation without intent to marry is acceptable (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "2 waves (2003, 2012). Raw COHABOK: '결혼 의사 없이 동거도 괜찮을 것' (It is OK to cohabit without intent to marry). Reversed so higher = more permissive view of non-marital cohabitation. Different item from LOVCOHAB (2018) and COHABFST (2003) — those are 7-point and excluded for now."
+    source:
+      w2003: COHABOK
+      w2012: COHABOK
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

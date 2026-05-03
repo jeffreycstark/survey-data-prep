@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 17 years: 2003-2025) + KIPA Corruption Survey (20 years: 2004-2023) + V-Dem v15 (scaffold)
-**Status**: ABS complete (330 vars, 6 waves, 110,721 respondents); WVS complete (61 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (147 vars, 17 years 2003–2025, 23,282 respondents); KIPA Corruption (36 vars, 20 years 2004–2023, 18,000 respondents; NOT general-population — sample = corporate employees + self-employed with gov-business contact); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024)
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + Arab Barometer (AB, Waves 1-8) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 17 years: 2003-2025) + KIPA Corruption Survey (20 years: 2004-2023) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 113,945 respondents; W6 covers 12 countries — Japan, Singapore, Malaysia added 2026-05); WVS complete (62 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (158 vars, 17 years 2003–2025, 23,282 respondents); KIPA Corruption (36 vars, 20 years 2004–2023, 18,000 respondents; NOT general-population — sample = corporate employees + self-employed with gov-business contact); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024). Arab Barometer verbatim dictionary complete; full harmonization in progress.
 
 ---
 
@@ -53,46 +53,16 @@ src/
 │   │   ├── 1_harmonize_funs.R      # Shared recoding helpers
 │   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
 │   │   ├── 99_create_final_dataset.R
-│   │   ├── wvs/                    # WVS pipeline
-│   │   │   ├── 0_load_waves.R
-│   │   │   ├── 2_harmonize_all.R
-│   │   │   └── 99_create_final_dataset.R
-│   │   ├── lbs/                    # LBS (Latinobarómetro) pipeline
-│   │   │   ├── 0_load_waves.R
-│   │   │   ├── 2_harmonize_all.R
-│   │   │   └── 99_create_final_dataset.R
-│   │   ├── afro/                   # Afrobarometer pipeline
-│   │   │   ├── 0_load_waves.R
-│   │   │   ├── 2_harmonize_all.R
-│   │   │   └── 99_create_final_dataset.R
-│   │   ├── kamos/                  # KAMOS pipeline
-│   │   │   ├── 0_load_waves.R
-│   │   │   ├── 2_harmonize_all.R
-│   │   │   └── 99_create_final_dataset.R
-│   │   ├── kgss/                   # KGSS pipeline
-│   │   │   ├── 0_load_waves.R
-│   │   │   ├── 2_harmonize_all.R
-│   │   │   └── 99_create_final_dataset.R
-│   │   └── vdem/                   # V-Dem pipeline (scaffold)
-│   │       ├── 0_load_vdem.R
-│   │       └── 99_create_final_dataset.R
+│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,vdem}/
+│   │       # Per-survey subdirs: 0_load_waves.R + 2_harmonize_all.R + 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
 │
 ├── config/
-│   ├── abs/                    # ABS-specific config
-│   │   ├── harmonize/          # ABS YAML specs (27 files)
+│   ├── abs/                    # Production ABS specs are in harmonize_validated/, not harmonize/
+│   │   ├── harmonize/          # legacy / scratch
 │   │   └── harmonize_validated/
-│   ├── wvs/                    # WVS-specific config
-│   │   └── harmonize/          # WVS YAML specs (11 files, 62 vars, W1-W7)
-│   ├── lbs/                    # LBS-specific config
-│   │   └── harmonize/          # LBS YAML specs (5 files, 20 vars)
-│   ├── afro/                   # Afrobarometer-specific config
-│   │   └── harmonize/          # Afro YAML specs (5 files, 20 vars)
-│   ├── kamos/                  # KAMOS-specific config
-│   │   └── harmonize/          # KAMOS YAML specs (6 files, 39 vars)
-│   └── kgss/                   # KGSS-specific config
-│       └── harmonize/          # KGSS YAML specs (6 files, 47 vars)
+│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption}/harmonize/
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -111,10 +81,10 @@ data/
 │       ├── wave1/ ... wave7/   # WVS waves (W1-W5: SPSS .sav, W6-W7: parquet)
 ├── lbs/                        # Latinobarómetro
 │   └── raw/
-│       ├── 2015/ ... 2023/     # LBS waves (SPSS .sav, English)
+│       ├── 1995/ ... 2024/     # LBS waves (SPSS .sav; 24 year-named dirs)
 ├── afro/                       # Afrobarometer
 │   └── raw/
-│       └── wave9/              # Afro Round 9 (SPSS .sav)
+│       └── round1/ ... round8/, wave9/   # Afrobarometer R1-R9 (SPSS .sav)
 ├── kamos/                      # Korean Attitudes and Mobilization Opinion Survey
 │   └── raw/
 │       ├── wave1/              # KAMOS W1 2016 (SPSS .sav, n=2000)
@@ -133,16 +103,10 @@ outputs/
 ├── figures/
 ├── tables/
 ├── master_w*.rds               # ABS per-wave harmonized data
-├── abs_harmonized.rds          # Combined ABS dataset
-├── wvs/                        # WVS per-wave master files
-│   └── master_w1.rds ... master_w7.rds
-├── lbs/                        # LBS per-wave master files
-│   └── master_w1.rds ... master_w5.rds
-├── afro/                       # Afro per-wave master files
-│   └── master_w9.rds
-├── kamos/                      # KAMOS per-wave master files
-│   └── master_w1.rds, master_w4.rds
+├── {wvs,lbs,afro,kamos,kgss,kipa-corruption,arab-barometer}/master_*.rds
 └── harmonization_validation_*  # Validation reports
+
+# Final combined per-survey datasets live in data/processed/{survey}_harmonized.rds
 ```
 
 ---
@@ -209,7 +173,7 @@ Every harmonized survey **must** have a verbatim question dictionary CSV that ma
 | Afrobarometer | `data/afro/questionnaire_text/afro_verbatim_items.csv` | Complete (46 vars, 9 rounds, 414 rows; text from R9 codebook) |
 | KAMOS | `data/kamos/questionnaire_text/kamos_verbatim_items.csv` | Complete (42 vars, 2 waves, 84 rows; Korean+English) |
 | Arab Barometer | `data/arab-barometer/questionnaire_text/arab_barometer_verbatim_items.csv` | Complete (44 vars, 6 waves, 264 rows; W1 PDF + SPSS labels) |
-| KGSS | `data/kgss/questionnaire_text/kgss_verbatim_items.csv` | Complete (57 vars, 921 rows; original 48 vars cover 16 years/2003-2023; 9 social_inequality+wellbeing vars cover 17 years/2003-2025) |
+| KGSS | `data/kgss/questionnaire_text/kgss_verbatim_items.csv` | Complete (68 vars, 1,108 rows; covers 17 years/2003–2025; includes social_conflict (4), srhealth (1), family_gender (6) added 2026-04) |
 
 **Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder-SKILL.md`). The skill filters to variables used in a given paper and generates formatted Appendix A prose. This repo owns the ground truth; paper repos only format and present.
 
@@ -228,14 +192,14 @@ Rscript src/r/data_prep_modules/wvs/2_harmonize_all.R
 Rscript src/r/data_prep_modules/wvs/99_create_final_dataset.R
 ```
 
-**LBS** (5 waves, SPSS → harmonize):
+**LBS** (24 waves 1995–2024, SPSS → harmonize):
 ```bash
 Rscript src/r/data_prep_modules/lbs/0_load_waves.R
 Rscript src/r/data_prep_modules/lbs/2_harmonize_all.R
 Rscript src/r/data_prep_modules/lbs/99_create_final_dataset.R
 ```
 
-**Afrobarometer** (1 wave, SPSS → harmonize):
+**Afrobarometer** (9 rounds R1–R9, SPSS → harmonize):
 ```bash
 Rscript src/r/data_prep_modules/afro/0_load_waves.R
 Rscript src/r/data_prep_modules/afro/2_harmonize_all.R
@@ -430,7 +394,7 @@ d <- readRDS("data/processed/kgss_harmonized.rds")
 # Or: arrow::read_parquet("data/processed/kgss_harmonized.parquet")
 ```
 
-**23,282 respondents, South Korea only (KOR), 147 harmonized variables across 17 survey years (2003–2025; no 2015, 2017, 2019–2020, 2022, 2024). `pol_govt_eval` (CURGOV) dropped in 2025.**
+**23,282 respondents, South Korea only (KOR), 158 harmonized variables across 17 survey years (2003–2025; no 2015, 2017, 2019–2020, 2022, 2024). `pol_govt_eval` (CURGOV) dropped in 2025.**
 
 ⚠️ **Scale warning**: `conf_*` variables are **1–3** (not 1–4 like ABS/WVS/LBS trust vars); do not compare without rescaling.
 
@@ -445,6 +409,9 @@ d <- readRDS("data/processed/kgss_harmonized.rds")
 | National Identity — ISSP (32) | **General pride (5, 2003/2013/2023)**: natid_korean_over_other, natid_shame, natid_world_like_kr, natid_kr_better_than_most, natid_right_or_wrong (1–5 reversed, higher=more agreement; `natid_shame` inversely valenced). **Domain pride (10, 2003/2013/2023/2025)**: pride_democracy, pride_pol_influence, pride_economy, pride_social_security, pride_science, pride_sports, pride_arts, pride_military, pride_history, pride_fairness (1–4 reversed, higher=more proud). **"True Korean" criteria (6, 2003/2010/2013/2023)**: truekr_born_here, truekr_citizenship, truekr_ancestors, truekr_feels_kr, truekr_respects_law, truekr_confucian (1–4 reversed, higher=more important). **International relations (6, 2003/2013/2021/2023)**: intl_limit_imports, intl_world_govt_env, intl_own_way, intl_no_foreign_land, intl_kr_tv, intl_foreign_co_harmful (1–5 reversed, higher=agree). **Immigration (5, 2003/2010/2013/2023)**: imm_crime, imm_help_econ, imm_take_jobs, imm_cultural_contrib (1–5 reversed, higher=agree), imm_limit_number (1–5 identity, higher=want fewer immigrants — scale direction differs from other imm_* items) | varies |
 | Corruption / Bribery / 청탁 (12) | **Govt anti-corruption performance (3)**: corr_anticorrupt_policy (2003–2010), corr_tax_fairness_policy (2003–2010), corr_election_transparency (2004/2014) — all 1–5 reversed, higher=better govt performance. **Corruption perceptions (5)**: corr_politicians (2006/2014/2016), corr_officials (2006/2014/2016), corr_officials_bribe (2006/2016) — 1–5 identity, higher=MORE corruption; corr_cant_succeed_without (2009/2014), corr_bribe_success (2009/2014/2021/2023/2025, **5 waves**) — 1–5 reversed, higher=more cynical. **청탁 / patronage (4, all 2006 only)**: corr_receive_requests, corr_have_connections (1–4 identity); corr_officials_fair (1–5 reversed, higher=more fair), corr_officials_nepotism (1–4 reversed, higher=LESS nepotism). **⚠ Directions are mixed across this module — read each variable's note** | varies |
 | Social Inequality — ISSP (6) | ineq_gap_too_large (4 waves: 2003/2009/2011/2014, 1–5 reversed, higher=more agrees gap too large), ineq_success_factor (3 waves: 2003/2014/2016, 1–3 categorical; NOT ordinal), ineq_fair_continuum (2 waves: 2011/2014, 1–10 higher=more meritocratic preference), ineq_perc_income, ineq_perc_jobs, ineq_perc_law (3 waves each: 2005/2009/2014, 1–5 higher=perceives more inequality) | varies; ISSP rotation |
+| Social Conflict — ISSP (4) | conflict_richpoor, conflict_workingclass_middleclass, conflict_labor_management, conflict_top_bottom (3 waves each: 2003/2009/2014; raw CON{WLTH,CLASS,UNION,SOC}; reversed) | 1–4, higher=perceives more serious conflict |
+| Family / Gender Roles — ISSP (6) | gender_breadwinner_norm (4 waves: 2003/2008/2012/2018, raw HUBBYWRK + HBBYWK08 combined), gender_workmom_family_suffers (3 waves: 2003/2012/2016, FAMSUFFR), gender_both_earn / gender_woman_homemaker_pref / gender_divorce_best_solution / gender_cohab_no_marriage_ok (2 waves each: 2003/2012; raw TWOINCS, HOMEKID, DIVBEST, COHABOK). All 5pt reversed; higher=stronger agreement with stated proposition. ⚠ 7-pt SEXROLE1/2/123 deferred — no safe_reverse_7pt helper yet. | 1–5, higher=stronger agreement |
+| Health (1) | srhealth (11 waves: 2006/2007/2009/2010/2011/2012/2013/2016/2018/2023/2025; combines HEALTHY + HEALR + HEALTH23 — all symmetric 5pt; 2021 HEALTH21 EXCLUDED, asymmetric scale) | 1–5, higher=better self-rated health |
 | Wellbeing (3) | wb_happiness (6 waves: 2009/2010/2016/2021/2023/2025, 1–5 reversed higher=happier), wb_life_satisfaction (6 waves: 2006/2009/2016/2021/2023/2025, 1–5 reversed higher=more satisfied), wb_financial_satisfaction (14 waves: 2003-2025 with gaps at 2007/2013/2014, 1–5 reversed higher=more satisfied) | 1–5, higher=better |
 | Demographics (12) | age, sex, education, marital_status, employment, income, region, urban_rural, religion, religious_attendance, subjective_class_6pt (1–6 higher=lower class), subjective_rank_10pt (1–10 higher=higher class) | varies |
 | Identifiers (3) | resp_id (within-year), yr_resp_id (cross-year unique, format YYYYnnnnn), questionnaire_form (1=A, 2=B; 2016+ only) | nominal |
@@ -542,32 +509,7 @@ d <- readRDS("data/processed/vdem_core.rds")
 | `validate_harmonize_spec()` | Validate YAML specs | src/r/harmonize/validate_spec.R |
 | `report_harmonization()` | Generate QC reports | src/r/harmonize/report_harmonization.R |
 
----
-
-## Codebook Documentation
-
-| Doc | Purpose |
-|-----|---------|
-| `src/r/codebook/QUICK_REFERENCE.md` | Fast lookup, cheat sheet |
-| `src/r/codebook/SKILL_SEARCH_AND_ANALYZE.md` | Complete skill docs |
-| `src/r/codebook/README.md` | Technical reference |
-| `src/r/codebook/REAL_EXAMPLE_WALKTHROUGH.md` | Real data walkthrough |
-| `src/r/codebook/BUILD_SUMMARY.md` | Build statistics |
-| `src/r/codebook/INDEX.md` | Function index |
-
----
-
-## Configuration
-
-### Scale Detection
-- Automatically identifies 5pt, 4pt, 6pt, 0-10, continuous scales
-- Reversal detection via semantic keywords (bad/good, agree/disagree)
-- All detections include 0-1 confidence scores
-
-### Customization
-- Confidence thresholds → YAML generation settings
-- Keywords → `detect_label_direction()` in `codebook_analysis.R`
-- Scale types → `detect_scale_type()` mapping logic
+For deeper codebook tooling docs, see `src/r/codebook/` (README, QUICK_REFERENCE, SKILL_SEARCH_AND_ANALYZE).
 
 ---
 

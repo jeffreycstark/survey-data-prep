@@ -1,0 +1,67 @@
+# KGSS Self-Rated Health (subjective health status)
+#
+# A single harmonized variable combining KGSS's three rotating SRH question
+# names — all symmetric 5-point scales asking "어떻게 생각하시는지요?" about
+# the respondent's own health — into a single longitudinal series.
+#
+# Coverage by raw variable (11 waves total):
+#   HEALTHY  (건강상태):           2007, 2009, 2010, 2011, 2012, 2013, 2018
+#   HEALR    (응답자 건강상태):    2006, 2016
+#   HEALTH23 (주관적 건강 상태):   2023, 2025
+#
+# All three use a symmetric 5-point Likert: 1=very good → 5=very bad, with the
+# midpoint labelled "neither good nor bad" (좋지도 나쁘지도 않다 / 보통이다).
+# Reversed in harmonization so higher = better self-rated health.
+#
+# ⚠ HEALTH21 (2021) deliberately EXCLUDED. Its scale is asymmetric — three
+#   positive levels (매우 좋다 / 상당히 좋다 / 좋다), one neutral, one negative
+#   (나쁘다) — which produces a different distribution and is not directly
+#   comparable to the symmetric items above. If a user needs the 2021 wave,
+#   harmonize HEALTH21 separately rather than silently coercing it into this
+#   series.
+#
+# Other health-adjacent items in KGSS that are NOT included here:
+#   - HEALTH (인생에서 건강의 중요도): 2003 only — value priority, not SRH.
+#   - NATHEAL (국민건강보호 비용지출 적정성): 2003 only — health-spending
+#     attitude, not SRH; would belong in a future health-policy spec.
+#   - HEALOP1/2, HEALLP1/2, HEALSP, SPOSHLTH, SPOSHLTH23 — health of family
+#     members (parents, in-laws, spouse), not the respondent.
+#   - HEALR's twin name HEALTHY — both refer to the respondent's own health
+#     and use the same 5-point scale, so they are listed under different waves
+#     in the source map below; not duplicated.
+#
+# MISSING CONVENTIONS:
+# -8 = DK, -1 = IAP, 8 = DK/refusal, 9 = IAP
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9]
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal or IAP within scale range"
+
+variables:
+
+  - id: srhealth
+    concept: health
+    description: "Self-rated overall health status (1-5, higher=better self-rated health)"
+    type: ordinal
+    note: "11 waves combining three rotating raw variables (HEALTHY, HEALR, HEALTH23) — all symmetric 5-point scales: 1=매우/아주 좋다 → 5=매우/아주 나쁘다 (mid = 좋지도 나쁘지도 않다 / 보통이다). Reversed so higher = better health. HEALTH21 (2021) EXCLUDED because its scale is asymmetric (3 positive, 1 neutral, 1 negative) and not directly comparable. Compare on direction (not exact distribution) to ISSP HEALTH and SF-1 self-rated health. Coverage gaps in the years not surveyed by KGSS (2015, 2017, 2019-2020, 2022, 2024) and in years where SRH was not asked (2003, 2004, 2005, 2008, 2014, 2021)."
+    source:
+      w2006: HEALR
+      w2007: HEALTHY
+      w2009: HEALTHY
+      w2010: HEALTHY
+      w2011: HEALTHY
+      w2012: HEALTHY
+      w2013: HEALTHY
+      w2016: HEALR
+      w2018: HEALTHY
+      w2023: HEALTH23
+      w2025: HEALTH23
+    scale: {min: 1, max: 5, labels: {1: "Very poor", 5: "Very good"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
