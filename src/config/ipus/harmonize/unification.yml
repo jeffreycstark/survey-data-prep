@@ -1,0 +1,160 @@
+# IPUS Unification — core unification attitudes
+#
+# Three flagship items, all with full 18-wave coverage 2007-2024:
+#
+#   uni_necessity      — necessity of unification        (1-5 reversed)
+#   uni_view           — view on unification             (categorical 4-cat)
+#   uni_timing         — perceived timing of unification (categorical 5-cat)
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# IPUS uni01/uni01_a is RAW 1=very necessary → 5=not at all necessary, so
+# reversed in harmonization so higher = stronger belief unification is necessary.
+# Direction now matches KINU `uni_necessity` (1-4 identity); to compare with
+# KGSS `pol_unification` (1-4 identity, but LOW = pro-unification), reverse
+# KGSS or interpret accordingly.
+#
+# RAW VARIABLE NAMING ROTATION (the same construct moves through several
+# raw names as IPUS revised the questionnaire):
+#   uni_necessity:  a12 (2007/2009/2010), b06 (2008), uni01 (2011-2020), uni01_a (2021-2024)
+#   uni_view:       a13 (2007/2009/2010), b07 (2008), uni02 (2011-2018), uni02_01 (2019-2024)
+#   uni_timing:     a14 (2007/2009/2010), b08 (2008), uni03 (2011-2024)
+#
+# MISSING CONVENTIONS:
+#   1-5 scales:
+#     5.5  = "④+⑤" KOSSDA recoding marker (respondent indicated both 4 and 5);
+#            treated as NA. Appears in 2008-2020 waves.
+#     8    = 없다 (no answer; early waves 2007-2013)
+#     9    = 모름/무응답 (DK/refusal; 2007-2013)
+#     99   = 무응답 (DK/refusal; 2014-2017, 2020)
+#   Categorical items use only 9 / 99 as DK/refusal.
+
+missing_conventions:
+  treat_as_na:
+    codes: [5.5, 8, 9, 99]
+    description: "IPUS: 5.5=KOSSDA-recoded ④+⑤; 8/9/99=DK/refusal/no-answer"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Necessity of unification — flagship
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_necessity
+    concept: unification
+    description: "Perceived necessity of Korean unification (1-5, reversed so higher=stronger belief unification is necessary)"
+    type: ordinal
+    note: "18 waves (all). Korean stem: 남북한 통일의 필요성. Raw scale 1=매우 필요하다 (very necessary) → 5=전혀 필요하지 않다 (not necessary at all). REVERSED so higher = stronger pro-unification belief. KINU `uni_necessity` (1-4 identity, higher=pro) is comparable in direction; KGSS `pol_unification` (1-4 identity, LOW=pro-unification) is OPPOSITE direction. Trajectory in raw means: 2.19 (2007) → 2.37 (2018, Pyongyang summit dip) → 2.91 (2024, record-low pro-unification)."
+    source:
+      w2007: a12
+      w2008: b06
+      w2009: a12
+      w2010: a12
+      w2011: uni01
+      w2012: uni01
+      w2013: uni01
+      w2014: uni01
+      w2015: uni01
+      w2016: uni01
+      w2017: uni01
+      w2018: uni01
+      w2019: uni01
+      w2020: uni01
+      w2021: uni01_a
+      w2022: uni01_a
+      w2023: uni01_a
+      w2024: uni01_a
+    scale: {min: 1, max: 5, labels: {1: "Not at all necessary", 5: "Very necessary"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) View on unification — categorical
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_view
+    concept: unification
+    description: "View on whether unification should happen (categorical: 1=should happen as soon as possible … 4=should not happen)"
+    type: categorical
+    note: "18 waves (all). Korean stem: 남북한 통일에 대한 견해. Typical IPUS 4-category response: 1=가능한 한 빨리, 2=서두르지 말고 여건이 성숙되기를 기다려, 3=현재대로가 좋다, 4=통일에 반대. Categorical-ordinal — high values reflect anti-unification stance but the category structure (especially 3=현상유지 vs 4=반대) makes it more useful as a categorical breakdown than a continuous scale. Treat as nominal in harmonization; analyses can collapse into pro/anti groupings as needed."
+    source:
+      w2007: a13
+      w2008: b07
+      w2009: a13
+      w2010: a13
+      w2011: uni02
+      w2012: uni02
+      w2013: uni02
+      w2014: uni02
+      w2015: uni02
+      w2016: uni02
+      w2017: uni02
+      w2018: uni02
+      w2019: uni02_01
+      w2020: uni02_01
+      w2021: uni02_01
+      w2022: uni02_01
+      w2023: uni02_01
+      w2024: uni02_01
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Should happen as soon as possible"
+        2: "Should wait for conditions to mature"
+        3: "Status quo is fine"
+        4: "Should not happen"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Perceived timing of unification — categorical
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_timing
+    concept: unification
+    description: "Perceived timing of when unification will be possible (categorical: 1=within 5 years … 5=impossible)"
+    type: categorical
+    note: "18 waves (all). Korean stem: 남북한 통일 가능 시기. Typical IPUS response: 1=5년 이내, 2=10년 이내, 3=20년 이내, 4=30년 이상, 5=불가능. Categorical-ordinal — high values reflect more pessimism about unification timing. As a slope-analyzable measure of pessimism, identity recoding (higher = more pessimistic about timing) is acceptable, but reviewers may prefer a binary 'unification possible vs impossible' (1-4 vs 5) or a tripartite split."
+    source:
+      w2007: a14
+      w2008: b08
+      w2009: a14
+      w2010: a14
+      w2011: uni03
+      w2012: uni03
+      w2013: uni03
+      w2014: uni03
+      w2015: uni03
+      w2016: uni03
+      w2017: uni03
+      w2018: uni03
+      w2019: uni03
+      w2020: uni03
+      w2021: uni03
+      w2022: uni03
+      w2023: uni03
+      w2024: uni03
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Within 5 years"
+        2: "Within 10 years"
+        3: "Within 20 years"
+        4: "30 years or more"
+        5: "Impossible"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

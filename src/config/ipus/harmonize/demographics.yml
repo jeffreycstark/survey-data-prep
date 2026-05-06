@@ -1,0 +1,190 @@
+# IPUS Demographics — respondent attributes
+#
+# Five demographic variables. IPUS demographics use VERY different raw names
+# across waves (sex/dem01/d01, age/wage/dem14_02/d02, etc.); the source maps
+# below alias each harmonized variable to its per-year raw name.
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# - sex: binary 1=male, 2=female (matches KGSS/KINU convention)
+# - age: continuous integer (no direction)
+# - urban_rural: REVERSED so higher = more urban (matches KINU)
+# - religion: nominal categorical
+# - religion_binary: derived 1=religious, 0=no denomination (lossy convenience var)
+#
+# DROPPED FROM THIS SPEC (deferred — codings differ across waves):
+# - region (sido): 2007/2018-2024 use 12-category sido codes; 2010-2017 use
+#   6-category 권 (region) groupings. Needs a custom recoding to a common
+#   6-region scheme. Ship a region item in a follow-up.
+# - education, income, marital_status, occupation: per-year coding inconsistent
+#   (different variable splits, raw vs recoded versions, etc.); add later
+#   once a recoding strategy is in place.
+#
+# RAW VARIABLE NAMING ROTATION:
+#   sex:          sex (2007-2010), dem01 (2011-2017), d01 (2018-2024)
+#   age:          age (2007), wage (2010), dem14_02 (2011), dem14_01_raw (2013-2016),
+#                 dem02_01_raw (2017), d02 (2018-2024); 2008/2009 only have age
+#                 buckets (categorical), excluded from continuous series.
+#   urban_rural:  siz (2007-2010), dem04 (2011-2017), d06 (2018-2024)
+#   religion:     rel (2007-2010), dem06 (2011-2017), d08 (2018-2024)
+#
+# MISSING CONVENTIONS:
+#   97/98 = "기타" or "종교 없음" — context-specific; treat as nominal codes for
+#   religion (NOT missing); for other items 99 = 모름/무응답 (DK/refusal) is NA.
+
+missing_conventions:
+  treat_as_na:
+    codes: [99]
+    description: "IPUS: 99=모름/무응답 (DK/refusal); per-variable additional codes documented inline"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Sex
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: sex
+    concept: demographics
+    description: "Respondent sex (1=male, 2=female; binary)"
+    type: categorical
+    note: "17 waves (missing 2012 — that wave's d01 is coded 0/1 instead of 1/2 and would need a custom recoding). 1=남, 2=여 in all included waves. Matches KGSS/KINU convention. ~50/50 split each wave."
+    source:
+      w2007: sex
+      w2008: sex
+      w2009: sex
+      w2010: sex
+      w2011: dem01
+      w2013: dem01
+      w2014: dem01
+      w2015: dem01
+      w2016: dem01
+      w2017: dem01
+      w2018: d01
+      w2019: d01
+      w2020: d01
+      w2021: d01
+      w2022: d01
+      w2023: d01
+      w2024: d01
+    scale: {min: 1, max: 2, labels: {1: "Male", 2: "Female"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Age (continuous)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: age
+    concept: demographics
+    description: "Respondent age in years (continuous)"
+    type: continuous
+    note: "16 waves (missing 2008, 2009 — those years only collected 4-bucket age categories, no continuous value). Range 19-65 in 2007-2014, expanded to 19-74 from 2015 onward (sample frame extended). KGSS-comparable. Use age_cat_4 (TBD in a future YAML) for 18-wave consistency at a coarser granularity."
+    source:
+      w2007: age
+      w2010: wage
+      w2011: dem14_02
+      w2012: d02
+      w2013: dem14_01_raw
+      w2014: dem14_01_raw
+      w2015: dem14_01_raw
+      w2016: dem14_01_raw
+      w2017: dem02_01_raw
+      w2018: d02
+      w2019: d02
+      w2020: d02
+      w2021: d02
+      w2022: d02
+      w2023: d02
+      w2024: d02
+    scale: {min: 18, max: 99, labels: {}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [18, 99]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Urban / rural
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urbanicity of respondent's region (1=rural, 2=medium/small city, 3=metropolitan; reversed so higher=more urban)"
+    type: ordinal
+    note: "18 waves (all). Raw scale 1=대도시 (metropolitan), 2=중소도시 (medium/small city), 3=읍/면 (rural). REVERSED so higher = more urban (matches KINU urban_rural convention and the project's higher=more-intensity rule)."
+    source:
+      w2007: siz
+      w2008: siz
+      w2009: siz
+      w2010: siz
+      w2011: dem04
+      w2012: d06     # 2012 used the d-prefix scheme one wave early
+      w2013: dem04
+      w2014: dem04
+      w2015: dem04
+      w2016: dem04
+      w2017: dem04
+      w2018: d06
+      w2019: d06
+      w2020: d06
+      w2021: d06
+      w2022: d06
+      w2023: d06
+      w2024: d06
+    scale: {min: 1, max: 3, labels: {1: "Rural area (읍/면)", 2: "Medium/small city", 3: "Metropolitan"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Religion
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: religion
+    concept: demographics
+    description: "Religious affiliation (1=Buddhist, 2=Protestant, 3=Catholic, 4=other, 98=no denomination; categorical)"
+    type: categorical
+    note: "18 waves (all). 1=불교 (Buddhist), 2=기독교/개신교 (Protestant), 3=천주교/가톨릭 (Catholic), 4=기타 (other), 98=종교 없음 (no denomination), 99=DK (treated as NA). 2007 had additional sub-categories (원불교, 통일교, 힌두교, 유교, 기타) — those are mapped to 4 (other) in the harmonized scheme; if granular Korean-religion analysis is needed, see raw 2007 var."
+    source:
+      w2007: rel
+      w2008: rel
+      w2009: rel
+      w2010: rel
+      w2011: dem06
+      w2012: d08     # 2012 used the d-prefix scheme one wave early
+      w2013: dem06
+      w2014: dem06
+      w2015: dem06
+      w2016: dem06
+      w2017: dem06
+      w2018: d08
+      w2019: d08
+      w2020: d08
+      w2021: d08
+      w2022: d08
+      w2023: d08
+      w2024: d08
+    scale:
+      min: 1
+      max: 98
+      labels:
+        1:  "Buddhist"
+        2:  "Protestant"
+        3:  "Catholic"
+        4:  "Other"
+        97: "Other (legacy 2007 code)"
+        98: "No denomination"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 98]
+      skip_unmapped_check: true

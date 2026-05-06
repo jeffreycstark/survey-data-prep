@@ -1,0 +1,169 @@
+# IPUS North Korea — perception of NK
+#
+# Four flagship items, all with 14-18 wave coverage:
+#
+#   nk_nuke_threat            — felt threat from NK nukes        (18 waves)
+#   nk_sk_relations           — perceived nature of NK-SK relations (18 waves, categorical)
+#   nk_recent_change          — perceived recent change in NK    (18 waves)
+#   nk_regime_wants_unif      — perceived NK regime desire to unify (15 waves, missing 2007/2008/2010)
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# - nk_nuke_threat: REVERSED so higher = more threat felt
+# - nk_sk_relations: nominal (1=지원대상 → 5=적대대상; categorical, not ordinal-intensity)
+# - nk_recent_change: REVERSED so higher = more change perceived
+# - nk_regime_wants_unif: REVERSED so higher = more wants unification
+#
+# RAW VARIABLE NAMING ROTATION:
+#   nk_nuke_threat:           a60 (2007), b55 (2008), a59 (2009/2010), nk10 (2011-2024)
+#   nk_sk_relations:          a36 (2007), b31 (2008), a38 (2009/2010), nk01 (2011-2024)
+#   nk_recent_change:         a43 (2007), b38 (2008), a41 (2009/2010),
+#                             nk05 (2011-2020), nk05_b (2021-2024)
+#   nk_regime_wants_unif:     a40 (2009), nk04 (2011-2024)
+#
+# MISSING CONVENTIONS:
+#   8/9 = 없다/모름 (no answer/DK; 2007-2013)
+#   99 = 모름/무응답 (DK; 2014-2017)
+#   2.5/4.5 = KOSSDA-recoded between-two-answers markers; treated as NA
+
+missing_conventions:
+  treat_as_na:
+    codes: [2.5, 4.5, 8, 9, 99]
+    description: "IPUS NK: 2.5/4.5=KOSSDA between-answers; 8/9/99=DK/refusal"
+
+variables:
+
+  - id: nk_nuke_threat
+    concept: north_korea
+    description: "Felt threat from NK nuclear weapons (1-4, reversed so higher=more threat)"
+    type: ordinal
+    note: "18 waves (all). Korean stem: 북한 핵무기 보유에 위협을 느끼는 정도 (degree of threat felt from NK nuclear weapons). Raw 1=매우 위협을 느낀다 → 4=전혀 위협을 느끼지 않는다. REVERSED so higher = more threat. 2007/2009/2010 used b/a-prefix vars; 2011 onward standardized to nk10."
+    source:
+      w2007: a60
+      w2008: b55
+      w2009: a59
+      w2010: a59
+      w2011: nk10
+      w2012: nk10
+      w2013: nk10
+      w2014: nk10
+      w2015: nk10
+      w2016: nk10
+      w2017: nk10
+      w2018: nk10
+      w2019: nk10
+      w2020: nk10
+      w2021: nk10
+      w2022: nk10
+      w2023: nk10
+      w2024: nk10
+    scale: {min: 1, max: 4, labels: {1: "Not threatened at all", 4: "Very threatened"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: nk_sk_relations
+    concept: north_korea
+    description: "Perceived nature of NK-SK relations (categorical 1-5: 1=aid recipient, 5=enemy)"
+    type: categorical
+    note: "18 waves (all). Korean stem: 남북한 관계에 대한 인식. Categories: 1=지원대상 (aid recipient), 2=협력대상 (cooperation partner), 3=경쟁대상 (competitor), 4=경계대상 (vigilance target), 5=적대대상 (enemy). Nominal-ordinal — high values reflect more adversarial perception. Identity recoded; readers can collapse into pro-NK (1-2) vs neutral (3) vs anti-NK (4-5) groupings as needed."
+    source:
+      w2007: a36
+      w2008: b31
+      w2009: a38
+      w2010: a38
+      w2011: nk01
+      w2012: nk01
+      w2013: nk01
+      w2014: nk01
+      w2015: nk01
+      w2016: nk01
+      w2017: nk01
+      w2018: nk01
+      w2019: nk01
+      w2020: nk01
+      w2021: nk01
+      w2022: nk01
+      w2023: nk01
+      w2024: nk01
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Aid recipient"
+        2: "Cooperation partner"
+        3: "Competitor"
+        4: "Vigilance target"
+        5: "Enemy"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_recent_change
+    concept: north_korea
+    description: "Perceived degree of recent change in North Korea (1-4, reversed so higher=more change perceived)"
+    type: ordinal
+    note: "18 waves (all). Korean stem: 최근 북한의 변화에 대한 인식. Raw 1=많이 변하고 있다 → 4=전혀/거의 변하지 않고 있다 (the 2024 wording shifted from 거의 to 전혀 for code 4 but the construct is identical). REVERSED so higher = more change perceived. Substantively interesting around 2018 Pyongyang summit (perception of NK opening up) vs 2022+ (Yoon-era escalation, no change perceived)."
+    source:
+      w2007: a43
+      w2008: b38
+      w2009: a41
+      w2010: a41
+      w2011: nk05
+      w2012: nk05
+      w2013: nk05
+      w2014: nk05
+      w2015: nk05
+      w2016: nk05
+      w2017: nk05
+      w2018: nk05
+      w2019: nk05
+      w2020: nk05
+      w2021: nk05_b
+      w2022: nk05_b
+      w2023: nk05_b
+      w2024: nk05_b
+    scale: {min: 1, max: 4, labels: {1: "Not changing at all", 4: "Changing a lot"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: nk_regime_wants_unif
+    concept: north_korea
+    description: "Perceived NK regime's desire to unify (1-4, reversed so higher=more wants unification)"
+    type: ordinal
+    note: "15 waves (missing 2007, 2008, 2010 — item not yet on questionnaire). Korean stem: 북한 정권의 통일 희망 정도에 대한 인식. Raw 1=매우 원한다 → 4=전혀 원하지 않는다. REVERSED so higher = more perceived NK desire to unify. Substantively important: this captures whether South Koreans believe NK is a good-faith partner. Likely declined sharply post-2018 as denuclearization talks failed."
+    source:
+      w2009: a40
+      w2011: nk04
+      w2012: nk04
+      w2013: nk04
+      w2014: nk04
+      w2015: nk04
+      w2016: nk04
+      w2017: nk04
+      w2018: nk04
+      w2019: nk04
+      w2020: nk04
+      w2021: nk04
+      w2022: nk04
+      w2023: nk04
+      w2024: nk04
+    scale: {min: 1, max: 4, labels: {1: "Does not want at all", 4: "Strongly wants"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true

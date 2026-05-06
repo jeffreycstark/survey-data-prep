@@ -3,8 +3,8 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: Multi-Survey Harmonization Data Pipeline
-**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + Arab Barometer (AB, Waves 1-8) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 17 years: 2003-2025) + KIPA Corruption Survey (20 years: 2004-2023) + KINU Unification Perception Survey (KINU, 13 waves: 2014-2023) + V-Dem v15 (scaffold)
-**Status**: ABS complete (330 vars, 6 waves, 113,945 respondents; W6 covers 12 countries — Japan, Singapore, Malaysia added 2026-05); WVS complete (62 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (158 vars, 17 years 2003–2025, 23,282 respondents); KIPA Corruption (36 vars, 20 years 2004–2023, 18,000 respondents; NOT general-population — sample = corporate employees + self-employed with gov-business contact); KINU complete (127 vars, 13 waves 2014-2023, 13,030 respondents; biannual 2019-2021 fieldwork); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024). Arab Barometer verbatim dictionary complete; full harmonization in progress.
+**Surveys**: Asian Barometer Survey (ABS, Waves 1-6) + World Values Survey (WVS, Waves 1-7) + Latinobarómetro (LBS, 24 waves: 1995-2024) + Afrobarometer (Afro, Rounds 1-9) + Arab Barometer (AB, Waves 1-8) + KAMOS (Waves 1, 4) + Korea General Social Survey (KGSS, 17 years: 2003-2025) + KIPA Corruption Survey (20 years: 2004-2023) + KINU Unification Perception Survey (KINU, 13 waves: 2014-2023) + IPUS Unification Perception Survey (IPUS, 18 waves: 2007-2024) + V-Dem v15 (scaffold)
+**Status**: ABS complete (330 vars, 6 waves, 113,945 respondents; W6 covers 12 countries — Japan, Singapore, Malaysia added 2026-05); WVS complete (62 vars, 7 waves, 446,767 respondents, 108 countries); LBS complete (19 vars, 24 waves, 489,771 respondents); Afro complete (23 vars, 9 rounds, 351,815 respondents); KAMOS complete (39 vars, 2 waves, 3,500 respondents); KGSS complete (158 vars, 17 years 2003–2025, 23,282 respondents); KIPA Corruption (36 vars, 20 years 2004–2023, 18,000 respondents; NOT general-population — sample = corporate employees + self-employed with gov-business contact); KINU complete (127 vars, 13 waves 2014-2023, 13,030 respondents; biannual 2019-2021 fieldwork); IPUS initial (11 vars, 18 annual waves 2007-2024, 21,617 respondents; longest Korean unification series); V-Dem scaffolded (country-year panel, 202 countries, 1789–2024). Arab Barometer verbatim dictionary complete; full harmonization in progress.
 
 ---
 
@@ -53,7 +53,7 @@ src/
 │   │   ├── 1_harmonize_funs.R      # Shared recoding helpers
 │   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
 │   │   ├── 99_create_final_dataset.R
-│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,kinu,vdem}/
+│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,kinu,ipus,vdem}/
 │   │       # Per-survey subdirs: 0_load_waves.R + 2_harmonize_all.R + 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
@@ -62,7 +62,7 @@ src/
 │   ├── abs/                    # Production ABS specs are in harmonize_validated/, not harmonize/
 │   │   ├── harmonize/          # legacy / scratch
 │   │   └── harmonize_validated/
-│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu}/harmonize/
+│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu,ipus}/harmonize/
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -96,6 +96,10 @@ data/
 │   ├── raw/
 │   │   ├── kinu_2014-2023_en.sav        # n=13,030, 956 cols, 13 fielding waves
 │   │   └── kinu_2014-2024_codebook_en.xlsx  # cross-referenced codebook
+├── ipus/                       # IPUS Unification Perception Survey (서울대 통일평화연구원)
+│   └── raw/{2007..2024}/                # one .sav + codebook per year (18 years)
+│       ├── ipus_{year}.sav              # primary SPSS, n≈1,200 each
+│       └── ipus_{year}_codebook.{xls,xlsx,pdf}  # 2008/2009 are PDFs
 ├── v-dem/                      # Varieties of Democracy
 │   └── raw/
 │       └── v15/                # V-Dem v15 (RDS, 27,913 rows × 4,607 cols)
@@ -179,6 +183,7 @@ Every harmonized survey **must** have a verbatim question dictionary CSV that ma
 | Arab Barometer | `data/arab-barometer/questionnaire_text/arab_barometer_verbatim_items.csv` | Complete (44 vars, 6 waves, 264 rows; W1 PDF + SPSS labels) |
 | KGSS | `data/kgss/questionnaire_text/kgss_verbatim_items.csv` | Complete (68 vars, 1,108 rows; covers 17 years/2003–2025; includes social_conflict (4), srhealth (1), family_gender (6) added 2026-04) |
 | KINU | `data/kinu/questionnaire_text/kinu_verbatim_items.csv` | Complete (929 raw vars, 13,020 rows; codebook-driven build via `src/scripts/build_kinu_verbatim.R` + alias map `raw_to_harmonized.csv`; covers 13 fielded waves + 2024 codebook column flagged as data-pending) |
+| IPUS | `data/ipus/questionnaire_text/ipus_verbatim_items.csv` | Initial (192 rows, 11 harmonized vars × 18 waves; built from SAV embedded labels via `src/scripts/build_ipus_verbatim.R` + alias map). 2012 SAV has stripped labels — those 10 rows flagged for manual codebook extraction. 2008/2009 codebooks are PDFs (not parsed). |
 
 **Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder-SKILL.md`). The skill filters to variables used in a given paper and generates formatted Appendix A prose. This repo owns the ground truth; paper repos only format and present.
 
@@ -236,6 +241,13 @@ Rscript src/r/data_prep_modules/kipa-corruption/99_create_final_dataset.R
 Rscript src/r/data_prep_modules/kinu/0_load_waves.R
 Rscript src/r/data_prep_modules/kinu/2_harmonize_all.R
 Rscript src/r/data_prep_modules/kinu/99_create_final_dataset.R
+```
+
+**IPUS** (18 annual waves 2007–2024, one .sav per year):
+```bash
+Rscript src/r/data_prep_modules/ipus/0_load_waves.R
+Rscript src/r/data_prep_modules/ipus/2_harmonize_all.R
+Rscript src/r/data_prep_modules/ipus/99_create_final_dataset.R
 ```
 
 **V-Dem** (country-year panel, scaffold):
@@ -506,6 +518,37 @@ Wave keys: w2014, w2015, w2016, w2017, w2018, w2019a, w2019b, w2020a, w2020b, w2
 KINU missing value conventions: 9=n/a in 1–5 / 1–4 / 1–7 scales (per-variable handling); 99=n/a in 0–10 / 1–9 scales; 999=n/a in 0–100 thermometers.
 
 **KINU vs KGSS for unification analysis**: KINU `uni_necessity` (higher=pro-unification) and KGSS `pol_unification` (lower=pro-unification, OPPOSITE direction; reverse one before comparing). Both peak in 2018; KINU's biannual 2019–2021 fielding localizes the post-Pyongyang-summit decline more precisely than KGSS's 2018→2021 gap.
+
+### IPUS Unification Perception Survey (서울대 통일평화연구원 통일의식조사)
+
+```r
+d <- readRDS("data/processed/ipus_harmonized.rds")
+# Or: arrow::read_parquet("data/processed/ipus_harmonized.parquet")
+```
+
+**21,617 respondents, South Korea only (KOR), 11 harmonized variables across 18 annual waves (2007–2024).** Run by SNU Institute for Peace and Unification Studies (서울대 통일평화연구원); n≈1,200 each year. Longest Korean unification opinion series in our pipeline (vs KGSS's 17 calendar-year waves and KINU's 13 fielding waves). Annual fielding has no gaps 2007–2024.
+
+⚠️ **Variable-name rotation across waves** is heavy: the same construct appears under different raw names across the 18 waves (e.g., `uni_necessity` is `a12` in 2007/2009/2010, `b06` in 2008, `uni01` in 2011-2020, `uni01_a` in 2021-2024). The harmonization layer hides this; raw-data users should consult `data/ipus/questionnaire_text/raw_to_harmonized.csv`.
+
+⚠️ **Encoding mojibake** in the raw .sav files for years 2008, 2009, 2013–2016 — the loader passes `encoding="CP949"` for those years to recover Korean labels. Other years use UTF-8 default.
+
+⚠️ **2012 SAV has stripped variable labels** (NULL); inferred mapping is reliable from variable-name continuity (uni01-style is consistent with 2011/2013).
+
+⚠️ **No weight column** in any IPUS year; treat as unweighted.
+
+| Category | Variables | Scale |
+|----------|-----------|-------|
+| Unification (3) | uni_necessity (1–5 reversed, higher=more pro-unification, 18 waves), uni_view (categorical 1–4: aid recipient → opposed; 18 waves), uni_timing (categorical 1–5: <5yr → impossible; 18 waves) | varies |
+| Demographics (4) | sex (binary; 17 waves, missing 2012 due to 0/1 coding mismatch), age (continuous; 16 waves, missing 2008/2009 which used 4-bucket only), urban_rural (1–3 reversed, higher=more urban; 18 waves), religion (categorical 1–98; 18 waves) | varies |
+| North Korea (4) | nk_nuke_threat (1–4 reversed, higher=more threatened; 18 waves), nk_sk_relations (categorical 1=aid → 5=enemy; 18 waves), nk_recent_change (1–4 reversed, higher=more change perceived; 18 waves), nk_regime_wants_unif (1–4 reversed, higher=more wants to unify; 15 waves, missing 2007/2008/2010) | varies |
+| Identifiers (3) | wave (integer year), year (integer), country = "KOR" | nominal |
+
+KINU/KGSS/IPUS triangulation: All three Korean unification series are now harmonized. Direction conventions:
+- IPUS `uni_necessity`: higher=more pro-unification ✓ (project rule)
+- KINU `uni_necessity`: higher=more pro-unification ✓
+- KGSS `pol_unification`: higher=LESS pro-unification (OPPOSITE direction; reverse before comparing)
+
+All three peak in 2018 (Pyongyang summit) and decline post-2020. IPUS's 2007 baseline (which both KGSS and KINU lack) shows that 2007 had the highest pro-unification of the entire 18-year period — useful contextual baseline.
 
 ### V-Dem Core Dataset (scaffold)
 
