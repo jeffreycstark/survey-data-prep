@@ -503,3 +503,47 @@ The original Tier 1 candidates from the 2026-05-04 memo are now stronger:
 | #3 coherently falling political efficacy | KGSS-only (no IPUS analogue) | Unchanged |
 | #4 Korea-Taiwan output legitimacy | ABS-only (no IPUS analogue) | Unchanged |
 
+
+
+---
+
+# Tri-survey Korean unification panel (2026-05-06)
+
+After IPUS harmonization, all three Korean unification surveys are now
+direction-aligned and combined into a single long-format panel:
+
+- `data/processed/korean_unification_panel.{rds,parquet}` — 46 wave-survey
+  rows with `mean_pro_unif` (higher = pro-unification, all surveys aligned)
+  and `mean_pro_unif_01` (rescaled to 0-1 for cross-survey comparability)
+- `outputs/figures/korean_unification_tri_survey.png` — annotated trajectory
+  plot with vertical markers for the 2018 Pyongyang summit, the Feb 2019
+  Hanoi summit failure, the June 2020 liaison-office demolition, and the
+  May 2022 Yoon administration start.
+- Builder: `src/scripts/build_korean_unification_panel.R`
+- Plotter: `src/scripts/plot_korean_unification_trajectory.R`
+
+The panel is the direct input for candidate papers #1 and #2 — it spares
+the paper from re-implementing the direction-alignment logic and gives
+reviewers a single auditable dataset to inspect.
+
+# KGSS prospector re-run with extended modules (2026-05-06)
+
+The KGSS prospector at `outputs/prospecting/kgss/` has been re-run on the
+extended 158-variable dataset (post-2026-04 additions of social_conflict,
+srhealth, family_gender). Coverage rose from 137 to 148 included variables
+(some new items have <3 waves and are filtered out by MIN_WAVES=3).
+
+**Result**: none of the new modules produced structural breaks at p < 0.05.
+The 28 KGSS structural breaks are unchanged from the prior run — the new
+conflict, health, and gender-role items are stable across waves and
+robustly measured but do not show abrupt change-points.
+
+This is itself a useful finding: **Korean conflict-perception attitudes
+(conflict_richpoor / labor_management / etc., 2003-2014 ISSP rotation),
+self-rated health, and gender-role attitudes do NOT show 2018-Pyongyang-
+summit-style breaks**. The post-2018 disillusionment story is concentrated
+in the unification + NK-perception batteries; broader Korean attitudes
+toward inequality, health, and gender are continuous-evolving rather than
+event-driven. This sharpens the unification-disillusionment story as
+issue-specific rather than part of a generalized political turn.
+
