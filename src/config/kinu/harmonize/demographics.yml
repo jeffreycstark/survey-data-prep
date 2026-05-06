@@ -1,0 +1,580 @@
+# KINU Demographics — respondent demographic attributes
+#
+# Fourteen variables drawn from the "demographics" + "Basic" codebook groups.
+# Together these support cohort/age/gender/SES decomposition of any KINU
+# substantive analysis.
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# Two items are reversed from raw to satisfy the rule:
+#   - urban_rural: raw 1=metropolitan → 3=rural; reversed so higher = more urban.
+#   - religious_attendance: raw 1=more than weekly → 6=never; reversed so
+#     higher = more frequent attendance.
+# The rest are identity-recoded:
+#   - age, age_5cat, birthyear: numeric/ordinal (higher = older)
+#   - cohort: nominal/ordinal (1=war generation … 7=Z generation; "intensity"
+#     does not apply but ordering reflects birth-year recency from oldest)
+#   - sex: binary (1=male, 2=female; matches KGSS convention)
+#   - subjective_income_5pt, subjective_class_6pt: identity (higher = higher class)
+#   - education: identity (higher = more education)
+#   - region, religion, marital_status, employment, home_region: nominal categories
+#   - income_manwon: continuous numeric (Korean 만원 units)
+#
+# ⚠ Direction note vs KGSS:
+# KGSS subjective_class_6pt is documented as "higher = lower class"; KINU
+# uses the opposite direction (higher = higher class) per the user-rule.
+# When merging KGSS+KINU subjective-class data across surveys, ONE side must
+# be reversed at analysis time. KINU's direction is the more intuitive one
+# and matches the project rule; the KGSS direction is preserved for backward
+# compatibility with existing KGSS analyses.
+#
+# DROPPED FROM THIS SPEC:
+#   - house (8 waves, 2019+ only; could be added later for housing-wealth analysis)
+#   - regular, typejob (employment-conditional, narrow coverage <500/wave)
+#   - occupa_open, religion_open (open-ended duplicates of occupa/religion)
+#   - dist (district code; survey-design metadata, not analytical)
+#   - id, year, imonth, idate (already handled by loader / final-dataset script)
+#
+# MISSING CONVENTIONS:
+#   9 / 99 / 9999 = n/a (varies by item; declared per-variable below
+#   but listed globally for safety)
+
+missing_conventions:
+  treat_as_na:
+    codes: [9, 99, 9999]
+    description: "KINU: 9=n/a in 1-X scales; 99=n/a in 0-100/two-digit-code scales; 9999=n/a for continuous income"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Age & cohort
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: age
+    concept: demographics
+    description: "Respondent age in years (continuous)"
+    type: continuous
+    note: "13 waves (all). Continuous integer; no labels. Range typically 19+ (KINU samples adults 19+)."
+    source:
+      w2014:  age
+      w2015:  age
+      w2016:  age
+      w2017:  age
+      w2018:  age
+      w2019a: age
+      w2019b: age
+      w2020a: age
+      w2020b: age
+      w2021a: age
+      w2021b: age
+      w2022:  age
+      w2023:  age
+    scale: {min: 18, max: 99, labels: {}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [18, 99]
+      skip_unmapped_check: true
+
+  - id: age_5cat
+    concept: demographics
+    description: "Age range in 5 categories (1=18-29 → 5=60+, identity, higher=older)"
+    type: ordinal
+    note: "13 waves. Raw age_rge: 1=18~29, 2=30-39, 3=40-49, 4=50-59, 5=over 60. Identity; matches KGSS pattern of preferring categorical age slots for cohort-style analysis. Use this when age cells need balanced sample sizes."
+    source:
+      w2014:  age_rge
+      w2015:  age_rge
+      w2016:  age_rge
+      w2017:  age_rge
+      w2018:  age_rge
+      w2019a: age_rge
+      w2019b: age_rge
+      w2020a: age_rge
+      w2020b: age_rge
+      w2021a: age_rge
+      w2021b: age_rge
+      w2022:  age_rge
+      w2023:  age_rge
+    scale: {min: 1, max: 5, labels: {1: "18-29", 5: "60+"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: birthyear
+    concept: demographics
+    description: "Respondent birth year (continuous, 4-digit calendar year)"
+    type: continuous
+    note: "13 waves. Continuous; range 1933-2001 in this dataset. Useful for fine-grained cohort analysis where age_5cat is too coarse."
+    source:
+      w2014:  birthyear
+      w2015:  birthyear
+      w2016:  birthyear
+      w2017:  birthyear
+      w2018:  birthyear
+      w2019a: birthyear
+      w2019b: birthyear
+      w2020a: birthyear
+      w2020b: birthyear
+      w2021a: birthyear
+      w2021b: birthyear
+      w2022:  birthyear
+      w2023:  birthyear
+    scale: {min: 1925, max: 2010, labels: {}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1925, 2010]
+      skip_unmapped_check: true
+
+  - id: cohort
+    concept: demographics
+    description: "Korean named-generation cohort (1=war → 7=Z generation; categorical-ordinal)"
+    type: categorical
+    note: "13 waves. Raw cohort: 1=war generation (pre-1953), 2=industrial, 3=386 generation (born 1960s), 4=X generation, 5=IMF generation, 6=Millennials, 7=Z generation. Treated as categorical because the named labels are the analytical unit (e.g., '386 generation' vs 'IMF generation'); the numeric ordering reflects descending age but does not represent an interval scale."
+    source:
+      w2014:  cohort
+      w2015:  cohort
+      w2016:  cohort
+      w2017:  cohort
+      w2018:  cohort
+      w2019a: cohort
+      w2019b: cohort
+      w2020a: cohort
+      w2020b: cohort
+      w2021a: cohort
+      w2021b: cohort
+      w2022:  cohort
+      w2023:  cohort
+    scale:
+      min: 1
+      max: 7
+      labels:
+        1: "War generation"
+        2: "Industrial generation"
+        3: "386 generation"
+        4: "X generation"
+        5: "IMF generation"
+        6: "Millennials"
+        7: "Z generation"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 7]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Sex / region
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: sex
+    concept: demographics
+    description: "Respondent sex (1=male, 2=female; binary)"
+    type: categorical
+    note: "13 waves. Raw gender: 1=male, 2=female. Identity. Matches KGSS sex coding so KGSS+KINU pooled analyses can use the same dummy."
+    source:
+      w2014:  gender
+      w2015:  gender
+      w2016:  gender
+      w2017:  gender
+      w2018:  gender
+      w2019a: gender
+      w2019b: gender
+      w2020a: gender
+      w2020b: gender
+      w2021a: gender
+      w2021b: gender
+      w2022:  gender
+      w2023:  gender
+    scale: {min: 1, max: 2, labels: {1: "Male", 2: "Female"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      skip_unmapped_check: true
+
+  - id: region
+    concept: demographics
+    description: "Survey region (sido/시도) as 17 administrative areas + foreign + NK; categorical"
+    type: categorical
+    note: "13 waves. Raw region codes: 1=Seoul, 2=Busan, 3=Daegu, 4=Incheon, 5=Gwangju, 6=Daejeon, 7=Ulsan, 8=Gyeonggi, 9=Gangwon, 10=Chungbuk, 11=Chungnam, 12=Jeonbuk, 13=Jeonnam, 14=Gyeongbuk, 15=Gyeongnam, 16=Jeju, 17=Sejong (added later), 18=foreign, 19=North Korea. Per-wave coverage 968-975; the missing ~30 cases per wave likely correspond to overseas/special-status respondents. Nominal — not ordinal."
+    source:
+      w2014:  region
+      w2015:  region
+      w2016:  region
+      w2017:  region
+      w2018:  region
+      w2019a: region
+      w2019b: region
+      w2020a: region
+      w2020b: region
+      w2021a: region
+      w2021b: region
+      w2022:  region
+      w2023:  region
+    scale:
+      min: 1
+      max: 19
+      labels:
+        1:  "Seoul"
+        2:  "Busan"
+        3:  "Daegu"
+        4:  "Incheon"
+        5:  "Gwangju"
+        6:  "Daejeon"
+        7:  "Ulsan"
+        8:  "Gyeonggi"
+        9:  "Gangwon"
+        10: "Chungbuk"
+        11: "Chungnam"
+        12: "Jeonbuk"
+        13: "Jeonnam"
+        14: "Gyeongbuk"
+        15: "Gyeongnam"
+        16: "Jeju"
+        17: "Sejong"
+        18: "Foreign"
+        19: "North Korea"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 19]
+      skip_unmapped_check: true
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urbanicity of respondent's region (1=rural, 2=medium/small city, 3=metropolitan; reversed so higher = more urban)"
+    type: ordinal
+    note: "13 waves. Raw reg_size: 1=metropolitan, 2=medium/small city, 3=rural. Reversed in harmonization so higher = more urban (matches the project rule that higher = more intensity, here interpreted as 'more urbanicity')."
+    source:
+      w2014:  reg_size
+      w2015:  reg_size
+      w2016:  reg_size
+      w2017:  reg_size
+      w2018:  reg_size
+      w2019a: reg_size
+      w2019b: reg_size
+      w2020a: reg_size
+      w2020b: reg_size
+      w2021a: reg_size
+      w2021b: reg_size
+      w2022:  reg_size
+      w2023:  reg_size
+    scale: {min: 1, max: 3, labels: {1: "Rural area", 2: "Medium/small city", 3: "Metropolitan area"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+      skip_unmapped_check: true
+
+  - id: home_region
+    concept: demographics
+    description: "Respondent's region of origin / regionalism (same 19-code sido scheme as `region`)"
+    type: categorical
+    note: "13 waves. Raw home: same 19-code sido scheme as `region`. Distinct concept: 'home' captures regional identity / 고향, not current residence. Useful for analyses of regional cleavages (호남/영남) where origin matters more than current residence."
+    source:
+      w2014:  home
+      w2015:  home
+      w2016:  home
+      w2017:  home
+      w2018:  home
+      w2019a: home
+      w2019b: home
+      w2020a: home
+      w2020b: home
+      w2021a: home
+      w2021b: home
+      w2022:  home
+      w2023:  home
+    scale:
+      min: 1
+      max: 19
+      labels:
+        1:  "Seoul"
+        2:  "Busan"
+        3:  "Daegu"
+        4:  "Incheon"
+        5:  "Gwangju"
+        6:  "Daejeon"
+        7:  "Ulsan"
+        8:  "Gyeonggi"
+        9:  "Gangwon"
+        10: "Chungbuk"
+        11: "Chungnam"
+        12: "Jeonbuk"
+        13: "Jeonnam"
+        14: "Gyeongbuk"
+        15: "Gyeongnam"
+        16: "Jeju"
+        17: "North Korea"
+        18: "Foreign"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 19]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Socioeconomic
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: subjective_income_5pt
+    concept: demographics
+    description: "Subjective monthly income relative to South Korean average (1-5, higher=higher than average)"
+    type: ordinal
+    note: "13 waves. Raw class: 1=much lower than average → 5=much higher than average. Identity. Distinct from subjective_class_6pt (which asks about subjective social class). Better-suited for income-relative-to-population analyses."
+    source:
+      w2014:  class
+      w2015:  class
+      w2016:  class
+      w2017:  class
+      w2018:  class
+      w2019a: class
+      w2019b: class
+      w2020a: class
+      w2020b: class
+      w2021a: class
+      w2021b: class
+      w2022:  class
+      w2023:  class
+    scale: {min: 1, max: 5, labels: {1: "Much lower than average", 5: "Much higher than average"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: subjective_class_6pt
+    concept: demographics
+    description: "Subjective social class (1-6, higher=higher class)"
+    type: ordinal
+    note: "13 waves. Raw class_fam: 1=lowest class → 6=highest class. Identity. ⚠ Direction OPPOSITE of KGSS subjective_class_6pt (which is coded higher=lower class). When merging KGSS+KINU on subjective class, reverse one side first."
+    source:
+      w2014:  class_fam
+      w2015:  class_fam
+      w2016:  class_fam
+      w2017:  class_fam
+      w2018:  class_fam
+      w2019a: class_fam
+      w2019b: class_fam
+      w2020a: class_fam
+      w2020b: class_fam
+      w2021a: class_fam
+      w2021b: class_fam
+      w2022:  class_fam
+      w2023:  class_fam
+    scale: {min: 1, max: 6, labels: {1: "Lowest class", 6: "Highest class"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: income_manwon
+    concept: demographics
+    description: "Monthly household income in 만원 (Korean currency unit; continuous)"
+    type: continuous
+    note: "13 waves. Raw income: continuous integer in 만원 (≈ 10,000 KRW = USD 7-8). Range observed up to ~1500+ 만원 (high earners). Sentinel 9999 = n/a (treated as NA). Use logged income for regression; raw values may have right-skew. Wave-specific median should be reported in any cross-wave analysis since inflation matters."
+    source:
+      w2014:  income
+      w2015:  income
+      w2016:  income
+      w2017:  income
+      w2018:  income
+      w2019a: income
+      w2019b: income
+      w2020a: income
+      w2020b: income
+      w2021a: income
+      w2021b: income
+      w2022:  income
+      w2023:  income
+    scale: {min: 0, max: 9998, labels: {}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 9998]
+      skip_unmapped_check: true
+
+  - id: education
+    concept: demographics
+    description: "Educational attainment (1-8, higher=more education)"
+    type: ordinal
+    note: "11 waves (missing 2014 and 2015 — early waves used a different educational coding). Raw edu: 1=no education, 2=primary, 3=middle, 4=high school, 5=college (2-3yr), 6=university (4yr), 7=master's, 8=doctoral. Identity. KGSS-comparable in DIRECTION though KGSS uses a 1-3 harmonization; for fine-grained analyses use this 1-8 scale."
+    source:
+      w2016:  edu
+      w2017:  edu
+      w2018:  edu
+      w2019a: edu
+      w2019b: edu
+      w2020a: edu
+      w2020b: edu
+      w2021a: edu
+      w2021b: edu
+      w2022:  edu
+      w2023:  edu
+    scale: {min: 1, max: 8, labels: {1: "No education", 8: "Doctoral degree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 8]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Religion
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: religion
+    concept: demographics
+    description: "Religious affiliation (1=Protestant, 2=Buddhist, 3=Catholic, 4=none, 5=other; categorical)"
+    type: categorical
+    note: "13 waves. Raw religion: 1=Protestant, 2=Buddhist, 3=Roman Catholic, 4=do not belong to a denomination (i.e., none/atheist/agnostic), 5=other. Nominal. Note 4 is the largest category in modern KINU samples (Korean secularization)."
+    source:
+      w2014:  religion
+      w2015:  religion
+      w2016:  religion
+      w2017:  religion
+      w2018:  religion
+      w2019a: religion
+      w2019b: religion
+      w2020a: religion
+      w2020b: religion
+      w2021a: religion
+      w2021b: religion
+      w2022:  religion
+      w2023:  religion
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Protestant"
+        2: "Buddhist"
+        3: "Roman Catholic"
+        4: "No denomination"
+        5: "Other"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: religious_attendance
+    concept: demographics
+    description: "Frequency of religious attendance (1=never → 6=more than once a week, reversed so higher=more frequent)"
+    type: ordinal
+    note: "12 waves (missing 2014 — item not yet on questionnaire). Raw attend: 1=more than once a week, 2=once a week, 3=once or twice a month, 4=several times a year, 5=less than once a year, 6=never. Reversed in harmonization so higher = more frequent attendance (per project rule). Note 2015 has only 525 respondents — likely a partial sub-sample asked. KGSS-comparable in direction."
+    source:
+      w2015:  attend
+      w2016:  attend
+      w2017:  attend
+      w2018:  attend
+      w2019a: attend
+      w2019b: attend
+      w2020a: attend
+      w2020b: attend
+      w2021a: attend
+      w2021b: attend
+      w2022:  attend
+      w2023:  attend
+    scale: {min: 1, max: 6, labels: {1: "Never", 6: "More than once a week"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Marital status / employment
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: marital_status
+    concept: demographics
+    description: "Marital status (1=never married, 2=married, 3=cohabiting, 4=divorced/separated, 5=widowed; categorical)"
+    type: categorical
+    note: "12 waves (missing 2014 — used different coding 'old_mar' that wasn't fully harmonized). Raw marital: 1=never married, 2=married, 3=living together, 4=divorced/separated, 5=widowed. Nominal. KGSS-comparable in coding."
+    source:
+      w2015:  marital
+      w2016:  marital
+      w2017:  marital
+      w2018:  marital
+      w2019a: marital
+      w2019b: marital
+      w2020a: marital
+      w2020b: marital
+      w2021a: marital
+      w2021b: marital
+      w2022:  marital
+      w2023:  marital
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Never married"
+        2: "Married"
+        3: "Living together"
+        4: "Divorced/separated"
+        5: "Widowed"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: employment
+    concept: demographics
+    description: "Occupation / employment status (12 categories; categorical)"
+    type: categorical
+    note: "13 waves. Raw occupa: 1=agriculture/fishing, 2=self-employed, 3=sales, 4=skilled manual, 5=office (non-supervisory), 6=office (supervisory), 7=professional (lawyer/accountant/teacher etc.), 8=homemaker, 9=student, 10=armed forces/security, 11=unemployed/retired, 12=other. Nominal. Per-wave coverage 922-953; the missing ~50 cases per wave likely fell into 'no answer' rather than skip-pattern."
+    source:
+      w2014:  occupa
+      w2015:  occupa
+      w2016:  occupa
+      w2017:  occupa
+      w2018:  occupa
+      w2019a: occupa
+      w2019b: occupa
+      w2020a: occupa
+      w2020b: occupa
+      w2021a: occupa
+      w2021b: occupa
+      w2022:  occupa
+      w2023:  occupa
+    scale:
+      min: 1
+      max: 12
+      labels:
+        1:  "Agriculture/fishing"
+        2:  "Self-employed"
+        3:  "Sales"
+        4:  "Skilled manual"
+        5:  "Office (non-supervisory)"
+        6:  "Office (supervisory)"
+        7:  "Professional"
+        8:  "Homemaker"
+        9:  "Student"
+        10: "Armed forces/security"
+        11: "Unemployed/retired"
+        12: "Other"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]
+      skip_unmapped_check: true

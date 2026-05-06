@@ -1,0 +1,414 @@
+# KINU Security — threat perception, alliance, US-China posture, country warmth
+#
+# Sixteen variables across four sub-batteries. KINU's security group has 258
+# variables in the codebook but only ~22 with 5+ wave coverage (security items
+# rotate frequently). This spec captures the strongest cross-wave items.
+#
+# Sub-batteries:
+#
+#   (1) Threat perception                       — se0201, nk1804         (9 waves each)
+#   (2) US alliance / nuclear posture           — se0401, se0403, se0404,
+#                                                  nk1701, nk1702         (7-8 waves)
+#   (3) US-vs-China importance                  — se0501, se0502          (7 waves)
+#   (4) Country & leader warmth                 — nk21a-d, se0804/06/07   (5-8 waves)
+#
+# DIRECTIONALITY (higher = more intensity).
+# Most items are identity-recoded. Two notable cases:
+#   - nk21a-nk21d: bipolar -5 to +5 thermometers (-5=strongly dislike, +5=strongly like).
+#     Identity preserved; "higher = more positive" reads as country-warmth intensity.
+#   - se0501, se0502: bipolar 1-5 (1=US much more important, 5=China much more important).
+#     Identity preserved; "higher = more pro-China" reads as China-importance intensity.
+#
+# DROPPED FROM THIS SPEC (insufficient coverage / categorical):
+#   - All 1-2-wave security items (the bulk of the 258-var group)
+#   - se0509, se0509b, se0533, se0534 (5w but with mixed/irregular scales)
+#   - se0407 (5w, "other" scale type)
+#   - se0801, se0802 (Global Leadership US/China, 5w each — could add later)
+#   - se0616, se0620-se0624 (Korea-Japan items, 5w; defer to dedicated Japan-relations spec)
+#
+# KGSS PARALLELS:
+#   No direct KGSS analogues — KGSS does not field comparable security/alliance items.
+#   country_warmth_us/china/japan ~ KAMOS leader thermometer items (different scale)
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-X scales (per-variable for safety)
+#   99 = n/a in some 0-100 thermometers (some KINU items use 99 instead of 999)
+#   999 = n/a in 0-100 leader-warmth thermometers (se0804/06/07)
+
+missing_conventions:
+  treat_as_na:
+    codes: [99, 999]
+    description: "KINU security: 99/999=n/a in 0-100 thermometers; per-variable 9=n/a for 1-X scales"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Threat perception
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: war_possibility_5pt
+    concept: security
+    description: "Perceived possibility of war on the Korean peninsula (1-5, higher=higher perceived war risk)"
+    type: ordinal
+    note: "9 waves combining two raw variables. Raw se02 (2016 only) and se0201 (2019a onward); same construct ('war possibility'), same 1-5 scale (1=very low → 5=very high). Identity. Most-fielded security threat item across KINU."
+    source:
+      w2016:  se02
+      w2019a: se0201
+      w2019b: se0201
+      w2020a: se0201
+      w2020b: se0201
+      w2021a: se0201
+      w2021b: se0201
+      w2022:  se0201
+      w2023:  se0201
+    scale: {min: 1, max: 5, labels: {1: "Very low", 5: "Very high"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: nk_nukes_unstoppable
+    concept: security
+    description: "Agreement that it is impossible to stop NK's nuclear program (1-5, higher=more pessimistic about denuke)"
+    type: ordinal
+    note: "9 waves. Raw nk1804: 1=strongly disagree → 5=strongly agree. Identity. Pessimism about denuke; pairs with nk_denuke_possible (3-pt) in north_korea.yml."
+    source:
+      w2016:  nk1804
+      w2019a: nk1804
+      w2019b: nk1804
+      w2020a: nk1804
+      w2020b: nk1804
+      w2021a: nk1804
+      w2021b: nk1804
+      w2022:  nk1804
+      w2023:  nk1804
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) US alliance / nuclear posture
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: us_alliance_necessity
+    concept: security
+    description: "Perceived necessity of the US-ROK alliance (1-4, higher=more necessary)"
+    type: ordinal
+    note: "7 waves. Raw se0401: 1=not necessary at all → 4=absolutely necessary. Identity."
+    source:
+      w2019b: se0401
+      w2020a: se0401
+      w2020b: se0401
+      w2021a: se0401
+      w2021b: se0401
+      w2022:  se0401
+      w2023:  se0401
+    scale: {min: 1, max: 4, labels: {1: "Not necessary at all", 4: "Absolutely necessary"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: us_forces_needed_now
+    concept: security
+    description: "Perceived current need for US forces in Korea (1-4, higher=more needed)"
+    type: ordinal
+    note: "7 waves. Raw se0403: 1=not at all needed → 4=very needed. Identity."
+    source:
+      w2019b: se0403
+      w2020a: se0403
+      w2020b: se0403
+      w2021a: se0403
+      w2021b: se0403
+      w2022:  se0403
+      w2023:  se0403
+    scale: {min: 1, max: 4, labels: {1: "Not at all needed", 4: "Very needed"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: us_forces_post_unification
+    concept: security
+    description: "Perceived need for US forces after unification (1-4, higher=more needed)"
+    type: ordinal
+    note: "7 waves. Raw se0404: 1=not at all needed → 4=very needed. Identity. Distinct from us_forces_needed_now: asks about a counterfactual post-unification security architecture."
+    source:
+      w2019b: se0404
+      w2020a: se0404
+      w2020b: se0404
+      w2021a: se0404
+      w2021b: se0404
+      w2022:  se0404
+      w2023:  se0404
+    scale: {min: 1, max: 4, labels: {1: "Not at all needed", 4: "Very needed"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: sk_nuke_armament_support
+    concept: security
+    description: "Support for South Korea acquiring nuclear weapons (1-4, higher=stronger support)"
+    type: ordinal
+    note: "8 waves. Raw nk1701: 1=absolute no for SK nuclear armament, 4=absolute yes. Identity. Tracks domestic nuclear-acquisition sentiment — substantively important for security-policy debates."
+    source:
+      w2019a: nk1701
+      w2019b: nk1701
+      w2020a: nk1701
+      w2020b: nk1701
+      w2021a: nk1701
+      w2021b: nk1701
+      w2022:  nk1701
+      w2023:  nk1701
+    scale: {min: 1, max: 4, labels: {1: "Absolute no", 4: "Absolute yes"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: us_nuke_deployment_support
+    concept: security
+    description: "Support for US nuclear weapons being deployed in Korea (1-4, higher=stronger support)"
+    type: ordinal
+    note: "8 waves. Raw nk1702: 1=absolute no, 4=absolute yes. Identity."
+    source:
+      w2019a: nk1702
+      w2019b: nk1702
+      w2020a: nk1702
+      w2020b: nk1702
+      w2021a: nk1702
+      w2021b: nk1702
+      w2022:  nk1702
+      w2023:  nk1702
+    scale: {min: 1, max: 4, labels: {1: "Absolute no", 4: "Absolute yes"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) US-vs-China importance
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: us_vs_china_security
+    concept: security
+    description: "Relative importance of US vs China for SK security (1=US much more important, 5=China much more important)"
+    type: ordinal
+    note: "7 waves. Raw se0501: bipolar 5pt with 3=equally important. Identity. 'Higher = more pro-China leaning' on security dimension. Substantively useful for tracking Korean public attitudes toward great-power competition."
+    source:
+      w2019b: se0501
+      w2020a: se0501
+      w2020b: se0501
+      w2021a: se0501
+      w2021b: se0501
+      w2022:  se0501
+      w2023:  se0501
+    scale: {min: 1, max: 5, labels: {1: "US much more important", 3: "Equally important", 5: "China much more important"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: us_vs_china_economy
+    concept: security
+    description: "Relative importance of US vs China for SK economy (1=US much more important, 5=China much more important)"
+    type: ordinal
+    note: "7 waves. Raw se0502. Identity. Pairs with us_vs_china_security; together they capture domain-specific great-power preferences."
+    source:
+      w2019b: se0502
+      w2020a: se0502
+      w2020b: se0502
+      w2021a: se0502
+      w2021b: se0502
+      w2022:  se0502
+      w2023:  se0502
+    scale: {min: 1, max: 5, labels: {1: "US much more important", 3: "Equally important", 5: "China much more important"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) Country and leader warmth
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: country_warmth_us
+    concept: security
+    description: "Warmth toward the United States (-5 to +5, higher=more positive)"
+    type: ordinal
+    note: "8 waves. Raw nk21a: -5=strongly dislike, 0=neither like nor dislike, +5=strongly like. Identity. Note negative raw values are valid (not missing). Per-wave coverage 8w; 9=n/a as before."
+    source:
+      w2018:  nk21a
+      w2019a: nk21a
+      w2020a: nk21a
+      w2020b: nk21a
+      w2021a: nk21a
+      w2021b: nk21a
+      w2022:  nk21a
+      w2023:  nk21a
+    scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [-5, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: country_warmth_china
+    concept: security
+    description: "Warmth toward China (-5 to +5, higher=more positive)"
+    type: ordinal
+    note: "8 waves. Raw nk21b. Identity."
+    source:
+      w2018:  nk21b
+      w2019a: nk21b
+      w2020a: nk21b
+      w2020b: nk21b
+      w2021a: nk21b
+      w2021b: nk21b
+      w2022:  nk21b
+      w2023:  nk21b
+    scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [-5, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: country_warmth_japan
+    concept: security
+    description: "Warmth toward Japan (-5 to +5, higher=more positive)"
+    type: ordinal
+    note: "8 waves. Raw nk21c. Identity. Tracks the volatile Korean public sentiment toward Japan (esp. comfort women, Fukushima water)."
+    source:
+      w2018:  nk21c
+      w2019a: nk21c
+      w2020a: nk21c
+      w2020b: nk21c
+      w2021a: nk21c
+      w2021b: nk21c
+      w2022:  nk21c
+      w2023:  nk21c
+    scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [-5, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: country_warmth_russia
+    concept: security
+    description: "Warmth toward Russia (-5 to +5, higher=more positive)"
+    type: ordinal
+    note: "8 waves. Raw nk21d. Identity."
+    source:
+      w2018:  nk21d
+      w2019a: nk21d
+      w2020a: nk21d
+      w2020b: nk21d
+      w2021a: nk21d
+      w2021b: nk21d
+      w2022:  nk21d
+      w2023:  nk21d
+    scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [-5, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: leader_warmth_xi
+    concept: security
+    description: "Favorability toward Xi Jinping (0-100 thermometer, higher=more favorable)"
+    type: ordinal
+    note: "6 waves. Raw se0804: 0=extremely unfavorable, 50=indifferent, 100=extremely favorable (999=n/a). Identity."
+    source:
+      w2019b: se0804
+      w2020a: se0804
+      w2020b: se0804
+      w2021a: se0804
+      w2021b: se0804
+      w2023:  se0804
+    scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 100]
+      skip_unmapped_check: true
+
+  - id: leader_warmth_putin
+    concept: security
+    description: "Favorability toward Vladimir Putin (0-100, higher=more favorable)"
+    type: ordinal
+    note: "6 waves. Raw se0806. Identity. Period covers pre-2022 Russia invasion of Ukraine — important for tracking attitude shifts."
+    source:
+      w2019b: se0806
+      w2020a: se0806
+      w2020b: se0806
+      w2021a: se0806
+      w2021b: se0806
+      w2023:  se0806
+    scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 100]
+      skip_unmapped_check: true
+
+  - id: leader_warmth_kju
+    concept: security
+    description: "Favorability toward Kim Jong-Un (0-100 thermometer, higher=more favorable)"
+    type: ordinal
+    note: "5 waves. Raw se0807. Identity. Distinct from nk_trust_kju_regime (1-5 trust scale): this is a feeling-thermometer."
+    source:
+      w2020a: se0807
+      w2020b: se0807
+      w2021a: se0807
+      w2021b: se0807
+      w2023:  se0807
+    scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 100]
+      skip_unmapped_check: true

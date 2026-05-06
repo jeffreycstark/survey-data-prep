@@ -1,0 +1,607 @@
+# KINU North Korea — perception of and engagement with NK
+#
+# Twenty-two variables across five sub-batteries:
+#
+#   (1) Interest / engagement                  — nk01           (12 waves)
+#   (2) NK image / warmth (4-stance battery)   — nk0401-nk0404  (13 waves each, 0-10 thermometer)
+#   (3) Regime trust & dialogue                — nk05, nk06     (11 waves)
+#   (4) NK pursuit-of-unification frame        — nk0701, nk0702 (10-11 waves)
+#   (5) Nuke perception (denuclearization,
+#       war probability, salience)             — nk11, nk14,
+#                                                nk1201-nk1203  (10-11 waves)
+#   (6) NK refugee/defector perception         — nk0801-nk0807,
+#                                                nk20            (9 waves)
+#
+# DIRECTIONALITY (higher = more intensity).
+# All identity-recoded EXCEPT nk20 (defector contact frequency: raw 1=daily
+# → 5=never, reversed so higher = more contact).
+#
+# DROPPED FROM THIS SPEC:
+#   - nk02, nk0301, nk0302: nominal info-source / 1st-2nd-rank items (categorical handling)
+#   - nk0703-nk0705: insufficient coverage / item labels not verified in survey pass
+#   - nk21a-d: country-warmth thermometers (-5 to +5) — moved to security_threat.yml
+#   - nk1701, nk1702: SK/US nuclear-armament support (4pt) — moved to security_threat.yml
+#   - nk1804: NK-nukes-impossible-to-stop (5pt) — moved to security_threat.yml
+#
+# KGSS PARALLELS:
+#   nk_interest (nk01) ~ no direct KGSS analogue
+#   nk_warmth_aid/cooperate ~ contrasts with KGSS pol_northkorea_view (1-4 favorability — different scale, same construct family)
+#   defector-perception items ~ KGSS pol_nk_defectors (very limited; 5 waves 2011-2016)
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-5 / 1-4 / 1-3 scales
+#   99 = n/a in 0-10 / 0-100 thermometers
+
+missing_conventions:
+  treat_as_na:
+    codes: [9, 99]
+    description: "KINU NK: 9=n/a in 1-X scales; 99=n/a in 0-10 thermometers"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Interest / engagement
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nk_interest
+    concept: north_korea
+    description: "Interest in North Korea (1-4, higher=more interested)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw nk01: 1=not interested at all → 4=very interested. Identity. Tracks salience of NK as a public-attention object."
+    source:
+      w2015:  nk01
+      w2016:  nk01
+      w2017:  nk01
+      w2018:  nk01
+      w2019a: nk01
+      w2019b: nk01
+      w2020a: nk01
+      w2020b: nk01
+      w2021a: nk01
+      w2021b: nk01
+      w2022:  nk01
+      w2023:  nk01
+    scale: {min: 1, max: 4, labels: {1: "Not interested at all", 4: "Very interested"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) NK image / warmth — 4-stance battery, 0-10 agreement
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nk_warmth_aid
+    concept: north_korea
+    description: "Agreement that South Korea should give aid and support to NK (0-10, higher=stronger pro-aid)"
+    type: ordinal
+    note: "13 waves (all). Raw nk0401: 0=strongly disagree → 10=strongly agree. Identity. Pro-NK engagement stance."
+    source:
+      w2014:  nk0401
+      w2015:  nk0401
+      w2016:  nk0401
+      w2017:  nk0401
+      w2018:  nk0401
+      w2019a: nk0401
+      w2019b: nk0401
+      w2020a: nk0401
+      w2020b: nk0401
+      w2021a: nk0401
+      w2021b: nk0401
+      w2022:  nk0401
+      w2023:  nk0401
+    scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nk_warmth_cooperate
+    concept: north_korea
+    description: "Agreement that South Korea should cooperate with NK (0-10, higher=stronger pro-cooperation)"
+    type: ordinal
+    note: "13 waves (all). Raw nk0402: 0=strongly disagree → 10=strongly agree. Identity. Pro-NK engagement stance, distinct from material aid."
+    source:
+      w2014:  nk0402
+      w2015:  nk0402
+      w2016:  nk0402
+      w2017:  nk0402
+      w2018:  nk0402
+      w2019a: nk0402
+      w2019b: nk0402
+      w2020a: nk0402
+      w2020b: nk0402
+      w2021a: nk0402
+      w2021b: nk0402
+      w2022:  nk0402
+      w2023:  nk0402
+    scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nk_warmth_caution
+    concept: north_korea
+    description: "Agreement that South Korea should be cautious about NK (0-10, higher=stronger caution)"
+    type: ordinal
+    note: "13 waves (all). Raw nk0403: 0=strongly disagree → 10=strongly agree. Identity. Anti-NK guardedness; not as hot as hostility."
+    source:
+      w2014:  nk0403
+      w2015:  nk0403
+      w2016:  nk0403
+      w2017:  nk0403
+      w2018:  nk0403
+      w2019a: nk0403
+      w2019b: nk0403
+      w2020a: nk0403
+      w2020b: nk0403
+      w2021a: nk0403
+      w2021b: nk0403
+      w2022:  nk0403
+      w2023:  nk0403
+    scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nk_warmth_hostile
+    concept: north_korea
+    description: "Agreement that South Korea should be hostile to NK (0-10, higher=stronger hostility)"
+    type: ordinal
+    note: "13 waves (all). Raw nk0404: 0=strongly disagree → 10=strongly agree. Identity. Strongest anti-NK stance in the battery."
+    source:
+      w2014:  nk0404
+      w2015:  nk0404
+      w2016:  nk0404
+      w2017:  nk0404
+      w2018:  nk0404
+      w2019a: nk0404
+      w2019b: nk0404
+      w2020a: nk0404
+      w2020b: nk0404
+      w2021a: nk0404
+      w2021b: nk0404
+      w2022:  nk0404
+      w2023:  nk0404
+    scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Regime trust & dialogue
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nk_trust_kju_regime
+    concept: north_korea
+    description: "Trust in the Kim Jong-Un regime (1-5 agreement, higher=more trust)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw nk05: 1=strongly disagree → 5=strongly agree. Identity. Distinct from `nk_dialogue_kju` (which asks about willingness to engage rather than baseline trust)."
+    source:
+      w2016:  nk05
+      w2017:  nk05
+      w2018:  nk05
+      w2019a: nk05
+      w2019b: nk05
+      w2020a: nk05
+      w2020b: nk05
+      w2021a: nk05
+      w2021b: nk05
+      w2022:  nk05
+      w2023:  nk05
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_dialogue_kju
+    concept: north_korea
+    description: "Support for dialogue and compromise with the Kim Jong-Un regime (1-5 agreement, higher=more pro-dialogue)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw nk06: 1=strongly disagree → 5=strongly agree. Identity. Engagement-policy posture toward the current NK leadership."
+    source:
+      w2016:  nk06
+      w2017:  nk06
+      w2018:  nk06
+      w2019a: nk06
+      w2019b: nk06
+      w2020a: nk06
+      w2020b: nk06
+      w2021a: nk06
+      w2021b: nk06
+      w2022:  nk06
+      w2023:  nk06
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) NK pursuit-of-unification frame
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nk_pursues_unification
+    concept: north_korea
+    description: "Agreement that NK genuinely pursues unification (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "10 waves (missing 2014-2017, 2021b, 2023 — code coverage from prospector survey). Raw nk0701: 1=strongly disagree → 5=strongly agree. Identity. Reads as PRO-NK trust frame: high agreement = belief NK acts in good faith on unification."
+    source:
+      w2014:  nk0701
+      w2016:  nk0701
+      w2017:  nk0701
+      w2018:  nk0701
+      w2019a: nk0701
+      w2019b: nk0701
+      w2020a: nk0701
+      w2020b: nk0701
+      w2021a: nk0701
+      w2022:  nk0701
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_wants_communist_unif
+    concept: north_korea
+    description: "Agreement that NK seeks communist unification (1-5, higher=stronger agreement)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw nk0702: 1=strongly disagree → 5=strongly agree. Identity. ANTI-NK distrust frame: high agreement = belief NK pursues unification on its own ideological terms (i.e., not in good faith). Pairs with nk_pursues_unification — together they capture the 'NK has good intent vs NK has hostile intent' axis."
+    source:
+      w2014:  nk0702
+      w2016:  nk0702
+      w2017:  nk0702
+      w2018:  nk0702
+      w2019a: nk0702
+      w2019b: nk0702
+      w2020a: nk0702
+      w2020b: nk0702
+      w2021a: nk0702
+      w2022:  nk0702
+      w2023:  nk0702
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (5) Nuke perception
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nk_denuke_possible
+    concept: north_korea
+    description: "Belief about NK denuclearization (1=will give up nukes soon, 2=in long run, 3=will not give up; higher=more pessimistic)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw nk11: 1=NK will give up nuclear weapons soon, 2=in the long run, 3=will not give up. Identity — higher = more pessimistic about denuclearization. 3-category ordinal."
+    source:
+      w2016:  nk11
+      w2017:  nk11
+      w2018:  nk11
+      w2019a: nk11
+      w2019b: nk11
+      w2020a: nk11
+      w2020b: nk11
+      w2021a: nk11
+      w2021b: nk11
+      w2022:  nk11
+      w2023:  nk11
+    scale: {min: 1, max: 3, labels: {1: "Will give up nukes soon", 3: "Will not give up nukes"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      skip_unmapped_check: true
+
+  - id: nk_nuke_war_likely
+    concept: north_korea
+    description: "Perceived likelihood of nuclear war involving NK (0-10, higher=more likely)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw nk14: 0=not likely at all → 10=very much likely (5=neutral, 99=n/a). Identity."
+    source:
+      w2016:  nk14
+      w2017:  nk14
+      w2018:  nk14
+      w2019a: nk14
+      w2019b: nk14
+      w2020a: nk14
+      w2020b: nk14
+      w2021a: nk14
+      w2021b: nk14
+      w2022:  nk14
+      w2023:  nk14
+    scale: {min: 0, max: 10, labels: {0: "Not likely at all", 10: "Very much likely"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nk_nukes_concern
+    concept: north_korea
+    description: "Personal concern about NK nukes (1-5, higher=more concerned)"
+    type: ordinal
+    note: "10 waves (per prospector survey). Raw nk1201: 1=not concerned at all → 5=very concerned. Identity."
+    source:
+      w2016:  nk1201
+      w2017:  nk1201
+      w2018:  nk1201
+      w2019a: nk1201
+      w2019b: nk1201
+      w2020a: nk1201
+      w2020b: nk1201
+      w2021a: nk1201
+      w2022:  nk1201
+      w2023:  nk1201
+    scale: {min: 1, max: 5, labels: {1: "Not concerned at all", 5: "Very concerned"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_nukes_interest
+    concept: north_korea
+    description: "Personal interest in NK nukes as a topic (1-5, higher=more interested)"
+    type: ordinal
+    note: "10 waves. Raw nk1202: 1=not interested at all → 5=very interested. Identity. Distinct from nk_interest (general NK interest); this asks about nukes specifically."
+    source:
+      w2016:  nk1202
+      w2017:  nk1202
+      w2018:  nk1202
+      w2019a: nk1202
+      w2019b: nk1202
+      w2020a: nk1202
+      w2020b: nk1202
+      w2021a: nk1202
+      w2022:  nk1202
+      w2023:  nk1202
+    scale: {min: 1, max: 5, labels: {1: "Not interested at all", 5: "Very interested"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_nukes_impact
+    concept: north_korea
+    description: "Perceived impact of NK nukes on respondent's life (1-5, higher=stronger perceived impact)"
+    type: ordinal
+    note: "10 waves. Raw nk1203: 1=no impact at all → 5=strong impact. Identity."
+    source:
+      w2016:  nk1203
+      w2017:  nk1203
+      w2018:  nk1203
+      w2019a: nk1203
+      w2019b: nk1203
+      w2020a: nk1203
+      w2020b: nk1203
+      w2021a: nk1203
+      w2022:  nk1203
+      w2023:  nk1203
+    scale: {min: 1, max: 5, labels: {1: "No impact at all", 5: "Strong impact"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (6) NK refugee / defector perception (1-5 agreement)
+  # ─────────────────────────────────────────────────────────────────────────
+  # Battery introduced 2016, retained through 2022 (9 waves).
+  # Items have mixed substantive direction — some pro-defector, most anti-defector framing.
+  # Higher = stronger agreement with the proposition as stated.
+
+  - id: nk_def_introduce
+    concept: north_korea
+    description: "Agreement with introduction/welcoming of NK defectors (1-5, higher=more pro-defector)"
+    type: ordinal
+    note: "9 waves. Raw nk0801: 'NK refugees perception 1) introduction.' 1=strongly disagree → 5=strongly agree. Identity. Pro-defector framing."
+    source:
+      w2016:  nk0801
+      w2017:  nk0801
+      w2018:  nk0801
+      w2019a: nk0801
+      w2019b: nk0801
+      w2020a: nk0801
+      w2020b: nk0801
+      w2021a: nk0801
+      w2022:  nk0801
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_next_door
+    concept: north_korea
+    description: "Agreement with defector moving to one's neighborhood (1-5, higher=more pro-defector / NIMBY-rejecting)"
+    type: ordinal
+    note: "9 waves. Raw nk0802: 'NK refugees perception 2) moving to next door.' 1=strongly disagree → 5=strongly agree. Identity. Reverse-NIMBY measure: high agreement = welcoming defector neighbors."
+    source:
+      w2016:  nk0802
+      w2017:  nk0802
+      w2018:  nk0802
+      w2019a: nk0802
+      w2019b: nk0802
+      w2020a: nk0802
+      w2020b: nk0802
+      w2021a: nk0802
+      w2022:  nk0802
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_prejudice
+    concept: north_korea
+    description: "Acknowledgement of prejudice against NK defectors (1-5, higher=stronger acknowledgement)"
+    type: ordinal
+    note: "9 waves. Raw nk0803: 'NK refugees perception 3) prejudice against defectors.' Item likely worded as 'There is prejudice against NK defectors.' 1=strongly disagree → 5=strongly agree. Identity. High agreement = recognizes societal prejudice (could be self-distancing or sympathetic acknowledgement, depending on respondent stance — interpret in tandem with the warmth items)."
+    source:
+      w2016:  nk0803
+      w2017:  nk0803
+      w2018:  nk0803
+      w2019a: nk0803
+      w2019b: nk0803
+      w2020a: nk0803
+      w2020b: nk0803
+      w2021a: nk0803
+      w2022:  nk0803
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_violent_inc
+    concept: north_korea
+    description: "Agreement that defectors are involved in violent incidents (1-5, higher=stronger anti-defector frame)"
+    type: ordinal
+    note: "9 waves. Raw nk0804: 'NK refugees perception 4) violent incidents.' 1=strongly disagree → 5=strongly agree. Identity. ANTI-defector framing — implicates defectors in crime/violence."
+    source:
+      w2016:  nk0804
+      w2017:  nk0804
+      w2018:  nk0804
+      w2019a: nk0804
+      w2019b: nk0804
+      w2020a: nk0804
+      w2020b: nk0804
+      w2021a: nk0804
+      w2022:  nk0804
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_too_many_demands
+    concept: north_korea
+    description: "Agreement that defectors make too many demands on SK society (1-5, higher=stronger anti-defector frame)"
+    type: ordinal
+    note: "9 waves. Raw nk0805: 'NK refugees perception 5) too many demands.' 1=strongly disagree → 5=strongly agree. Identity. ANTI-defector framing."
+    source:
+      w2016:  nk0805
+      w2017:  nk0805
+      w2018:  nk0805
+      w2019a: nk0805
+      w2019b: nk0805
+      w2020a: nk0805
+      w2020b: nk0805
+      w2021a: nk0805
+      w2022:  nk0805
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_mutual_benefits
+    concept: north_korea
+    description: "Agreement that hosting defectors brings mutual benefits to SK society (1-5, higher=stronger pro-defector frame)"
+    type: ordinal
+    note: "9 waves. Raw nk0806: 'NK refugees perception 6) mutual benefits.' 1=strongly disagree → 5=strongly agree. Identity. PRO-defector framing."
+    source:
+      w2016:  nk0806
+      w2017:  nk0806
+      w2018:  nk0806
+      w2019a: nk0806
+      w2019b: nk0806
+      w2020a: nk0806
+      w2020b: nk0806
+      w2021a: nk0806
+      w2022:  nk0806
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_jobs
+    concept: north_korea
+    description: "Agreement related to defector job-market impact (1-5, higher=stronger anti-defector frame)"
+    type: ordinal
+    note: "9 waves. Raw nk0807: 'NK refugees perception 7) job.' Item likely worded as 'Defectors take SK jobs' or similar. 1=strongly disagree → 5=strongly agree. Identity. ANTI-defector framing (job-displacement frame)."
+    source:
+      w2016:  nk0807
+      w2017:  nk0807
+      w2018:  nk0807
+      w2019a: nk0807
+      w2019b: nk0807
+      w2020a: nk0807
+      w2020b: nk0807
+      w2021a: nk0807
+      w2022:  nk0807
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: nk_def_contact_freq
+    concept: north_korea
+    description: "Frequency of personal contact with NK defectors (1-5, reversed so higher=more contact)"
+    type: ordinal
+    note: "9 waves. Raw nk20: 1=meeting them every day, 2=every week, 3=every month, 4=have met them once, 5=never have met. REVERSED so higher = more contact (per project rule). Note: '5=never' is the dominant category in the SK general population, so the variable is heavily skewed toward 1 (post-reversal); useful as a rare-contact dichotomy more than a continuous scale."
+    source:
+      w2016:  nk20
+      w2017:  nk20
+      w2018:  nk20
+      w2019a: nk20
+      w2019b: nk20
+      w2020a: nk20
+      w2020b: nk20
+      w2021a: nk20
+      w2022:  nk20
+    scale: {min: 1, max: 5, labels: {1: "Never met defectors", 5: "Meet defectors every day"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

@@ -1,0 +1,460 @@
+# KINU Politics — political evaluations, ideology, RWA, party warmth
+#
+# Fifteen variables across four sub-batteries:
+#
+#   (1) Right-Wing Authoritarianism (RWA) battery   — pt2001-pt2007 (13 waves)
+#   (2) Democracy / administration evaluation       — pt05, pt07, pt08, pt04 (9-12 waves)
+#   (3) Economic evaluation (year-on-year change)   — pt1901, pt1902 (10 waves)
+#   (4) Ideology + party warmth                     — pt1801, pt1303 (9-12 waves)
+#
+# DIRECTIONALITY: all identity-recoded.
+#   - RWA items: 1=strongly disagree → 5=strongly agree on pro-authoritarian
+#     statements (each item is worded so high agreement = more authoritarian).
+#     The full battery sums to a pro-authoritarianism index.
+#   - eval_democracy: 0=not democratic at all → 10=very democratic.
+#   - eval_admin / eval_admin_unif_nk: 1=very badly → 4=very well.
+#   - eval_econ_satisfaction: 1=very dissatisfied → 4=very satisfied.
+#   - econ_*_year_change: 1=much worse than a year ago → 5=much better.
+#   - ideology_lc_self: 0=very liberal → 10=very conservative.
+#   - party_warmth_justice: 0=very negative → 100=very positive (999=n/a).
+#
+# DROPPED FROM THIS SPEC:
+#   - pt1301, pt1302 (PPP/Dem Party warmth thermometers): 6 waves — sparse.
+#   - pt02 (SK direction): 8 waves but 2016-2017 only; not analytically rich.
+#   - pt1802, pt1803, pt1806 (party-perceived ideology): 8 waves, useful but
+#     defer; correlated heavily with self-ID.
+#   - pt1205, pt1206 (recent party-support items): 5 waves only.
+#   - pt1601 (2017 vote intention): 7 waves but candidate-specific; nominal.
+#   - pt21a-i20 (issue-ownership battery): 5 waves only.
+#   - pt1809 (the lone "정치"-typo item): excluded — only 1 wave coverage.
+#
+# KGSS PARALLELS:
+#   ideology_lc_self ~ KGSS pol_ideology (1-5 vs KINU 0-10; same direction)
+#   eval_admin ~ KGSS pol_govt_eval (KGSS pre-2025 only)
+#   eval_econ_satisfaction ~ KGSS pol_econ_sat (1-5 reversed; KINU 1-4 identity — direction matches)
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-X scales (treated as NA per-variable)
+#   99 = n/a in 0-10 scales (global)
+#   999 = n/a in 0-100 thermometer (global; KINU-specific code for thermometers)
+
+missing_conventions:
+  treat_as_na:
+    codes: [99, 999]
+    description: "KINU politics: 99=n/a in 0-10/1-9; 999=n/a in 0-100 thermometers; per-variable 9=n/a for 1-X scales"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Right-Wing Authoritarianism (1-5, all pro-authoritarian framings)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: rwa_mighty_leader
+    concept: politics
+    description: "Right-Wing Authoritarianism: agreement that Korea needs a mighty leader (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves (all). Raw pt2001: 'Our country desperately needs a mighty leader who will do what has to be done to destroy the radical new ways and sinfulness that are ruining us.' 1=strongly disagree → 5=strongly agree. Identity. Standard Altemeyer RWA Submission item."
+    source:
+      w2014:  pt2001
+      w2015:  pt2001
+      w2016:  pt2001
+      w2017:  pt2001
+      w2018:  pt2001
+      w2019a: pt2001
+      w2019b: pt2001
+      w2020a: pt2001
+      w2020b: pt2001
+      w2021a: pt2001
+      w2021b: pt2001
+      w2022:  pt2001
+      w2023:  pt2001
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_criticize_authorities
+    concept: politics
+    description: "RWA: agreement that critics of authority create useless doubts (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2002: 'The majority of those who criticize proper authorities in government and religion only create useless doubts in peoples' minds.' Identity."
+    source:
+      w2014:  pt2002
+      w2015:  pt2002
+      w2016:  pt2002
+      w2017:  pt2002
+      w2018:  pt2002
+      w2019a: pt2002
+      w2019b: pt2002
+      w2020a: pt2002
+      w2020b: pt2002
+      w2021a: pt2002
+      w2021b: pt2002
+      w2022:  pt2002
+      w2023:  pt2002
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_strongest_method
+    concept: politics
+    description: "RWA: agreement that strongest method to eliminate troublemakers is justified (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2003. Identity. Pro-coercive-state framing."
+    source:
+      w2014:  pt2003
+      w2015:  pt2003
+      w2016:  pt2003
+      w2017:  pt2003
+      w2018:  pt2003
+      w2019a: pt2003
+      w2019b: pt2003
+      w2020a: pt2003
+      w2020b: pt2003
+      w2021a: pt2003
+      w2021b: pt2003
+      w2022:  pt2003
+      w2023:  pt2003
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_law_and_order
+    concept: politics
+    description: "RWA: agreement that Korea needs more law and order vs civil rights (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2004. Identity. Classic RWA conventionalism item."
+    source:
+      w2014:  pt2004
+      w2015:  pt2004
+      w2016:  pt2004
+      w2017:  pt2004
+      w2018:  pt2004
+      w2019a: pt2004
+      w2019b: pt2004
+      w2020a: pt2004
+      w2020b: pt2004
+      w2021a: pt2004
+      w2021b: pt2004
+      w2022:  pt2004
+      w2023:  pt2004
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_obedience
+    concept: politics
+    description: "RWA: agreement that obedience and respect for authority are top child-rearing values (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2005. Identity."
+    source:
+      w2014:  pt2005
+      w2015:  pt2005
+      w2016:  pt2005
+      w2017:  pt2005
+      w2018:  pt2005
+      w2019a: pt2005
+      w2019b: pt2005
+      w2020a: pt2005
+      w2020b: pt2005
+      w2021a: pt2005
+      w2021b: pt2005
+      w2022:  pt2005
+      w2023:  pt2005
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_deviant_groups
+    concept: politics
+    description: "RWA: agreement on cracking down on deviant groups (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2006. Identity. Pro-aggression-against-out-group framing."
+    source:
+      w2014:  pt2006
+      w2015:  pt2006
+      w2016:  pt2006
+      w2017:  pt2006
+      w2018:  pt2006
+      w2019a: pt2006
+      w2019b: pt2006
+      w2020a: pt2006
+      w2020b: pt2006
+      w2021a: pt2006
+      w2021b: pt2006
+      w2022:  pt2006
+      w2023:  pt2006
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: rwa_disciplined_citizens
+    concept: politics
+    description: "RWA: agreement that Korea needs disciplined citizens following national leaders in unity (1-5, higher=more authoritarian)"
+    type: ordinal
+    note: "13 waves. Raw pt2007. Identity. Conventionalism + submission item."
+    source:
+      w2014:  pt2007
+      w2015:  pt2007
+      w2016:  pt2007
+      w2017:  pt2007
+      w2018:  pt2007
+      w2019a: pt2007
+      w2019b: pt2007
+      w2020a: pt2007
+      w2020b: pt2007
+      w2021a: pt2007
+      w2021b: pt2007
+      w2022:  pt2007
+      w2023:  pt2007
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) Democracy / administration evaluation
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: eval_democracy
+    concept: politics
+    description: "Evaluation of Korean democracy (0-10, higher=more democratic)"
+    type: ordinal
+    note: "12 waves. Raw pt05: 0=not democratic at all → 10=very democratic. Identity. Direct analogue to ABS dem_country_present_govt and KGSS dem_now."
+    source:
+      w2014:  pt05
+      w2015:  pt05
+      w2016:  pt05
+      w2017:  pt05
+      w2018:  pt05
+      w2019a: pt05
+      w2019b: pt05
+      w2020a: pt05
+      w2020b: pt05
+      w2021a: pt05
+      w2022:  pt05
+      w2023:  pt05
+    scale: {min: 0, max: 10, labels: {0: "Not democratic at all", 10: "Very democratic"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: eval_admin
+    concept: politics
+    description: "Evaluation of the current administration's overall performance (1-4, higher=better)"
+    type: ordinal
+    note: "12 waves. Raw pt07: 1=very badly → 4=very well. Identity. Strongly correlated with administration cycles (Park → Moon → Yoon)."
+    source:
+      w2014:  pt07
+      w2015:  pt07
+      w2016:  pt07
+      w2017:  pt07
+      w2018:  pt07
+      w2019a: pt07
+      w2019b: pt07
+      w2020a: pt07
+      w2020b: pt07
+      w2021a: pt07
+      w2022:  pt07
+      w2023:  pt07
+    scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: eval_admin_unif_nk
+    concept: politics
+    description: "Evaluation of the current administration's unification / NK policy performance (1-4, higher=better)"
+    type: ordinal
+    note: "9 waves. Raw pt08. Identity. Distinct from eval_admin — issue-specific evaluation focused on NK/unification policy. Pairs naturally with the unification.yml battery."
+    source:
+      w2014:  pt08
+      w2015:  pt08
+      w2016:  pt08
+      w2017:  pt08
+      w2018:  pt08
+      w2019a: pt08
+      w2019b: pt08
+      w2020a: pt08
+      w2022:  pt08
+    scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: eval_econ_satisfaction
+    concept: politics
+    description: "Satisfaction with economic conditions (1-4, higher=more satisfied)"
+    type: ordinal
+    note: "11 waves. Raw pt04: 1=very dissatisfied → 4=very satisfied. Identity. KGSS pol_econ_sat is reversed (1-5 with high=worse); KINU is identity (high=better) — opposite direction from KGSS."
+    source:
+      w2014:  pt04
+      w2015:  pt04
+      w2016:  pt04
+      w2017:  pt04
+      w2018:  pt04
+      w2019a: pt04
+      w2019b: pt04
+      w2020a: pt04
+      w2020b: pt04
+      w2021a: pt04
+      w2022:  pt04
+    scale: {min: 1, max: 4, labels: {1: "Very dissatisfied", 4: "Very satisfied"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Economic evaluation (year-on-year change)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: econ_personal_year_change
+    concept: politics
+    description: "Personal economic situation vs. a year ago (1-5, higher=better)"
+    type: ordinal
+    note: "10 waves. Raw pt1901: 1=much worse than a year ago → 5=much better than a year ago. Identity."
+    source:
+      w2014:  pt1901
+      w2015:  pt1901
+      w2016:  pt1901
+      w2017:  pt1901
+      w2018:  pt1901
+      w2019a: pt1901
+      w2019b: pt1901
+      w2020a: pt1901
+      w2020b: pt1901
+      w2021a: pt1901
+    scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: econ_national_year_change
+    concept: politics
+    description: "National economic situation vs. a year ago (1-5, higher=better)"
+    type: ordinal
+    note: "10 waves. Raw pt1902. Identity. Pairs with econ_personal_year_change for sociotropic-vs-pocketbook analysis."
+    source:
+      w2014:  pt1902
+      w2015:  pt1902
+      w2016:  pt1902
+      w2017:  pt1902
+      w2018:  pt1902
+      w2019a: pt1902
+      w2019b: pt1902
+      w2020a: pt1902
+      w2020b: pt1902
+      w2021a: pt1902
+    scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) Ideology + party warmth
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: ideology_lc_self
+    concept: politics
+    description: "Liberal-conservative ideological self-identification (0-10, higher=more conservative)"
+    type: ordinal
+    note: "9 waves. Raw pt1801: 0=very liberal, 5=moderate, 10=very conservative. Identity. KGSS pol_ideology runs 1-5 with same direction (higher=conservative); KINU offers finer-grained 0-10 resolution."
+    source:
+      w2015:  pt1801
+      w2016:  pt1801
+      w2017:  pt1801
+      w2018:  pt1801
+      w2019a: pt1801
+      w2019b: pt1801
+      w2020a: pt1801
+      w2020b: pt1801
+      w2021a: pt1801
+    scale: {min: 0, max: 10, labels: {0: "Very liberal", 5: "Moderate", 10: "Very conservative"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: party_warmth_justice
+    concept: politics
+    description: "Warmth toward Justice Party (정의당) (0-100 thermometer, higher=more positive)"
+    type: ordinal
+    note: "12 waves. Raw pt1303: 0=very negative, 50=neutral, 100=very positive (999=n/a). Identity. Justice Party is a small left-progressive party — warmth toward it tracks the progressive wing of the SK electorate. Other party-warmth items (Democratic Party pt1302, People Power Party pt1301) have only 6 waves and are deferred."
+    source:
+      w2015:  pt1303
+      w2016:  pt1303
+      w2017:  pt1303
+      w2018:  pt1303
+      w2019a: pt1303
+      w2019b: pt1303
+      w2020a: pt1303
+      w2020b: pt1303
+      w2021a: pt1303
+      w2021b: pt1303
+      w2022:  pt1303
+      w2023:  pt1303
+    scale: {min: 0, max: 100, labels: {0: "Very negative", 50: "Neutral", 100: "Very positive"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 100]
+      skip_unmapped_check: true

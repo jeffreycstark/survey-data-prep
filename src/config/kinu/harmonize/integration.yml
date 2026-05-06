@@ -1,0 +1,189 @@
+# KINU Integration — perception of social conflict in Korean society
+#
+# Six variables across two layers:
+#
+#   (1) Overall social-conflict severity        — int04                 (8 waves)
+#   (2) Domain-specific conflict severity (5)   — int0501-int0505       (10 waves each)
+#
+# DIRECTIONALITY (higher = more intensity).
+# All identity-recoded (1=not serious at all → 4=very serious).
+#
+# DOMAIN CONFLICTS COVERED:
+#   - regions (int0501)               — Yeongnam/Honam etc. / 호남영남
+#   - classes (int0502)               — economic class
+#   - political ideologies (int0503)  — liberal/conservative ideological
+#   - generations (int0504)           — generational gap
+#   - North Korea / unification (int0505) — directly relevant to unification.yml
+#
+# KGSS PARALLELS:
+#   These 4-pt severity items are CLOSE PARALLELS to the KGSS social_conflict.yml
+#   battery (CONWLTH/CONCLASS/CONUNION/CONSOC) — though KGSS uses 1-4 (1=very
+#   serious → 4=no conflict, REVERSED) while KINU uses 1-4 identity. After
+#   reversal of KGSS, both surveys provide compatible cross-Korea conflict-
+#   perception trajectories. Coverage:
+#     KGSS social_conflict: 3 waves (2003, 2009, 2014)
+#     KINU integration: 10 waves (2014-2022)
+#   Together they span 2003-2022.
+#
+# DROPPED FROM THIS SPEC:
+#   - int01 (2014-only legacy item; superseded by int0501-int0505)
+#   - int0201-int0204 (post-unification integration hindrances; insufficient
+#     wave coverage and substantively distinct from current-conflict items)
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-4 severity scales (per-variable)
+
+missing_conventions:
+  treat_as_na:
+    codes: []
+    description: "KINU integration: per-variable 9=n/a"
+
+variables:
+
+  - id: conflict_overall_severity
+    concept: integration
+    description: "Perceived overall severity of social conflict in Korea (1-4, higher=more serious)"
+    type: ordinal
+    note: "8 waves (2016-2022, with gaps at 2020b, 2021b, 2023). Raw int04: 1=not serious at all → 4=very serious. Identity. Pairs analytically with the 5-domain battery: int04 captures gestalt, int0501-int0505 disaggregate by domain."
+    source:
+      w2016:  int04
+      w2017:  int04
+      w2018:  int04
+      w2019a: int04
+      w2019b: int04
+      w2020a: int04
+      w2021a: int04
+      w2022:  int04
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: conflict_regional
+    concept: integration
+    description: "Perceived severity of regional conflict in Korea (1-4, higher=more serious)"
+    type: ordinal
+    note: "10 waves (2014-2022, with gaps at 2020b, 2021b, 2023). Raw int0501: 'conflicts among regions.' Likely covers Yeongnam-Honam regional cleavage. Identity."
+    source:
+      w2014:  int0501
+      w2015:  int0501
+      w2016:  int0501
+      w2017:  int0501
+      w2018:  int0501
+      w2019a: int0501
+      w2019b: int0501
+      w2020a: int0501
+      w2021a: int0501
+      w2022:  int0501
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: conflict_class
+    concept: integration
+    description: "Perceived severity of class conflict in Korea (1-4, higher=more serious)"
+    type: ordinal
+    note: "10 waves. Raw int0502: 'conflict among classes.' Identity. Direct comparison with KGSS conflict_richpoor / conflict_workingclass_middleclass (KGSS reverses scale)."
+    source:
+      w2014:  int0502
+      w2015:  int0502
+      w2016:  int0502
+      w2017:  int0502
+      w2018:  int0502
+      w2019a: int0502
+      w2019b: int0502
+      w2020a: int0502
+      w2021a: int0502
+      w2022:  int0502
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: conflict_ideological
+    concept: integration
+    description: "Perceived severity of conflict over political ideologies (1-4, higher=more serious)"
+    type: ordinal
+    note: "10 waves. Raw int0503: 'conflict over political ideologies.' Identity. Captures liberal-conservative polarization perception. The most likely conflict to track political-cycle dynamics (impeachment, NK summit, Yoon election)."
+    source:
+      w2014:  int0503
+      w2015:  int0503
+      w2016:  int0503
+      w2017:  int0503
+      w2018:  int0503
+      w2019a: int0503
+      w2019b: int0503
+      w2020a: int0503
+      w2021a: int0503
+      w2022:  int0503
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: conflict_generational
+    concept: integration
+    description: "Perceived severity of intergenerational conflict in Korea (1-4, higher=more serious)"
+    type: ordinal
+    note: "10 waves. Raw int0504: 'intergenerational conflict.' Identity."
+    source:
+      w2014:  int0504
+      w2015:  int0504
+      w2016:  int0504
+      w2017:  int0504
+      w2018:  int0504
+      w2019a: int0504
+      w2019b: int0504
+      w2020a: int0504
+      w2021a: int0504
+      w2022:  int0504
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: conflict_nk_unification
+    concept: integration
+    description: "Perceived severity of conflict over North Korea / unification views (1-4, higher=more serious)"
+    type: ordinal
+    note: "10 waves. Raw int0505: 'conflict over different views on North Korea and unification.' Identity. Directly relevant to the unification-disillusionment story — when the public most perceives unification-related conflict tracks elite-level political conflict over NK policy."
+    source:
+      w2014:  int0505
+      w2015:  int0505
+      w2016:  int0505
+      w2017:  int0505
+      w2018:  int0505
+      w2019a: int0505
+      w2019b: int0505
+      w2020a: int0505
+      w2021a: int0505
+      w2022:  int0505
+    scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true

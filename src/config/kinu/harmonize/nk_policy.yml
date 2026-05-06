@@ -1,0 +1,299 @@
+# KINU NK Policy — preferences for South Korean policy toward North Korea
+#
+# Ten variables across three sub-batteries:
+#
+#   (1) Engagement-policy support (0-10 oppose-support) — pc0101, pc0102,
+#       pc0104, pc0107, pc0111, pc0112, pc0117                  (8-12 waves)
+#   (2) Containment / sanctions support (0-10)                  — pc0103 (11 waves)
+#   (3) Diplomatic posture & policy process                     — pc05, pc06 (9 waves)
+#
+# DIRECTIONALITY (higher = more intensity).
+# All 0-10 items: identity (0=oppose very strongly → 10=support very strongly).
+# pc05: nominal categorical (US-only / balanced / China-only / independent).
+# pc06: REVERSED 1-4 scale (raw 1=reflected very much → 4=not at all; reversed
+# so higher = stronger sense that public opinion is reflected in unification
+# policy).
+#
+# DROPPED FROM THIS SPEC:
+#   - pc0105 (propaganda): 7-wave coverage; included only because of substantive
+#     interest in hawk-policy items but coverage is borderline. Add later.
+#   - pc0106 (security ensure): 4 waves only.
+#   - pc0108 (stop humanitarian aid): 3 waves only — overlap with pc0107 inverse.
+#   - pc0109 (Kaesong closure was right): 3 waves only.
+#   - pc0110 (THAAD): 3 waves only.
+#   - pc0125-pc0131 (various recent items): 5-7 waves; defer.
+#   - pc0118-pc0121, pc0134: 4 waves only with 1-4 scale (Likert format change).
+#
+# KGSS COMPARISON:
+#   No direct KGSS analogue — KINU is the better source for NK-policy
+#   preference series.
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-4 / 1-7 scales
+#   99 = n/a in 0-10 oppose-support scales
+
+missing_conventions:
+  treat_as_na:
+    codes: [9, 99]
+    description: "KINU NK policy: 9=n/a in 1-X scales; 99=n/a in 0-10 oppose-support"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Engagement-policy support
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nkpol_econ_exchange
+    concept: nk_policy
+    description: "Support for continuing inter-Korean economic exchange and cooperation (0-10, higher=stronger support)"
+    type: ordinal
+    note: "11 waves (missing 2014 and 2021b). Raw pc0101: 'Two Koreas should continue economic exchanges and cooperation even in a state of political and military confrontation.' 0=oppose very strongly → 10=support very strongly. Identity. Pro-engagement stance even under tension — measures unconditional engagement preference."
+    source:
+      w2015:  pc0101
+      w2016:  pc0101
+      w2017:  pc0101
+      w2018:  pc0101
+      w2019a: pc0101
+      w2019b: pc0101
+      w2020a: pc0101
+      w2020b: pc0101
+      w2021a: pc0101
+      w2022:  pc0101
+      w2023:  pc0101
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_use_nk_resources
+    concept: nk_policy
+    description: "Support for using NK labor and natural resources to grow the SK economy (0-10, higher=stronger support)"
+    type: ordinal
+    note: "8 waves (missing 2014, 2016, 2017, 2021b, 2022). Raw pc0102: 'Using North Korea's labor force and natural resources will greatly help South Korea's economic growth.' Identity. Frames NK as economic complement; high support indicates utilitarian-engagement view."
+    source:
+      w2015:  pc0102
+      w2018:  pc0102
+      w2019a: pc0102
+      w2019b: pc0102
+      w2020a: pc0102
+      w2020b: pc0102
+      w2021a: pc0102
+      w2023:  pc0102
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_sports_culture
+    concept: nk_policy
+    description: "Support for expanding sports/cultural/human exchanges with NK (0-10, higher=stronger support)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw pc0104: 'We need to expand sports, culture and human exchanges with North Korea.' Identity. Lowest-cost engagement form — typically the most-supported item in the engagement battery."
+    source:
+      w2015:  pc0104
+      w2016:  pc0104
+      w2017:  pc0104
+      w2018:  pc0104
+      w2019a: pc0104
+      w2019b: pc0104
+      w2020a: pc0104
+      w2020b: pc0104
+      w2021a: pc0104
+      w2021b: pc0104
+      w2022:  pc0104
+      w2023:  pc0104
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_humanitarian_aid
+    concept: nk_policy
+    description: "Support for continuing humanitarian aid to NK (0-10, higher=stronger support)"
+    type: ordinal
+    note: "11 waves (missing 2014, 2015). Raw pc0107: 'We must continue the humanitarian aid to North Korea.' Identity. Distinct from nkpol_econ_exchange — humanitarian frame; pairs analytically with the (deferred) pc0108 'unless NK gives up nukes, stop aid' item."
+    source:
+      w2016:  pc0107
+      w2017:  pc0107
+      w2018:  pc0107
+      w2019a: pc0107
+      w2019b: pc0107
+      w2020a: pc0107
+      w2020b: pc0107
+      w2021a: pc0107
+      w2021b: pc0107
+      w2022:  pc0107
+      w2023:  pc0107
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_geumgang_tourism
+    concept: nk_policy
+    description: "Support for resuming tourism to Mt. Geumgang (0-10, higher=stronger support)"
+    type: ordinal
+    note: "10 waves (per inventory). Raw pc0111: 'NK policy- resume tourism to Mt. Geumgang.' Identity. Mt. Geumgang tourism was suspended in 2008 after a fatal incident; this item asks whether it should resume."
+    source:
+      w2016:  pc0111
+      w2017:  pc0111
+      w2018:  pc0111
+      w2019a: pc0111
+      w2019b: pc0111
+      w2020a: pc0111
+      w2020b: pc0111
+      w2021a: pc0111
+      w2022:  pc0111
+      w2023:  pc0111
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_kaesong_resume
+    concept: nk_policy
+    description: "Support for resuming the Kaesong Industrial Complex (0-10, higher=stronger support)"
+    type: ordinal
+    note: "10 waves. Raw pc0112: 'NK policy- resuming Gaesung Industrial Complex.' Identity. Kaesong was closed in Feb 2016 by SK as a sanction; this item asks whether to reopen."
+    source:
+      w2016:  pc0112
+      w2017:  pc0112
+      w2018:  pc0112
+      w2019a: pc0112
+      w2019b: pc0112
+      w2020a: pc0112
+      w2020b: pc0112
+      w2021a: pc0112
+      w2022:  pc0112
+      w2023:  pc0112
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: nkpol_defector_support
+    concept: nk_policy
+    description: "Support for strengthened SK assistance to NK defectors (0-10, higher=stronger support)"
+    type: ordinal
+    note: "8 waves. Raw pc0117: 'NK policy- strengthen support for defectors.' Identity. Pairs analytically with the defector-perception items in north_korea.yml — policy preference vs perception."
+    source:
+      w2018:  pc0117
+      w2019a: pc0117
+      w2019b: pc0117
+      w2020a: pc0117
+      w2020b: pc0117
+      w2021a: pc0117
+      w2022:  pc0117
+      w2023:  pc0117
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) Containment / sanctions
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nkpol_sanctions
+    concept: nk_policy
+    description: "Support for international cooperation to enforce sanctions on NK (0-10, higher=stronger support)"
+    type: ordinal
+    note: "11 waves (missing 2014 and 2021b). Raw pc0103: 'The international cooperation should ensure that sanctions against North Korea are implemented.' Identity. Often anti-correlated with engagement items at the respondent level — captures the sanctions-pressure pole of NK policy."
+    source:
+      w2015:  pc0103
+      w2016:  pc0103
+      w2017:  pc0103
+      w2018:  pc0103
+      w2019a: pc0103
+      w2019b: pc0103
+      w2020a: pc0103
+      w2020b: pc0103
+      w2021a: pc0103
+      w2022:  pc0103
+      w2023:  pc0103
+    scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Diplomatic posture & policy process
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: nkpol_us_china_posture
+    concept: nk_policy
+    description: "Preferred SK diplomatic posture between US and China (categorical: 1=US-aligned, 2=balanced, 3=China-aligned, 4=independent)"
+    type: categorical
+    note: "9 waves (per inventory). Raw pc05: 1=strengthen alliance with US over China, 2=balanced US-China diplomacy, 3=strengthen relationship with China over US, 4=independent diplomacy regardless. Nominal — not ordinal. Useful for analyses of Korean foreign-policy realignment in light of US-China competition."
+    source:
+      w2016:  pc05
+      w2017:  pc05
+      w2018:  pc05
+      w2019a: pc05
+      w2019b: pc05
+      w2020a: pc05
+      w2020b: pc05
+      w2021a: pc05
+      w2022:  pc05
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Strengthen US alliance over China"
+        2: "Balanced US-China diplomacy"
+        3: "Strengthen China relationship over US"
+        4: "Independent diplomacy regardless"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: nkpol_public_opinion_reflected
+    concept: nk_policy
+    description: "Sense that public opinion is reflected in SK unification policy (1-4, reversed so higher=more reflected)"
+    type: ordinal
+    note: "9 waves. Raw pc06: 1=reflected very much, 2=somewhat, 3=not reflected somewhat, 4=not reflected at all. REVERSED so higher = stronger sense of policy responsiveness on unification matters."
+    source:
+      w2016:  pc06
+      w2017:  pc06
+      w2018:  pc06
+      w2019a: pc06
+      w2019b: pc06
+      w2020a: pc06
+      w2020b: pc06
+      w2021a: pc06
+      w2022:  pc06
+    scale: {min: 1, max: 4, labels: {1: "Not reflected at all", 4: "Reflected very much"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true

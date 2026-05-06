@@ -1,0 +1,474 @@
+# KINU Unification — core unification attitudes battery
+#
+# Seventeen variables across four sub-batteries:
+#
+#   (1) Overall necessity                         — uni01            (13 waves)
+#   (2) Agree-disagree statements (5pt Likert)    — uni0201–uni0214  (8-11 waves each, subset selected)
+#   (3) Perceived benefits of unification         — uni0301–uni0303  (12-13 waves)
+#   (4) Post-unification social-conflict forecasts — uni0601–uni0604  (11 waves each)
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# Almost every KINU item already follows this convention, so all 17 variables
+# below are IDENTITY recoded:
+#   - uni_necessity:          1=strongly unnecessary   → 4=strongly necessary
+#   - uni_arg_*:              1=strongly disagree       → 5=strongly agree
+#   - uni_benefit_*:          1=no benefit at all       → 4=very much beneficial
+#   - uni_post_*_conflict:    1=will get much better    → 5=will get much worse
+#
+# For agreement-statement items the *substantive* direction (pro- vs anti-
+# unification) varies item-by-item, but the *intensity* direction is always
+# "higher = stronger agreement with the proposition as stated". Each item's
+# note documents whether the proposition reads as pro- or anti-unification.
+#
+# DROPPED FROM THIS SPEC (single-wave or insufficient coverage):
+#   - uni0202 (3w), uni0205 (2w), uni0207 (5w), uni0208 (4w), uni0210 (1w)
+#   - uni0215 confederation item (6w, 2020+ only — add later if needed)
+#   - uni0216–uni0220 (single wave 2022 only — too thin for longitudinal use)
+#   - uni04 / uni04_open / uni05 / uni07 / uni08 / uni09 / uni10–uni13
+#     (categorical/nominal items — belong in a separate categorical spec)
+#
+# MISSING CONVENTIONS:
+#   9  = n/a within 1-point-something scales (1–4, 1–5, 1–7)
+#   99 = n/a within 0–10 / 0–100 scales (none of the items below use this,
+#        but listed for consistency with other KINU specs)
+
+missing_conventions:
+  treat_as_na:
+    codes: [9, 99]
+    description: "KINU: 9=n/a in 1–4/1–5/1–7 scales; 99=n/a in 0–10/0–100 scales"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Overall necessity of unification
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_necessity
+    concept: unification
+    description: "Perceived necessity of Korean unification (1-4, higher=stronger belief unification is necessary)"
+    type: ordinal
+    note: "13 waves (all). Raw uni01: 1=strongly unnecessary → 4=strongly necessary. Identity recoding (already in user-rule direction). Comparable in DIRECTION (but NOT in scaling) to KGSS pol_unification — KGSS uses the opposite raw direction (1=most necessary → 4=oppose) and would need reversal to compare. Trajectory peaks at 2018 (2.94) post-Pyongyang summit and declines steadily through 2023 (2.57)."
+    source:
+      w2014:  uni01
+      w2015:  uni01
+      w2016:  uni01
+      w2017:  uni01
+      w2018:  uni01
+      w2019a: uni01
+      w2019b: uni01
+      w2020a: uni01
+      w2020b: uni01
+      w2021a: uni01
+      w2021b: uni01
+      w2022:  uni01
+      w2023:  uni01
+    scale: {min: 1, max: 4, labels: {1: "Strongly unnecessary", 4: "Strongly necessary"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) Agree-disagree statements about unification (5pt Likert)
+  #     All identity recoded; higher = stronger agreement with the
+  #     stated proposition. Substantive direction (pro/anti unification)
+  #     varies per item — see the note: field for each.
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_arg_peace_enough
+    concept: unification
+    description: "Agreement that peaceful coexistence makes unification unnecessary (1-5, higher=stronger agreement, ANTI-unification stance)"
+    type: ordinal
+    note: "11 waves (2016-2023). Raw uni0201: 'If South and North can peacefully coexist without war, the unification is not necessary.' 1=strongly disagree → 5=strongly agree. Identity. ANTI-unification proposition (high = endorses peaceful-coexistence-as-substitute view). Trajectory: 3.04 (2016) → 3.48 (2023), rising agreement through 2020s."
+    source:
+      w2016:  uni0201
+      w2017:  uni0201
+      w2018:  uni0201
+      w2019a: uni0201
+      w2019b: uni0201
+      w2020a: uni0201
+      w2020b: uni0201
+      w2021a: uni0201
+      w2021b: uni0201
+      w2022:  uni0201
+      w2023:  uni0201
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_not_urgent
+    concept: unification
+    description: "Agreement that unification is not an immediate goal (1-5, higher=stronger agreement, ANTI-unification urgency)"
+    type: ordinal
+    note: "9 waves (2016-2022, missing 2021b and 2023). Raw uni0203: 'Unification is not our immediate goal at this point.' Identity. ANTI-urgency framing. Trajectory: 3.16 (2016) → 3.50 (2022)."
+    source:
+      w2016:  uni0203
+      w2017:  uni0203
+      w2018:  uni0203
+      w2019a: uni0203
+      w2019b: uni0203
+      w2020a: uni0203
+      w2020b: uni0203
+      w2021a: uni0203
+      w2022:  uni0203
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_my_wish
+    concept: unification
+    description: "Agreement that unification is one's sincere wish (1-5, higher=stronger agreement, PRO-unification)"
+    type: ordinal
+    note: "9 waves (2016-2022, missing 2021b and 2023). Raw uni0204: 'It is my sincere wish that the two Koreas be unified.' Identity. PRO-unification proposition. Trajectory: 3.07 (2016) → 2.62 (2022), declining endorsement."
+    source:
+      w2016:  uni0204
+      w2017:  uni0204
+      w2018:  uni0204
+      w2019a: uni0204
+      w2019b: uni0204
+      w2020a: uni0204
+      w2020b: uni0204
+      w2021a: uni0204
+      w2022:  uni0204
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_pay_tax
+    concept: unification
+    description: "Agreement to support raising taxes for unification costs (1-5, higher=stronger willingness, PRO-unification action)"
+    type: ordinal
+    note: "9 waves (2016-2022, missing 2021b and 2023). Raw uni0206: 'I am in favor of raising taxes to cover the costs of unification.' Identity. PRO-unification willingness-to-pay measure."
+    source:
+      w2016:  uni0206
+      w2017:  uni0206
+      w2018:  uni0206
+      w2019a: uni0206
+      w2019b: uni0206
+      w2020a: uni0206
+      w2020b: uni0206
+      w2021a: uni0206
+      w2022:  uni0206
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_div_costs_higher
+    concept: unification
+    description: "Agreement that costs of division exceed costs of unification (1-5, higher=stronger agreement, PRO-unification cost frame)"
+    type: ordinal
+    note: "8 waves (2017-2022, missing 2021b and 2023). Raw uni0209: 'The national costs arising from the division are higher than the costs of unification.' Identity. PRO-unification cost-benefit framing."
+    source:
+      w2017:  uni0209
+      w2018:  uni0209
+      w2019a: uni0209
+      w2019b: uni0209
+      w2020a: uni0209
+      w2020b: uni0209
+      w2021a: uni0209
+      w2022:  uni0209
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_econ_over_uni
+    concept: unification
+    description: "Agreement to prioritize economy over unification (1-5, higher=stronger agreement, ANTI-unification priority)"
+    type: ordinal
+    note: "8 waves (2017-2022, missing 2021b and 2023). Raw uni0211: 'If I have to choose between unification and economy, I will choose economy.' Identity. ANTI-unification trade-off framing. Trajectory: 3.65 (2018) → 3.87 (2022) — strong and rising."
+    source:
+      w2017:  uni0211
+      w2018:  uni0211
+      w2019a: uni0211
+      w2019b: uni0211
+      w2020a: uni0211
+      w2020b: uni0211
+      w2021a: uni0211
+      w2022:  uni0211
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_one_people_two_states
+    concept: unification
+    description: "Agreement that being one people doesn't require one country (1-5, higher=stronger agreement, ANTI-unification ethnic-nation argument)"
+    type: ordinal
+    note: "10 waves (2017-2023). Raw uni0212: 'Just because North and South Koreans are one people does not mean they must form one country.' Identity. ANTI-ethnic-nationalist-unification framing. Trajectory: 3.05 (2017) → 3.36 (2023), rising."
+    source:
+      w2017:  uni0212
+      w2018:  uni0212
+      w2019a: uni0212
+      w2019b: uni0212
+      w2020a: uni0212
+      w2020b: uni0212
+      w2021a: uni0212
+      w2021b: uni0212
+      w2022:  uni0212
+      w2023:  uni0212
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_sacrifice_ok
+    concept: unification
+    description: "Agreement to accept some personal sacrifice for unification (1-5, higher=stronger agreement, PRO-unification commitment)"
+    type: ordinal
+    note: "8 waves (2017-2022, missing 2021b and 2023). Raw uni0213: 'For the sake of unification, I am okay with a little of personal sacrifice.' Identity. PRO-unification cost-tolerance measure. Trajectory: 2.43 (2017) → 2.17 (2022), DECLINING tolerance for sacrifice."
+    source:
+      w2017:  uni0213
+      w2018:  uni0213
+      w2019a: uni0213
+      w2019b: uni0213
+      w2020a: uni0213
+      w2020b: uni0213
+      w2021a: uni0213
+      w2022:  uni0213
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_arg_stay_divided
+    concept: unification
+    description: "Agreement that staying divided is preferable (1-5, higher=stronger agreement, ANTI-unification preference)"
+    type: ordinal
+    note: "9 waves (2018-2023). Raw uni0214: 'It is better to stay divided than to unify two Koreas.' Identity. The most direct ANTI-unification statement in the battery. Trajectory: 2.76 (2018) → 3.22 (2023), rising agreement that division is preferable."
+    source:
+      w2018:  uni0214
+      w2019a: uni0214
+      w2019b: uni0214
+      w2020a: uni0214
+      w2020b: uni0214
+      w2021a: uni0214
+      w2021b: uni0214
+      w2022:  uni0214
+      w2023:  uni0214
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Perceived benefits of unification (4pt)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_benefit_nation
+    concept: unification
+    description: "Perceived benefit of unification to the nation as a whole (1-4, higher=more beneficial)"
+    type: ordinal
+    note: "13 waves (all). Raw uni0301: 'How much do you think unification would benefit the entire nation of South Korea?' 1=no benefit at all → 4=very much beneficial. Identity."
+    source:
+      w2014:  uni0301
+      w2015:  uni0301
+      w2016:  uni0301
+      w2017:  uni0301
+      w2018:  uni0301
+      w2019a: uni0301
+      w2019b: uni0301
+      w2020a: uni0301
+      w2020b: uni0301
+      w2021a: uni0301
+      w2021b: uni0301
+      w2022:  uni0301
+      w2023:  uni0301
+    scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: uni_benefit_self
+    concept: unification
+    description: "Perceived personal benefit of unification (1-4, higher=more beneficial)"
+    type: ordinal
+    note: "13 waves (all). Raw uni0302: 'How much do you think unification would benefit yourself?' 1=no benefit at all → 4=very much beneficial. Identity. Personal-benefit perception is consistently lower than national-benefit perception (2.1–2.3 vs 2.6–2.9 means)."
+    source:
+      w2014:  uni0302
+      w2015:  uni0302
+      w2016:  uni0302
+      w2017:  uni0302
+      w2018:  uni0302
+      w2019a: uni0302
+      w2019b: uni0302
+      w2020a: uni0302
+      w2020b: uni0302
+      w2021a: uni0302
+      w2021b: uni0302
+      w2022:  uni0302
+      w2023:  uni0302
+    scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: uni_benefit_nk
+    concept: unification
+    description: "Perceived benefit of unification to North Koreans (1-4, higher=more beneficial)"
+    type: ordinal
+    note: "12 waves (2016-2023). Raw uni0303: 'How much do you think unification would benefit North Koreans?' 1=no benefit at all → 4=very much beneficial. Identity. Means consistently 3.10–3.32 — South Koreans expect unification to benefit North Koreans more than themselves."
+    source:
+      w2016:  uni0303
+      w2017:  uni0303
+      w2018:  uni0303
+      w2019a: uni0303
+      w2019b: uni0303
+      w2020a: uni0303
+      w2020b: uni0303
+      w2021a: uni0303
+      w2021b: uni0303
+      w2022:  uni0303
+      w2023:  uni0303
+    scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) Post-unification social-conflict forecasts (5pt)
+  #     Raw scale: 1=will get much better → 5=will get much worse.
+  #     Identity recoding — higher = forecasts MORE post-unification conflict.
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: uni_post_class_conflict
+    concept: unification
+    description: "Forecasted post-unification class conflict (1-5, higher=expects more conflict)"
+    type: ordinal
+    note: "11 waves (2014-2022, missing 2021b and 2023). Raw uni0601: 'What will happen to class conflicts if unification takes place?' 1=much better → 5=much worse. Identity. Sustained means 3.4–3.9 — Koreans expect class conflict to worsen post-unification."
+    source:
+      w2014:  uni0601
+      w2015:  uni0601
+      w2016:  uni0601
+      w2017:  uni0601
+      w2018:  uni0601
+      w2019a: uni0601
+      w2019b: uni0601
+      w2020a: uni0601
+      w2020b: uni0601
+      w2021a: uni0601
+      w2022:  uni0601
+    scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_post_ideol_conflict
+    concept: unification
+    description: "Forecasted post-unification ideological conflict (1-5, higher=expects more conflict)"
+    type: ordinal
+    note: "11 waves (2014-2022, missing 2021b and 2023). Raw uni0602: 'Ideological conflicts post-unification.' 1=much better → 5=much worse. Identity. Highest-mean conflict forecast in the battery (3.4–4.0)."
+    source:
+      w2014:  uni0602
+      w2015:  uni0602
+      w2016:  uni0602
+      w2017:  uni0602
+      w2018:  uni0602
+      w2019a: uni0602
+      w2019b: uni0602
+      w2020a: uni0602
+      w2020b: uni0602
+      w2021a: uni0602
+      w2022:  uni0602
+    scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_post_gen_conflict
+    concept: unification
+    description: "Forecasted post-unification generational conflict (1-5, higher=expects more conflict)"
+    type: ordinal
+    note: "11 waves (2014-2022, missing 2021b and 2023). Raw uni0603: 'Generational conflicts post-unification.' 1=much better → 5=much worse. Identity."
+    source:
+      w2014:  uni0603
+      w2015:  uni0603
+      w2016:  uni0603
+      w2017:  uni0603
+      w2018:  uni0603
+      w2019a: uni0603
+      w2019b: uni0603
+      w2020a: uni0603
+      w2020b: uni0603
+      w2021a: uni0603
+      w2022:  uni0603
+    scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: uni_post_regional_conflict
+    concept: unification
+    description: "Forecasted post-unification NK-SK regional conflict (1-5, higher=expects more conflict)"
+    type: ordinal
+    note: "11 waves (2014-2022, missing 2021b and 2023). Raw uni0604: 'Regional conflicts between North and South Koreans post-unification.' 1=much better → 5=much worse. Identity. The Korean reunification literature treats this as the central post-unification cleavage forecast."
+    source:
+      w2014:  uni0604
+      w2015:  uni0604
+      w2016:  uni0604
+      w2017:  uni0604
+      w2018:  uni0604
+      w2019a: uni0604
+      w2019b: uni0604
+      w2020a: uni0604
+      w2020b: uni0604
+      w2021a: uni0604
+      w2022:  uni0604
+    scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

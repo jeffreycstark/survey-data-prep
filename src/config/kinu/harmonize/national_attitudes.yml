@@ -1,0 +1,697 @@
+# KINU National Attitudes — pride, trust, patriotism, multiculturalism, system justification
+#
+# Twenty-five variables across five sub-batteries:
+#
+#   (1) National pride (1-4 identity)              — at01 + at0201-at0210  (12-13 waves)
+#   (2) Trust (general + 6 institutions, 0-10)     — at06, at0701-at0706    (9-11 waves)
+#   (3) Patriotism (1-5 agreement)                 — at0303, at0304         (11 waves)
+#   (4) Multiculturalism (1-5 favor/oppose)        — at1701, at1702, at1703 (10 waves)
+#   (5) System justification (1-9 agreement)       — at2801, at2803         (8 waves)
+#
+# DIRECTIONALITY: all identity-recoded (higher = more intensity of the construct
+# as labelled in the description). For "system justification" items, high values
+# indicate stronger system-justifying belief.
+#
+# DROPPED FROM THIS SPEC (substantive value but defer for scope):
+#   - at0306-at0308 (patriotism: anthem, constructive criticism, work hard) —
+#     8-wave coverage; substantively secondary to flag/identity items.
+#   - at0406-at0409 (national attachment battery: bad-about-KR, fate-tied,
+#     superiority, patriots) — 8-9 waves but require per-item reversal logic
+#     and substantive interpretation; add later as a focused attachment YAML.
+#   - at1201-at1206 (Inglehart post-materialism, 1-4 categorical 1st/2nd
+#     choice) — nominal handling; needs categorical-pair construction.
+#   - at19a-at19h (SDO 1-7 battery) — own sub-literature; defer.
+#   - at2802, at2804 (system justification: radical-restructure, fair-opportunity)
+#     — at2802 has direction-flip ambiguity (high=wants change=anti-system?);
+#     handle in a follow-up to avoid confusion.
+#
+# KGSS PARALLELS:
+#   trust_general (at06) ~ KGSS trust_reliable (0-10, both identity)
+#   trust_president, trust_assembly, trust_courts, trust_parties, trust_media
+#       ~ KGSS conf_bluehouse, conf_legislature, conf_judiciary,
+#           ?, conf_press (KGSS uses 1-3 scale; KINU uses 0-10 — different but comparable in direction)
+#   natid_pride_* battery ~ KGSS pride_* battery (KGSS uses 1-4 reversed)
+#
+# MISSING CONVENTIONS:
+#   9 = n/a in 1-X scales (and special: 9 ALSO appears as a valid mid-range
+#       value in at2801-at2804 1-9 scales — handle below per-variable)
+#   99 = n/a in 0-10 confidence scales
+
+missing_conventions:
+  treat_as_na:
+    codes: [99]
+    description: "KINU national attitudes: 99=n/a in 0-10/1-9 scales. NOTE 9 NOT in global treat_as_na because it is a valid response value in the 1-9 system-justification items; per-variable missing handling for 1-5 items."
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) National pride (1-4)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: natid_pride_overall
+    concept: national_attitudes
+    description: "Overall national pride (1-4, higher=more proud)"
+    type: ordinal
+    note: "13 waves (all). Raw at01: 1=not proud at all, 2=not very much, 3=somewhat proud, 4=very proud. Identity. Code 9 is n/a within scale; cleared per-variable."
+    source:
+      w2014:  at01
+      w2015:  at01
+      w2016:  at01
+      w2017:  at01
+      w2018:  at01
+      w2019a: at01
+      w2019b: at01
+      w2020a: at01
+      w2020b: at01
+      w2021a: at01
+      w2021b: at01
+      w2022:  at01
+      w2023:  at01
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_democracy
+    concept: national_attitudes
+    description: "Pride in Korean democracy (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw at0201: same 1-4 pride scale. Substantively important for democratic-legitimacy analyses."
+    source:
+      w2015:  at0201
+      w2016:  at0201
+      w2017:  at0201
+      w2018:  at0201
+      w2019a: at0201
+      w2019b: at0201
+      w2020a: at0201
+      w2020b: at0201
+      w2021a: at0201
+      w2021b: at0201
+      w2022:  at0201
+      w2023:  at0201
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_world_influence
+    concept: national_attitudes
+    description: "Pride in Korea's world influence (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw at0202."
+    source:
+      w2015:  at0202
+      w2016:  at0202
+      w2017:  at0202
+      w2018:  at0202
+      w2019a: at0202
+      w2019b: at0202
+      w2020a: at0202
+      w2020b: at0202
+      w2021a: at0202
+      w2021b: at0202
+      w2022:  at0202
+      w2023:  at0202
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_economy
+    concept: national_attitudes
+    description: "Pride in Korea's economy (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw at0203."
+    source:
+      w2015:  at0203
+      w2016:  at0203
+      w2017:  at0203
+      w2018:  at0203
+      w2019a: at0203
+      w2019b: at0203
+      w2020a: at0203
+      w2020b: at0203
+      w2021a: at0203
+      w2021b: at0203
+      w2022:  at0203
+      w2023:  at0203
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_welfare
+    concept: national_attitudes
+    description: "Pride in Korea's welfare system (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves (missing 2014). Raw at0204."
+    source:
+      w2015:  at0204
+      w2016:  at0204
+      w2017:  at0204
+      w2018:  at0204
+      w2019a: at0204
+      w2019b: at0204
+      w2020a: at0204
+      w2020b: at0204
+      w2021a: at0204
+      w2021b: at0204
+      w2022:  at0204
+      w2023:  at0204
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_science
+    concept: national_attitudes
+    description: "Pride in Korea's science (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0205."
+    source:
+      w2015:  at0205
+      w2016:  at0205
+      w2017:  at0205
+      w2018:  at0205
+      w2019a: at0205
+      w2019b: at0205
+      w2020a: at0205
+      w2020b: at0205
+      w2021a: at0205
+      w2021b: at0205
+      w2022:  at0205
+      w2023:  at0205
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_sports
+    concept: national_attitudes
+    description: "Pride in Korea's sports (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0206."
+    source:
+      w2015:  at0206
+      w2016:  at0206
+      w2017:  at0206
+      w2018:  at0206
+      w2019a: at0206
+      w2019b: at0206
+      w2020a: at0206
+      w2020b: at0206
+      w2021a: at0206
+      w2021b: at0206
+      w2022:  at0206
+      w2023:  at0206
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_arts
+    concept: national_attitudes
+    description: "Pride in Korea's arts (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0207. Substantively interesting given Hallyu (Korean Wave) cultural-export rise."
+    source:
+      w2015:  at0207
+      w2016:  at0207
+      w2017:  at0207
+      w2018:  at0207
+      w2019a: at0207
+      w2019b: at0207
+      w2020a: at0207
+      w2020b: at0207
+      w2021a: at0207
+      w2021b: at0207
+      w2022:  at0207
+      w2023:  at0207
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_military
+    concept: national_attitudes
+    description: "Pride in Korea's military (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0208. Useful for security-attitude correlation analyses."
+    source:
+      w2015:  at0208
+      w2016:  at0208
+      w2017:  at0208
+      w2018:  at0208
+      w2019a: at0208
+      w2019b: at0208
+      w2020a: at0208
+      w2020b: at0208
+      w2021a: at0208
+      w2021b: at0208
+      w2022:  at0208
+      w2023:  at0208
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_history
+    concept: national_attitudes
+    description: "Pride in Korea's history (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0209. Direct KGSS analogue: pride_history."
+    source:
+      w2015:  at0209
+      w2016:  at0209
+      w2017:  at0209
+      w2018:  at0209
+      w2019a: at0209
+      w2019b: at0209
+      w2020a: at0209
+      w2020b: at0209
+      w2021a: at0209
+      w2021b: at0209
+      w2022:  at0209
+      w2023:  at0209
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: natid_pride_equality
+    concept: national_attitudes
+    description: "Pride in Korea's social equality (1-4, higher=more proud)"
+    type: ordinal
+    note: "12 waves. Raw at0210. Useful as a 'pride in fairness' marker; pairs analytically with social inequality items."
+    source:
+      w2015:  at0210
+      w2016:  at0210
+      w2017:  at0210
+      w2018:  at0210
+      w2019a: at0210
+      w2019b: at0210
+      w2020a: at0210
+      w2020b: at0210
+      w2021a: at0210
+      w2021b: at0210
+      w2022:  at0210
+      w2023:  at0210
+    scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) Trust (general + institutions; 0-10)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: trust_general
+    concept: national_attitudes
+    description: "Generalized social trust (0-10, higher=more trustful)"
+    type: ordinal
+    note: "11 waves (per inventory). Raw at06: 0=hardly trustful → 10=very trustful (99=n/a). Identity. KGSS-comparable: maps to KGSS trust_reliable (also 0-10, identity)."
+    source:
+      w2014:  at06
+      w2015:  at06
+      w2016:  at06
+      w2017:  at06
+      w2018:  at06
+      w2019a: at06
+      w2019b: at06
+      w2020a: at06
+      w2020b: at06
+      w2021a: at06
+      w2022:  at06
+    scale: {min: 0, max: 10, labels: {0: "Hardly trustful", 10: "Very trustful"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_president
+    concept: national_attitudes
+    description: "Confidence in the President (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0701: 0=not confident at all, 5=neutral, 10=very confident, 99=n/a. Identity. SK presidential confidence. KGSS-comparable in direction to conf_bluehouse (1-3 scale; KINU is finer-grained 0-10)."
+    source:
+      w2015:  at0701
+      w2016:  at0701
+      w2017:  at0701
+      w2018:  at0701
+      w2019a: at0701
+      w2019b: at0701
+      w2020a: at0701
+      w2021a: at0701
+      w2022:  at0701
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_administration
+    concept: national_attitudes
+    description: "Confidence in the administration (executive bureaucracy) (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0702. Identity. Distinct from trust_president — bureaucracy vs personal."
+    source:
+      w2015:  at0702
+      w2016:  at0702
+      w2017:  at0702
+      w2018:  at0702
+      w2019a: at0702
+      w2019b: at0702
+      w2020a: at0702
+      w2021a: at0702
+      w2022:  at0702
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_courts
+    concept: national_attitudes
+    description: "Confidence in the courts (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0703. Identity. Comparable in direction to KGSS conf_judiciary."
+    source:
+      w2015:  at0703
+      w2016:  at0703
+      w2017:  at0703
+      w2018:  at0703
+      w2019a: at0703
+      w2019b: at0703
+      w2020a: at0703
+      w2021a: at0703
+      w2022:  at0703
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_assembly
+    concept: national_attitudes
+    description: "Confidence in the National Assembly (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0704. Identity. Comparable in direction to KGSS conf_legislature."
+    source:
+      w2015:  at0704
+      w2016:  at0704
+      w2017:  at0704
+      w2018:  at0704
+      w2019a: at0704
+      w2019b: at0704
+      w2020a: at0704
+      w2021a: at0704
+      w2022:  at0704
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_parties
+    concept: national_attitudes
+    description: "Confidence in political parties (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0705. Identity."
+    source:
+      w2015:  at0705
+      w2016:  at0705
+      w2017:  at0705
+      w2018:  at0705
+      w2019a: at0705
+      w2019b: at0705
+      w2020a: at0705
+      w2021a: at0705
+      w2022:  at0705
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  - id: trust_media
+    concept: national_attitudes
+    description: "Confidence in the news media (0-10, higher=more confident)"
+    type: ordinal
+    note: "9 waves. Raw at0706. Identity. Comparable in direction to KGSS conf_press / conf_television."
+    source:
+      w2015:  at0706
+      w2016:  at0706
+      w2017:  at0706
+      w2018:  at0706
+      w2019a: at0706
+      w2019b: at0706
+      w2020a: at0706
+      w2021a: at0706
+      w2022:  at0706
+    scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Patriotism (1-5)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: patriot_flag
+    concept: national_attitudes
+    description: "Patriotism toward Korean flag (1-5 agreement, higher=stronger pro-flag patriotism)"
+    type: ordinal
+    note: "11 waves. Raw at0303: 1=strongly disagree → 5=strongly agree. Identity. Likely worded around displaying / respecting the flag."
+    source:
+      w2014:  at0303
+      w2015:  at0303
+      w2016:  at0303
+      w2017:  at0303
+      w2018:  at0303
+      w2019a: at0303
+      w2019b: at0303
+      w2020a: at0303
+      w2020b: at0303
+      w2021a: at0303
+      w2022:  at0303
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: patriot_identity
+    concept: national_attitudes
+    description: "Patriotism / national identity (1-5 agreement, higher=stronger identity)"
+    type: ordinal
+    note: "11 waves. Raw at0304: 1=strongly disagree → 5=strongly agree. Identity."
+    source:
+      w2014:  at0304
+      w2015:  at0304
+      w2016:  at0304
+      w2017:  at0304
+      w2018:  at0304
+      w2019a: at0304
+      w2019b: at0304
+      w2020a: at0304
+      w2020b: at0304
+      w2021a: at0304
+      w2022:  at0304
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) Multiculturalism (1-5 favor/oppose)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: multicult_race
+    concept: national_attitudes
+    description: "Favorability toward racial multiculturalism in Korea (1-5, higher=more favorable)"
+    type: ordinal
+    note: "10 waves. Raw at1701: 1=oppose strongly → 5=favor strongly. Identity. Substantively important for studies of Korean ethnic-nation identity transitions."
+    source:
+      w2014:  at1701
+      w2015:  at1701
+      w2016:  at1701
+      w2017:  at1701
+      w2018:  at1701
+      w2019a: at1701
+      w2019b: at1701
+      w2020a: at1701
+      w2020b: at1701
+      w2021a: at1701
+    scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: multicult_religion
+    concept: national_attitudes
+    description: "Favorability toward religious multiculturalism in Korea (1-5, higher=more favorable)"
+    type: ordinal
+    note: "10 waves. Raw at1702. Identity."
+    source:
+      w2014:  at1702
+      w2015:  at1702
+      w2016:  at1702
+      w2017:  at1702
+      w2018:  at1702
+      w2019a: at1702
+      w2019b: at1702
+      w2020a: at1702
+      w2020b: at1702
+      w2021a: at1702
+    scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  - id: multicult_culture
+    concept: national_attitudes
+    description: "Favorability toward cultural multiculturalism in Korea (1-5, higher=more favorable)"
+    type: ordinal
+    note: "10 waves. Raw at1703. Identity."
+    source:
+      w2014:  at1703
+      w2015:  at1703
+      w2016:  at1703
+      w2017:  at1703
+      w2018:  at1703
+      w2019a: at1703
+      w2019b: at1703
+      w2020a: at1703
+      w2020b: at1703
+      w2021a: at1703
+    scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      treat_as_na: [9]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (5) System justification (1-9)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: sysjust_fair_society
+    concept: national_attitudes
+    description: "System justification: agreement that Korean society is fair (1-9, higher=stronger system-justifying belief)"
+    type: ordinal
+    note: "8 waves. Raw at2801: 1=do not agree at all, 5=neutral, 9=very much agree, 99=n/a. Identity. Note 1-9 odd-length scale (not 1-10); preserved as-is. Within-scale code 9 is a VALID response (very much agree), unlike 9 in 1-X scales used elsewhere."
+    source:
+      w2016:  at2801
+      w2017:  at2801
+      w2018:  at2801
+      w2019a: at2801
+      w2019b: at2801
+      w2020a: at2801
+      w2020b: at2801
+      w2021a: at2801
+    scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      skip_unmapped_check: true
+
+  - id: sysjust_best_country
+    concept: national_attitudes
+    description: "System justification: agreement that Korea is the best country to live in (1-9, higher=stronger pride/justification)"
+    type: ordinal
+    note: "8 waves. Raw at2803: same 1-9 scale. Identity."
+    source:
+      w2016:  at2803
+      w2017:  at2803
+      w2018:  at2803
+      w2019a: at2803
+      w2019b: at2803
+      w2020a: at2803
+      w2020b: at2803
+      w2021a: at2803
+    scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 9]
+      skip_unmapped_check: true
