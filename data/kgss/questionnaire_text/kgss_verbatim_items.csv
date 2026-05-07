@@ -1107,3 +1107,496 @@ w2018,COHABOK,gender_cohab_no_marriage_ok,Family and Gender Roles (ISSP),,,,Not 
 w2021,COHABOK,gender_cohab_no_marriage_ok,Family and Gender Roles (ISSP),,,,Not included in this wave
 w2023,COHABOK,gender_cohab_no_marriage_ok,Family and Gender Roles (ISSP),,,,Not included in this wave
 w2025,COHABOK,gender_cohab_no_marriage_ok,Family and Gender Roles (ISSP),,,,Not included in this wave
+w2003,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2004,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2005,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2006,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2007,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2008,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2009,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2010,GRNCON,env_concern_overall,Environment (ISSP),"Now, some questions about the environment.","Generally speaking, how concerned are you about environmental issues? (전반적인 환경에 대한 걱정 정도)",1=전혀 걱정을 안한다 (Not concerned at all); 5=매우 걱정을 한다 (Very concerned); IDENTITY (note: opposite direction from other items in this module),ISSP Environment GRNCON. Note IDENTITY direction (item runs opposite to other ISSP env items).
+w2011,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2012,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2013,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2014,GRNCON,env_concern_overall,Environment (ISSP),"Now, some questions about the environment.","Generally speaking, how concerned are you about environmental issues? (전반적인 환경에 대한 걱정 정도)",1=전혀 걱정을 안한다 (Not concerned at all); 5=매우 걱정을 한다 (Very concerned); IDENTITY (note: opposite direction from other items in this module),ISSP Environment GRNCON. Note IDENTITY direction (item runs opposite to other ISSP env items).
+w2016,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2018,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2021,GRNCON,env_concern_overall,Environment (ISSP),"Now, some questions about the environment.","Generally speaking, how concerned are you about environmental issues? (전반적인 환경에 대한 걱정 정도)",1=전혀 걱정을 안한다 (Not concerned at all); 5=매우 걱정을 한다 (Very concerned); IDENTITY (note: opposite direction from other items in this module),ISSP Environment GRNCON. Note IDENTITY direction (item runs opposite to other ISSP env items).
+w2023,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2025,GRNCON,env_concern_overall,Environment (ISSP),,,,Not included in this wave
+w2003,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2004,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2005,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2006,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2007,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2008,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2009,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2010,GRNPRICE,env_pay_higher_prices,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher prices in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNPRICE.
+w2011,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2012,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2013,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2014,GRNPRICE,env_pay_higher_prices,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher prices in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNPRICE.
+w2016,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2018,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2021,GRNPRICE,env_pay_higher_prices,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher prices in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNPRICE.
+w2023,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2025,GRNPRICE,env_pay_higher_prices,Environment (ISSP),,,,Not included in this wave
+w2003,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2004,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2005,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2006,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2007,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2008,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2009,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2010,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher taxes in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNTAXES.
+w2011,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2012,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2013,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2014,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher taxes in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNTAXES.
+w2016,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2018,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2021,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to pay much higher taxes in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNTAXES.
+w2023,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2025,GRNTAXES,env_pay_higher_taxes,Environment (ISSP),,,,Not included in this wave
+w2003,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2004,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2005,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2006,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2007,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2008,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2009,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2010,GRNSOL,env_lower_living_standard,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to accept cuts in your standard of living in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNSOL.
+w2011,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2012,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2013,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2014,GRNSOL,env_lower_living_standard,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to accept cuts in your standard of living in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNSOL.
+w2016,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2018,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2021,GRNSOL,env_lower_living_standard,Environment (ISSP),"Now, some questions about the environment.",How willing would you be to accept cuts in your standard of living in order to protect the environment?,1=매우 의향이 있다 (Very willing); 2=약간 의향; 3=의향이 있지도 없지도 않다; 4=별로 의향이 없다; 5=전혀 의향이 없다 (Not at all willing); Harmonized: reversed so higher=more willing,ISSP Environment GRNSOL.
+w2023,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2025,GRNSOL,env_lower_living_standard,Environment (ISSP),,,,Not included in this wave
+w2003,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2004,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2005,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2006,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2007,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2008,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2009,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2010,TOODIFME,env_too_difficult,Environment (ISSP),"Now, some questions about the environment.",It is just too difficult for someone like me to do much about the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment TOODIFME.
+w2011,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2012,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2013,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2014,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2016,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2018,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2021,TOODIFME,env_too_difficult,Environment (ISSP),"Now, some questions about the environment.",It is just too difficult for someone like me to do much about the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment TOODIFME.
+w2023,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2025,TOODIFME,env_too_difficult,Environment (ISSP),,,,Not included in this wave
+w2003,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2004,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2005,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2006,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2007,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2008,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2009,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2010,IHLPGRN,env_do_right_costly,Environment (ISSP),"Now, some questions about the environment.","I do what is right for the environment, even when it costs more money or takes more time.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment IHLPGRN.
+w2011,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2012,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2013,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2014,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2016,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2018,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2021,IHLPGRN,env_do_right_costly,Environment (ISSP),"Now, some questions about the environment.","I do what is right for the environment, even when it costs more money or takes more time.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment IHLPGRN.
+w2023,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2025,IHLPGRN,env_do_right_costly,Environment (ISSP),,,,Not included in this wave
+w2003,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2004,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2005,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2006,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2007,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2008,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2009,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2010,IMPGRN,env_other_things_more_imp,Environment (ISSP),"Now, some questions about the environment.",There are more important things to do in life than protect the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment IMPGRN.
+w2011,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2012,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2013,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2014,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2016,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2018,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2021,IMPGRN,env_other_things_more_imp,Environment (ISSP),"Now, some questions about the environment.",There are more important things to do in life than protect the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment IMPGRN.
+w2023,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2025,IMPGRN,env_other_things_more_imp,Environment (ISSP),,,,Not included in this wave
+w2003,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2004,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2005,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2006,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2007,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2008,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2009,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2010,OTHSSAME,env_meaningless_alone,Environment (ISSP),"Now, some questions about the environment.",There is no point in doing what I can for the environment unless others do the same.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment OTHSSAME.
+w2011,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2012,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2013,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2014,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2016,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2018,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2021,OTHSSAME,env_meaningless_alone,Environment (ISSP),"Now, some questions about the environment.",There is no point in doing what I can for the environment unless others do the same.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment OTHSSAME.
+w2023,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2025,OTHSSAME,env_meaningless_alone,Environment (ISSP),,,,Not included in this wave
+w2003,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2004,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2005,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2006,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2007,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2008,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2009,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2010,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),"Now, some questions about the environment.",Many of the claims about environmental threats are exaggerated.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNEXAGG.
+w2011,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2012,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2013,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2014,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2016,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2018,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2021,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),"Now, some questions about the environment.",Many of the claims about environmental threats are exaggerated.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNEXAGG.
+w2023,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2025,GRNEXAGG,env_threats_exaggerated,Environment (ISSP),,,,Not included in this wave
+w2003,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2004,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2005,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2006,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2007,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2008,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2009,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2010,HARMSGRN,env_modern_life_harms,Environment (ISSP),"Now, some questions about the environment.",Almost everything we do in modern life harms the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment HARMSGRN.
+w2011,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2012,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2013,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2014,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2016,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2018,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2021,HARMSGRN,env_modern_life_harms,Environment (ISSP),"Now, some questions about the environment.",Almost everything we do in modern life harms the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment HARMSGRN.
+w2023,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2025,HARMSGRN,env_modern_life_harms,Environment (ISSP),,,,Not included in this wave
+w2003,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2004,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2005,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2006,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2007,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2008,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2009,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2010,GRNECON,env_future_concern,Environment (ISSP),"Now, some questions about the environment.","We worry too much about the future of the environment, and not enough about prices and jobs today.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNECON. Anti-env priority framing.
+w2011,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2012,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2013,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2014,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2016,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2018,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2021,GRNECON,env_future_concern,Environment (ISSP),"Now, some questions about the environment.","We worry too much about the future of the environment, and not enough about prices and jobs today.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNECON. Anti-env priority framing.
+w2023,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2025,GRNECON,env_future_concern,Environment (ISSP),,,,Not included in this wave
+w2003,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2004,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2005,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2006,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2007,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2008,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2009,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2010,GRNPROG,env_progress_harms,Environment (ISSP),"Now, some questions about the environment.",Human progress is harmful to the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNPROG.
+w2011,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2012,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2013,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2014,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2016,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2018,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2021,GRNPROG,env_progress_harms,Environment (ISSP),"Now, some questions about the environment.",Human progress is harmful to the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRNPROG.
+w2023,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2025,GRNPROG,env_progress_harms,Environment (ISSP),,,,Not included in this wave
+w2003,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2004,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2005,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2006,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2007,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2008,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2009,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2010,GRWTHELP,env_growth_needs_protection,Environment (ISSP),"Now, some questions about the environment.","In order to protect the environment, [Korea] needs economic growth.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRWTHELP. Pro-growth framing of env-protection link.
+w2011,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2012,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2013,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2014,GRWTHELP,env_growth_needs_protection,Environment (ISSP),"Now, some questions about the environment.","In order to protect the environment, [Korea] needs economic growth.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRWTHELP. Pro-growth framing of env-protection link.
+w2016,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2018,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2021,GRWTHELP,env_growth_needs_protection,Environment (ISSP),"Now, some questions about the environment.","In order to protect the environment, [Korea] needs economic growth.",1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRWTHELP. Pro-growth framing of env-protection link.
+w2023,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2025,GRWTHELP,env_growth_needs_protection,Environment (ISSP),,,,Not included in this wave
+w2003,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2004,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2005,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2006,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2007,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2008,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2009,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2010,GRWTHARM,env_growth_harms,Environment (ISSP),"Now, some questions about the environment.",Economic growth always harms the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRWTHARM. NOT in 2021.
+w2011,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2012,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2013,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2014,GRWTHARM,env_growth_harms,Environment (ISSP),"Now, some questions about the environment.",Economic growth always harms the environment.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,ISSP Environment GRWTHARM. NOT in 2021.
+w2016,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2018,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2021,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2023,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2025,GRWTHARM,env_growth_harms,Environment (ISSP),,,,Not included in this wave
+w2003,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2004,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2005,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2006,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2007,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2008,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2009,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2010,SCIGRN,env_science_can_solve,Environment (ISSP),"Now, some questions about the environment.",Modern science will solve our environmental problems with little change to our way of life.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,"ISSP Environment SCIGRN. 3 waves: 2010, 2013, 2021."
+w2011,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2012,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2013,SCIGRN,env_science_can_solve,Environment (ISSP),"Now, some questions about the environment.",Modern science will solve our environmental problems with little change to our way of life.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,"ISSP Environment SCIGRN. 3 waves: 2010, 2013, 2021."
+w2014,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2016,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2018,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2021,SCIGRN,env_science_can_solve,Environment (ISSP),"Now, some questions about the environment.",Modern science will solve our environmental problems with little change to our way of life.,1=매우 동의 (Strongly agree); 2=약간 동의; 3=동의도 반대도 아님; 4=약간 반대; 5=매우 반대 (Strongly disagree); -8=DK; 8=Can't choose; Harmonized: reversed so higher=stronger agreement,"ISSP Environment SCIGRN. 3 waves: 2010, 2013, 2021."
+w2023,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2025,SCIGRN,env_science_can_solve,Environment (ISSP),,,,Not included in this wave
+w2003,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2004,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2005,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2006,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2007,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2008,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2009,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2010,CARSGEN,env_threat_cars,Environment (ISSP),"Now, some questions about the environment.","In general, do you think that air pollution caused by cars is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CARSGEN.
+w2011,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2012,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2013,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2014,CARSGEN,env_threat_cars,Environment (ISSP),"Now, some questions about the environment.","In general, do you think that air pollution caused by cars is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CARSGEN.
+w2016,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2018,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2021,CARSGEN,env_threat_cars,Environment (ISSP),"Now, some questions about the environment.","In general, do you think that air pollution caused by cars is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CARSGEN.
+w2023,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2025,CARSGEN,env_threat_cars,Environment (ISSP),,,,Not included in this wave
+w2003,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2004,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2005,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2006,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2007,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2008,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2009,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2010,INDUSGEN,env_threat_industry,Environment (ISSP),"Now, some questions about the environment.","And in general, do you think that air pollution caused by industry is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment INDUSGEN.
+w2011,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2012,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2013,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2014,INDUSGEN,env_threat_industry,Environment (ISSP),"Now, some questions about the environment.","And in general, do you think that air pollution caused by industry is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment INDUSGEN.
+w2016,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2018,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2021,INDUSGEN,env_threat_industry,Environment (ISSP),"Now, some questions about the environment.","And in general, do you think that air pollution caused by industry is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment INDUSGEN.
+w2023,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2025,INDUSGEN,env_threat_industry,Environment (ISSP),,,,Not included in this wave
+w2003,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2004,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2005,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2006,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2007,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2008,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2009,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2010,CHEMGEN,env_threat_chemicals,Environment (ISSP),"Now, some questions about the environment.",And do you think that pesticides and chemicals used in farming are dangerous to the environment?,1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CHEMGEN.
+w2011,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2012,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2013,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2014,CHEMGEN,env_threat_chemicals,Environment (ISSP),"Now, some questions about the environment.",And do you think that pesticides and chemicals used in farming are dangerous to the environment?,1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CHEMGEN.
+w2016,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2018,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2021,CHEMGEN,env_threat_chemicals,Environment (ISSP),"Now, some questions about the environment.",And do you think that pesticides and chemicals used in farming are dangerous to the environment?,1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment CHEMGEN.
+w2023,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2025,CHEMGEN,env_threat_chemicals,Environment (ISSP),,,,Not included in this wave
+w2003,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2004,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2005,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2006,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2007,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2008,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2009,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2010,WATERGEN,env_threat_water,Environment (ISSP),"Now, some questions about the environment.","And do you think that pollution of [Korea's] rivers, lakes and streams is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment WATERGEN.
+w2011,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2012,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2013,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2014,WATERGEN,env_threat_water,Environment (ISSP),"Now, some questions about the environment.","And do you think that pollution of [Korea's] rivers, lakes and streams is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment WATERGEN.
+w2016,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2018,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2021,WATERGEN,env_threat_water,Environment (ISSP),"Now, some questions about the environment.","And do you think that pollution of [Korea's] rivers, lakes and streams is dangerous to the environment?",1=절대적으로 위험하다 (Absolutely dangerous); 2=매우 위험; 3=대체로 위험; 4=별로 위험하지 않다; 5=전혀 위험하지 않다 (Not dangerous at all); Harmonized: reversed so higher=more dangerous perceived,ISSP Environment WATERGEN.
+w2023,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2025,WATERGEN,env_threat_water,Environment (ISSP),,,,Not included in this wave
+w2003,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2004,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2005,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2006,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2007,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2008,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2009,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2010,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2011,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2012,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2013,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2014,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2016,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2018,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2021,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2023,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2025,RELITEN,religiosity_intensity,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.","Would you describe yourself as: very religious, somewhat religious, or not very religious?",1=강하다 (Strong); 2=다소 강하다; 3=별로 강하지 않다 (Not very strong); Harmonized: reversed so higher=stronger faith. Conditional on having a religion (KGSS RELITEN).,KGSS RELITEN. Asked of religious respondents only.
+w2003,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,GODCONC,god_belief_certainty,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which of the following best describes your beliefs about God?,"1=Don't believe in God; 2=Don't know if there is a way to know; 3=Don't believe in God but believe in some higher power; 4=Sometimes believe sometimes not; 5=Believe though with doubts; 6=Know God exists, no doubt; IDENTITY",ISSP Religion GODCONC. 6-point graded belief scale.
+w2009,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,GODCONC,god_belief_certainty,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which of the following best describes your beliefs about God?,"1=Don't believe in God; 2=Don't know if there is a way to know; 3=Don't believe in God but believe in some higher power; 4=Sometimes believe sometimes not; 5=Believe though with doubts; 6=Know God exists, no doubt; IDENTITY",ISSP Religion GODCONC. 6-point graded belief scale.
+w2021,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,GODCONC,god_belief_certainty,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,GODBELI,god_belief_history,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which best describes your belief about God? (1=never believed; 2=used to believe; 3=now believe; 4=always believed),1=항상 신을 믿지 않았다; 2=과거에는 믿었으나 현재는 믿지 않는다; 3=과거에는 믿지 않았으나 현재는 믿고 있다; 4=항상 신을 믿어왔다; CATEGORICAL (non-monotonic),ISSP Religion GODBELI. Categorical/typological.
+w2009,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,GODBELI,god_belief_history,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which best describes your belief about God? (1=never believed; 2=used to believe; 3=now believe; 4=always believed),1=항상 신을 믿지 않았다; 2=과거에는 믿었으나 현재는 믿지 않는다; 3=과거에는 믿지 않았으나 현재는 믿고 있다; 4=항상 신을 믿어왔다; CATEGORICAL (non-monotonic),ISSP Religion GODBELI. Categorical/typological.
+w2021,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,GODBELI,god_belief_history,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",About how often do you pray?,1=전혀 하지 않음 (Never); 2-10=increasing frequency; 11=하루에 여러 번 (Several times a day); IDENTITY,ISSP Religion PRAYFREQ. 11-point scale.
+w2009,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",About how often do you pray?,1=전혀 하지 않음 (Never); 2-10=increasing frequency; 11=하루에 여러 번 (Several times a day); IDENTITY,ISSP Religion PRAYFREQ. 11-point scale.
+w2021,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,PRAYFREQ,prayer_frequency,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which of the following best describes you?,1=Religious + spiritual; 2=Religious not spiritual; 3=Not religious but spiritual; 4=Neither; CATEGORICAL (typological 2x2),ISSP Religion SPIRITUA. 2x2 typology.
+w2009,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Which of the following best describes you?,1=Religious + spiritual; 2=Religious not spiritual; 3=Not religious but spiritual; 4=Neither; CATEGORICAL (typological 2x2),ISSP Religion SPIRITUA. 2x2 typology.
+w2021,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,SPIRITUA,spirituality_orientation,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,RELNW1,belief_afterlife,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in life after death?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW1.
+w2009,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,RELNW1,belief_afterlife,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in life after death?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW1.
+w2021,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,RELNW1,belief_afterlife,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,RELNW2,belief_heaven,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in heaven (천당/극락)?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW2. Korean Buddhist 극락 + Christian heaven.
+w2009,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,RELNW2,belief_heaven,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in heaven (천당/극락)?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW2. Korean Buddhist 극락 + Christian heaven.
+w2021,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,RELNW2,belief_heaven,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,RELNW3,belief_hell,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in hell?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW3.
+w2009,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,RELNW3,belief_hell,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in hell?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW3.
+w2021,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,RELNW3,belief_hell,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in religious miracles?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW4.
+w2009,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in religious miracles?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW4.
+w2021,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,RELNW4,belief_religious_miracles,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2004,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2005,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2006,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2007,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2008,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in the supernatural power of ancestors?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW7. Korean-specific (ancestral spirit belief).
+w2009,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2010,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2011,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2012,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2013,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2014,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2016,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2018,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),"Now, some questions about religion and beliefs.",Do you believe in the supernatural power of ancestors?,1=확실히 믿는다 (Definitely believe); 2=대체로 믿는다; 3=대체로 믿지 않는다; 4=전혀 믿지 않는다 (Don't believe at all); Harmonized: reversed so higher=stronger belief,ISSP Religion RELNW7. Korean-specific (ancestral spirit belief).
+w2021,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2023,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2025,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave

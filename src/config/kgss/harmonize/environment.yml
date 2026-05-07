@@ -1,0 +1,397 @@
+# KGSS Environment — ISSP Environment module items
+#
+# Nineteen variables across four sub-batteries from the ISSP Environment
+# rotation in KGSS:
+#
+#   (1) Environmental concern + willingness to pay/sacrifice — GRNCON,
+#       GRNPRICE, GRNTAXES, GRNSOL                                   (3 waves)
+#   (2) Personal-action attitudes (Likert agreement)                — TOODIFME,
+#       IHLPGRN, IMPGRN, OTHSSAME, GRNEXAGG                         (2 waves: 2010, 2021)
+#   (3) Modern-life / progress / science views                     — HARMSGRN,
+#       GRNECON, GRNPROG, GRWTHELP, GRWTHARM, SCIGRN                (2-3 waves)
+#   (4) Pollution-source threat perception                         — CARSGEN,
+#       INDUSGEN, CHEMGEN, WATERGEN                                 (3 waves)
+#
+# WAVE COVERAGE: 2010, 2014 (partial), 2021. KGSS does not field 2020.
+# Items rotate as the ISSP Environment module rotates internationally.
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# All items REVERSED. Raw scales:
+#   - Likert agreement items: 1=매우 동의 → 5=매우 반대 → REVERSE so higher = stronger agreement
+#   - Willingness-to-pay items: 1=매우 의향 → 5=전혀 의향 없음 → REVERSE so higher = more willing
+#   - Threat-perception items: 1=절대적 위험 → 5=전혀 위험하지 않다 → REVERSE so higher = more perceived threat
+#
+# SUBSTANTIVE DIRECTION (after reversal):
+# Pro-environment items where high = more pro-env: env_concern_overall,
+# env_pay_higher_*, env_lower_living_standard, env_do_right_costly, env_growth_harms,
+# env_modern_life_harms, env_future_concern, env_progress_harms, env_threat_*.
+# Anti-environment / cynicism items where high = stronger anti-env stance:
+# env_too_difficult, env_other_things_more_imp, env_meaningless_alone,
+# env_threats_exaggerated, env_growth_needs_protection, env_science_can_solve.
+# Each item's note documents the substantive interpretation.
+#
+# DROPPED FROM THIS SPEC:
+#   - GOVSPD1 (env spending; already in role_of_government.yml as gov_spend_environment, 7 waves)
+#   - NATENVIR (1 wave 2003 only — single-wave drop)
+#   - GOVPER6 (current-govt env performance; 3 waves but mixes administrations)
+#   - HELPHARM, GRNEFFME, KNWCAUSE, KNOWSOL, ENTRBUS, ENPRBFAM (specialty items, narrow coverage)
+#   - BYELESEN, NOTBYENV, BYREUSAB, BYRECYCL (green-purchasing; 2 waves; substantively distinct from attitudes)
+#   - VULNERAB, EXPOS, HAZA, CAPA env-risk batteries (different module — disaster risk, not ISSP)
+#
+# MISSING CONVENTIONS:
+#   -8 = DK, -1 = IAP, 8 = 선택할 수 없음 (can't choose)
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8]
+    description: "KGSS ISSP Environment: -8=DK, -1=IAP, 8=can't choose"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (1) Environmental concern + willingness to pay/sacrifice
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: env_concern_overall
+    concept: environment
+    description: "Overall worry about the environment (1-5, identity, higher=more concerned)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw GRNCON: 1=전혀 걱정을 안한다 (not worried at all) → 5=매우 걱정을 한다 (very worried). IDENTITY — note this item runs OPPOSITE direction to the other ISSP items in this module (which all use 1=most → 5=least and need reversal). GRNCON is already in the user-rule direction."
+    source:
+      w2010: GRNCON
+      w2014: GRNCON
+      w2021: GRNCON
+    scale: {min: 1, max: 5, labels: {1: "Not concerned at all", 5: "Very concerned"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_pay_higher_prices
+    concept: environment
+    description: "Willingness to pay higher prices to protect the environment (1-5, reversed so higher=more willing)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw GRNPRICE: 1=very willing → 5=not at all willing. Reversed."
+    source:
+      w2010: GRNPRICE
+      w2014: GRNPRICE
+      w2021: GRNPRICE
+    scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_pay_higher_taxes
+    concept: environment
+    description: "Willingness to pay higher taxes to protect the environment (1-5, reversed so higher=more willing)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw GRNTAXES. Reversed."
+    source:
+      w2010: GRNTAXES
+      w2014: GRNTAXES
+      w2021: GRNTAXES
+    scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_lower_living_standard
+    concept: environment
+    description: "Willingness to lower one's standard of living to protect the environment (1-5, reversed so higher=more willing)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw GRNSOL. Reversed. The most demanding cost-tolerance item in the willingness-to-pay battery; expected lower endorsement than GRNPRICE/GRNTAXES."
+    source:
+      w2010: GRNSOL
+      w2014: GRNSOL
+      w2021: GRNSOL
+    scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (2) Personal-action attitudes (Likert agreement, all 1-5)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: env_too_difficult
+    concept: environment
+    description: "Agreement that it is too difficult for someone like me to do much for the environment (1-5, reversed so higher=stronger agreement; ANTI-action stance)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw TOODIFME. Reversed so higher = stronger agreement. ANTI-environmental-action framing — high = more learned helplessness."
+    source:
+      w2010: TOODIFME
+      w2021: TOODIFME
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_do_right_costly
+    concept: environment
+    description: "Agreement that one does what is right for the environment even when it costs money or time (1-5, reversed so higher=stronger agreement; PRO-action stance)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw IHLPGRN. Reversed. PRO-environmental-action self-identification."
+    source:
+      w2010: IHLPGRN
+      w2021: IHLPGRN
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_other_things_more_imp
+    concept: environment
+    description: "Agreement that there are more important things in life than environmental protection (1-5, reversed so higher=stronger agreement; ANTI-priority stance)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw IMPGRN. Reversed. ANTI-environmental-priority framing."
+    source:
+      w2010: IMPGRN
+      w2021: IMPGRN
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_meaningless_alone
+    concept: environment
+    description: "Agreement that there is no point in doing what one can for the environment unless others do the same (1-5, reversed so higher=stronger agreement; collective-action cynicism)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw OTHSSAME. Reversed. Cynical / collective-action-failure framing."
+    source:
+      w2010: OTHSSAME
+      w2021: OTHSSAME
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_threats_exaggerated
+    concept: environment
+    description: "Agreement that many environmental threats are exaggerated (1-5, reversed so higher=stronger agreement; skepticism)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw GRNEXAGG. Reversed. Environmental-skepticism marker."
+    source:
+      w2010: GRNEXAGG
+      w2021: GRNEXAGG
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (3) Modern-life / progress / science / growth
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: env_modern_life_harms
+    concept: environment
+    description: "Agreement that almost everything we do in modern life harms the environment (1-5, reversed so higher=stronger agreement; PRO-env diagnosis)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw HARMSGRN. Reversed. PRO-environment diagnosis."
+    source:
+      w2010: HARMSGRN
+      w2021: HARMSGRN
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_future_concern
+    concept: environment
+    description: "Agreement that we worry too much about the future of the environment and not enough about prices and jobs today (1-5, reversed so higher=stronger agreement; ANTI-env priority)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw GRNECON. Reversed. NOTE: this is a 'jobs vs env' framing — high = stronger preference for prices/jobs over env."
+    source:
+      w2010: GRNECON
+      w2021: GRNECON
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_progress_harms
+    concept: environment
+    description: "Agreement that human progress is harmful to the environment (1-5, reversed so higher=stronger agreement; PRO-env diagnosis)"
+    type: ordinal
+    note: "2 waves (2010, 2021). Raw GRNPROG. Reversed. PRO-environment diagnosis. Pairs analytically with env_modern_life_harms."
+    source:
+      w2010: GRNPROG
+      w2021: GRNPROG
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_growth_needs_protection
+    concept: environment
+    description: "Agreement that economic growth always harms the environment, OR that environmental protection requires economic growth (1-5, reversed so higher=stronger agreement; complex framing — see note)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw GRWTHELP — '환경보호를 위한 경제성장 필요성에 대한 의견'. Reversed. The Korean stem can read as 'environmental protection requires economic growth' (PRO-growth framing). High agreement = endorses growth-as-precondition view, which is typically a CONSERVATIVE green stance ('grow first, protect later')."
+    source:
+      w2010: GRWTHELP
+      w2014: GRWTHELP
+      w2021: GRWTHELP
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_growth_harms
+    concept: environment
+    description: "Agreement that economic growth always harms the environment (1-5, reversed so higher=stronger agreement; PRO-env framing)"
+    type: ordinal
+    note: "2 waves (2010, 2014). NOT in 2021. Raw GRWTHARM. Reversed. PRO-environment / anti-growth framing. Analytically opposes env_growth_needs_protection — together they probe the green-vs-developmentalist axis in Korean attitudes."
+    source:
+      w2010: GRWTHARM
+      w2014: GRWTHARM
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_science_can_solve
+    concept: environment
+    description: "Agreement that modern science will solve our environmental problems with little change to our way of life (1-5, reversed so higher=stronger agreement; technological optimism)"
+    type: ordinal
+    note: "3 waves (2010, 2013, 2021). Raw SCIGRN. NOTE the 2013 wave (not 2014) — unusual ISSP rotation timing. Reversed. Technological-optimism stance."
+    source:
+      w2010: SCIGRN
+      w2013: SCIGRN
+      w2021: SCIGRN
+    scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # (4) Pollution-source threat perception (1-5)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: env_threat_cars
+    concept: environment
+    description: "Perceived threat from car air pollution (1-5, reversed so higher=more dangerous)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw CARSGEN: 1=절대적으로 위험하다 (absolutely dangerous) → 5=전혀 위험하지 않다 (not dangerous at all). Reversed."
+    source:
+      w2010: CARSGEN
+      w2014: CARSGEN
+      w2021: CARSGEN
+    scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_threat_industry
+    concept: environment
+    description: "Perceived threat from industrial air pollution (1-5, reversed so higher=more dangerous)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw INDUSGEN. Reversed."
+    source:
+      w2010: INDUSGEN
+      w2014: INDUSGEN
+      w2021: INDUSGEN
+    scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_threat_chemicals
+    concept: environment
+    description: "Perceived threat from agricultural chemicals / pesticides (1-5, reversed so higher=more dangerous)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw CHEMGEN. Reversed."
+    source:
+      w2010: CHEMGEN
+      w2014: CHEMGEN
+      w2021: CHEMGEN
+    scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true
+
+  - id: env_threat_water
+    concept: environment
+    description: "Perceived threat from water pollution (rivers and lakes) (1-5, reversed so higher=more dangerous)"
+    type: ordinal
+    note: "3 waves (2010, 2014, 2021). Raw WATERGEN. Reversed."
+    source:
+      w2010: WATERGEN
+      w2014: WATERGEN
+      w2021: WATERGEN
+    scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      skip_unmapped_check: true

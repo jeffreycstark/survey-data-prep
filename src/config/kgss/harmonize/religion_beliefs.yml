@@ -1,0 +1,247 @@
+# KGSS Religion (beliefs) — ISSP Religion module belief items
+#
+# Ten variables across two sub-batteries.
+#
+# Distinct from existing demographic religion items:
+#   - `religion` (in demographics.yml): nominal categorical affiliation
+#     (Protestant / Buddhist / Catholic / none / other). All 17 waves.
+#   - `religious_attendance` (in demographics.yml): frequency of attendance.
+#     12 waves of various scales.
+# This file harmonizes the BELIEF dimension — what the respondent actually
+# believes about supernatural/religious propositions, regardless of formal
+# affiliation or church-going behavior. Substantively distinct: a Korean
+# can attend a Buddhist temple regularly without believing in heaven, or
+# never attend services while believing in ancestors' spirits.
+#
+# WAVE COVERAGE: most items are 2 waves (2008 + 2018), the two KGSS
+# fieldings of the ISSP Religion module. RELITEN (religiosity intensity
+# among the religious) runs all 17 waves but conditions on having a religion
+# — it is more demographic than belief-content.
+#
+# DIRECTIONALITY (project-wide rule: higher numeric = more intensity).
+# Mixed reversals — some raw items already run higher = more belief, others
+# do not. Per-item reversal documented in each note.
+#
+# DROPPED FROM THIS SPEC (1-wave items):
+#   - RELNW5 (reincarnation): 2008 only
+#   - RELNW6 (nirvana): 2008 only
+#   - PRAYHELP (prayed in critical situations): 2018 only
+#   - RELFREE (govt non-interference w/ religion): 2018 only
+#   - CONFUCIN (Confucian belief): 2016 only
+# Each could be added in a follow-up if a paper needs them; harvested
+# under a kgss/religion_beliefs_singlewave.yml or similar.
+
+missing_conventions:
+  treat_as_na:
+    codes: [-8, -1, 8, 9, 88, 98, 99]
+    description: "KGSS ISSP Religion: -8=DK, -1=IAP, 8/88/98=DK/refusal, 9/99=IAP"
+
+variables:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # General religiosity intensity (multi-wave)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: religiosity_intensity
+    concept: religion_beliefs
+    description: "Self-rated strength of religious faith among the religious (1-3, reversed so higher=stronger faith)"
+    type: ordinal
+    note: "17 waves (all). Raw RELITEN: 1=강하다 (strong), 2=다소 강하다 (somewhat strong), 3=별로 강하지 않다 (not very strong). Reversed so higher = stronger faith. Conditional on having a religion (asked only if respondent reports religious affiliation in `religion` item). Per-wave n declines from ~736 (2003) to ~505 (2025) — consistent with secularization. NOTE this is a MEASURE OF INTENSITY among the religious, NOT a measure of religious-vs-secular distribution; for the latter use `religion` from demographics.yml."
+    source:
+      w2003: RELITEN
+      w2004: RELITEN
+      w2005: RELITEN
+      w2006: RELITEN
+      w2007: RELITEN
+      w2008: RELITEN
+      w2009: RELITEN
+      w2010: RELITEN
+      w2011: RELITEN
+      w2012: RELITEN
+      w2013: RELITEN
+      w2014: RELITEN
+      w2016: RELITEN
+      w2018: RELITEN
+      w2021: RELITEN
+      w2023: RELITEN
+      w2025: RELITEN
+    scale: {min: 1, max: 3, labels: {1: "Not very strong", 3: "Strong"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_3pt
+    qc:
+      valid_range: [1, 3]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Belief in God / supernatural (2 waves: 2008, 2018)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: god_belief_certainty
+    concept: religion_beliefs
+    description: "Certainty of belief in God's existence (1-6, identity, higher=more certain belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw GODCONC ISSP scale: 1=I don't believe in God, 2=Don't know if there is a way to know, 3=Don't believe in God but believe in some higher power, 4=Sometimes believe sometimes not, 5=Believe though with doubts, 6=Know God exists, no doubt. Identity (higher = more certain belief)."
+    source:
+      w2008: GODCONC
+      w2018: GODCONC
+    scale: {min: 1, max: 6, labels: {1: "Don't believe in God", 6: "No doubt that God exists"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+      skip_unmapped_check: true
+
+  - id: god_belief_history
+    concept: religion_beliefs
+    description: "History of belief in God (1=never, 2=past-only, 3=current convert, 4=lifelong believer)"
+    type: categorical
+    note: "2 waves (2008, 2018). Raw GODBELI: 1=I never believed in God, 2=I used to believe but no longer do, 3=I didn't used to believe but I now believe, 4=I have always believed in God. Categorical-ordinal — higher numbers tend toward stronger CURRENT belief, but the trajectory structure (2 = past-only believer) is non-monotonic in a single dimension. Treat as nominal in regression; for an ordinal use, collapse 1+2 (no current belief) vs 3+4 (current belief)."
+    source:
+      w2008: GODBELI
+      w2018: GODBELI
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never believed in God"
+        2: "Used to believe, no longer do"
+        3: "Didn't use to believe, now do"
+        4: "Have always believed in God"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: prayer_frequency
+    concept: religion_beliefs
+    description: "Frequency of prayer (1=never → 11=several times a day, identity)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw PRAYFREQ: 11-point ISSP frequency scale from 1=전혀 하지 않음 (never) to 11=하루에 여러 번 (several times a day). Identity (higher = more frequent). NOTE 11-point scale is unusual for ISSP and adds resolution between weekly and daily devotion."
+    source:
+      w2008: PRAYFREQ
+      w2018: PRAYFREQ
+    scale: {min: 1, max: 11, labels: {1: "Never", 11: "Several times a day"}}
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 11]
+      skip_unmapped_check: true
+
+  - id: spirituality_orientation
+    concept: religion_beliefs
+    description: "Self-categorization on religion × spirituality (1-4 categorical: 1=religious & spiritual → 4=neither)"
+    type: categorical
+    note: "2 waves (2008, 2018). Raw SPIRITUA: 4-cell typology crossing religious affiliation × interest in supernatural/spiritual: 1=religious & spiritual, 2=religious but not spiritual, 3=not religious but spiritual, 4=neither religious nor spiritual. Categorical/typological — not ordinal-intensity. The two-axis structure means a single 'higher = more' interpretation doesn't apply; reverse-coding would be misleading. Use as a nominal predictor or as a derived binary (e.g., 'any spiritual orientation' = 1+3 vs 'no spiritual orientation' = 2+4)."
+    source:
+      w2008: SPIRITUA
+      w2018: SPIRITUA
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Religious and spiritual"
+        2: "Religious but not spiritual"
+        3: "Not religious but spiritual"
+        4: "Neither religious nor spiritual"
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # ISSP RELNW battery — belief in specific religious phenomena (2 waves: 2008, 2018)
+  # All raw 1-4: 1=확실히 믿는다 → 4=전혀 믿지 않는다. REVERSED so higher = stronger belief.
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - id: belief_afterlife
+    concept: religion_beliefs
+    description: "Belief in life after death (1-4, reversed so higher=stronger belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw RELNW1: 1=확실히 믿는다 → 4=전혀 믿지 않는다. Reversed so higher = stronger belief in afterlife."
+    source:
+      w2008: RELNW1
+      w2018: RELNW1
+    scale: {min: 1, max: 4, labels: {1: "Don't believe at all", 4: "Definitely believe"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: belief_heaven
+    concept: religion_beliefs
+    description: "Belief in heaven / paradise (1-4, reversed so higher=stronger belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw RELNW2 (천당/극락): heaven (Christian) or paradise (Buddhist 극락정토). Reversed."
+    source:
+      w2008: RELNW2
+      w2018: RELNW2
+    scale: {min: 1, max: 4, labels: {1: "Don't believe at all", 4: "Definitely believe"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: belief_hell
+    concept: religion_beliefs
+    description: "Belief in hell (1-4, reversed so higher=stronger belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw RELNW3. Reversed."
+    source:
+      w2008: RELNW3
+      w2018: RELNW3
+    scale: {min: 1, max: 4, labels: {1: "Don't believe at all", 4: "Definitely believe"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: belief_religious_miracles
+    concept: religion_beliefs
+    description: "Belief in religious miracles (1-4, reversed so higher=stronger belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw RELNW4. Reversed."
+    source:
+      w2008: RELNW4
+      w2018: RELNW4
+    scale: {min: 1, max: 4, labels: {1: "Don't believe at all", 4: "Definitely believe"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
+
+  - id: belief_ancestors_supernatural
+    concept: religion_beliefs
+    description: "Belief in supernatural power of ancestors (1-4, reversed so higher=stronger belief)"
+    type: ordinal
+    note: "2 waves (2008, 2018). Raw RELNW7 (조상의 초자연적 힘). Reversed. Korean-specific item — taps Confucian / shamanic ancestral-spirit belief, distinct from Abrahamic / Buddhist supernatural belief in the rest of the battery."
+    source:
+      w2008: RELNW7
+      w2018: RELNW7
+    scale: {min: 1, max: 4, labels: {1: "Don't believe at all", 4: "Definitely believe"}}
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      skip_unmapped_check: true
