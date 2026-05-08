@@ -124,14 +124,19 @@ report_missing <- function(data, vars, by_country = TRUE, label = NULL) {
 # VALIDATION HELPERS
 # ==============================================================================
 
-#' Hard validation: Check values are within expected range
+#' Hard validation: assert listed columns are within [min, max]
+#'
+#' Stops with an error if any column has out-of-range values. Distinct from
+#' validate_range() in src/r/utils/validation.R, which inspects a single
+#' vector and returns a status list. Renamed from validate_range() on
+#' 2026-05-08 to fix a name collision; previously had no callers.
 #'
 #' @param data Dataframe
 #' @param vars Character vector of variable names to check
 #' @param min Minimum valid value
 #' @param max Maximum valid value
 #' @param label Optional label for error message
-validate_range <- function(data, vars, min, max, label = NULL) {
+assert_columns_in_range <- function(data, vars, min, max, label = NULL) {
 
   for (var in vars) {
     if (!var %in% names(data)) {
