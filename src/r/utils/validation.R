@@ -594,251 +594,231 @@ validate_range <- function(harmonized_vec, valid_range) {
 #' @param wave_name Wave name (e.g., "w1")
 #' @param missing_codes Codes to treat as missing
 #' @return List with all validation results
-validate_variable_wave <- function(raw_data, harmonized_data, var_spec,
-                                   wave_name, missing_codes = c()) {
+# ============================================================================
+# validate_variable_wave helpers (private; underscore-prefixed)
+# Each helper does one thing so the orchestrator below reads top-to-bottom.
+# ============================================================================
 
+# Functions whose transformation can't be checked via correlation
+# (categorical recodes, monotonicity-breaking collapses, date extracts).
+.vvw_skip_transform_fns <- c(
+  "extract_month_from_date", "extract_year_from_date",
+  "collapse_5pt_leader_to_3pt", "collapse_10pt_to_6pt",
+  "collapse_5pt_to_4pt_then_reverse", "collapse_6pt_to_4pt_reverse",
+  "safe_6pt_to_4pt", "recode_w1_discuss", "recode_w6_corruption",
+  "middle_identity_5pt", "middle_reverse_5pt"
+)
+
+# Existence + length preflight. Returns a complete early-result list
+# if validation can't proceed, or NULL to signal "continue".
+.vvw_preflight <- function(raw_data, harmonized_data, var_spec, wave_name) {
   var_id <- var_spec$id
   source_var <- var_spec$source[[wave_name]]
 
-  # Check if source variable exists in this wave
   if (is.null(source_var) || !source_var %in% names(raw_data)) {
     return(list(
-      var_id = var_id,
-      wave = wave_name,
-      status = "skip",
+      var_id = var_id, wave = wave_name, status = "skip",
       message = sprintf("Source variable '%s' not in wave", source_var %||% "NULL"),
       checks = list()
     ))
   }
-
-  # Check if harmonized variable exists
   if (!var_id %in% names(harmonized_data)) {
     return(list(
-      var_id = var_id,
-      wave = wave_name,
-      status = "error",
+      var_id = var_id, wave = wave_name, status = "error",
       message = sprintf("Harmonized variable '%s' not found in output", var_id),
       checks = list()
     ))
   }
-
-  # Extract vectors
-  raw_vec <- raw_data[[source_var]]
-  harmonized_vec <- harmonized_data[[var_id]]
-
-  if (length(harmonized_vec) != length(raw_vec)) {
+  raw_n <- length(raw_data[[source_var]])
+  harm_n <- length(harmonized_data[[var_id]])
+  if (raw_n != harm_n) {
     return(list(
-      var_id = var_id,
-      wave = wave_name,
-      source_var = source_var,
-      transform_type = NA_character_,
-      status = "error",
-      checks = list(
-        length_check = list(
-          status = "error",
-          check = "length",
-          message = sprintf(
-            "Length mismatch: raw=%d, harmonized=%d",
-            length(raw_vec), length(harmonized_vec)
-          )
-        )
-      )
+      var_id = var_id, wave = wave_name, source_var = source_var,
+      transform_type = NA_character_, status = "error",
+      checks = list(length_check = list(
+        status = "error", check = "length",
+        message = sprintf("Length mismatch: raw=%d, harmonized=%d", raw_n, harm_n)
+      ))
     ))
   }
+  NULL
+}
 
-  # Convert haven_labelled if needed
+# Pure: classifies a wave_rule as identity / reverse / scale_convert / skip.
+# "skip" means correlation-based transformation check is meaningless.
+.vvw_classify_transform <- function(wave_method, fn_name) {
+  if (wave_method == "identity") return("identity")
+  if (wave_method %in% c("recode", "derive")) return("skip")
+  if (grepl("reverse", fn_name, ignore.case = TRUE)) return("reverse")
+  "scale_convert"
+}
+
+# Resolves the three "what to compare against" vectors. Defaults to raw_vec;
+# `derive` reruns the derive function (so coverage/crosstab compare against
+# the same multi-source input the harmonizer used); `extract_*_from_date`
+# recomputes raw_for_coverage so coverage compares year/month, not the date.
+.vvw_resolve_check_vecs <- function(raw_vec, raw_data, source_var, wave_method,
+                                    wave_rule, fn_name, wave_name, missing_codes) {
+  out <- list(
+    raw_vec_check = raw_vec,
+    raw_for_coverage = raw_vec,
+    crosstab_missing_codes = missing_codes
+  )
+
+  if (wave_method == "derive" && nzchar(fn_name) && exists(fn_name, mode = "function")) {
+    derived <- get(fn_name, mode = "function")(
+      data = raw_data, wave_name = wave_name, sources = wave_rule$sources %||% NULL
+    )
+    out$raw_vec_check <- derived
+    out$raw_for_coverage <- derived
+    out$crosstab_missing_codes <- numeric(0)
+  }
+
+  if (fn_name %in% c("extract_month_from_date", "extract_year_from_date") &&
+      exists(fn_name, mode = "function")) {
+    out$raw_for_coverage <- get(fn_name, mode = "function")(
+      raw_vec, data = raw_data, var_name = source_var
+    )
+  }
+
+  out
+}
+
+# Assembles the missing-codes vector used by the coverage check. Pulls in
+# wave-agnostic and wave-specific YAML-declared codes, and (for the recode
+# method) any source codes that map to NULL/NA — those are intentional drops,
+# not coverage loss.
+.vvw_collect_coverage_codes <- function(var_spec, wave_name, wave_method,
+                                        wave_rule, missing_codes) {
+  codes <- missing_codes
+
+  qc_codes <- var_spec$qc[["coverage_missing_codes"]]
+  if (!is.null(qc_codes)) {
+    codes <- unique(c(codes, as.numeric(qc_codes)))
+  }
+  qc_codes_wave <- var_spec$qc[["coverage_missing_codes_by_wave"]][[wave_name]]
+  if (!is.null(qc_codes_wave)) {
+    codes <- unique(c(codes, as.numeric(qc_codes_wave)))
+  }
+
+  if (wave_method == "derive") return(numeric(0))
+
+  if (wave_method == "recode" && !is.null(wave_rule$mapping)) {
+    drop_mask <- vapply(
+      wave_rule$mapping,
+      function(v) is.null(v) || (length(v) == 1 && is.na(v)),
+      logical(1)
+    )
+    if (any(drop_mask)) {
+      drop_codes <- suppressWarnings(as.numeric(names(wave_rule$mapping)[drop_mask]))
+      drop_codes <- drop_codes[!is.na(drop_codes)]
+      codes <- unique(c(codes, drop_codes))
+    }
+  }
+  codes
+}
+
+# Encapsulates the 5-way branching for the transformation check:
+# nominal var, user skip flag, method-derived skip, grouped run, regular run.
+.vvw_run_transformation_check <- function(raw_vec_check, harmonized_vec,
+                                          var_spec, transform_type, fn_name,
+                                          group_vec) {
+  is_nominal <- (var_spec$type %||% "ordinal") == "nominal"
+
+  if (is_nominal) {
+    return(list(status = "skip", check = "transformation",
+                message = "Skipped: nominal/categorical variable (correlation not meaningful)"))
+  }
+  if (isTRUE(var_spec$qc$skip_transformation_check)) {
+    return(list(status = "skip", check = "transformation",
+                message = "Skipped: skip_transformation_check set in YAML"))
+  }
+  if (transform_type == "skip" || fn_name %in% .vvw_skip_transform_fns) {
+    return(list(status = "skip", check = "transformation",
+                message = "Skipped: transformation not monotonic or not comparable"))
+  }
+  if (!is.null(group_vec)) {
+    return(validate_transformation_grouped(
+      raw_vec_check, harmonized_vec, group_vec,
+      method = transform_type,
+      allow_reverse = isTRUE(var_spec$qc$transformation_allow_reverse)
+    ))
+  }
+  validate_transformation(raw_vec_check, harmonized_vec, transform_type)
+}
+
+# ============================================================================
+
+validate_variable_wave <- function(raw_data, harmonized_data, var_spec,
+                                   wave_name, missing_codes = c()) {
+
+  early <- .vvw_preflight(raw_data, harmonized_data, var_spec, wave_name)
+  if (!is.null(early)) return(early)
+
+  var_id <- var_spec$id
+  source_var <- var_spec$source[[wave_name]]
+  raw_vec <- raw_data[[source_var]]
   if (inherits(raw_vec, "haven_labelled")) {
     raw_vec <- as.numeric(haven::zap_labels(raw_vec))
   }
+  harmonized_vec <- harmonized_data[[var_id]]
 
-  # Determine transformation method (align with harmonize_variable).
   # resolve_wave_rule() lives in src/r/harmonize/harmonize.R; production
   # scripts source _load_harmonize.R before calling validate_variable_wave().
   wave_rule <- resolve_wave_rule(var_spec, wave_name)
   wave_method <- wave_rule$method %||% "identity"
   fn_name <- wave_rule$fn %||% ""
+  transform_type <- .vvw_classify_transform(wave_method, fn_name)
 
-  if (wave_method == "identity") {
-    transform_type <- "identity"
-  } else if (wave_method %in% c("recode", "derive")) {
-    transform_type <- "skip"
-  } else if (grepl("reverse", fn_name, ignore.case = TRUE)) {
-    transform_type <- "reverse"
-  } else {
-    transform_type <- "scale_convert"
-  }
-
-  # Get valid range
-  valid_range <- var_spec$qc$valid_range_by_wave[[wave_name]] %||%
-                 var_spec$qc$valid_range %||%
-                 NULL
-
-  # Get variable type (nominal variables skip correlation validation)
-  var_type <- var_spec$type %||% "ordinal"
-  is_nominal <- var_type == "nominal"
-
-  group_by <- var_spec$qc$group_by %||% NULL
-  group_vec <- NULL
-  if (!is.null(group_by)) {
-    group_vec <- prepare_group_vec(raw_data, group_by)
-  }
-
-  raw_vec_check <- raw_vec
-  raw_for_coverage <- raw_vec
-  crosstab_missing_codes <- missing_codes
-
-  if (wave_method == "derive" && nzchar(fn_name) && exists(fn_name, mode = "function")) {
-    raw_vec_check <- get(fn_name, mode = "function")(
-      data = raw_data,
-      wave_name = wave_name,
-      sources = wave_rule$sources %||% NULL
-    )
-    raw_for_coverage <- raw_vec_check
-    crosstab_missing_codes <- numeric(0)
-  }
-
-  skip_transform_check <- isTRUE(var_spec$qc$skip_transformation_check)
-  skip_coverage_check <- isTRUE(var_spec$qc$skip_coverage_check)
-  skip_crosstab_check <- isTRUE(var_spec$qc$skip_crosstab_check)
-  allow_reverse <- isTRUE(var_spec$qc$transformation_allow_reverse)
-
-  # Run all checks
-  # Skip transformation (correlation) check for nominal/categorical variables
-  skip_transform_fns <- c(
-    "extract_month_from_date",
-    "extract_year_from_date",
-    "collapse_5pt_leader_to_3pt",
-    "collapse_10pt_to_6pt",
-    "collapse_5pt_to_4pt_then_reverse",
-    "collapse_6pt_to_4pt_reverse",
-    "safe_6pt_to_4pt",
-    "recode_w1_discuss",
-    "recode_w6_corruption",
-    "middle_identity_5pt",
-    "middle_reverse_5pt"
+  vecs <- .vvw_resolve_check_vecs(
+    raw_vec, raw_data, source_var, wave_method,
+    wave_rule, fn_name, wave_name, missing_codes
   )
-  if (is_nominal) {
-    transformation_result <- list(
-      status = "skip",
-      check = "transformation",
-      message = "Skipped: nominal/categorical variable (correlation not meaningful)"
-    )
-  } else if (skip_transform_check) {
-    transformation_result <- list(
-      status = "skip",
-      check = "transformation",
-      message = "Skipped: skip_transformation_check set in YAML"
-    )
-  } else if (transform_type == "skip" || fn_name %in% skip_transform_fns) {
-    transformation_result <- list(
-      status = "skip",
-      check = "transformation",
-      message = "Skipped: transformation not monotonic or not comparable"
-    )
-  } else if (!is.null(group_vec)) {
-    transformation_result <- validate_transformation_grouped(
-      raw_vec_check,
-      harmonized_vec,
-      group_vec,
-      method = transform_type,
-      allow_reverse = allow_reverse
-    )
-  } else {
-    transformation_result <- validate_transformation(raw_vec_check, harmonized_vec, transform_type)
-  }
 
-  coverage_missing_codes <- missing_codes
-  if (!is.null(var_spec$qc[["coverage_missing_codes"]])) {
-    coverage_missing_codes <- unique(c(
-      coverage_missing_codes,
-      as.numeric(var_spec$qc[["coverage_missing_codes"]])
-    ))
-  }
-  if (!is.null(var_spec$qc[["coverage_missing_codes_by_wave"]][[wave_name]])) {
-    coverage_missing_codes <- unique(c(
-      coverage_missing_codes,
-      as.numeric(var_spec$qc[["coverage_missing_codes_by_wave"]][[wave_name]])
-    ))
-  }
-  if (wave_method == "derive") {
-    coverage_missing_codes <- numeric(0)
-  }
-  if (wave_method == "recode" && !is.null(wave_rule$mapping)) {
-    mapping <- wave_rule$mapping
-    drop_mask <- vapply(
-      mapping,
-      function(v) is.null(v) || (length(v) == 1 && is.na(v)),
-      logical(1)
-    )
-    if (any(drop_mask)) {
-      drop_codes <- suppressWarnings(as.numeric(names(mapping)[drop_mask]))
-      drop_codes <- drop_codes[!is.na(drop_codes)]
-      coverage_missing_codes <- unique(c(coverage_missing_codes, drop_codes))
-    }
-  }
+  group_vec <- prepare_group_vec(raw_data, var_spec$qc$group_by %||% NULL)
 
-  if (fn_name %in% c("extract_month_from_date", "extract_year_from_date")) {
-    if (exists(fn_name, mode = "function")) {
-      raw_for_coverage <- get(fn_name, mode = "function")(
-        raw_vec,
-        data = raw_data,
-        var_name = source_var
-      )
-    }
-  }
+  coverage_codes <- .vvw_collect_coverage_codes(
+    var_spec, wave_name, wave_method, wave_rule, missing_codes
+  )
 
   range_result <- if (isTRUE(var_spec$qc$skip_range_check)) {
-    list(
-      status = "skip",
-      check = "range",
-      message = "Skipped: skip_range_check set in YAML"
-    )
+    list(status = "skip", check = "range",
+         message = "Skipped: skip_range_check set in YAML")
   } else {
+    valid_range <- var_spec$qc$valid_range_by_wave[[wave_name]] %||%
+                   var_spec$qc$valid_range %||% NULL
     validate_range(harmonized_vec, valid_range)
   }
 
   checks <- list(
-    coverage = if (skip_coverage_check) {
-      list(
-        status = "skip",
-        check = "coverage",
-        message = "Skipped: skip_coverage_check set in YAML"
-      )
+    coverage = if (isTRUE(var_spec$qc$skip_coverage_check)) {
+      list(status = "skip", check = "coverage",
+           message = "Skipped: skip_coverage_check set in YAML")
     } else {
-      validate_coverage(raw_for_coverage, harmonized_vec, coverage_missing_codes)
+      validate_coverage(vecs$raw_for_coverage, harmonized_vec, coverage_codes)
     },
-    transformation = transformation_result,
+    transformation = .vvw_run_transformation_check(
+      vecs$raw_vec_check, harmonized_vec, var_spec, transform_type, fn_name, group_vec
+    ),
     range = range_result,
-    crosstab = if (skip_crosstab_check) {
-      list(
-        status = "skip",
-        check = "crosstab",
-        message = "Skipped: skip_crosstab_check set in YAML"
-      )
+    crosstab = if (isTRUE(var_spec$qc$skip_crosstab_check)) {
+      list(status = "skip", check = "crosstab",
+           message = "Skipped: skip_crosstab_check set in YAML")
     } else if (!is.null(group_vec)) {
-      validate_crosstab_grouped(raw_vec_check, harmonized_vec, group_vec, crosstab_missing_codes)
+      validate_crosstab_grouped(vecs$raw_vec_check, harmonized_vec, group_vec,
+                                vecs$crosstab_missing_codes)
     } else {
-      validate_crosstab(raw_vec_check, harmonized_vec, crosstab_missing_codes)
+      validate_crosstab(vecs$raw_vec_check, harmonized_vec, vecs$crosstab_missing_codes)
     }
   )
 
-  # Aggregate status
-  statuses <- sapply(checks, function(x) x$status)
-  if (any(statuses == "error")) {
-    overall_status <- "error"
-  } else if (any(statuses == "warn")) {
-    overall_status <- "warn"
-  } else {
-    overall_status <- "ok"
-  }
+  statuses <- vapply(checks, function(x) x$status, character(1))
+  overall_status <- if (any(statuses == "error")) "error"
+                    else if (any(statuses == "warn")) "warn" else "ok"
 
   list(
-    var_id = var_id,
-    wave = wave_name,
-    source_var = source_var,
-    transform_type = transform_type,
-    status = overall_status,
-    checks = checks
+    var_id = var_id, wave = wave_name, source_var = source_var,
+    transform_type = transform_type, status = overall_status, checks = checks
   )
 }
 
