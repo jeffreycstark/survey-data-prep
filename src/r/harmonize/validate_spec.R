@@ -369,43 +369,50 @@ validate_all_specs <- function(waves,
 
 #' Check if recoding functions exist
 #'
-#' Validates that all r_function harmonization methods have
-#' corresponding functions loaded in environment.
+#' Validates that every r_function/derive rule referenced by the spec —
+#' across the default rule and all wave-specific rules under by_wave,
+#' exceptions, or direct wave keys — names a function loaded in the
+#' calling environment. Mirrors the resolution order used by
+#' harmonize_variable() / resolve_wave_rule().
 #'
 #' @param spec List: parsed YAML specification
 #'
-#' @return List of missing functions, or NULL if all present
+#' @return Character vector of missing function names (empty if all present)
 #'
 #' @export
 check_recoding_functions <- function(spec) {
 
   missing_fns <- character()
 
-  for (var_id in names(spec$variables)) {
-
-    var_spec <- spec$variables[[var_id]]
-
-    # Check default method
-    if (var_spec$harmonize$default$method == "r_function") {
-      fn_name <- var_spec$harmonize$default$fn
-
-      if (!exists(fn_name, mode = "function")) {
-        missing_fns <- c(missing_fns, fn_name)
-      }
+  collect_fn <- function(rule) {
+    if (is.null(rule) || is.null(rule$method)) return()
+    if (!rule$method %in% c("r_function", "derive")) return()
+    fn_name <- rule$fn
+    if (is.null(fn_name) || !nzchar(fn_name)) return()
+    if (!exists(fn_name, mode = "function")) {
+      missing_fns <<- c(missing_fns, fn_name)
     }
+  }
 
-    # Check wave-specific methods
-    for (wave_name in names(var_spec$harmonize$by_wave %||% list())) {
+  # Wave keys NOT to treat as wave-rules at the top level of `harmonize`
+  reserved <- c("default", "by_wave", "exceptions")
 
-      wave_rule <- var_spec$harmonize$by_wave[[wave_name]]
+  for (var_id in names(spec$variables)) {
+    var_spec <- spec$variables[[var_id]]
+    h <- var_spec$harmonize
+    if (is.null(h)) next
 
-      if (wave_rule$method == "r_function") {
-        fn_name <- wave_rule$fn
+    collect_fn(h$default)
 
-        if (!exists(fn_name, mode = "function")) {
-          missing_fns <- c(missing_fns, fn_name)
-        }
-      }
+    for (wave_name in names(h$by_wave %||% list())) {
+      collect_fn(h$by_wave[[wave_name]])
+    }
+    for (wave_name in names(h$exceptions %||% list())) {
+      collect_fn(h$exceptions[[wave_name]])
+    }
+    # v3 format: harmonize.<wave_name> as direct keys
+    for (key in setdiff(names(h), reserved)) {
+      collect_fn(h[[key]])
     }
   }
 

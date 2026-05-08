@@ -182,6 +182,6 @@ No R MCP is currently configured. R code is executed via `Rscript` in Bash.
 
 **Adding a new survey**: Each survey follows the same 3-file pipeline pattern in `src/r/data_prep_modules/{survey}/`: `0_load_waves.R` → `2_harmonize_all.R` → `99_create_final_dataset.R`. YAML specs go in `src/config/{survey}/harmonize/`. The harmonization engine (`src/r/harmonize/harmonize.R`) is shared across all surveys.
 
-**Shared recoding functions** in `src/r/data_prep_modules/1_harmonize_funs.R`: `safe_reverse_4pt()`, `safe_reverse_5pt()`, `recode_5pt_to_4pt()`, `recode_3pt_to_4pt()`. These are referenced by name in YAML spec `fn:` fields and sourced by each survey's `2_harmonize_all.R`.
+**Shared recoding functions** live in `src/r/utils/recoding.R`: `safe_reverse_3pt/4pt/5pt/6pt()`, `safe_3pt/4pt/5pt/6pt_none()`, plus ~90 wave- and survey-specific helpers (`recode_w*_*`, `collapse_*`). These are referenced by name in YAML spec `fn:` fields and reach each survey via `src/r/utils/_load_functions.R`, sourced from each `2_harmonize_all.R`.
 
 **ABS uses validated specs**: Production ABS specs are in `src/config/abs/harmonize_validated/` (28 files), not `harmonize/`.

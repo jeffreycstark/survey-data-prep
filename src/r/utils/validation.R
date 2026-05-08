@@ -651,14 +651,11 @@ validate_variable_wave <- function(raw_data, harmonized_data, var_spec,
     raw_vec <- as.numeric(haven::zap_labels(raw_vec))
   }
 
-  # Determine transformation method (align with harmonize_variable)
-  default_rule <- var_spec$harmonize$default %||% list(method = "identity")
-  wave_rule <- var_spec$harmonize$by_wave[[wave_name]] %||%
-               var_spec$harmonize$exceptions[[wave_name]] %||%
-               var_spec$harmonize[[wave_name]] %||%
-               default_rule
-
-  wave_method <- wave_rule$method %||% default_rule$method %||% "identity"
+  # Determine transformation method (align with harmonize_variable).
+  # resolve_wave_rule() lives in src/r/harmonize/harmonize.R; production
+  # scripts source _load_harmonize.R before calling validate_variable_wave().
+  wave_rule <- resolve_wave_rule(var_spec, wave_name)
+  wave_method <- wave_rule$method %||% "identity"
   fn_name <- wave_rule$fn %||% ""
 
   if (wave_method == "identity") {

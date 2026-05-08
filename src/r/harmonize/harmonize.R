@@ -25,6 +25,28 @@ apply_missing <- function(x, missing_codes) {
   x
 }
 
+#' Resolve the harmonization rule for a given wave
+#'
+#' Walks the documented YAML format precedence:
+#'   v1: harmonize.by_wave.<wave>
+#'   v2: harmonize.exceptions.<wave>
+#'   v3: harmonize.<wave>           (direct wave keys)
+#'   fallback: harmonize.default
+#'
+#' Centralized so harmonize_variable() and validate_variable_wave()
+#' agree on rule resolution. If a v4 format is added, change here only.
+#'
+#' @param var_spec One YAML variable entry
+#' @param wave_name Wave identifier (e.g., "w1", "y2013", "2018")
+#' @return List with at least `method`; never NULL (falls back to identity)
+resolve_wave_rule <- function(var_spec, wave_name) {
+  default_rule <- var_spec$harmonize$default %||% list(method = "identity")
+  var_spec$harmonize$by_wave[[wave_name]] %||%
+    var_spec$harmonize$exceptions[[wave_name]] %||%
+    var_spec$harmonize[[wave_name]] %||%
+    default_rule
+}
+
 # ==============================================================================
 # MAIN HARMONIZATION ENGINE
 # ==============================================================================
@@ -171,15 +193,7 @@ harmonize_variable <- function(
     }
 
     # ---- select harmonization rule ----
-    default_rule <- var_spec$harmonize$default %||% list(method = "identity")
-    # Support multiple YAML formats:
-    # - v1: harmonize.by_wave.w1, harmonize.by_wave.w2...
-    # - v2: harmonize.exceptions.w1, harmonize.exceptions.w2...
-    # - v3: harmonize.w1, harmonize.w2... (direct wave keys)
-    wave_rule <- var_spec$harmonize$by_wave[[wave_name]] %||%
-                 var_spec$harmonize$exceptions[[wave_name]] %||%
-                 var_spec$harmonize[[wave_name]] %||%
-                 default_rule
+    wave_rule <- resolve_wave_rule(var_spec, wave_name)
 
     # ---- apply harmonization method ----
     if (wave_rule$method == "identity") {
@@ -318,6 +332,18 @@ harmonize_variable <- function(
 #'
 #' @export
 harmonize_all <- function(spec, waves, silent = FALSE) {
+
+  # Pre-flight: catch r_function/derive typos before we start the loop,
+  # so a misspelled fn: surfaces once at the top instead of per-variable.
+  missing_fns <- check_recoding_functions(spec)
+  if (length(missing_fns) > 0) {
+    stop(
+      "❌ YAML references recoding functions that aren't loaded:\n  ",
+      paste(missing_fns, collapse = ", "),
+      "\nSource src/r/utils/_load_functions.R, or check for typos in `fn:` fields.",
+      call. = FALSE
+    )
+  }
 
   results <- list()
 

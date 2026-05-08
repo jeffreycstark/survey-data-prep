@@ -25,21 +25,32 @@
   invisible(NULL)
 }
 
+# Internal helper for the safe_*pt family.
+# Public wrappers (safe_reverse_Npt, safe_Npt_none) keep their names because
+# YAML specs reference them via `fn:` and harmonize.R looks them up by name.
+.safe_npt <- function(x,
+                      n,
+                      reverse,
+                      data = NULL,
+                      var_name = NULL,
+                      missing_codes,
+                      validate_all = NULL) {
+  .validate_semantic_label(validate_all, data, var_name)
+  dplyr::case_when(
+    x %in% seq_len(n)     ~ if (reverse) (n + 1) - x else as.numeric(x),
+    x %in% missing_codes  ~ NA_real_,
+    TRUE                  ~ NA_real_
+  )
+}
+
 safe_reverse_3pt <- function(x,
                               data = NULL,
                               var_name = NULL,
                               missing_codes = c(-1, 0, 7, 8, 9),
                               validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- reversal logic ----
-  dplyr::case_when(
-    x %in% 1:3 ~ 4 - x,
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 3, reverse = TRUE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 safe_reverse_4pt <- function(x,
@@ -47,16 +58,9 @@ safe_reverse_4pt <- function(x,
                               var_name = NULL,
                               missing_codes = c(-1, 0, 7, 8, 9),
                               validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- reversal logic ----
-  dplyr::case_when(
-    x %in% 1:4 ~ 5 - x,
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 4, reverse = TRUE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 reverse_trust_vietnam_w2 <- function(x,
@@ -104,16 +108,9 @@ safe_reverse_5pt <- function(x,
                               var_name = NULL,
                               missing_codes = c(-1, 0, 7, 8, 9),
                               validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- reversal logic ----
-  dplyr::case_when(
-    x %in% 1:5 ~ 6 - x,
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 5, reverse = TRUE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 # ==============================================================================
@@ -125,16 +122,9 @@ safe_3pt_none <- function(x,
                            var_name = NULL,
                            missing_codes = c(-1, 0, 7, 8, 9),
                            validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- identity logic (no reversal) ----
-  dplyr::case_when(
-    x %in% 1:3 ~ as.numeric(x),
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 3, reverse = FALSE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 safe_4pt_none <- function(x,
@@ -142,16 +132,9 @@ safe_4pt_none <- function(x,
                            var_name = NULL,
                            missing_codes = c(-1, 0, 7, 8, 9),
                            validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- identity logic (no reversal) ----
-  dplyr::case_when(
-    x %in% 1:4 ~ as.numeric(x),
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 4, reverse = FALSE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 safe_5pt_none <- function(x,
@@ -159,20 +142,14 @@ safe_5pt_none <- function(x,
                            var_name = NULL,
                            missing_codes = c(-1, 0, 7, 8, 9),
                            validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- identity logic (no reversal) ----
-  dplyr::case_when(
-    x %in% 1:5 ~ as.numeric(x),
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 5, reverse = FALSE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 # ==============================================================================
 # 6-POINT SCALE FUNCTIONS
+# Wider missing-code default reflects ABS conventions for 6-pt batteries
 # ==============================================================================
 
 safe_reverse_6pt <- function(x,
@@ -180,16 +157,9 @@ safe_reverse_6pt <- function(x,
                               var_name = NULL,
                               missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
                               validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- reversal logic ----
-  dplyr::case_when(
-    x %in% 1:6 ~ 7 - x,
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 6, reverse = TRUE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 safe_6pt_none <- function(x,
@@ -197,16 +167,9 @@ safe_6pt_none <- function(x,
                            var_name = NULL,
                            missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
                            validate_all = NULL) {
-
-  # ---- semantic validation (optional but recommended) ----
-  .validate_semantic_label(validate_all, data, var_name)
-
-  # ---- identity logic (no reversal) ----
-  dplyr::case_when(
-    x %in% 1:6 ~ as.numeric(x),
-    x %in% missing_codes ~ NA_real_,
-    TRUE ~ NA_real_
-  )
+  .safe_npt(x, n = 6, reverse = FALSE,
+            data = data, var_name = var_name,
+            missing_codes = missing_codes, validate_all = validate_all)
 }
 
 # ==============================================================================
