@@ -9,6 +9,8 @@
 #
 # Target: 0=Out of labor force, 1=Unemployed (looking), 2=Employed
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 98, 99, 998, 999, 9994]

@@ -8,6 +8,8 @@
 # NOTE: W1 variable names differ slightly from W4 (e.g. Medtrust vs medtrust,
 # Orgtrust vs orgtrust). Source fields handle this per wave.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [97, 98, 99]

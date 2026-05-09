@@ -4,6 +4,8 @@
 # No binary generalized trust item available in Afrobarometer.
 # Column will be NA for cross-survey compatibility.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 98, 99, 998, 999]

@@ -14,6 +14,8 @@
 # NOTE: W2-W4 cannot separate unemployed (code 1) from OLF (code 0) —
 #       both map to 0. Use caution comparing W2-W4 vs W5-W8.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]

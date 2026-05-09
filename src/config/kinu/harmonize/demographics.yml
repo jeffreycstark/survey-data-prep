@@ -38,6 +38,8 @@
 #   9 / 99 / 9999 = n/a (varies by item; declared per-variable below
 #   but listed globally for safety)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [9, 99, 9999]

@@ -16,6 +16,8 @@
 # MISSING VALUES:
 # -8 = DK, -1 = IAP
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 88, 98, 99]

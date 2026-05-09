@@ -25,6 +25,8 @@
 # MISSING VALUES: WVS standard [-5,-4,-3,-2,-1] stripped by engine before
 # extraction, so negative sentinels in J_INTDATE/V261/V247 become NA.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-5, -4, -3, -2, -1]

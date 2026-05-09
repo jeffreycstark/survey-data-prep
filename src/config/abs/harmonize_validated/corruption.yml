@@ -2,6 +2,8 @@
 # Variables measuring corruption perceptions, experiences, and government anti-corruption efforts
 # Corrected 2025-01-10: Fixed scale directions - W1-W2 reversed from W3-W6
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

@@ -13,6 +13,8 @@
 # Survey year is assigned statically in 99_create_final_dataset.R:
 #   W1 → 2016, W4 → 2019
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [97, 98, 99]

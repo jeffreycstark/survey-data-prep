@@ -34,6 +34,8 @@
 # MISSING CONVENTIONS:
 # -8 = DK, -1 = IAP, 8 = DK/refusal, 9 = IAP
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9]

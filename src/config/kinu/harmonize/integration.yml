@@ -33,6 +33,8 @@
 # MISSING CONVENTIONS:
 #   9 = n/a in 1-4 severity scales (per-variable)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: []

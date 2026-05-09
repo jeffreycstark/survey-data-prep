@@ -5,6 +5,8 @@
 # Standard Afro: -1=Missing, 8/98=Refused, 9/99/999=Don't know, 998=Refused
 # R1 age: 101=Refused, 999=Missing; educ: 10=DK, 98=Refused, 99=Missing
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 10, 98, 99, 101, 998, 999]

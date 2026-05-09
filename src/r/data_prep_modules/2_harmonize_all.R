@@ -37,7 +37,13 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
   spec <- yaml::read_yaml(spec_path)
 
   tryCatch({
-    validate_harmonize_spec(spec)
+    # B4: validate_spec_full() runs the JSON Schema check
+    # (validate_harmonize_spec) AND the cross-reference checks
+    # (validate_cross_references): use_convention resolution, fn-in-registry,
+    # duplicate-id-within-spec. The cross-spec consistency check (id conflicts
+    # across specs in the same survey) is opt-in via all_specs_in_survey;
+    # wiring it through harmonize_all_specs() is a future enhancement.
+    validate_spec_full(spec)
   }, error = function(e) {
     warning(sprintf("Validation failed for %s: %s", spec_name, e$message))
     return(NULL)

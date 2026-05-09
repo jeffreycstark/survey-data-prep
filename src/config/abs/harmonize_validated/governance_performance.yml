@@ -3,6 +3,8 @@
 # These tap into whether government is DELIVERING regardless of process
 # Created 2025-01-10
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

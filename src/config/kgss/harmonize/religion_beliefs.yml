@@ -31,6 +31,8 @@
 # Each could be added in a follow-up if a paper needs them; harvested
 # under a kgss/religion_beliefs_singlewave.yml or similar.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88, 98, 99]

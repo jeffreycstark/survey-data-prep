@@ -11,6 +11,8 @@
 # MISSING VALUES:
 # -1=Missing, 8=Refused, 9=Don't know, 98=Refused, 99=Don't know, 998=Refused, 999=Don't know
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 98, 99, 998, 999]

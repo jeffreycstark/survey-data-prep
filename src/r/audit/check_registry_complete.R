@@ -32,15 +32,18 @@ script_path <- tryCatch(
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 
-# Two known anchors: the ticket invoked this with cwd = repo root, so use
-# relative paths and rely on the runner being there. If not, fall back to
-# the `here` package if available.
+# The registry catalogues functions referenced as `fn:` in YAML. Most live in
+# recoding.R; a few derive helpers (compute_*) live in harmonize.R. Source both
+# into the same isolated env so the drift check sees the full universe of
+# YAML-referenceable functions.
 recoding_path <- "src/r/utils/recoding.R"
+harmonize_path <- "src/r/harmonize/harmonize.R"
 registry_path <- "src/r/utils/recoding_registry.yml"
 
 if (!file.exists(recoding_path)) {
   if (requireNamespace("here", quietly = TRUE)) {
     recoding_path <- here::here("src/r/utils/recoding.R")
+    harmonize_path <- here::here("src/r/harmonize/harmonize.R")
     registry_path <- here::here("src/r/utils/recoding_registry.yml")
   }
 }
@@ -52,16 +55,25 @@ if (!file.exists(registry_path)) {
   stop("Cannot locate src/r/utils/recoding_registry.yml")
 }
 
-# ---- Source recoding.R into an isolated env ------------------------------
-recoding_env <- new.env()
-source(recoding_path, local = recoding_env)
-all_objs <- ls(recoding_env, all.names = TRUE)
+# ---- Source recoding.R + harmonize.R into an isolated env ----------------
+fn_env <- new.env()
+source(recoding_path, local = fn_env)
+if (file.exists(harmonize_path)) source(harmonize_path, local = fn_env)
+all_objs <- ls(fn_env, all.names = TRUE)
 loaded_fns <- all_objs[
-  vapply(all_objs, function(n) is.function(get(n, envir = recoding_env)), logical(1))
+  vapply(all_objs, function(n) is.function(get(n, envir = fn_env)), logical(1))
 ]
 # Exclude private helpers (leading "."): they are not referenced in YAML `fn:`
 public_fns <- loaded_fns[!startsWith(loaded_fns, ".")]
 private_fns <- loaded_fns[startsWith(loaded_fns, ".")]
+# Exclude engine-orchestration functions that aren't YAML `fn:` targets.
+# These are loaded but not referenced from YAML's `fn:` field — they're
+# the harmonization machinery itself, not recodes.
+engine_orchestration_fns <- c(
+  "harmonize_variable", "harmonize_all", "apply_missing", "resolve_wave_rule",
+  "%||%"
+)
+public_fns <- setdiff(public_fns, engine_orchestration_fns)
 
 # ---- Read registry -------------------------------------------------------
 registry <- yaml::read_yaml(registry_path)

@@ -14,6 +14,8 @@
 # W2-W3: 0=missing, 8=DK, 9=decline
 # W4+: 98=DK, 99=refused
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]

@@ -34,6 +34,8 @@
 # W6 parquet: negatives already converted to NA
 # W7 parquet: -5=Other missing, -4=Not asked, -3=Not applicable, -2=No answer, -1=Don't know
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-5, -4, -3, -2, -1]

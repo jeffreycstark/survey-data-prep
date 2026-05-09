@@ -1,6 +1,8 @@
 # Demographics - Comprehensive YAML (v2)
 # Core demographic and socioeconomic variables
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

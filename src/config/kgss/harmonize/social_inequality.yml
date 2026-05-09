@@ -25,6 +25,8 @@
 # MISSING CONVENTIONS:
 # -8 = DK, -1 = IAP; 8/9 = DK/refusal (same-scale codes); 88 = DK/refusal (INCMFAIR)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88]

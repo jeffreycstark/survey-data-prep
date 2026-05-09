@@ -1,6 +1,8 @@
 # LBS Survey Weights
 # Waves: 24 years (1995-2024)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-5, -4, -3, -2, -1]

@@ -8,6 +8,8 @@
 # Same trust scale as other Afro institutional trust items.
 # Target: 1-4 (1=Not at all, 4=A lot) via +1 shift
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 7, 8, 9, 98, 99, 998, 999]

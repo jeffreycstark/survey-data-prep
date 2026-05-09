@@ -12,6 +12,8 @@
 # MISSING VALUES:
 # 98/99 = DK/NR → treat as NA
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [98, 99]

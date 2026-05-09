@@ -13,6 +13,8 @@
 #   tunisia_coastal_gov — from governorate-level data (R5, R6, R9 only; precise)
 #   tataouine — dummy for Tataouine respondents (R5, R6, R9 only; for subsetting/interaction)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1]

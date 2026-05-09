@@ -11,6 +11,8 @@
 # Economic scales are kept as-is (not reversed) for fidelity. Document direction
 # clearly in any paper or analysis.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [97, 98, 99]

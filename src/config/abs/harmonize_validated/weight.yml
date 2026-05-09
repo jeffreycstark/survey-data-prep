@@ -5,6 +5,8 @@
 # Cross-country weights adjust for cross-national comparisons.
 # W1 and W2 do not include weights in the ABS data files.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0]

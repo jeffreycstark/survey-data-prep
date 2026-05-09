@@ -7,6 +7,8 @@
 # W3, W4, W6: REVERSED (1=Great deal → 4=None) - need safe_reverse_4pt
 # W5: 6-point AND reversed - need safe_6pt_to_4pt
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, -2, 0, 7, 8, 9, 97, 98, 99]

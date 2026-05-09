@@ -31,6 +31,8 @@
 #   97/98 = "기타" or "종교 없음" — context-specific; treat as nominal codes for
 #   religion (NOT missing); for other items 99 = 모름/무응답 (DK/refusal) is NA.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [99]

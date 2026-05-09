@@ -32,6 +32,8 @@
 #   9 = n/a in 1-5 / 1-4 / 1-3 scales
 #   99 = n/a in 0-10 / 0-100 thermometers
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [9, 99]

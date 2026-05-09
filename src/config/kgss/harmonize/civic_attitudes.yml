@@ -27,6 +27,8 @@
 # MISSING VALUES:
 # -8 = DK, -1 = IAP, 8 = DK legacy, 88 = DK/refusal legacy, 99 = IAP legacy.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 88, 98, 99]

@@ -35,6 +35,8 @@
 #   99 = n/a in some 0-100 thermometers (some KINU items use 99 instead of 999)
 #   999 = n/a in 0-100 leader-warmth thermometers (se0804/06/07)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [99, 999]

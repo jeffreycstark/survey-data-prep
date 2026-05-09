@@ -18,6 +18,8 @@
 # 2008-2009 use a different question structure (q7_* for function items) and
 # are NOT mapped in this initial pass. Coverage: 18 of 20 years for functions.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -9, 8, 9, 88, 99]

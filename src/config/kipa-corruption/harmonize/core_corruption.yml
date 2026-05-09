@@ -20,6 +20,8 @@
 # these are likely "해당없음" filter responses and are treated as NA by the QC
 # range check.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -9, 8, 9, 88, 99]

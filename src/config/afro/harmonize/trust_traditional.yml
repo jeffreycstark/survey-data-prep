@@ -9,6 +9,8 @@
 # MISSING VALUES:
 # -1=Missing, 8/98=Refused, 9/99=Don't know, 94/97=Not applicable/Not asked
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 94, 97, 98, 99, 998]

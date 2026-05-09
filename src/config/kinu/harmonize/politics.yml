@@ -38,6 +38,8 @@
 #   99 = n/a in 0-10 scales (global)
 #   999 = n/a in 0-100 thermometer (global; KINU-specific code for thermometers)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [99, 999]

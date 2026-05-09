@@ -25,6 +25,8 @@
 # 9  = IAP (legacy code)
 # Higher sentinel codes (88, 98, 99) filtered via qc.valid_range or function defaults.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88, 98, 99]

@@ -6,6 +6,8 @@
 #
 # MISSING VALUES: same as democratic_attitudes.yml
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999]

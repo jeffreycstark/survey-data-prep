@@ -2,6 +2,8 @@
 # Variables measuring perceptions of major powers' influence and regional attitudes
 # Validated 2025-01-11
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

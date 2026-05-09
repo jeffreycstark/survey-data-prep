@@ -894,3 +894,15 @@
   monotonic: false
   requires_data: false
   notes: "Diagnostic helper: returns logical TRUE/FALSE for in-range check. Not used as fn: in YAML; kept in registry for completeness."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 20. Engine-defined derive functions (live in src/r/harmonize/harmonize.R, not recoding.R)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: compute_procedural_index
+  input_scale: null
+  output_scale: [0, 4]
+  reverses: false
+  monotonic: false
+  requires_data: true
+  notes: "Derive function defined in src/r/harmonize/harmonize.R:396 (NOT recoding.R). Computes 0-4 procedural-vs-substantive index from 4 forced-choice items. Used by ABS meaning_of_democracy.yml for procedural_preference_index (W3, W4, W6). Categorical recode internally — not monotonic w.r.t. any single source column."

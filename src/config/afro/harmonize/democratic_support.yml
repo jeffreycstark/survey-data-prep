@@ -5,6 +5,8 @@
 # in Afrobarometer at matching scales.
 # All columns will be NA for cross-survey compatibility.
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 98, 99, 998, 999]

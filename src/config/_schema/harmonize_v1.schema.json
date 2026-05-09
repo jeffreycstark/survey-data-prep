@@ -1,0 +1,293 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://survey-data-prep/_schema/harmonize_v1.schema.json",
+  "title": "Survey harmonization spec (v1)",
+  "description": "JSON Schema for src/config/<survey>/harmonize{,_validated}/*.yml. Replaces the imperative validate_harmonize_spec(). The headline guarantee is additionalProperties: false at every object level so typos like 'harmnoize:' or 'vaild_range:' fail loud.",
+
+  "type": "object",
+  "required": ["schema_version", "missing_conventions", "variables"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "description": "Schema version. Must be the integer 1 for this revision.",
+      "const": 1
+    },
+    "missing_conventions": {
+      "$ref": "#/$defs/missingConventions"
+    },
+    "variables": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/variable" }
+    }
+  },
+
+  "$defs": {
+
+    "missingConventions": {
+      "description": "Map of convention-name -> codes. Each value is either an integer/array of integers (short form, brief permits both) or an object with required 'codes' and optional 'description' (long form — the form every production spec actually uses). Both forms are accepted to match the brief and to tolerate jsonlite auto_unbox of length-1 arrays.",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/intOrIntArray" },
+          {
+            "type": "object",
+            "required": ["codes"],
+            "additionalProperties": false,
+            "properties": {
+              "codes": { "$ref": "#/$defs/intOrIntArray" },
+              "description": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+
+    "waveKey": {
+      "description": "Wave identifier. Surveys use heterogeneous conventions (w1, y1995, r5, w2003, w2025). Pattern admits any lowercase alphanumeric+underscore string starting with a letter.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+
+    "variable": {
+      "type": "object",
+      "required": ["id", "concept", "description", "type", "source", "harmonize"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Snake-case unique identifier within the spec.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "concept": { "type": "string" },
+        "description": { "type": "string" },
+        "type": {
+          "description": "Variable type. Drives downstream invariant checks (Layer 3). Production specs use ordinal/nominal/continuous as the principal three plus binary (a 0/1 or 1/2 special case of nominal) and categorical (synonym for nominal in a handful of legacy specs).",
+          "type": "string",
+          "enum": ["ordinal", "nominal", "continuous", "binary", "categorical"]
+        },
+        "note": { "type": "string" },
+        "notes": { "$ref": "#/$defs/stringOrStringArray" },
+        "editorial_note": { "type": "string" },
+        "tags": {
+          "description": "Free-form metadata tags. Accepts a scalar string OR an array of strings — jsonlite auto_unbox collapses single-tag arrays.",
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          ]
+        },
+        "source": {
+          "description": "Mapping wave-key -> source variable name (string) or null when the variable is absent in that wave.",
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": {
+              "oneOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "null" }
+              ]
+            }
+          }
+        },
+        "scale": { "$ref": "#/$defs/scaleBlock" },
+        "missing": { "$ref": "#/$defs/missingOverride" },
+        "harmonize": { "$ref": "#/$defs/harmonizeBlock" },
+        "qc": { "$ref": "#/$defs/qcBlock" }
+      }
+    },
+
+    "scaleBlock": {
+      "description": "Optional scale annotation. min/max are STRONGLY recommended but not required because some KAMOS demographic vars (sex, marital status) ship with `labels` only and no numeric range.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "labels": {
+          "description": "Optional map of code -> human-readable label. Code keys are stringified numerics (YAML int keys serialize to JSON strings).",
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^-?[0-9]+(\\.[0-9]+)?$": { "type": "string" }
+          }
+        },
+        "note": { "type": "string" },
+        "direction": {
+          "description": "Free-form direction annotation (e.g. 'higher_more_trust'). Documentary; not enforced by the engine.",
+          "type": "string"
+        }
+      }
+    },
+
+    "missingOverride": {
+      "description": "Per-variable override of missing handling. Either references a key in top-level missing_conventions via use_convention, or supplies codes directly, or both (codes are appended).",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "use_convention": { "type": "string" },
+        "codes": { "$ref": "#/$defs/intOrIntArray" },
+        "description": { "type": "string" }
+      }
+    },
+
+    "harmonizeBlock": {
+      "description": "Wave-rule resolution map. Reserved keys are 'default', 'by_wave', and 'exceptions'. Any other key MUST be a wave key (direct-wave-key form) and resolves to a rule object. Note: AJV applies both `properties` and `patternProperties` when both match a key, so we cannot use a generic wave-key pattern alongside the reserved keys without conflict. Instead, every non-reserved key falls through to `additionalProperties`, which is a harmonizeRule subschema; that constrains direct-wave-key shape to a rule object while still rejecting genuinely unknown sub-keys via the rule's own `additionalProperties: false`.",
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "default": { "$ref": "#/$defs/harmonizeRule" },
+        "by_wave": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/harmonizeRule" }
+        },
+        "exceptions": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/harmonizeRule" }
+        }
+      },
+      "additionalProperties": { "$ref": "#/$defs/harmonizeRule" }
+    },
+
+    "harmonizeRule": {
+      "description": "A single transformation rule. method may be null to indicate 'do nothing' (treat as not-mapped). Required field is 'method'; everything else is method-specific or annotation.",
+      "type": "object",
+      "required": ["method"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "oneOf": [
+            { "type": "string", "enum": ["identity", "r_function", "recode", "derive"] },
+            { "type": "null" }
+          ]
+        },
+        "fn": { "type": "string" },
+        "mapping": {
+          "description": "For method=recode. Map raw-code (string-keyed integer) -> harmonized-code (integer or null).",
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^-?[0-9]+$": {
+              "oneOf": [
+                { "type": "integer" },
+                { "type": "null" }
+              ]
+            }
+          }
+        },
+        "sources": {
+          "description": "For method=derive. List of raw variable names the derive function consumes.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "note": { "type": "string" },
+        "notes": { "$ref": "#/$defs/stringOrStringArray" },
+        "validate_all": {
+          "description": "Optional regex phrase the source-variable label must match for this wave (semantic-label assertion enforced inside the recoding helper).",
+          "type": "string"
+        }
+      }
+    },
+
+    "qcBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "valid_range": { "$ref": "#/$defs/range2" },
+        "valid_range_by_wave": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": { "$ref": "#/$defs/range2" }
+          }
+        },
+        "expected_direction": {
+          "type": "string",
+          "enum": ["positive", "negative", "none"]
+        },
+        "validate": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/validateRule" }
+        },
+        "skip_range_check": { "type": "boolean" },
+        "skip_coverage_check": { "type": "boolean" },
+        "skip_crosstab_check": { "type": "boolean" },
+        "skip_transformation_check": { "type": "boolean" },
+        "skip_unmapped_check": { "type": "boolean" },
+        "coverage_missing_codes": { "$ref": "#/$defs/intOrIntArray" },
+        "coverage_missing_codes_by_wave": {
+          "type": "object",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": { "$ref": "#/$defs/intOrIntArray" }
+          }
+        },
+        "group_by": { "type": "string" },
+        "transformation_allow_reverse": { "type": "boolean" },
+        "treat_as_na": {
+          "description": "Per-variable extra missing codes (KINU pattern). Engine appends these to the convention codes.",
+          "$ref": "#/$defs/intOrIntArray"
+        },
+        "gated_waves": {
+          "description": "Waves to which a gate question (skip-pattern parent) routes; respondents not routed here have structural missingness rather than data loss. Numeric wave codes (e.g. years).",
+          "$ref": "#/$defs/intOrIntArray"
+        },
+        "notes": { "$ref": "#/$defs/stringOrStringArray" }
+      }
+    },
+
+    "range2": {
+      "description": "Length-2 numeric vector [min, max].",
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+
+    "validateRule": {
+      "type": "object",
+      "required": ["waves", "phrase"],
+      "additionalProperties": false,
+      "properties": {
+        "waves": {
+          "description": "List of wave keys this validate rule applies to. Accepts a scalar wave-key string OR an array; jsonlite::toJSON(auto_unbox=TRUE) collapses length-1 arrays to scalars, so the schema must tolerate both shapes without changing the YAML's intent.",
+          "oneOf": [
+            { "$ref": "#/$defs/waveKey" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/waveKey" }
+            }
+          ]
+        },
+        "phrase": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "stringOrStringArray": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+
+    "intOrIntArray": {
+      "description": "Number or array of numbers. Almost always integer in practice, but IPUS-NK uses fractional missing codes (2.5/4.5 from KOSSDA between-answers). jsonlite::toJSON(auto_unbox=TRUE) collapses length-1 numeric arrays to scalars; the schema must accept both shapes since YAML authors write `codes: [9]` and `codes: 9` interchangeably.",
+      "oneOf": [
+        { "type": "number" },
+        {
+          "type": "array",
+          "items": { "type": "number" }
+        }
+      ]
+    }
+  }
+}

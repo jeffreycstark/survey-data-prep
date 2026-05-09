@@ -17,6 +17,8 @@
 # W3 SPSS: -4=Not asked, -2=No answer, -1=Don't know
 # W4 SPSS: -4=Not asked, -2=No answer, -1=Don't know
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-5, -4, -3, -2, -1]

@@ -3,6 +3,8 @@
 # NOTE: dem_sat_national moved to democracy.yml to avoid duplication
 # Corrected 2025-01-10: Fixed scale reversals and variable numbers based on codebook verification
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

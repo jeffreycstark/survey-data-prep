@@ -1,6 +1,8 @@
 # Economy Harmonization Specification (v2)
 # Variables: econ_national_now, econ_change_1yr, econ_outlook_1yr
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

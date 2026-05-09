@@ -3,6 +3,8 @@
 # Validated 2025-01-11: Scale directions verified against raw data
 # Convention: HIGH = more authoritarian/anti-democratic
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

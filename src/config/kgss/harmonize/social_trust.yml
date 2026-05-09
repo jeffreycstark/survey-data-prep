@@ -11,6 +11,8 @@
 # -8 = DK (Don't Know)
 # -1 = IAP (Inapplicable / skipped)
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1]

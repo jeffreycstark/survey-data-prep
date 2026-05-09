@@ -29,6 +29,8 @@
 # MISSING VALUES:
 # -8 = DK, -1 = IAP; 8/9/88/98/99 = legacy DK/IAP sentinels
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88, 98, 99]

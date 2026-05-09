@@ -2,6 +2,8 @@
 # Variables measuring ease of access to public services and local safety
 # Scale: 1-4 (Very easy to Very difficult) - REVERSED so higher = better access
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

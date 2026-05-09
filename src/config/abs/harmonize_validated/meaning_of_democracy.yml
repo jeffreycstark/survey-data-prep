@@ -26,6 +26,8 @@
 #   - Good governance: W2=NA, W3=3, W4=3, W5=4, W6=3
 # ===========================================================================
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 7, 8, 9, 97, 98, 99]

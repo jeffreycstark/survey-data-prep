@@ -1,133 +1,388 @@
 # src/r/harmonize/validate_spec.R
 # YAML specification validation for harmonization
 
+# ---- Cached jsonvalidate validator (ticket B3) -------------------------------
+# Module-local cache: avoid re-parsing the schema on every call. The ajv
+# validator object is stable across calls, so harmonize_all_specs() (which
+# invokes validate_harmonize_spec() once per spec across ~117 specs) parses
+# the schema exactly once per R session.
+.harmonize_validator_cache <- local({
+  cache <- list(validator = NULL, schema_path = NULL)
+
+  function(schema_path) {
+    if (is.null(cache$validator) || !identical(cache$schema_path, schema_path)) {
+      if (!file.exists(schema_path)) {
+        stop(sprintf(
+          "validate_harmonize_spec(): schema file not found at %s",
+          schema_path
+        ), call. = FALSE)
+      }
+      if (!requireNamespace("jsonvalidate", quietly = TRUE)) {
+        stop("validate_harmonize_spec(): package 'jsonvalidate' is required",
+             call. = FALSE)
+      }
+      cache$validator <<- jsonvalidate::json_validator(
+        schema_path,
+        engine = "ajv"
+      )
+      cache$schema_path <<- schema_path
+    }
+    cache$validator
+  }
+})
+
 #' Validate harmonization YAML specification structure
 #'
-#' Checks that a parsed YAML specification has required fields and
-#' correct types. Returns informative errors if validation fails.
+#' Thin wrapper around `jsonvalidate::json_validator()` (ticket B3). The
+#' authoritative schema is `src/config/_schema/harmonize_v1.schema.json`.
+#' Replaces the imperative `if (is.null(...))` validator that silently
+#' accepted typos like `harmnoize:` because top-level keys were not
+#' enforced. The schema declares `additionalProperties: false` at every
+#' object level, so misspellings now fail loud with a JSON-path error.
 #'
-#' @param spec List: parsed YAML specification
-#' @param var_id Optional: validate specific variable instead of all
+#' @param spec List: parsed YAML specification (from `yaml::read_yaml()`).
+#' @param var_id Optional character: when supplied, only errors whose
+#'   instance path falls inside `/variables/<idx>` for the matching id
+#'   are reported. The full spec is still validated (cheap; the validator
+#'   is cached) and errors are filtered post-hoc.
 #'
-#' @return Invisibly returns TRUE if valid; stops with error otherwise
+#' @return Invisibly returns `TRUE` if valid; stops with a multi-line
+#'   error message otherwise. Each error line carries the offending JSON
+#'   path and the schema-derived message.
 #'
 #' @details
-#' Top-level required fields:
-#' - missing_conventions: named list of missing code vectors
-#' - variables: list of variable specifications
-#'
-#' Per-variable required fields:
-#' - id: character, unique identifier
-#' - concept: character
-#' - description: character
-#' - source: named list (at least one wave required)
-#' - type: character ("ordinal", "nominal", "continuous")
-#' - harmonize: list with "default" method
+#' Implementation notes:
+#' - YAML is converted to JSON via `jsonlite::toJSON(auto_unbox = TRUE,
+#'   null = "null")`. The schema is written to tolerate the auto-unboxed
+#'   shapes (length-1 arrays collapsed to scalars).
+#' - The `ajv` engine is used because `imjv` does not implement
+#'   `additionalProperties: false` strictly enough to catch misspelt
+#'   top-level keys.
+#' - `var_id` filtering is post-hoc: we validate the whole spec, then
+#'   match each error's `instancePath` against the index of the variable
+#'   whose `id:` equals `var_id`. If `var_id` is supplied but absent from
+#'   the spec, an error is raised regardless of schema result.
 #'
 #' @export
 validate_harmonize_spec <- function(spec, var_id = NULL) {
 
-  errors <- list()
+  schema_path <- here::here("src/config/_schema/harmonize_v1.schema.json")
 
-  # ---- Check top-level structure ----
-  if (is.null(spec$missing_conventions)) {
-    errors$missing_conventions <- "Required: missing_conventions"
+  validator <- .harmonize_validator_cache(schema_path)
+
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("validate_harmonize_spec(): package 'jsonlite' is required",
+         call. = FALSE)
   }
 
-  if (is.null(spec$variables) || length(spec$variables) == 0) {
-    errors$variables <- "Required: variables list (must have ≥1 variable)"
-  }
+  json_str <- jsonlite::toJSON(spec, auto_unbox = TRUE, null = "null")
 
-  # ---- Check specific variable(s) ----
-  var_ids <- if (!is.null(var_id)) {
-    var_id
-  } else {
-    names(spec$variables) %||% character(0)
-  }
+  result <- validator(json_str, verbose = TRUE, greedy = TRUE)
 
-  for (vid in var_ids) {
-
-    var_spec <- spec$variables[[vid]]
-
-    if (is.null(var_spec)) {
-      errors[[paste0("variables.", vid)]] <- "Variable not found"
-      next
-    }
-
-    # Required fields
-    if (is.null(var_spec$id)) {
-      errors[[paste0(vid, ".id")]] <- "Required: id"
-    }
-
-    if (is.null(var_spec$concept)) {
-      errors[[paste0(vid, ".concept")]] <- "Required: concept"
-    }
-
-    if (is.null(var_spec$description)) {
-      errors[[paste0(vid, ".description")]] <- "Required: description"
-    }
-
-    if (is.null(var_spec$source) || length(var_spec$source) == 0) {
-      errors[[paste0(vid, ".source")]] <- "Required: source (named list, ≥1 wave)"
-    }
-
-    if (is.null(var_spec$type)) {
-      errors[[paste0(vid, ".type")]] <- "Required: type"
-    } else if (!var_spec$type %in% c("ordinal", "nominal", "continuous")) {
-      errors[[paste0(vid, ".type")]] <- paste(
-        "Invalid type. Must be: ordinal, nominal, continuous"
+  if (isTRUE(result)) {
+    # If var_id was supplied, ensure the variable actually exists.
+    if (!is.null(var_id)) {
+      ids <- vapply(
+        spec$variables %||% list(),
+        function(v) v$id %||% NA_character_,
+        character(1)
       )
-    }
-
-    # Harmonization spec
-    if (is.null(var_spec$harmonize)) {
-      errors[[paste0(vid, ".harmonize")]] <- "Required: harmonize"
-    } else {
-      if (is.null(var_spec$harmonize$default)) {
-        errors[[paste0(vid, ".harmonize.default")]] <- "Required: default method"
-      } else {
-        method <- var_spec$harmonize$default$method
-        if (!method %in% c("identity", "r_function", "recode", "derive")) {
-          errors[[paste0(vid, ".harmonize.default.method")]] <- paste(
-            "Invalid method. Must be: identity, r_function, recode, derive"
-          )
-        }
+      if (!var_id %in% ids) {
+        stop(sprintf(
+          "❌ Specification validation failed:\n\n  1. variables: variable id '%s' not found in spec\n",
+          var_id
+        ), call. = FALSE)
       }
     }
+    return(invisible(TRUE))
+  }
 
-    # QC if present
-    if (!is.null(var_spec$qc)) {
-      if (!is.null(var_spec$qc$valid_range_by_wave)) {
-        vr_list <- var_spec$qc$valid_range_by_wave
+  errors_df <- attr(result, "errors")
 
-        for (wave_name in names(vr_list)) {
-          vr <- vr_list[[wave_name]]
+  # Optional var_id filtering: keep only errors whose instancePath is
+  # inside the matching /variables/<idx>/... subtree, plus any errors
+  # outside /variables (top-level structural errors that affect the
+  # whole spec and should still be surfaced).
+  if (!is.null(var_id) && !is.null(errors_df) && nrow(errors_df) > 0) {
+    ids <- vapply(
+      spec$variables %||% list(),
+      function(v) v$id %||% NA_character_,
+      character(1)
+    )
+    idx <- match(var_id, ids) - 1L  # JSON pointer is 0-indexed
+    if (is.na(idx)) {
+      stop(sprintf(
+        "❌ Specification validation failed:\n\n  1. variables: variable id '%s' not found in spec\n",
+        var_id
+      ), call. = FALSE)
+    }
+    var_prefix <- sprintf("/variables/%d", idx)
+    paths <- errors_df$instancePath %||% character(nrow(errors_df))
+    keep <- !startsWith(paths, "/variables/") |
+      startsWith(paths, paste0(var_prefix, "/")) |
+      paths == var_prefix
+    errors_df <- errors_df[keep, , drop = FALSE]
+    if (nrow(errors_df) == 0) {
+      return(invisible(TRUE))
+    }
+  }
 
-          if (!is.numeric(vr) || length(vr) != 2) {
-            errors[[paste0(vid, ".qc.valid_range.", wave_name)]] <- paste(
-              "Invalid range. Must be numeric vector of length 2: [min, max]"
-            )
+  # ---- Format errors ----
+  error_msg <- "❌ Specification validation failed:\n\n"
+
+  if (is.null(errors_df) || nrow(errors_df) == 0) {
+    error_msg <- paste0(error_msg, "  1. (validator returned FALSE without details)\n")
+  } else {
+    paths    <- errors_df$instancePath %||% rep("", nrow(errors_df))
+    messages <- errors_df$message      %||% rep("", nrow(errors_df))
+    keywords <- errors_df$keyword      %||% rep("", nrow(errors_df))
+
+    for (i in seq_len(nrow(errors_df))) {
+      path <- if (nzchar(paths[i])) paths[i] else "<root>"
+      msg  <- messages[i]
+      # ajv's "additional properties" message omits the offending key from
+      # the message itself; pull it from params$additionalProperty when
+      # present so the error names the typo.
+      if (identical(keywords[i], "additionalProperties")) {
+        params <- errors_df$params
+        extra <- NULL
+        if (!is.null(params)) {
+          if (is.data.frame(params) && "additionalProperty" %in% names(params)) {
+            extra <- params$additionalProperty[[i]]
+          } else if (is.list(params) && length(params) >= i) {
+            extra <- params[[i]]$additionalProperty
           }
         }
+        if (!is.null(extra) && nzchar(extra)) {
+          msg <- sprintf("%s ('%s')", msg, extra)
+        }
+      }
+      error_msg <- paste0(
+        error_msg,
+        sprintf("  %d. %s: %s\n", i, path, msg)
+      )
+    }
+  }
+
+  stop(error_msg, call. = FALSE)
+}
+
+# ---- Cached registry loader (ticket B4) --------------------------------------
+# Module-local cache for the recoding-function registry. Mirrors the validator
+# cache pattern used for the JSON Schema above: parse the YAML once per
+# session, reuse the parsed list across calls. validate_cross_references()
+# is invoked once per spec (e.g. ~117 times across all surveys), so this
+# avoids redundant YAML parsing.
+.recoding_registry_cache <- local({
+  cache <- list(registry = NULL, registry_path = NULL)
+
+  function(registry_path) {
+    if (is.null(cache$registry) ||
+        !identical(cache$registry_path, registry_path)) {
+      if (!file.exists(registry_path)) {
+        stop(sprintf(
+          "validate_cross_references(): registry file not found at %s",
+          registry_path
+        ), call. = FALSE)
+      }
+      if (!requireNamespace("yaml", quietly = TRUE)) {
+        stop("validate_cross_references(): package 'yaml' is required",
+             call. = FALSE)
+      }
+      registry <- yaml::read_yaml(registry_path)
+      registry_names <- vapply(
+        registry,
+        function(e) if (is.null(e$fn)) NA_character_ else e$fn,
+        character(1)
+      )
+      cache$registry <<- registry_names[!is.na(registry_names)]
+      cache$registry_path <<- registry_path
+    }
+    cache$registry
+  }
+})
+
+#' Validate cross-references in a harmonization spec
+#'
+#' Performs post-schema integrity checks that JSON Schema cannot express
+#' (cross-references between fields, or across multiple specs). Run AFTER
+#' `validate_harmonize_spec()` — assumes the spec is structurally valid.
+#'
+#' Checks performed:
+#'
+#'   (a) Every `var$missing$use_convention` (if set) is a key in
+#'       `spec$missing_conventions`.
+#'   (b) Every `harmonize.<rule>.fn` (across default + by_wave + exceptions +
+#'       direct wave keys) for `method: r_function` or `method: derive` is
+#'       present in the recoding-function registry
+#'       (src/r/utils/recoding_registry.yml).
+#'   (c) No two variables in `spec$variables` share the same `id:`.
+#'   (d) When `all_specs_in_survey` is supplied, the same `id:` declared in
+#'       multiple specs must have consistent `type:` and
+#'       `qc$expected_direction:`.
+#'
+#' @param spec List: parsed YAML specification (already passed
+#'   `validate_harmonize_spec()`).
+#' @param all_specs_in_survey Optional list of parsed specs. When supplied,
+#'   enables check (d). Pass NULL (default) to skip cross-spec consistency.
+#' @param registry_path Optional override of the recoding-registry path.
+#'   Defaults to `here::here("src/r/utils/recoding_registry.yml")`.
+#'
+#' @return Invisibly returns `TRUE` if all checks pass; stops with a
+#'   multi-line error message otherwise. Header is
+#'   `❌ Cross-reference validation failed:`, followed by one line per
+#'   violation.
+#'
+#' @export
+validate_cross_references <- function(spec,
+                                      all_specs_in_survey = NULL,
+                                      registry_path = NULL) {
+
+  violations <- character()
+
+  # ---- (a) missing.use_convention resolves -----------------------------------
+  conv_keys <- names(spec$missing_conventions %||% list())
+
+  for (var_spec in spec$variables %||% list()) {
+    use_conv <- var_spec$missing$use_convention
+    if (is.null(use_conv) || !nzchar(use_conv)) next
+    if (!use_conv %in% conv_keys) {
+      violations <- c(violations, sprintf(
+        "variable '%s': use_convention '%s' is not a key in missing_conventions (available: %s)",
+        var_spec$id %||% "<unknown>",
+        use_conv,
+        if (length(conv_keys) > 0) paste(conv_keys, collapse = ", ") else "<none>"
+      ))
+    }
+  }
+
+  # ---- (b) fn: names exist in registry ---------------------------------------
+  if (is.null(registry_path)) {
+    registry_path <- here::here("src/r/utils/recoding_registry.yml")
+  }
+  registry_names <- .recoding_registry_cache(registry_path)
+
+  reserved <- c("default", "by_wave", "exceptions")
+
+  collect_fn_violations <- function(rule, var_id, where) {
+    if (is.null(rule) || is.null(rule$method)) return()
+    if (!rule$method %in% c("r_function", "derive")) return()
+    fn_name <- rule$fn
+    if (is.null(fn_name) || !is.character(fn_name) || !nzchar(fn_name)) return()
+    if (!fn_name %in% registry_names) {
+      violations <<- c(violations, sprintf(
+        "variable '%s' (%s): fn '%s' is not in the recoding registry (%s)",
+        var_id, where, fn_name, registry_path
+      ))
+    }
+  }
+
+  for (var_spec in spec$variables %||% list()) {
+    var_id <- var_spec$id %||% "<unknown>"
+    h <- var_spec$harmonize
+    if (is.null(h)) next
+
+    collect_fn_violations(h$default, var_id, "default")
+
+    for (wave_name in names(h$by_wave %||% list())) {
+      collect_fn_violations(h$by_wave[[wave_name]], var_id,
+                            sprintf("by_wave.%s", wave_name))
+    }
+    for (wave_name in names(h$exceptions %||% list())) {
+      collect_fn_violations(h$exceptions[[wave_name]], var_id,
+                            sprintf("exceptions.%s", wave_name))
+    }
+    for (key in setdiff(names(h), reserved)) {
+      collect_fn_violations(h[[key]], var_id, key)
+    }
+  }
+
+  # ---- (c) duplicate id within this spec -------------------------------------
+  ids <- vapply(
+    spec$variables %||% list(),
+    function(v) v$id %||% NA_character_,
+    character(1)
+  )
+  ids <- ids[!is.na(ids)]
+  dup_ids <- unique(ids[duplicated(ids)])
+  for (dup in dup_ids) {
+    violations <- c(violations, sprintf(
+      "duplicate id '%s' declared %d times within this spec",
+      dup, sum(ids == dup)
+    ))
+  }
+
+  # ---- (d) cross-spec consistency (when all_specs supplied) ------------------
+  if (!is.null(all_specs_in_survey)) {
+
+    # Build map: id -> list of (type, expected_direction) tuples observed.
+    id_attrs <- list()
+    for (other_spec in all_specs_in_survey) {
+      for (var_spec in other_spec$variables %||% list()) {
+        vid <- var_spec$id
+        if (is.null(vid) || !nzchar(vid)) next
+        entry <- list(
+          type = var_spec$type %||% NA_character_,
+          expected_direction = var_spec$qc$expected_direction %||% NA_character_
+        )
+        id_attrs[[vid]] <- c(id_attrs[[vid]] %||% list(), list(entry))
+      }
+    }
+
+    # Restrict to ids declared in THIS spec — we report conflicts that affect
+    # the current spec's contract.
+    this_ids <- unique(ids)
+    for (vid in this_ids) {
+      occurrences <- id_attrs[[vid]]
+      if (is.null(occurrences) || length(occurrences) <= 1) next
+
+      types <- unique(unlist(lapply(occurrences, `[[`, "type")))
+      types <- types[!is.na(types)]
+      if (length(types) > 1) {
+        violations <- c(violations, sprintf(
+          "id '%s' declared with conflicting type across specs: %s",
+          vid, paste(types, collapse = " vs ")
+        ))
+      }
+
+      dirs <- unique(unlist(lapply(occurrences, `[[`, "expected_direction")))
+      dirs <- dirs[!is.na(dirs)]
+      if (length(dirs) > 1) {
+        violations <- c(violations, sprintf(
+          "id '%s' declared with conflicting expected_direction across specs: %s",
+          vid, paste(dirs, collapse = " vs ")
+        ))
       }
     }
   }
 
-  # ---- Report errors ----
-  if (length(errors) > 0) {
-
-    error_msg <- "❌ Specification validation failed:\n\n"
-
-    for (i in seq_along(errors)) {
-      error_msg <- paste0(
-        error_msg,
-        sprintf("  %d. %s: %s\n", i, names(errors)[i], errors[[i]])
-      )
-    }
-
-    stop(error_msg, call. = FALSE)
+  # ---- Format & raise --------------------------------------------------------
+  if (length(violations) == 0) {
+    return(invisible(TRUE))
   }
 
+  error_msg <- "❌ Cross-reference validation failed:\n\n"
+  for (i in seq_along(violations)) {
+    error_msg <- paste0(error_msg, sprintf("  %d. %s\n", i, violations[i]))
+  }
+  stop(error_msg, call. = FALSE)
+}
+
+#' Validate a spec structurally and via cross-reference checks
+#'
+#' Convenience wrapper: runs `validate_harmonize_spec()` (JSON Schema) and
+#' then `validate_cross_references()` (post-schema integrity). This is what
+#' `harmonize_spec()` in `2_harmonize_all.R` should call.
+#'
+#' @param spec List: parsed YAML specification.
+#' @param all_specs_in_survey Optional list of parsed specs (enables
+#'   cross-spec consistency check d). See `validate_cross_references()`.
+#'
+#' @return Invisibly `TRUE` on success; stops on first failure.
+#' @export
+validate_spec_full <- function(spec, all_specs_in_survey = NULL) {
+  validate_harmonize_spec(spec)
+  validate_cross_references(spec, all_specs_in_survey = all_specs_in_survey)
   invisible(TRUE)
 }
 

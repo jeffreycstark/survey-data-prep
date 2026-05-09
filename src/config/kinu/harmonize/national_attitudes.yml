@@ -37,6 +37,8 @@
 #       value in at2801-at2804 1-9 scales — handle below per-variable)
 #   99 = n/a in 0-10 confidence scales
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [99]

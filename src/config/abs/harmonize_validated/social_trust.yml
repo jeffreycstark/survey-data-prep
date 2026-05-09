@@ -2,6 +2,8 @@
 # Variables measuring generalized trust, interpersonal trust, and social networks
 # Corrected 2025-01-10: Fixed scale directions and documented W5 6pt scale issue
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

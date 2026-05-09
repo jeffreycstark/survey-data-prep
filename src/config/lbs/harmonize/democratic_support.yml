@@ -9,6 +9,8 @@
 # All waves: negative values are missing
 # -1=Don't know, -2=No answer, -3=Not applicable, -4=Not asked, -5=DK/NA combined
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-5, -4, -3, -2, -1]

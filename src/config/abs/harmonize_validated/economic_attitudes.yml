@@ -1,6 +1,8 @@
 # Economic Attitudes - Comprehensive YAML (v2)
 # Variables measuring economic fairness, security, and intergenerational mobility
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]

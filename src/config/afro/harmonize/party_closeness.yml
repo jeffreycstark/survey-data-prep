@@ -8,6 +8,8 @@
 #
 # Target: 1=Yes (close to a party), 0=No
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 98, 99, 998, 999]

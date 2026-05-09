@@ -2,6 +2,8 @@
 # Variables measuring democratic attitudes, perceptions, and satisfaction
 # Corrected 2025-01-10: Fixed scale directions for dem_sat and dem_best_form
 
+schema_version: 1
+
 missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99]
