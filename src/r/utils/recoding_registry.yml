@@ -1,0 +1,896 @@
+# src/r/utils/recoding_registry.yml
+#
+# Machine-readable catalogue of every recoding function in src/r/utils/recoding.R
+# referenced by name in YAML harmonization specs (`fn:` field).
+#
+# Schema (one entry per function):
+#   - fn:             Function name as written in YAML `fn:` field
+#     input_scale:    [min, max] of expected raw input, or null if not a numeric scale
+#     output_scale:   [min, max] of produced output, or null if not a numeric scale
+#     reverses:       true if function flips direction (n+1-x or equivalent)
+#     monotonic:      true if monotone transform of input (Spearman rho ±1 vs raw)
+#     requires_data:  true if function reads data argument (e.g. country-conditional)
+#     notes:          short clause; mark "unverified — needs human review" if ambiguous
+#
+# Private helpers (.validate_semantic_label, .safe_npt) are intentionally excluded:
+# they are not referenced in any YAML `fn:` field. Public wrappers use them internally.
+#
+# Layers 1, 3, 4 of the audit framework consume this registry.
+# Drift between this file and recoding.R is checked by:
+#   src/r/audit/check_registry_complete.R
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. Generic safe-reverse / safe-identity (3pt / 4pt / 5pt / 6pt / 2pt)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: safe_reverse_2pt
+  input_scale: [1, 2]
+  output_scale: [1, 2]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Generic 2-point reversal; 1<->2"
+
+- fn: safe_reverse_3pt
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Generic 3-point reversal; (n+1)-x via .safe_npt"
+
+- fn: safe_reverse_4pt
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Generic 4-point reversal; (n+1)-x via .safe_npt"
+
+- fn: safe_reverse_5pt
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Generic 5-point reversal; (n+1)-x via .safe_npt"
+
+- fn: safe_reverse_6pt
+  input_scale: [1, 6]
+  output_scale: [1, 6]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Generic 6-point reversal; (n+1)-x via .safe_npt; wider missing-code default for ABS 6-pt batteries"
+
+- fn: safe_3pt_none
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Identity 3-point; missing-code masking only"
+
+- fn: safe_4pt_none
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Identity 4-point; missing-code masking only"
+
+- fn: safe_5pt_none
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Identity 5-point; missing-code masking only"
+
+- fn: safe_6pt_none
+  input_scale: [1, 6]
+  output_scale: [1, 6]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Identity 6-point; missing-code masking only"
+
+- fn: safe_identify_4pt
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Range filter: keep 1-4, others -> NA (no missing-code list)"
+
+- fn: safe_identify_5pt
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Range filter: keep 1-5, others -> NA"
+
+- fn: safe_identify_6pt
+  input_scale: [1, 6]
+  output_scale: [1, 6]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Range filter: keep 1-6, others -> NA"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. Country/wave-conditional reversers (require `data`)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: reverse_trust_vietnam_w2
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: false
+  requires_data: true
+  notes: "Conditional 4-pt reversal: applies 5-x ONLY to Vietnam (country == 11). Non-monotone overall (Vietnam flipped, others identity)."
+
+- fn: reverse_trust_vietnam_w3
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: false
+  requires_data: true
+  notes: "Conditional 4-pt reversal: applies 5-x to ALL countries EXCEPT Vietnam (country != 11). Non-monotone overall."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. Wave-specific recodes (recode_w*_*)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_w1_trust_binary
+  input_scale: [1, 3]
+  output_scale: [1, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W1 generalized trust 3-cat (1,2,3) -> binary (1,2,NA). Code 3='Both'->NA loses monotonicity."
+
+- fn: recode_w5_trust_binary
+  input_scale: [1, 3]
+  output_scale: [1, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W5 generalized trust 3-cat -> binary (1,2,NA). Code 3='Depends'->NA loses monotonicity."
+
+- fn: recode_w1_news_follow
+  input_scale: [2, 6]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W1 q057 2-6 -> 1-5; simple shift (subtract 1)"
+
+- fn: recode_w1_discuss
+  input_scale: [1, 5]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W1 q023 5-pt -> 3-pt frequency; collapses adjacent categories monotonically"
+
+- fn: recode_w1_dem_preferable
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W1 dem-preferable nominal remap 1->2, 2->3, 3->1 to match W3-W6 standard. Nominal/categorical, not monotone."
+
+- fn: recode_w2_dem_preferable
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W2 dem-preferable nominal remap 1->3, 2->2, 3->1. Nominal/categorical, not monotone."
+
+- fn: recode_w2_anticorrupt
+  input_scale: [0, 4]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W2 5-pt (0-4) -> 4-pt; collapses 0&1->1, then identity for 2,3,4. Monotone collapse."
+
+- fn: recode_w3_witnessed
+  input_scale: [1, 6]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W3 witnessed corruption -> binary 0/1; 1->1, codes 2 and 6 both -> 0. unverified — needs human review (codes 3,4,5 are missing from valid range; technically monotone-non-increasing over {1,2,6} but only because 3/4/5 don't appear in raw)."
+
+- fn: recode_w4_witnessed
+  input_scale: [1, 5]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W4 witnessed 5-cat -> binary; 1,2,3->1 (any witnessing) and 4,5->0. Monotone collapse."
+
+- fn: recode_w6_corruption
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W6 5-cat corruption -> 4-pt; remaps code 5 ('No one involved') to 1, keeps 1-4 identity. Code-5->1 break in monotonicity."
+
+- fn: recode_w6_country
+  input_scale: null
+  output_scale: [1, 18]
+  reverses: false
+  monotonic: false
+  requires_data: true
+  notes: "W6 text country names -> numeric ABS country codes. Nominal mapping; uses data[[var_name]] for raw text."
+
+- fn: recode_w3_leader_contact
+  input_scale: [0, 2]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W3 q66 0-2 leader-contact frequency -> 1-3. Monotone shift."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. Scale collapsers (collapse_*)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: collapse_6pt_to_4pt_reverse
+  input_scale: [1, 6]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W5 6-pt trust -> 4-pt with reversal (1,2->4; 3->3; 4->2; 5,6->1). Monotone reverse-collapse."
+
+- fn: collapse_5pt_rarely_never
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Collapse 5-pt: 1-3 identity; 4&5 both -> 4 (Rarely & Never combined). Monotone."
+
+- fn: collapse_10pt_to_6pt
+  input_scale: [1, 10]
+  output_scale: [1, 6]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Linear-style binning of 1-10 to 1-6. Monotone."
+
+- fn: collapse_influence_country_to_5
+  input_scale: [1, null]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Influence-country: 1-4 identity, 5+ -> 5 (Other), missing-codes -> NA. Categorical collapse."
+
+- fn: collapse_5pt_to_4pt_then_reverse
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Collapse-then-reverse: 1->4, 2->3, 3->2, 4->2, 5->1. Note explicit comment 'placeholder'; 3&4 both -> 2."
+
+- fn: collapse_middle5_to_4pt
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "5-pt with middle at code 5 -> 4-pt; codes 1-4 identity, code 5 ('Half and Half') -> NA"
+
+- fn: collapse_5pt_leader_to_3pt
+  input_scale: [1, 5]
+  output_scale: [1, 3]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W5/W6 5-pt leader contact -> 3-pt: 1,2->3 (more than once); 3->2 (once); 4,5->1 (never). Monotone reverse-collapse."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. Linear scale-conversion functions
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_5pt_to_4pt
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Linear rescale (x-1)*(4/5)+1 with rounding"
+
+- fn: recode_3pt_to_4pt
+  input_scale: [1, 3]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Linear rescale (x-1)*(4/3)+1 with rounding"
+
+- fn: recode_6pt_to_4pt
+  input_scale: [1, 6]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Linear rescale (x-1)*(4/6)+1 with rounding"
+
+- fn: recode_10pt_to_4pt
+  input_scale: [1, 10]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Linear rescale (x-1)*(4/10)+1 with rounding"
+
+- fn: recode_6pt_freq_to_4pt
+  input_scale: [1, 6]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W4 social-media frequency 6-pt -> 4-pt (higher = more frequent). Reverses raw direction (raw 1=Everyday -> 4)."
+
+- fn: recode_0_3_to_1_4
+  input_scale: [0, 3]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Afrobarometer 0-3 trust -> 1-4 shift (x+1)"
+
+- fn: safe_6pt_to_4pt
+  input_scale: [1, 6]
+  output_scale: [1, 4]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "ABS W5 6-pt trust -> 4-pt; reverses by default (needs_reversal=TRUE), then collapses 6,5->4; 4->3; 3->2; 2,1->1. unverified — needs human review (reverses flag depends on needs_reversal arg at call time; default TRUE assumed)."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. Middle-value 5-pt remappers (5 = neutral category in raw)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: middle_identity_5pt
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Remap 5-pt where code 5='middle' to center: 1->1, 2->2, 5->3, 3->4, 4->5. Permutation, not monotone."
+
+- fn: middle_reverse_5pt
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: true
+  monotonic: false
+  requires_data: false
+  notes: "Reverse 5-pt with middle at code 5: 1->5, 2->4, 5->3, 3->2, 4->1. Permutation reverse, not monotone over raw 1-5."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. Binary recodes (yes/no, urban/rural, gender, party-has)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_binary_yes_no
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Standard 1=Yes, 2=No -> 1=Yes, 0=No (reverses ordinal direction). Monotone."
+
+- fn: recode_binary_01
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Generic 1->0, 2->1 (e.g. No=1->0, Yes=2->1)"
+
+- fn: recode_gender_binary
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: false
+  requires_data: false
+  notes: "Gender 1=Male->1, 2=Female->0. Nominal, no inherent direction."
+
+- fn: recode_kamos_gender_w1
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS W1: 1=female->0, 2=male->1 (W1 is reverse of W4 convention). Nominal."
+
+- fn: recode_urban_rural_binary
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: false
+  requires_data: false
+  notes: "Default (W1-W3): 1=Urban->1, 2=Rural->0. Nominal."
+
+- fn: recode_urban_rural_reversed_binary
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Reversed (W4-W6): 1=Rural->0, 2=Urban->1. Nominal."
+
+- fn: recode_has_party
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Party ID -> binary has_party. Codes 90/1595/1597->0 (no party), >0 ->1, missing->NA. Nominal."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. Voted / vote-status recodes
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_voted_w1
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W1/W2: 1=No->0, 2=Yes->1. Monotone with sign-flip."
+
+- fn: recode_voted_default
+  input_scale: [0, 3]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W2-W6: 1=Yes->1, 2=No->0; 0=Not eligible, 3=Not yet eligible, 1103/1104=proxy -> NA. unverified — needs human review (binary outcome from nominal codes; reverses flag debatable)."
+
+- fn: recode_voted_winning_losing_masked
+  input_scale: [1, 2]
+  output_scale: [1, 2]
+  reverses: false
+  monotonic: false
+  requires_data: true
+  notes: "Winner/loser nominal codes 1/2 with vote-status mask (reads vote item from data). Sets to NA when respondent didn't vote."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 9. Internet frequency harmonization (-> 1-6 scale, 6=Daily+)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_internet_w2w3_to_6pt
+  input_scale: [0, 6]
+  output_scale: [1, 6]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W2/W3 internet: 1=Daily->6, 2->5, 3->4, 4->3, 5->2, 6=Never->1; 0='not aware'->NA. Reversed; monotone over valid range."
+
+- fn: recode_internet_w4_to_6pt
+  input_scale: [0, 8]
+  output_scale: [1, 6]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W4 9-cat internet -> 1-6; 1,2,3->6 (daily+); 4->5, 5->4, 6->3, 7->2, 8->1; 0=NA. Reversed, monotone collapse."
+
+- fn: recode_internet_w5w6_to_6pt
+  input_scale: [0, 9]
+  output_scale: [1, 6]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W5/W6 10-cat internet -> 1-6; 1-4->6 (daily+); 5->5, 6->4, 7->3, 8->2, 9->1; 0=NA. Reversed, monotone collapse."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 10. Participation contact -> binary (ever-done gate)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_contact_to_binary_w1
+  input_scale: [1, 9]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W1: 9='Never done'->0; 1,2->1 (once or more). Categorical collapse, not monotone (code 9 lower-than-codes maps to 0)."
+
+- fn: recode_contact_to_binary_w2w4
+  input_scale: [1, 3]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W2: 1=Once,2=More->1; 3=Never->0. W4: 1=More,2=Once->1; 3=Never->0. Both map cleanly to binary."
+
+- fn: recode_contact_to_binary_w3
+  input_scale: [0, 2]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W3: 0=Never->0; 1,2->1. Monotone."
+
+- fn: recode_contact_to_binary_5pt
+  input_scale: [1, 5]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "W5/W6: 1,2,3->1 (ever); 4,5->0 (never). Monotone collapse with reversed direction (raw 1=most active becomes 1)."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 11. Development model recodes (country choice nominal)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_dev_model_w3_w4_w6
+  input_scale: null
+  output_scale: [1, 7]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Dev-model country lists -> 1-7 nominal (USA/China/India/Japan/Singapore/Other/Own). Categorical."
+
+- fn: recode_dev_model_w5
+  input_scale: null
+  output_scale: [1, 7]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "W5 dev-model: 1-5 identity; 6=Russia->6 (Other); 7->6; 8->7 (Own); 9+ -> 6. Categorical."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 12. Witnessed corruption (binary 0/1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_witnessed_default
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Default (W1,W2,W5,W6): 1=Yes->1, 2=No->0. Monotone."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 13. Pass-through / no-verify utility
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: no_verify
+  input_scale: null
+  output_scale: null
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Pass-through identity for IDs/country codes; only converts missing codes to NA"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 14. Date / time extraction utilities
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: extract_year_from_date
+  input_scale: null
+  output_scale: [2000, 2030]
+  reverses: false
+  monotonic: true
+  requires_data: true
+  notes: "Extract year from Date/character/numeric. Reads orig from data[[var_name]] when available."
+
+- fn: extract_month_from_date
+  input_scale: null
+  output_scale: [1, 12]
+  reverses: false
+  monotonic: true
+  requires_data: true
+  notes: "Extract month (1-12) from Date/character/numeric. Reads from data when available. Monotone within a year, but cyclic across years (audit treats as monotone for the local-year case)."
+
+- fn: extract_date
+  input_scale: null
+  output_scale: null
+  reverses: false
+  monotonic: true
+  requires_data: true
+  notes: "Returns Date object; reads from data[[var_name]] (engine coerces to numeric). Output is days-since-epoch when serialized."
+
+- fn: extract_year_from_yyyymmdd
+  input_scale: null
+  output_scale: [1981, 2030]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Extract year from YYYYMMDD integer (e.g. WVS V247 = 20000816 -> 2000)"
+
+- fn: extract_month_from_yyyymmdd
+  input_scale: null
+  output_scale: [1, 12]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Extract month (1-12) from YYYYMMDD integer"
+
+- fn: extract_year_from_s025
+  input_scale: null
+  output_scale: [1981, 2030]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Extract year from WVS S025 (country*10000 + year); year is x mod 10000"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 15. Demographic recodes (age, marital, education)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_age_to_5cat
+  input_scale: [18, null]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Continuous age -> 5 brackets (1=18-29 ... 5=60+). Monotone."
+
+- fn: recode_age_cohort
+  input_scale: [18, null]
+  output_scale: [1, 5]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Continuous age -> 5 cohort bins (1=18-29 ... 5=60+). Monotone. (Equivalent to recode_age_to_5cat; kept under separate name for consistency with KAMOS/KGSS specs.)"
+
+- fn: recode_marital_w4w5
+  input_scale: null
+  output_scale: [1, 6]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "WVS W4/W5 marital nominal: 1-6 pass through; 7->3 (Combined Divorced); 8,10->4 (Living apart->Separated). Categorical."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 16. Afrobarometer / Arab Barometer specific
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_afro_dem_sat
+  input_scale: [0, 4]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Afro R2-R8: 0='Not a democracy'->NA; 1-4 identity. Monotone over valid range."
+
+- fn: recode_afro_dem_pref_r1
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R1 dem-preferable: 1->1, 2->3, 3->2 (swap positions 2 and 3). Categorical permutation."
+
+- fn: recode_afro_dem_pref_r2_r8
+  input_scale: [1, 3]
+  output_scale: [1, 3]
+  reverses: true
+  monotonic: false
+  requires_data: false
+  notes: "Afro R2-R8 dem-preferable: 1->3, 2->2, 3->1 (reverse). Categorical reverse permutation."
+
+- fn: recode_afro_reject_auth
+  input_scale: [1, 5]
+  output_scale: [1, 5]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Afro reject-authoritarian items: 6-x reversal. Higher = more rejection (pro-democracy)."
+
+- fn: recode_afro_educ_detailed
+  input_scale: [0, 9]
+  output_scale: [0, 3]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Afro detailed education 0-9 -> 0-3 collapsed (No formal/Primary/Secondary/Post-sec). Monotone."
+
+- fn: recode_afro_r1_trust
+  input_scale: [1, 4]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Afro R1 trust: 1-4 identity (already on target scale). Monotone."
+
+- fn: recode_afro_party_close_r1
+  input_scale: [1, 2]
+  output_scale: [0, 1]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "Afro R1 pidcls: 1=Yes->1, 2=No->0. Monotone with sign-flip."
+
+- fn: recode_afro_party_close_r2
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R2: 0=No party->0; >=1 (any party code)->1. Nominal-to-binary."
+
+- fn: recode_afro_party_close
+  input_scale: [0, 1]
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "Afro R3-R9: 0=No, 1=Yes (identity). Monotone."
+
+- fn: recode_arab_party_close_binary
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Arab Barometer party closeness: 0='no party'->0; any non-zero non-missing -> 1. Nominal-to-binary."
+
+- fn: recode_afro_employment_r2
+  input_scale: [0, 5]
+  output_scale: [0, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R2 6-cat employment -> 3-cat (0=OLF, 1=Unemployed, 2=Employed). Categorical collapse."
+
+- fn: recode_afro_employment
+  input_scale: [0, 3]
+  output_scale: [0, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R3-R9 4-cat employment -> 3-cat (0=OLF, 1=Unemployed, 2=Employed). Categorical."
+
+- fn: recode_arab_employment_w2w4
+  input_scale: [1, 2]
+  output_scale: [0, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Arab W2-W4 binary employment: 1=Yes->2 (employed), 2=No->0 (OLF). Cannot distinguish unemployed."
+
+- fn: recode_arab_employment_w5w8
+  input_scale: [1, 90]
+  output_scale: [0, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Arab W5-W8 7-cat employment: 1,2->2 (employed); 6->1 (unemployed); 3,4,5,7,90->0 (OLF). unverified — needs human review (whether output 0/1/2 implies labor-force severity ordering vs nominal trichotomy)."
+
+- fn: recode_afro_tataouine_r5
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R5 governorate flag: 1600=Tataouine->1, other Tunisia codes->0, non-Tunisia->NA"
+
+- fn: recode_afro_tataouine_r6
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R6 governorate flag: 1599=Tataouine->1 (R6 reuses different code), other Tunisia->0, else NA"
+
+- fn: recode_afro_tataouine_r9
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Afro R9 character location -> Tataouine binary flag. Operates on character names (uppercase compare)."
+
+- fn: recode_afro_coastal_tun_r5
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R5 governorate -> coastal/interior binary (Tunisia only); precise (Tataouine=interior)"
+
+- fn: recode_afro_coastal_tun_r6
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R6 governorate -> coastal/interior; precise (Tataouine=interior); R6 codes differ from R5"
+
+- fn: recode_afro_coastal_tun_r5_coarse
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R5 governorate -> coastal/interior; coarse (Tataouine=coastal to match R7-R8 region grouping)"
+
+- fn: recode_afro_coastal_tun_r6_coarse
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R6 governorate -> coastal/interior; coarse (Tataouine=coastal to match R7-R8 grouping)"
+
+- fn: recode_afro_coastal_tun_r7r8
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R7-R8 region-level coastal/interior; Tataouine misclassified as coastal (~16/wave) due to South-East regional grouping"
+
+- fn: recode_afro_coastal_tun_r9
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "R9 LOCATION.LEVEL.1 character names -> coastal/interior; Tataouine=interior (governorate-level resolution)"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 17. KAMOS party-bloc recodes
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: recode_party_bloc_w1
+  input_scale: null
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS W1 party -> 3-bloc (1=cons, 2=prog, 3=none/other). Nominal."
+
+- fn: recode_party_bloc_w2
+  input_scale: null
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS W2 party -> 3-bloc; W2 codes differ from W1 (LKP=2 cons, Minjoo=1 prog). Nominal."
+
+- fn: recode_party_bloc_w3w4
+  input_scale: null
+  output_scale: [1, 3]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS W3/W4 party -> 3-bloc (LKP=2 cons, Minjoo=1 prog). Nominal."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 18. Derive / harmonize utility
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: harmonize_w6_corruption
+  input_scale: [1, 5]
+  output_scale: [1, 4]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "W6 5-cat corruption -> 1-4 keeping; codes 0 and 5 -> NA (range filter, not remap). Distinct from recode_w6_corruption which remaps 5->1."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 19. Validation utility (not a `fn:` recode, but defined in recoding.R)
+# ─────────────────────────────────────────────────────────────────────────────
+
+- fn: validate_harmonization
+  input_scale: null
+  output_scale: null
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Diagnostic helper: returns logical TRUE/FALSE for in-range check. Not used as fn: in YAML; kept in registry for completeness."

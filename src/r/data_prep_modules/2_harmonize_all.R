@@ -12,6 +12,7 @@ library(dplyr)
 # Load harmonization engine
 source(here::here("src/r/harmonize/_load_harmonize.R"))
 source(here::here("src/r/utils/_load_functions.R"))
+source(here::here("src/r/utils/spec_discovery.R"))
 source(here::here("src/r/data_prep_modules/_yaml_utils.R"))
 
 # ==============================================================================
@@ -229,17 +230,6 @@ stack_harmonized_wide <- function(harmonized_results, waves) {
 # ==============================================================================
 # GENERIC SURVEY HELPERS (used by per-survey 2_harmonize_all.R files)
 # ==============================================================================
-
-#' List YAML spec files for any survey
-#'
-#' @param survey Survey directory name under src/config/ (e.g. "afro", "wvs")
-#' @return Character vector of YAML file paths (excludes template/doc files)
-list_survey_specs <- function(survey) {
-  config_dir <- here::here("src", "config", survey, "harmonize")
-  files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
-  exclude_patterns <- c("MODEL_VARIABLE", "TEMPLATE", "README")
-  files[!grepl(paste(exclude_patterns, collapse = "|"), files, ignore.case = TRUE)]
-}
 
 #' Generic harmonization pipeline for any survey
 #'

@@ -306,24 +306,43 @@ validate_phrases <- function(spec, waves, verbose = TRUE) {
 
 #' Validate all YAML specs against wave data
 #'
-#' Runs phrase validation for all YAML specs in a directory
+#' Runs phrase validation for all YAML specs in a directory.
+#' Spec discovery is delegated to `find_survey_spec_dir()` /
+#' `list_survey_specs()` (see `src/r/utils/spec_discovery.R`).
 #'
 #' @param waves List: named list of wave dataframes
-#' @param config_dir Path to YAML config directory
+#' @param survey Survey name (default "abs"). Resolved via the spec-discovery
+#'   utility — ABS reads `harmonize_validated/`, every other survey reads
+#'   `harmonize/`. Pass NULL to use an explicit `config_dir` instead.
+#' @param config_dir Optional: explicit path to a spec directory. Overrides
+#'   `survey` when non-NULL. Retained for back-compat with callers that
+#'   passed a directory directly.
 #' @param verbose Print progress
 #'
 #' @return List of validation results by spec name
 #'
 #' @export
 validate_all_specs <- function(waves,
-                               config_dir = "src/config/abs/harmonize_validated",
+                               survey = "abs",
+                               config_dir = NULL,
                                verbose = TRUE) {
 
-  yaml_files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
+  # Lazy-source spec_discovery.R so this file stays usable even if a
+  # caller sources only validate_spec.R directly.
+  if (!exists("list_survey_specs", mode = "function") ||
+      !exists("find_survey_spec_dir", mode = "function")) {
+    source(here::here("src/r/utils/spec_discovery.R"))
+  }
 
-  # Exclude template/readme files
-  exclude <- c("MODEL_VARIABLE", "TEMPLATE", "README")
-  yaml_files <- yaml_files[!grepl(paste(exclude, collapse = "|"), yaml_files, ignore.case = TRUE)]
+  if (is.null(config_dir)) {
+    yaml_files <- list_survey_specs(survey)
+  } else {
+    # Back-compat path: caller supplied an explicit directory.
+    yaml_files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
+    exclude <- c("MODEL_VARIABLE", "TEMPLATE", "README")
+    yaml_files <- yaml_files[!grepl(paste(exclude, collapse = "|"),
+                                    basename(yaml_files), ignore.case = TRUE)]
+  }
 
   all_results <- list()
   total_passed <- 0
@@ -367,7 +386,7 @@ validate_all_specs <- function(waves,
 }
 
 
-#' Check if recoding functions exist
+#' Check if recoding functions exist (and are catalogued in the registry)
 #'
 #' Validates that every r_function/derive rule referenced by the spec —
 #' across the default rule and all wave-specific rules under by_wave,
@@ -375,20 +394,38 @@ validate_all_specs <- function(waves,
 #' calling environment. Mirrors the resolution order used by
 #' harmonize_variable() / resolve_wave_rule().
 #'
-#' @param spec List: parsed YAML specification
+#' Additionally checks the recoding-function registry
+#' (src/r/utils/recoding_registry.yml, ticket A4 / framework CC2). Functions
+#' referenced by `fn:` but missing from the registry are returned as a
+#' separate set, exposed via the `not_in_registry` attribute on the result.
+#' Callers that only inspect `length(result)` continue to work unchanged.
 #'
-#' @return Character vector of missing function names (empty if all present)
+#' @param spec List: parsed YAML specification
+#' @param registry_path Optional path to recoding_registry.yml. If NULL, the
+#'   function tries `src/r/utils/recoding_registry.yml` relative to cwd, and
+#'   falls back to `here::here(...)` if the `here` package is available.
+#'   Pass `NA` to skip the registry check entirely.
+#'
+#' @return Character vector of missing function names — i.e. names referenced
+#'   by `fn:` that do not resolve to a loaded function (current behaviour).
+#'   Two attributes on the return value extend this without breaking callers:
+#'     `not_in_registry`: character vector of `fn:` names that ARE loaded but
+#'         have no entry in recoding_registry.yml (Layer 1 audit signal).
+#'     `registry_checked`: logical scalar — TRUE if the registry was found
+#'         and read, FALSE if it was skipped (e.g. file not found).
 #'
 #' @export
-check_recoding_functions <- function(spec) {
+check_recoding_functions <- function(spec, registry_path = NULL) {
 
   missing_fns <- character()
+  referenced_fns <- character()
 
   collect_fn <- function(rule) {
     if (is.null(rule) || is.null(rule$method)) return()
     if (!rule$method %in% c("r_function", "derive")) return()
     fn_name <- rule$fn
     if (is.null(fn_name) || !nzchar(fn_name)) return()
+    referenced_fns <<- c(referenced_fns, fn_name)
     if (!exists(fn_name, mode = "function")) {
       missing_fns <<- c(missing_fns, fn_name)
     }
@@ -416,5 +453,37 @@ check_recoding_functions <- function(spec) {
     }
   }
 
-  unique(missing_fns)
+  out <- unique(missing_fns)
+
+  # ---- Registry cross-check (Layer 1 / ticket A4) ----
+  not_in_registry <- character()
+  registry_checked <- FALSE
+
+  if (!identical(registry_path, NA)) {
+    if (is.null(registry_path)) {
+      candidate <- "src/r/utils/recoding_registry.yml"
+      if (!file.exists(candidate) && requireNamespace("here", quietly = TRUE)) {
+        candidate <- here::here("src/r/utils/recoding_registry.yml")
+      }
+      registry_path <- candidate
+    }
+    if (file.exists(registry_path) && requireNamespace("yaml", quietly = TRUE)) {
+      registry <- yaml::read_yaml(registry_path)
+      registry_names <- vapply(
+        registry,
+        function(e) if (is.null(e$fn)) NA_character_ else e$fn,
+        character(1)
+      )
+      registry_names <- registry_names[!is.na(registry_names)]
+      # Only flag fns that DO resolve to a function but aren't catalogued —
+      # missing-from-loaded (already in `out`) is the more critical signal.
+      loaded_referenced <- setdiff(unique(referenced_fns), missing_fns)
+      not_in_registry <- setdiff(loaded_referenced, registry_names)
+      registry_checked <- TRUE
+    }
+  }
+
+  attr(out, "not_in_registry") <- unique(not_in_registry)
+  attr(out, "registry_checked") <- registry_checked
+  out
 }
