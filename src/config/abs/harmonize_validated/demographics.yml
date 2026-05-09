@@ -337,66 +337,10 @@ variables:
       validate:
         - waves: [w3, w4, w5, w6]
           phrase: "income|quintile"
-  - id: hh_income_sat
-    concept: demographics
-    description: "Can household income satisfactorily cover needs? (higher = more comfortable)"
-    type: ordinal
-    missing:
-      use_convention: treat_as_na
-      codes: [0, 7]
-    source:
-      w1: null
-      w2: null
-      w3: se13a
-      w4: se14a
-      w5: SE14A
-      w6: se14a
-    scale:
-      min: 1
-      max: 5
-      note: "w3=4-pt, w4=3-pt, w5-w6=5-pt; all reversed so higher=better"
-      labels:
-        1: "Cannot cover needs (great difficulty)"
-        5: "Covers needs well (can save)"
-    harmonize:
-      default:
-        method: identity
-        note: "No w1/w2 equivalent"
-      exceptions:
-        w3:
-          method: recode
-          mapping:
-            1: 4  # covers needs well, can save
-            2: 3  # covers needs all right
-            3: 2  # does not cover, difficulties
-            4: 1  # does not cover, great difficulties
-        w4:
-          method: recode
-          mapping:
-            1: 3  # covers needs well, can save
-            2: 2  # covers needs all right
-            3: 1  # does not cover, difficulties
-        w5:
-          method: recode
-          mapping:
-            1: 5  # covers needs well, can save a lot
-            2: 4  # covers needs well, can save
-            3: 3  # covers needs all right
-            4: 2  # does not cover, difficulties
-            5: 1  # does not cover, great difficulties
-        w6:
-          method: recode
-          mapping:
-            1: 5  # covers needs well, can save a lot
-            2: 4  # covers needs well
-            3: 3  # covers needs all right
-            4: 2  # does not cover, difficulties
-            5: 1  # does not cover, great difficulties
-    qc:
-      skip_range_check: true
-      validate:
-        - waves: [w3, w4, w5, w6]
-          phrase: "income.*allow|allow.*income|cover.*needs"
+  # NOTE: hh_income_sat lives in democracy_satisfaction.yml (4-pt, reversed,
+  # with per-wave 5pt collapse). Audit B4 found this file also declared it,
+  # which would have caused silent column overwriting at harmonize-time.
+  # Removed 2026-05-09. The democracy_satisfaction.yml version is canonical.
 
   - id: hh_size
     concept: demographics
