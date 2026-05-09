@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://survey-data-prep/_anchors/_schema/anchor_v1.schema.json",
+  "title": "Construct anchor file (v1)",
+  "description": "JSON Schema for src/config/_anchors/<construct>.yml. Each anchor file declares a construct, names a single anchor variable whose direction is known and stable, and lists every variable expected to load on that anchor with a substantive justification. The Layer 4 audit diagnostic uses this file to mechanically check that every YAML's reverse-coding decision produced a variable whose correlation with the anchor has the theoretically-expected sign. The headline guarantee is additionalProperties: false at every object level so typos like 'expected_sigm:' or 'loadrs:' fail loud.",
+
+  "type": "object",
+  "required": ["schema_version", "construct", "anchor", "loaders"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "description": "Schema version. Must be the integer 1 for this revision.",
+      "const": 1
+    },
+    "construct": {
+      "description": "Snake-case name of the construct (e.g. democratic_attitudes, institutional_trust, economic_evaluations).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "description": {
+      "description": "Free-text paragraph describing what the construct is and why these loaders cohere.",
+      "type": "string"
+    },
+    "notes": { "$ref": "#/$defs/stringOrStringArray" },
+    "last_reviewed": {
+      "description": "ISO-8601 calendar date (YYYY-MM-DD) of the last human review of this file's expected_sign assignments.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "anchor": { "$ref": "#/$defs/anchorBlock" },
+    "loaders": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/loader" }
+    }
+  },
+
+  "$defs": {
+
+    "waveKey": {
+      "description": "Wave identifier. Surveys use heterogeneous conventions (w1, y1995, r5, w2003, w2025).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+
+    "varId": {
+      "description": "Snake-case variable id, matching an `id:` declared in some harmonization YAML.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+
+    "directionEnum": {
+      "description": "Direction of the anchor variable itself. positive = higher values mean more of the construct; negative = higher values mean less; none = orthogonal or undefined.",
+      "type": "string",
+      "enum": ["positive", "negative", "none"]
+    },
+
+    "signEnum": {
+      "description": "Expected sign of a loader's correlation with the anchor. positive/negative are theory-driven predictions; either is for ambivalent or multi-dimensional items where theory does not commit.",
+      "type": "string",
+      "enum": ["positive", "negative", "either"]
+    },
+
+    "anchorBlock": {
+      "description": "The anchor variable for this construct. The anchor is the one item whose direction is known and stable; every loader's expected_sign is interpreted relative to this anchor's direction.",
+      "type": "object",
+      "required": ["variable", "expected_direction"],
+      "additionalProperties": false,
+      "properties": {
+        "variable": { "$ref": "#/$defs/varId" },
+        "expected_direction": { "$ref": "#/$defs/directionEnum" },
+        "per_wave": {
+          "description": "Optional override mapping wave-key -> direction. Use when the anchor itself reverses direction across waves (e.g. question rephrased in W4). Per-wave entries override the global expected_direction for those waves only.",
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]*$": { "$ref": "#/$defs/directionEnum" }
+          }
+        },
+        "notes": { "$ref": "#/$defs/stringOrStringArray" }
+      }
+    },
+
+    "loader": {
+      "description": "One variable expected to covary with the anchor in a theoretically-predictable direction.",
+      "type": "object",
+      "required": ["id", "expected_sign", "justification"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/varId" },
+        "expected_sign": { "$ref": "#/$defs/signEnum" },
+        "justification": {
+          "description": "One-sentence substantive justification (10-500 chars) citing literature OR codebook semantics. NOT tautological: 'they're related' is rejected on review even though the schema accepts it. Forces the author to write a real reason that an audit reviewer can evaluate.",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500
+        },
+        "min_correlation": {
+          "description": "Loaders with |observed_correlation| below this threshold fire a 'weak loader' warning rather than a sign-disagreement error. Defaults to 0.05 in the diagnostic if omitted.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "surveys": {
+          "description": "Optional list of survey-name strings that restrict this loader to certain surveys. Use for cross-survey constructs where the loader exists only in some surveys (e.g. KGSS conf_* trust variables alongside ABS trust_*). Diagnostic skips this loader for surveys not in the list. Accepts a scalar string OR an array; jsonlite::toJSON(auto_unbox=TRUE) collapses length-1 arrays to scalars and the schema must accept both shapes.",
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          ]
+        },
+        "waves": {
+          "description": "Optional list of wave keys that restrict this loader to certain waves. Use when a loader's theoretical direction is only meaningful in some waves (e.g. a battery introduced in W3). Accepts a scalar wave-key OR an array (same auto_unbox tolerance).",
+          "oneOf": [
+            { "$ref": "#/$defs/waveKey" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/waveKey" }
+            }
+          ]
+        },
+        "notes": { "$ref": "#/$defs/stringOrStringArray" }
+      }
+    },
+
+    "stringOrStringArray": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    }
+  }
+}

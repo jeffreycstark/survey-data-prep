@@ -1,0 +1,222 @@
+# Construct anchor: democratic_attitudes (ABS pilot, ticket D2)
+#
+# Pilot anchor file for the Layer 4 reverse-coding diagnostic.
+# Scope is intentionally ABS-only for this first construct. Cross-survey
+# extension (WVS / LBS / Afro / Arab / KGSS) is deferred to a follow-up
+# ticket once D3's diagnostic engine has run cleanly against this file.
+#
+# DRAFT for Jeff's review. Sign assignments flagged with `notes:` should
+# be scrutinized before this file is merged into the audit gate.
+
+schema_version: 1
+construct: democratic_attitudes
+last_reviewed: "2026-05-09"
+
+description: >
+  Latent disposition toward democracy as a regime form: satisfaction
+  with how democracy works (anchor), endorsement of democracy as the
+  best system, perceived democratic-ness of the country, and the
+  inverse loading of explicit support for non-democratic alternatives
+  (strongman, single-party, military, technocratic rule, leader
+  discretion). Anchored on the standard "satisfaction with the way
+  democracy works" item that comparative-democratization scholarship
+  treats as the canonical regime-performance evaluation (Klingemann
+  1999; Norris 2011).
+
+notes:
+  - >
+    The user-facing brief referenced 'dem_sat_national' and items
+    'a_strongleader / a_singleparty / a_armyrule / a_expertrule' but
+    those exact ids are not declared in any ABS spec. The actual
+    declared ids are democracy_satisfaction (in democracy.yml) and
+    strongman_rule / single_party_rule / military_rule / expert_rule
+    (in authoritarianism.yml). This file uses the declared ids so the
+    schema's id-existence check passes. If Jeff prefers the conceptual
+    aliases, that is a renaming decision in the harmonization specs,
+    not in this anchor file.
+  - >
+    All four authoritarian-rule loaders (strongman, single_party,
+    military, expert_rule) are reverse-coded by safe_reverse_4pt in
+    authoritarianism.yml so that high = more authoritarian. They
+    therefore carry expected_sign = negative against the satisfaction
+    anchor. If the diagnostic surfaces any of them with positive sign,
+    the YAML's reversal is the first place to look.
+  - >
+    Several items use expected_sign = either rather than a directional
+    claim. This is deliberate. dem_always_preferable is type=nominal
+    (the harmonized values are category labels, not a direction);
+    dem_vs_econ and dem_vs_equality are forced-choice tradeoffs with
+    a center category that breaks linear monotonicity; and the
+    procedural-preference index measures *which kind* of democracy
+    respondents value, which the literature does not consistently link
+    to satisfaction with how it currently works.
+
+anchor:
+  variable: democracy_satisfaction
+  expected_direction: positive
+  notes: >
+    Higher harmonized value = more satisfied. Per docs/surveys/abs.md,
+    W2 raw was 1=Not at all satisfied -> 4=Very satisfied (already in
+    standard direction); W3-W6 raw was 1=Very -> 4=Not at all and is
+    reverse-coded by safe_reverse_4pt in democracy.yml. After
+    harmonization the direction is uniform across W1-W6, so no
+    per_wave override is needed here. If the harmonization itself is
+    later found to be wrong for some wave, that is a Layer 1/3
+    finding, not an anchor-file finding.
+
+loaders:
+  # ============================================================================
+  # POSITIVE LOADERS (covary with satisfaction with democracy)
+  # ============================================================================
+
+  - id: gov_sat_national
+    expected_sign: positive
+    justification: >
+      Government satisfaction is the closest substantive neighbor of
+      democratic satisfaction in the regime-performance evaluation
+      cluster (Mishler & Rose 2001); shared response frame
+      ('satisfied / dissatisfied') and shared object (the political
+      system in operation) yield the highest expected loading among
+      ABS items, though the two are theoretically distinct (regime
+      vs. incumbent evaluation).
+
+  - id: dem_best_form
+    expected_sign: positive
+    justification: >
+      Diffuse support for democracy as the best system (Easton 1975)
+      should covary positively with specific satisfaction; both are
+      pro-democracy attitudes and ABS scholarship treats this item as
+      a core indicator of regime preference (Chu et al. 2008).
+    waves: [w3, w4, w5, w6]
+    notes: >
+      Item not asked in W1 or W2 per democracy.yml source mapping.
+      Restricting to W3-W6 prevents the diagnostic from flagging
+      legitimate absence as a missing-loader error.
+
+  - id: democracy_suitability
+    expected_sign: positive
+    justification: >
+      'Democracy is suitable for our country' (1-10) is the
+      country-specific analogue of dem_best_form and is theoretically
+      expected to load with satisfaction with how democracy actually
+      works in that country.
+
+  - id: dem_extent_current
+    expected_sign: positive
+    justification: >
+      Perceived current democraticness (1=complete dictatorship -
+      10=complete democracy). Citizens who rate the country as more
+      democratic also tend to report higher satisfaction with how
+      democracy works there - a regime-performance-evaluation
+      consistency expected on standard ABS findings (Shin & Cho 2010);
+      the relationship is not tautological because satisfaction can
+      be high under regimes rated as only partially democratic.
+
+  # ============================================================================
+  # NEGATIVE LOADERS (preference for authoritarian alternatives)
+  # ============================================================================
+
+  - id: strongman_rule
+    expected_sign: negative
+    justification: >
+      Support for getting rid of parliament/elections in favor of a
+      strong leader; harmonized so high = more authoritarian. Should
+      anti-correlate with satisfaction with the way democracy works
+      (Inglehart & Welzel 2005, ch. 11; standard finding in ABS
+      cross-national analyses).
+
+  - id: single_party_rule
+    expected_sign: negative
+    justification: >
+      Support for one-party rule with no opposition; harmonized so
+      high = more authoritarian. Standard authoritarian-preference
+      battery item; expected to anti-correlate with democratic
+      satisfaction (Norris 2011, ch. 6).
+
+  - id: military_rule
+    expected_sign: negative
+    justification: >
+      Support for the army governing the country; harmonized so high
+      = more authoritarian. Most overt non-democratic preference;
+      anti-correlates with democratic satisfaction in published ABS
+      analyses (Chang et al. 2013).
+
+  - id: expert_rule
+    expected_sign: negative
+    justification: >
+      Technocratic rule: 'get rid of elections and parliaments and
+      have experts make decisions' (harmonized so high = more
+      authoritarian). Loads on the same authoritarian-preference
+      dimension as strongman/single-party/military but more weakly
+      because it competes with a separate governance-effectiveness
+      reading (Bertsou & Caramani 2020).
+    min_correlation: 0.10
+    waves: [w1, w3, w4, w5, w6]
+    notes: >
+      Not asked in W2 per authoritarianism.yml source mapping.
+
+  - id: upright_leader_discretion
+    expected_sign: negative
+    justification: >
+      'If we have leaders who are morally upright, we can let them
+      decide everything' - paternalist deference to executive
+      discretion, harmonized so high = more authoritarian; central
+      item in the East Asian paternalist-authoritarian battery
+      (Shin 2012) that should anti-correlate with satisfaction with
+      democratic procedure.
+
+  # ============================================================================
+  # AMBIVALENT / THEORETICALLY UNSETTLED (expected_sign: either)
+  # ============================================================================
+
+  - id: dem_always_preferable
+    expected_sign: either
+    justification: >
+      Nominal three-category item ('democracy always preferable' /
+      'authoritarian sometimes preferable' / 'doesn't matter what
+      kind of regime'); the harmonized variable is type=nominal in
+      democracy.yml so a Pearson correlation against the anchor is
+      not interpretable as a direction claim. Diagnostic should
+      record observed sign for human review but not error.
+
+  - id: dem_vs_econ
+    expected_sign: either
+    justification: >
+      Forced choice between 'democracy' and 'economic development'
+      with category 5 = 'both equally' kept at the top of the scale
+      after harmonization (per democracy.yml). The 5-pt structure is
+      not strictly monotonic and the substantive vs procedural
+      framing is theoretically contested - sign of correlation with
+      satisfaction depends on how respondents read 'democracy' in
+      the prompt (Welzel 2013 vs. Bratton & Mattes 2001).
+
+  - id: dem_vs_equality
+    expected_sign: either
+    justification: >
+      Forced choice between reducing inequality and protecting
+      political freedom, with 'both equally' remapped to position 3
+      via middle_identity_5pt (per democracy.yml). The relationship
+      to democratic satisfaction is genuinely ambiguous: satisfied
+      democrats can be either liberty-prioritizers or
+      equality-prioritizers depending on national context. Use either
+      and let the diagnostic record observed direction for review.
+
+  - id: procedural_preference_index
+    expected_sign: either
+    justification: >
+      Index of procedural (vs. substantive) understanding of
+      democracy. The literature is unsettled on whether procedural
+      democrats report higher satisfaction (because they evaluate
+      institutions on procedural grounds and find them adequate) or
+      lower satisfaction (because they hold institutions to a
+      stricter procedural standard) - Bratton & Mattes 2001;
+      Canache 2012. Use either; diagnostic should record observed
+      sign for human review.
+    waves: [w2, w3, w4, w5, w6]
+    notes: >
+      Not asked in W1 per meaning_of_democracy.yml source mapping.
+      W2 and W5 produce only 0 or 4 because they are single-item
+      measures collapsed to the 0-4 frame; W3/W4/W6 are derived from
+      the full four-set battery. Cross-wave comparability is therefore
+      degraded, which is an additional reason for either rather than
+      a directional claim.

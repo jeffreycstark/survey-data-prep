@@ -140,6 +140,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Audit reports — generated artifacts, regeneratable from source
+audit/reports/
+
 # Archives
 *.zip
 *.tar
