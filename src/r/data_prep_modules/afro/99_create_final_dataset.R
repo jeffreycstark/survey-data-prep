@@ -12,6 +12,9 @@ library(dplyr)
 library(haven)
 library(arrow)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: afro_harmonized\n")
@@ -303,3 +306,26 @@ cat(sprintf("\nafro_harmonized saved: %s rows, %d columns\n",
             format(nrow(afro_harmonized), big.mark = ","),
             ncol(afro_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# raw_paths is the per-round .sav map already defined above; reuse it as the
+# manifest's input list (one .sav per round). Round 9 has the long filename;
+# the rest follow merged_r{N}_data.sav.
+manifest_inputs  <- unname(unlist(raw_paths))
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "afro", "afro_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "afro",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("afro"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "afro", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "afro", "manifest.json"), "\n", sep = "")

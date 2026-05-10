@@ -7,6 +7,10 @@ library(here)
 library(dplyr)
 library(arrow)
 
+source(here::here("src", "r", "data_prep_modules", "kipa-corruption", "0_load_waves.R"))
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: kipa_corruption_harmonized\n")
@@ -92,3 +96,39 @@ cat(sprintf("\n✅ kipa_corruption_harmonized saved: %s rows, %d columns\n",
             format(nrow(kipa_corruption_harmonized), big.mark = ","),
             ncol(kipa_corruption_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# Inputs: one .sav per KOSSDA handle directory (cumulative + annuals). The
+# loader prefers the Korean-label .sav over an English copy in the same
+# directory; mirror that policy when picking the file to hash.
+.kipa_corr_pick_sav <- function(handle) {
+  hdir <- here("data", "kipa-corruption", "raw", "unzipped", handle)
+  if (!dir.exists(hdir)) return(NA_character_)
+  files <- list.files(hdir, pattern = "\\.sav$|\\.SAV$", full.names = TRUE)
+  if (length(files) == 0) return(NA_character_)
+  kor <- files[!grepl("^eng_", basename(files), ignore.case = FALSE)]
+  if (length(kor) > 0) return(kor[1])
+  files[1]
+}
+manifest_inputs <- vapply(names(.kipa_corruption_handle_year),
+                          .kipa_corr_pick_sav, character(1))
+manifest_inputs <- unname(manifest_inputs[!is.na(manifest_inputs)])
+
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "kipa-corruption", "kipa_corruption_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "kipa-corruption",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("kipa-corruption"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "kipa-corruption", "manifest.json")
+)
+
+cat("Manifest written: ",
+    here("outputs", "kipa-corruption", "manifest.json"), "\n", sep = "")

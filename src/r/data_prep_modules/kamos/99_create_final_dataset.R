@@ -24,6 +24,9 @@ library(here)
 library(dplyr)
 library(arrow)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: kamos_harmonized\n")
@@ -152,3 +155,30 @@ cat(sprintf("\n✅ kamos_harmonized saved: %s rows, %d columns\n",
             format(nrow(kamos_harmonized), big.mark = ","),
             ncol(kamos_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# Inputs are the four KAMOS .sav files (paths hard-coded in 0_load_waves.R).
+.kamos_raw_dir   <- here("data", "kamos", "raw", "all_waves")
+manifest_inputs  <- c(
+  file.path(.kamos_raw_dir, "KAMOS_1-1_2016.02.16-2016.05.16_data.sav"),
+  file.path(.kamos_raw_dir, "KAMOS_2-1_2017.05.16-2017.07.10_data.sav"),
+  file.path(.kamos_raw_dir, "KAMOS_3-1_2018.04.23-2018.06.22_data.sav"),
+  file.path(.kamos_raw_dir, "KAMOS_4-1_2019.04.20-2019.06.20_data.sav")
+)
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "kamos", "kamos_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "kamos",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("kamos"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "kamos", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "kamos", "manifest.json"), "\n", sep = "")

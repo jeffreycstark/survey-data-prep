@@ -12,6 +12,9 @@ library(dplyr)
 library(haven)
 library(arrow)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: arab_barometer_harmonized\n")
@@ -289,3 +292,31 @@ cat(sprintf("\narab_barometer_harmonized saved: %s rows, %d columns\n",
             format(nrow(ab_harmonized), big.mark = ","),
             ncol(ab_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# Inputs: one .sav per included wave dir (largest .sav wins, matching the
+# loader's policy). raw_dirs was defined above for country extraction.
+.ab_pick_sav <- function(d) {
+  if (is.null(d) || !dir.exists(d)) return(NA_character_)
+  files <- list.files(d, pattern = "\\.sav$", full.names = TRUE,
+                      ignore.case = TRUE)
+  if (length(files) == 0) return(NA_character_)
+  files[which.max(file.size(files))]
+}
+manifest_inputs <- vapply(raw_dirs, .ab_pick_sav, character(1))
+manifest_inputs <- unname(manifest_inputs[!is.na(manifest_inputs)])
+
+manifest_outputs <- c(rds_path, parquet_path)
+
+write_manifest(
+  survey      = "arab-barometer",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("arab-barometer"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "arab-barometer", "manifest.json")
+)
+
+cat("Manifest written: ",
+    here("outputs", "arab-barometer", "manifest.json"), "\n", sep = "")

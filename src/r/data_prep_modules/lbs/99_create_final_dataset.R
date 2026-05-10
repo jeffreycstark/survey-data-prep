@@ -13,6 +13,8 @@ library(arrow)
 
 # Load the wave finder function
 source(here::here("src/r/data_prep_modules/lbs/0_load_waves.R"))
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
 cat(strrep("=", 70), "\n")
@@ -196,4 +198,30 @@ cat(sprintf("\nlbs_harmonized saved: %s rows, %d columns\n",
             format(nrow(lbs_harmonized), big.mark = ","),
             ncol(lbs_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# Inputs: every English .sav consumed by load_lbs_waves(), one per year. Use
+# the same finder the loader uses so the manifest reflects the actual files.
+lbs_years <- c(1995, 1996, 1997, 1998, 2000, 2001, 2002, 2003, 2004, 2005,
+               2006, 2007, 2008, 2009, 2010, 2011, 2013, 2015, 2016, 2017,
+               2018, 2020, 2023, 2024)
+manifest_inputs <- vapply(lbs_years, find_lbs_eng_sav, character(1))
+
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "lbs", "lbs_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "lbs",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("lbs"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "lbs", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "lbs", "manifest.json"), "\n", sep = "")
 

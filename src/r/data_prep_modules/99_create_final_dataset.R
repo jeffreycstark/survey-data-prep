@@ -12,6 +12,9 @@ library(here)
 library(dplyr)
 library(haven)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n=== CREATING FINAL DATASET: abs_harmonized.rds ===\n\n")
 
 # Load all master wave files
@@ -123,3 +126,24 @@ cat(paste(" ", var_names, collapse = "\n"), "\n")
 cat("\n", paste(rep("=", 60), collapse = ""), "\n", sep = "")
 cat("DONE: abs_harmonized.rds ready for analysis\n")
 cat(paste(rep("=", 60), collapse = ""), "\n\n", sep = "")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# Records sha256 of every input wave RDS, every YAML spec consumed, and the
+# harmonized output, plus engine-file hashes and git state. Re-running with
+# no upstream changes produces identical hashes; only run_id/timestamp drift.
+
+manifest_inputs  <- here("data", "processed",
+                         sprintf("w%d.rds", 1:6))
+manifest_outputs <- c(output_file)
+
+write_manifest(
+  survey      = "abs",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("abs"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "abs", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "abs", "manifest.json"), "\n", sep = "")

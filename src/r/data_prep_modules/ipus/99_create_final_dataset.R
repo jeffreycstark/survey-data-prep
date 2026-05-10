@@ -10,6 +10,10 @@ library(here)
 library(dplyr)
 library(arrow)
 
+source(here::here("src", "r", "data_prep_modules", "ipus", "0_load_waves.R"))
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: ipus_harmonized\n")
@@ -93,3 +97,28 @@ saveRDS(ipus_harmonized, here("outputs", "ipus", "ipus_harmonized.rds"))
 cat(sprintf("\n✅ ipus_harmonized saved: %s rows, %d columns\n",
             format(nrow(ipus_harmonized), big.mark = ","), ncol(ipus_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# IPUS_YEARS is sourced from 0_load_waves.R; one .sav per year.
+manifest_inputs <- vapply(IPUS_YEARS, function(yr) {
+  here("data", "ipus", "raw", as.character(yr),
+       sprintf("ipus_%d.sav", yr))
+}, character(1))
+
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "ipus", "ipus_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "ipus",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("ipus"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "ipus", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "ipus", "manifest.json"), "\n", sep = "")

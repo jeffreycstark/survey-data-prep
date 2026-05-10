@@ -16,6 +16,9 @@ library(arrow)
 library(haven)
 library(countrycode)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: wvs_harmonized\n")
@@ -185,3 +188,24 @@ cat(sprintf("\nwvs_harmonized saved: %s rows, %d columns\n",
             format(nrow(wvs_harmonized), big.mark = ","),
             ncol(wvs_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+manifest_inputs <- unname(unlist(lapply(country_sources, `[[`, "file")))
+
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "wvs", "wvs_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "wvs",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("wvs"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "wvs", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "wvs", "manifest.json"), "\n", sep = "")

@@ -15,6 +15,9 @@ library(here)
 library(dplyr)
 library(arrow)
 
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
+
 cat("\n")
 cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: kgss_harmonized\n")
@@ -130,3 +133,25 @@ cat(sprintf("\n✅ kgss_harmonized saved: %s rows, %d columns\n",
             format(nrow(kgss_harmonized), big.mark = ","),
             ncol(kgss_harmonized)))
 cat(strrep("=", 70), "\n\n")
+
+# ==============================================================================
+# RUN MANIFEST (audit ticket C2)
+# ==============================================================================
+# KGSS reads a single cumulative .sav and splits it by YEAR; the manifest
+# records the upstream cumulative file as the input.
+manifest_inputs  <- c(here("data", "kgss", "raw", "kor_data_CUM0074.sav"))
+manifest_outputs <- c(
+  rds_path,
+  parquet_path,
+  here("outputs", "kgss", "kgss_harmonized.rds")
+)
+
+write_manifest(
+  survey      = "kgss",
+  inputs      = manifest_inputs,
+  specs       = list_survey_specs("kgss"),
+  outputs     = manifest_outputs,
+  output_path = here("outputs", "kgss", "manifest.json")
+)
+
+cat("Manifest written: ", here("outputs", "kgss", "manifest.json"), "\n", sep = "")

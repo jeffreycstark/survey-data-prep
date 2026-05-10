@@ -311,6 +311,24 @@ harmonize_variable <- function(
       }
     }
 
+    # ---- attach per-variable provenance attribute (C3) ----
+    # Records the lineage of this harmonized vector. Caller-populated fields
+    # (source_file, spec_path, run_id) start as NA_character_; harmonize_spec()
+    # fills spec_path, and stack_harmonized_wide() (or another caller) fills
+    # run_id. source_file is left NA at this layer because the engine reads
+    # from preprocessed RDS, not raw .sav — the manifest writer (C2/C5) owns
+    # raw-input lineage.
+    attr(x_harm, "provenance") <- list(
+      variable_id = var_spec$id,
+      source_file = NA_character_,
+      source_var  = src,
+      wave        = wave_name,
+      method      = wave_rule$method,
+      fn          = wave_rule$fn %||% NA_character_,
+      spec_path   = NA_character_,
+      run_id      = NA_character_
+    )
+
     out[[wave_name]] <- x_harm
   }
 

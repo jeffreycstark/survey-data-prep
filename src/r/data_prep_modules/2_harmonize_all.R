@@ -70,6 +70,17 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
         oob_log = oob_log
       )
 
+      # C3: populate spec_path on each wave vector's provenance attribute.
+      # harmonize_variable() leaves spec_path as NA_character_ because it
+      # doesn't know which YAML file it was called for.
+      for (wave_name in names(harmonized)) {
+        prov <- attr(harmonized[[wave_name]], "provenance")
+        if (!is.null(prov)) {
+          prov$spec_path <- spec_path
+          attr(harmonized[[wave_name]], "provenance") <- prov
+        }
+      }
+
       results[[var_id]] <- harmonized
 
     }, error = function(e) {
@@ -189,8 +200,17 @@ stack_harmonized <- function(harmonized_results, waves) {
 #'
 #' @param harmonized_results Output from harmonize_all_specs()
 #' @param waves List of wave dataframes
+#' @param run_id Session-stable run identifier; populated into each column's
+#'   provenance attribute (defaults to a UTC timestamp)
 #' @return List of dataframes, one per wave, with all harmonized variables as columns
-stack_harmonized_wide <- function(harmonized_results, waves) {
+#'
+#' @details
+#' C3: per-variable provenance attributes are preserved. tibble/data.frame
+#' column assignment via `[[<-` strips most attributes, so we re-attach
+#' provenance after assignment. `run_id` is populated here because it is
+#' session-scoped, not spec-scoped.
+stack_harmonized_wide <- function(harmonized_results, waves,
+                                  run_id = format(Sys.time(), "%Y%m%d%H%M%S")) {
 
   wave_names <- names(waves)
   output <- list()
@@ -215,7 +235,17 @@ stack_harmonized_wide <- function(harmonized_results, waves) {
           values <- var_data[[wave_name]]
 
           if (length(values) == n_rows) {
+            # C3: capture provenance before assignment (tibble [[<- strips it),
+            # populate run_id, then re-attach after assignment.
+            prov <- attr(values, "provenance")
+            if (!is.null(prov)) {
+              prov$run_id <- run_id
+              attr(values, "provenance") <- prov
+            }
             wave_df[[var_id]] <- values
+            if (!is.null(prov)) {
+              attr(wave_df[[var_id]], "provenance") <- prov
+            }
           } else if (length(values) > 0) {
             warning(sprintf(
               "Length mismatch for %s in %s: expected %d, got %d",
