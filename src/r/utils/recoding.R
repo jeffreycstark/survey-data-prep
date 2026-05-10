@@ -663,20 +663,34 @@ recode_w4_witnessed <- function(x,
 collapse_5pt_to_4pt_then_reverse <- function(x,
                                               missing_codes = c(-1, 0, 7, 8, 9, 97, 98, 99),
                                               ...) {
-  #' Collapse 5-point scale to 4-point and reverse
+  #' Collapse 5-point scale to 4-point and reverse — for ABS hh_income_sat W5/W6
   #'
-  #' For household income satisfaction in W5-W6 which may have 5 categories.
-  #' Collapses middle categories and reverses direction.
+  #' Verified against data/abs/labels/W5_labels.txt SE14A on 2026-05-10:
+  #'   raw 1 = "save a lot"
+  #'   raw 2 = "save"
+  #'   raw 3 = "covers needs all right"
+  #'   raw 4 = "does not cover, difficulties"
+  #'   raw 5 = "does not cover, great difficulties"
   #'
-  #' This is a placeholder - verify actual scale structure before using.
+  #' Collapse the top 2 (save_a_lot + save) per the YAML's note in
+  #' democracy_satisfaction.yml:hh_income_sat.exceptions.w5, then reverse
+  #' so high = covers well.
+  #'
+  #' Bug fix 2026-05-10: the prior implementation had raw 2->3 and raw 3->2,
+  #' which (a) failed to collapse the top categories as documented, and
+  #' (b) collapsed raw 3 ("covers all right") with raw 4 ("difficulties") --
+  #' two opposite-valence categories. Audit ticket E4 surfaced an adjacent
+  #' finding (value 5 leaking) that turned out to be a stale-output issue,
+  #' but inspection of this function in the process surfaced these mapping
+  #' errors. Verified against the W5 codebook before the fix.
 
   dplyr::case_when(
     x %in% missing_codes ~ NA_real_,
-    x == 1 ~ 4,
-    x == 2 ~ 3,
-    x == 3 ~ 2,
-    x == 4 ~ 2,  # Collapse 3&4 to middle-low
-    x == 5 ~ 1,
+    x == 1 ~ 4,             # save a lot           -> top      (collapsed)
+    x == 2 ~ 4,             # save                 -> top      (collapsed)
+    x == 3 ~ 3,             # covers all right     -> mid-high
+    x == 4 ~ 2,             # difficulties         -> mid-low
+    x == 5 ~ 1,             # great difficulties   -> bottom
     TRUE ~ NA_real_
   )
 }
