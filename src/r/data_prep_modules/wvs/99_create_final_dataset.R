@@ -209,3 +209,22 @@ write_manifest(
 )
 
 cat("Manifest written: ", here("outputs", "wvs", "manifest.json"), "\n", sep = "")
+
+# ==============================================================================
+# OUTPUT INVARIANTS (audit ticket E2)
+# ==============================================================================
+# Non-blocking post-hoc validator. Writes outputs/wvs/03-invariants.md and
+# audit/reports/wvs/03-invariants.csv.
+source(here("src", "r", "data_prep_modules", "2.5_validate_harmonization.R"))
+results <- tryCatch(
+  run_validation(survey = "wvs", save_report = TRUE, verbose = FALSE),
+  error = function(e) { message("validation step failed: ", e$message); NULL }
+)
+if (!is.null(results)) {
+  cat(sprintf(
+    "Invariants: ok=%d warn=%d error=%d skip=%d (total=%d)\n",
+    results$counts$ok, results$counts$warn,
+    results$counts$error, results$counts$skip,
+    nrow(results$summary)
+  ))
+}

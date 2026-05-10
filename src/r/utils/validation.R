@@ -546,6 +546,330 @@ validate_crosstab_grouped <- function(raw_vec, harmonized_vec, group_vec,
 }
 
 
+#' Validate type stability of harmonized values
+#'
+#' Catches silent coercion of declared-ordinal variables to non-integer numeric.
+#' Compares observed storage of `harmonized_vec` against the YAML-declared
+#' `type:` and reports mismatches.
+#'
+#' Rules:
+#'   - ordinal / binary: integer storage OR numeric storage where every non-NA
+#'     value is whole (|x - round(x)| < 1e-9). Out-of-range values are not
+#'     enforced here — that's E4's level-preservation check.
+#'   - categorical / nominal: integer or character storage (factor accepted).
+#'   - continuous: any numeric storage; status = ok.
+#'   - unknown declared_type: status = warn (not error — keeps E3 forward-
+#'     compatible if new type strings appear in YAML before the schema lists
+#'     them).
+#'
+#' @param harmonized_vec Harmonized vector
+#' @param declared_type Character: "ordinal", "nominal", "continuous", "binary",
+#'   "categorical"
+#' @return List with status, check, declared_type, observed_storage, message
+validate_type_stability <- function(harmonized_vec, declared_type) {
+
+  observed_storage <- if (is.factor(harmonized_vec)) {
+    "factor"
+  } else if (is.integer(harmonized_vec)) {
+    "integer"
+  } else if (is.character(harmonized_vec)) {
+    "character"
+  } else if (is.logical(harmonized_vec)) {
+    "logical"
+  } else if (is.numeric(harmonized_vec)) {
+    "numeric"
+  } else {
+    typeof(harmonized_vec)
+  }
+
+  declared_type <- tolower(as.character(declared_type %||% "ordinal"))
+
+  is_whole_numeric <- function(x) {
+    x_nonna <- x[!is.na(x)]
+    if (length(x_nonna) == 0) return(TRUE)
+    if (!is.numeric(x_nonna)) return(FALSE)
+    all(abs(x_nonna - round(x_nonna)) < 1e-9)
+  }
+
+  if (declared_type %in% c("ordinal", "binary")) {
+    if (observed_storage == "integer") {
+      return(list(
+        status = "ok", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf("Type OK: declared=%s, storage=integer",
+                          declared_type)
+      ))
+    }
+    if (observed_storage == "numeric") {
+      if (is_whole_numeric(harmonized_vec)) {
+        return(list(
+          status = "ok", check = "type_stability",
+          declared_type = declared_type, observed_storage = observed_storage,
+          message = sprintf(
+            "Type OK: declared=%s, storage=numeric (all values whole)",
+            declared_type
+          )
+        ))
+      }
+      n_fractional <- sum(
+        !is.na(harmonized_vec) &
+          abs(harmonized_vec - round(harmonized_vec)) >= 1e-9
+      )
+      return(list(
+        status = "error", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf(
+          "Type MISMATCH: declared=%s but %d non-integer values present",
+          declared_type, n_fractional
+        )
+      ))
+    }
+    if (observed_storage == "factor") {
+      return(list(
+        status = "ok", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf("Type OK: declared=%s, storage=factor",
+                          declared_type)
+      ))
+    }
+    return(list(
+      status = "error", check = "type_stability",
+      declared_type = declared_type, observed_storage = observed_storage,
+      message = sprintf(
+        "Type MISMATCH: declared=%s but storage is %s",
+        declared_type, observed_storage
+      )
+    ))
+  }
+
+  if (declared_type %in% c("nominal", "categorical")) {
+    if (observed_storage %in% c("integer", "character", "factor")) {
+      return(list(
+        status = "ok", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf("Type OK: declared=%s, storage=%s",
+                          declared_type, observed_storage)
+      ))
+    }
+    if (observed_storage == "numeric" && is_whole_numeric(harmonized_vec)) {
+      return(list(
+        status = "ok", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf(
+          "Type OK: declared=%s, storage=numeric (all values whole)",
+          declared_type
+        )
+      ))
+    }
+    return(list(
+      status = "error", check = "type_stability",
+      declared_type = declared_type, observed_storage = observed_storage,
+      message = sprintf(
+        "Type MISMATCH: declared=%s but storage is %s (expected integer/character/factor)",
+        declared_type, observed_storage
+      )
+    ))
+  }
+
+  if (declared_type == "continuous") {
+    if (observed_storage %in% c("integer", "numeric")) {
+      return(list(
+        status = "ok", check = "type_stability",
+        declared_type = declared_type, observed_storage = observed_storage,
+        message = sprintf("Type OK: declared=continuous, storage=%s",
+                          observed_storage)
+      ))
+    }
+    return(list(
+      status = "error", check = "type_stability",
+      declared_type = declared_type, observed_storage = observed_storage,
+      message = sprintf(
+        "Type MISMATCH: declared=continuous but storage is %s",
+        observed_storage
+      )
+    ))
+  }
+
+  list(
+    status = "warn", check = "type_stability",
+    declared_type = declared_type, observed_storage = observed_storage,
+    message = sprintf(
+      "Unknown declared_type='%s' (cannot evaluate type stability)",
+      declared_type
+    )
+  )
+}
+
+
+#' Validate level preservation of harmonized values (E4)
+#'
+#' Distinct from `validate_range`: that check verifies values fall within a
+#' tolerance interval defined by `qc.valid_range`; this check verifies that the
+#' observed level SET of an ordinal/binary variable matches its declared
+#' `scale.min:scale.max`. The difference matters — a 4-pt scale that returns
+#' only {2, 3} is range-OK but level-sparse, which is worth surfacing for
+#' human review (could be legitimate, could be a mapping bug that collapsed
+#' two endpoints).
+#'
+#' Rules:
+#'   - nominal / categorical: skip (level set is open by design).
+#'   - continuous: skip (level concept doesn't apply).
+#'   - ordinal / binary with declared min & max:
+#'       * unexpected = setdiff(observed, min:max) → status = error.
+#'       * else if observed levels < declared levels → status = warn (sparse).
+#'       * else → status = ok.
+#'   - missing scale_min / scale_max → skip ("scale.min/max not declared").
+#'   - `qc$skip_level_preservation` honored upstream by the caller; this
+#'     function does not see the spec, so the orchestrator branches before
+#'     calling.
+#'
+#' @param harmonized_vec Harmonized vector
+#' @param scale_min Declared scale minimum (numeric or NULL/NA)
+#' @param scale_max Declared scale maximum (numeric or NULL/NA)
+#' @param declared_type Character: "ordinal", "binary", "nominal",
+#'   "categorical", "continuous". Drives the skip rules.
+#' @return List with status, check, observed_levels, declared_range,
+#'   n_unexpected, message
+validate_level_preservation <- function(harmonized_vec,
+                                        scale_min,
+                                        scale_max,
+                                        declared_type = "ordinal") {
+
+  declared_type <- tolower(as.character(declared_type %||% "ordinal"))
+
+  if (declared_type %in% c("nominal", "categorical")) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = NA_character_,
+      n_unexpected = 0L,
+      message = sprintf("Skipped: declared_type='%s' (level set open by design)",
+                        declared_type)
+    ))
+  }
+
+  if (declared_type == "continuous") {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = NA_character_,
+      n_unexpected = 0L,
+      message = "Skipped: declared_type='continuous' (level concept N/A)"
+    ))
+  }
+
+  if (is.null(scale_min) || is.null(scale_max) ||
+      length(scale_min) == 0 || length(scale_max) == 0 ||
+      is.na(scale_min) || is.na(scale_max)) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = NA_character_,
+      n_unexpected = 0L,
+      message = "Skipped: scale.min/max not declared"
+    ))
+  }
+
+  scale_min_num <- suppressWarnings(as.numeric(scale_min))
+  scale_max_num <- suppressWarnings(as.numeric(scale_max))
+  if (is.na(scale_min_num) || is.na(scale_max_num)) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = NA_character_,
+      n_unexpected = 0L,
+      message = "Skipped: scale.min/max not numeric"
+    ))
+  }
+
+  # Only meaningful for integer-stepped scales. If declared bounds aren't
+  # whole, skip — level-set comparison against seq() would be ill-defined.
+  if (abs(scale_min_num - round(scale_min_num)) > 1e-9 ||
+      abs(scale_max_num - round(scale_max_num)) > 1e-9) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = sprintf("[%s, %s]", scale_min_num, scale_max_num),
+      n_unexpected = 0L,
+      message = "Skipped: scale.min/max not integer-valued"
+    ))
+  }
+
+  scale_min_int <- as.integer(round(scale_min_num))
+  scale_max_int <- as.integer(round(scale_max_num))
+
+  if (scale_max_int < scale_min_int) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = NA_character_,
+      declared_range = sprintf("[%d, %d]", scale_min_int, scale_max_int),
+      n_unexpected = 0L,
+      message = "Skipped: scale.max < scale.min (malformed declaration)"
+    ))
+  }
+
+  declared_levels <- seq.int(scale_min_int, scale_max_int)
+
+  # Coerce to numeric for comparison; honor NA. Non-numeric storage → skip
+  # (E3 already flags the type mismatch; level-set comparison would be moot).
+  harm_num <- suppressWarnings(as.numeric(harmonized_vec))
+  if (all(is.na(harm_num))) {
+    return(list(
+      status = "skip", check = "level_preservation",
+      observed_levels = "",
+      declared_range = sprintf("[%d, %d]", scale_min_int, scale_max_int),
+      n_unexpected = 0L,
+      message = "Skipped: harmonized vector all-NA (no observed levels)"
+    ))
+  }
+
+  observed_levels <- sort(unique(harm_num[!is.na(harm_num)]))
+  unexpected <- setdiff(observed_levels, declared_levels)
+
+  obs_str <- paste(observed_levels, collapse = ",")
+  decl_str <- sprintf("[%d, %d]", scale_min_int, scale_max_int)
+
+  if (length(unexpected) > 0) {
+    return(list(
+      status = "error", check = "level_preservation",
+      observed_levels = obs_str,
+      declared_range = decl_str,
+      n_unexpected = length(unexpected),
+      unexpected_values = paste(unexpected, collapse = ","),
+      message = sprintf(
+        "%d observed value(s) outside declared %s: {%s}",
+        length(unexpected), decl_str,
+        paste(unexpected, collapse = ",")
+      )
+    ))
+  }
+
+  if (length(observed_levels) < length(declared_levels)) {
+    missing_levels <- setdiff(declared_levels, observed_levels)
+    return(list(
+      status = "warn", check = "level_preservation",
+      observed_levels = obs_str,
+      declared_range = decl_str,
+      n_unexpected = 0L,
+      message = sprintf(
+        "Sparse: observed %d of %d declared levels (missing: {%s})",
+        length(observed_levels), length(declared_levels),
+        paste(missing_levels, collapse = ",")
+      )
+    ))
+  }
+
+  list(
+    status = "ok", check = "level_preservation",
+    observed_levels = obs_str,
+    declared_range = decl_str,
+    n_unexpected = 0L,
+    message = sprintf("All %d declared levels observed in %s",
+                      length(declared_levels), decl_str)
+  )
+}
+
+
 #' Validate range bounds of harmonized values
 #'
 #' @param harmonized_vec Harmonized vector
@@ -809,6 +1133,23 @@ validate_variable_wave <- function(raw_data, harmonized_data, var_spec,
                                 vecs$crosstab_missing_codes)
     } else {
       validate_crosstab(vecs$raw_vec_check, harmonized_vec, vecs$crosstab_missing_codes)
+    },
+    type_stability = if (isTRUE(var_spec$qc$skip_type_stability)) {
+      list(status = "skip", check = "type_stability",
+           message = "Skipped: skip_type_stability set in YAML")
+    } else {
+      validate_type_stability(harmonized_vec, var_spec$type %||% "ordinal")
+    },
+    level_preservation = if (isTRUE(var_spec$qc$skip_level_preservation)) {
+      list(status = "skip", check = "level_preservation",
+           message = "Skipped: skip_level_preservation set in YAML")
+    } else {
+      validate_level_preservation(
+        harmonized_vec,
+        scale_min     = var_spec$scale$min,
+        scale_max     = var_spec$scale$max,
+        declared_type = var_spec$type %||% "ordinal"
+      )
     }
   )
 
@@ -839,7 +1180,9 @@ generate_validation_summary <- function(results) {
       coverage = r$checks$coverage$status %||% NA_character_,
       transformation = r$checks$transformation$status %||% NA_character_,
       range = r$checks$range$status %||% NA_character_,
-      crosstab = r$checks$crosstab$status %||% NA_character_
+      crosstab = r$checks$crosstab$status %||% NA_character_,
+      type_stability = r$checks$type_stability$status %||% NA_character_,
+      level_preservation = r$checks$level_preservation$status %||% NA_character_
     )
   })
 }
@@ -897,8 +1240,8 @@ generate_validation_report <- function(results, output_path = NULL) {
 
     lines <- c(lines, sprintf("### %s %s", var_status, var))
     lines <- c(lines, "")
-    lines <- c(lines, "| Wave | Source | Transform | Coverage | Transform | Range | Crosstab |")
-    lines <- c(lines, "|------|--------|-----------|----------|-----------|-------|----------|")
+    lines <- c(lines, "| Wave | Source | Transform | Coverage | Transform | Range | Crosstab | Type | Levels |")
+    lines <- c(lines, "|------|--------|-----------|----------|-----------|-------|----------|------|--------|")
 
     for (i in seq_len(nrow(var_results))) {
       row <- var_results[i, ]
@@ -913,14 +1256,16 @@ generate_validation_report <- function(results, output_path = NULL) {
       }
 
       lines <- c(lines, sprintf(
-        "| %s | %s | %s | %s | %s | %s | %s |",
+        "| %s | %s | %s | %s | %s | %s | %s | %s | %s |",
         row$wave,
         row$source %||% "-",
         row$transform %||% "-",
         status_icon(row$coverage),
         status_icon(row$transformation),
         status_icon(row$range),
-        status_icon(row$crosstab)
+        status_icon(row$crosstab),
+        status_icon(row$type_stability),
+        status_icon(row$level_preservation)
       ))
     }
 

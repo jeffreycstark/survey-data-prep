@@ -147,3 +147,27 @@ write_manifest(
 )
 
 cat("Manifest written: ", here("outputs", "abs", "manifest.json"), "\n", sep = "")
+
+# ==============================================================================
+# OUTPUT INVARIANTS (audit ticket E2)
+# ==============================================================================
+# Run the post-hoc validator on the freshly-built harmonized output. Produces
+# outputs/abs/03-invariants.md (human-readable) and audit/reports/abs/
+# 03-invariants.csv (one row per variable × wave × check). Non-blocking — the
+# pipeline completes whatever the validator finds; investigate the report.
+source(here("src", "r", "data_prep_modules", "2.5_validate_harmonization.R"))
+results <- tryCatch(
+  run_validation(survey = "abs", save_report = TRUE, verbose = FALSE),
+  error = function(e) {
+    message("validation step failed: ", e$message)
+    NULL
+  }
+)
+if (!is.null(results)) {
+  cat(sprintf(
+    "Invariants: ok=%d warn=%d error=%d skip=%d (total=%d)\n",
+    results$counts$ok, results$counts$warn,
+    results$counts$error, results$counts$skip,
+    nrow(results$summary)
+  ))
+}

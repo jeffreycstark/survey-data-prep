@@ -273,12 +273,27 @@ stack_harmonized_wide <- function(harmonized_results, waves,
 #' @param load_fn Zero-argument function that returns the named list of wave data frames
 #' @param output_format "wide" (list of wave dfs) or "long" (single stacked df)
 #' @param silent Suppress messages
+#' @param oob_log_path Optional path for the out-of-range coercion log CSV.
+#'   When NULL (default), defaults to `outputs/<survey>/oob_log.csv` so that
+#'   OOB events are always captured (E1). Pass NA to disable logging.
+#'   Parent directory is auto-created if missing.
 #' @return Harmonized data
 run_survey_harmonization <- function(survey, load_fn,
-                                     output_format = "wide", silent = FALSE) {
+                                     output_format = "wide", silent = FALSE,
+                                     oob_log_path = NULL) {
+  if (is.null(oob_log_path)) {
+    oob_log_path <- here::here("outputs", survey, "oob_log.csv")
+  }
+  if (!is.na(oob_log_path)) {
+    dir.create(dirname(oob_log_path), showWarnings = FALSE, recursive = TRUE)
+  } else {
+    oob_log_path <- NULL
+  }
+
   waves <- load_fn()
   specs <- list_survey_specs(survey)
-  results <- harmonize_all_specs(waves, specs = specs, silent = silent)
+  results <- harmonize_all_specs(waves, specs = specs, silent = silent,
+                                 oob_log_path = oob_log_path)
   if (output_format == "wide") {
     stack_harmonized_wide(results, waves)
   } else {
@@ -326,8 +341,12 @@ if (sys.nframe() == 0) {
   source(here::here("src/r/data_prep_modules/0_load_waves.R"))
   waves <- load_waves()
 
+  # E1: always-on out-of-range logging
+  oob_log_path <- here::here("outputs", "abs", "oob_log.csv")
+  dir.create(dirname(oob_log_path), showWarnings = FALSE, recursive = TRUE)
+
   # Run harmonization
-  results <- harmonize_all_specs(waves)
+  results <- harmonize_all_specs(waves, oob_log_path = oob_log_path)
 
   # Stack into wide format
   harmonized_wide <- stack_harmonized_wide(results, waves)

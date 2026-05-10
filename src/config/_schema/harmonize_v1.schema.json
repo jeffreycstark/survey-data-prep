@@ -218,6 +218,8 @@
         "skip_coverage_check": { "type": "boolean" },
         "skip_crosstab_check": { "type": "boolean" },
         "skip_transformation_check": { "type": "boolean" },
+        "skip_type_stability": { "type": "boolean" },
+        "skip_level_preservation": { "type": "boolean" },
         "skip_unmapped_check": { "type": "boolean" },
         "coverage_missing_codes": { "$ref": "#/$defs/intOrIntArray" },
         "coverage_missing_codes_by_wave": {

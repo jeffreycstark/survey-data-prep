@@ -320,3 +320,20 @@ write_manifest(
 
 cat("Manifest written: ",
     here("outputs", "arab-barometer", "manifest.json"), "\n", sep = "")
+
+# ==============================================================================
+# OUTPUT INVARIANTS (audit ticket E2)
+# ==============================================================================
+source(here("src", "r", "data_prep_modules", "2.5_validate_harmonization.R"))
+results <- tryCatch(
+  run_validation(survey = "arab-barometer", save_report = TRUE, verbose = FALSE),
+  error = function(e) { message("validation step failed: ", e$message); NULL }
+)
+if (!is.null(results)) {
+  cat(sprintf(
+    "Invariants: ok=%d warn=%d error=%d skip=%d (total=%d)\n",
+    results$counts$ok, results$counts$warn,
+    results$counts$error, results$counts$skip,
+    nrow(results$summary)
+  ))
+}

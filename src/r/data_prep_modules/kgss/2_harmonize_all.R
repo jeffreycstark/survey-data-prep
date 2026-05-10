@@ -34,7 +34,12 @@ if (sys.nframe() == 0) {
               length(specs),
               paste(basename(specs), collapse = ", ")))
 
-  results <- harmonize_all_specs(waves, specs = specs)
+  # E1: always-on out-of-range logging
+  oob_log_path <- here::here("outputs", "kgss", "oob_log.csv")
+  dir.create(dirname(oob_log_path), showWarnings = FALSE, recursive = TRUE)
+
+  results <- harmonize_all_specs(waves, specs = specs,
+                                 oob_log_path = oob_log_path)
 
   harmonized_wide <- stack_harmonized_wide(results, waves)
 
