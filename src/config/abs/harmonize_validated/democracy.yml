@@ -249,10 +249,32 @@ variables:
   # ===========================================================================
   - id: dem_extent_current
     concept: democracy
-    description: "In your opinion how much of a democracy is our country?"
-    type: continuous   # 1-10 dem-rating; W1 raw includes half-step responses
+    description: "In your opinion how much of a democracy is our country? (4-pt qualitative)"
+    type: ordinal
+    # SCALE NOTE (audit-verified 2026-05-10 against ABS2_Core_Questionnaire
+    # 20170220.doc Q94 and the per-wave codebook extracts):
+    # Raw scale is 4-point qualitative across W2-W6:
+    #   1 = "A full democracy"
+    #   2 = "A democracy, but with minor problems"
+    #   3 = "A democracy, with major problems"
+    #   4 = "Not a democracy"
+    # W1 has NO equivalent question. q100 in W1 is "Where would you place
+    # our country under the present government?" on a 1-10 thermometer
+    # — that's dem_country_present_govt's question, NOT this one.
+    #
+    # Earlier (commit 2d8a7e3, audit Bug 7) this entry claimed type:continuous
+    # with scale [1,10] under the assumption that W1's half-step responses
+    # were thermometer ratings. The audit's Phase F Tier 2 extractor
+    # (commit 6fa0c53) surfaced the wave-mismatch: W1 was a different
+    # question entirely. Fixed here.
+    #
+    # Reversed via safe_reverse_4pt so high = more democratic:
+    #   harmonized 1 = "Not a democracy"   (raw 4)
+    #   harmonized 4 = "A full democracy"  (raw 1)
+    # Convention matches the project rule "higher = more intensity" —
+    # here, more democraticness.
     source:
-      w1: q100
+      w1: null   # No W1 equivalent — see scale note above.
       w2: q94
       w3: q90
       w4: q93
@@ -260,15 +282,19 @@ variables:
       w6: q91
     scale:
       min: 1
-      max: 10
+      max: 4
       labels:
-        1: "Complete dictatorship"
-        10: "Complete democracy"
+        1: "Not a democracy"
+        2: "A democracy, with major problems"
+        3: "A democracy, but with minor problems"
+        4: "A full democracy"
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_4pt
     qc:
-      valid_range: [1, 10]
+      valid_range: [1, 4]
+      expected_direction: positive
       validate:
         - waves: [w2, w3, w4, w5, w6]
           phrase: "how much.*democracy"
