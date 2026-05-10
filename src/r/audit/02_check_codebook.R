@@ -465,6 +465,13 @@ load_codebook <- function(survey, codebook_dir = NULL, force_reload = FALSE) {
   }
 
   # ----- (c) value_labels --------------------------------------------------
+  # Same architectural decision as valid_range: scale.labels in the YAML
+  # describe the POST-harmonization meaning. For non-identity methods
+  # (safe_reverse_3pt, collapse_*, recode mappings), the harmonized labels
+  # legitimately disagree with raw codebook labels — e.g. KINU urban_rural
+  # raw 1=metropolitan reverses to harmonized 3=metropolitan, so YAML's
+  # "1=Rural area" is correct for the harmonized output but mismatches the
+  # raw codebook. Skip with skip_method to avoid false positives.
   yaml_labels <- .resolve_scale_labels(var_spec)
   if (is.null(yaml_labels) || length(yaml_labels) == 0L) {
     rows[[length(rows) + 1L]] <- tibble(
@@ -472,6 +479,19 @@ load_codebook <- function(survey, codebook_dir = NULL, force_reload = FALSE) {
       check = "value_labels", status = "skip_no_labels",
       observed = NA_character_, claimed = NA_character_,
       message = "YAML declares no scale.labels"
+    )
+  } else if (!is.na(method) && method != "identity") {
+    rows[[length(rows) + 1L]] <- tibble(
+      variable = variable, wave = wave, raw_var = raw_var,
+      check = "value_labels", status = "skip_method",
+      observed = NA_character_,
+      claimed = paste(sprintf("%s='%s'",
+                              names(yaml_labels), unname(yaml_labels)),
+                      collapse = "; "),
+      message = sprintf(
+        "method='%s'; YAML labels describe post-harmonization values, raw codebook labels describe pre-harmonization",
+        method
+      )
     )
   } else {
     # For each (claimed_code, claimed_label), look up codebook label.
