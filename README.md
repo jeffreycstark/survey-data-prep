@@ -138,26 +138,30 @@ Rscript src/r/audit/02_coverage_report.R --survey ${SURVEY}
 
 ### E. Periodic hygiene check (monthly OR before any paper submission that uses harmonized output)
 
-Run all of these for every survey you actively use. ~10–15 min total.
+One command runs every audit module across every survey:
 
 ```bash
-for SURVEY in abs wvs lbs afro arab-barometer kamos kgss kipa-corruption kinu ipus; do
-  echo "=== $SURVEY ==="
-  # Determinism (does re-running produce identical output?)
-  Rscript src/r/audit/06_check_determinism.R --survey $SURVEY 2>&1 | tail -3
+# Quick mode (~2 min): skips the two heaviest modules (G1 drift, F4 codebook)
+Rscript src/r/audit/run_all.R --quick
 
-  # Input-drift detector (did any raw .sav/.rds change since the last manifest?)
-  Rscript src/r/audit/06_check_input_drift.R --survey $SURVEY 2>&1 | tail -3
+# Full mode (~10 min): every module, every survey with prerequisites
+Rscript src/r/audit/run_all.R
 
-  # Cross-wave drift check (re-runs against existing harmonized output)
-  Rscript src/r/audit/05_drift_check.R --survey $SURVEY 2>&1 | tail -3
+# Single survey
+Rscript src/r/audit/run_all.R --survey abs
 
-  # Codebook reconciliation (only where extractor exists)
-  ls data/$SURVEY/codebook/ &>/dev/null && Rscript src/r/audit/02_check_codebook.R --survey $SURVEY 2>&1 | tail -3
-done
+# Verbose (echoes each module's full output)
+Rscript src/r/audit/run_all.R --verbose
 ```
 
-After running: skim `audit/reports/<survey>/` for any new fail rows, update `JEFF_MUST_INVESTIGATE.md`.
+The orchestrator writes `audit/SUMMARY.md` — a single human-skimmable table showing pass/fail per layer per survey, plus the top findings. Read it after every run.
+
+Exit codes:
+- `0` — every module clean
+- `1` — at least one module reports fails (read the summary to triage)
+- `2` — prerequisites missing (e.g. survey hasn't been harmonized yet)
+
+After running: read `audit/SUMMARY.md`, then update `JEFF_MUST_INVESTIGATE.md` for any new findings worth tracking.
 
 ---
 
