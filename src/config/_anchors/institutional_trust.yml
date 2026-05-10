@@ -1,0 +1,275 @@
+# Construct anchor: institutional_trust (cross-survey, ABS-led; ticket D8)
+#
+# Second construct anchor for the Layer 4 reverse-coding diagnostic.
+# Cross-survey by design. Pattern B per src/config/_anchors/README.md:
+# one anchor file with `surveys:` per loader to gate items that exist
+# only in some surveys. The anchor itself is ABS-resident
+# (trust_national_government) - WVS/LBS/Afro/Arab use the id
+# `trust_government` (a different declared id), and KGSS uses
+# `conf_govt_national`. The schema permits only one anchor.variable, so
+# the diagnostic when run with --survey wvs/lbs/afro/arab-barometer/kgss
+# will fail with anchor-not-found until either (a) those surveys'
+# specs add a `trust_national_government` alias, or (b) per-survey
+# anchor variants are introduced (a future schema enhancement).
+# This is the documented limitation per D8's acceptance criterion 5.
+#
+# DRAFT for Jeff's review on 2026-05-10. Sign assignments are
+# conservative: where literature is contested or empirical patterns
+# are likely to vary cross-context, expected_sign is `either` rather
+# than a directional commitment.
+
+schema_version: 1
+construct: institutional_trust
+last_reviewed: "2026-05-10"
+
+description: >
+  Latent disposition to trust formal political institutions. Anchored
+  on trust in the national government - the canonical institutional-
+  trust target in the comparative literature (Norris 2017; Newton &
+  Norris 2000) and the item from which the rest of the institutional-
+  trust battery is theoretically derived. Loaders span the elected
+  branches (parliament, political parties, president), the judicial
+  and security apparatus (courts, police, military), the
+  administrative state (civil service, election commission, local
+  government), and adjacent non-state institutions (media, NGOs,
+  religious organizations) that the literature treats as part of the
+  same regime-confidence cluster, weakly or strongly.
+
+notes:
+  - >
+    Cross-survey scale heterogeneity (per CLAUDE.md): ABS / WVS / LBS /
+    Afro / Arab Barometer / KINU institutional trust is 1-4 with higher
+    = more trust. KAMOS is 0-10. KGSS conf_* is 1-3. The diagnostic
+    computes correlations within (survey x wave x country), so all
+    correlations are bounded in [-1, +1] regardless of the underlying
+    scale - scale differences do NOT distort sign comparisons.
+  - >
+    Anchor selection: trust_national_government is the ABS-declared id
+    that captures "trust in the national government." Other surveys use
+    the id `trust_government` (WVS, LBS, Afro, Arab Barometer) for the
+    semantically-equivalent item, and KGSS uses `conf_govt_national`.
+    Because the anchor schema permits only one anchor.variable, the
+    diagnostic when invoked with --survey wvs (or lbs, afro,
+    arab-barometer, kgss) will report "anchor variable not present."
+    This is accepted per D8 acceptance criterion 5 - the cross-survey
+    ambition of the construct holds via `surveys:`-gated loaders, but
+    the anchor itself is ABS-resident. A future enhancement could
+    introduce per-survey anchor aliases.
+  - >
+    Higher = more trust in all surveys after harmonization (ABS, WVS,
+    LBS, Afro, Arab Barometer, KAMOS, KGSS, KINU). This is enforced
+    by the institutional_trust.yml / institutional_confidence.yml
+    specs (safe_reverse_4pt or safe_reverse_3pt where the raw scale
+    runs the other way). Anchor expected_direction = positive globally;
+    no per_wave overrides needed.
+  - >
+    Several "trust_*" items are gated by `surveys:` to reflect cross-
+    survey availability: trust_courts exists in ABS / WVS / LBS /
+    Afro / Arab Barometer / KINU; trust_parliament in ABS / WVS / LBS /
+    Afro / Arab Barometer; trust_president in ABS / LBS / Afro / Arab
+    Barometer / KINU. KGSS conf_* items are KGSS-only.
+  - >
+    Per-country sign disagreement is expected for trust items in
+    countries where the regime narrative classifies a non-democratic
+    system as "the government" - regime supporters in single-party
+    states report high government trust alongside high trust in
+    parliament/courts because all are arms of the same regime, while
+    opposition citizens report low trust in all. This produces
+    pooled-positive correlations even where within-country variation
+    is partly driven by regime support rather than institution-
+    specific evaluation. The diagnostic surfaces per-country sign
+    rows alongside pooled rows for human review.
+  - >
+    trust_political_parties consistently shows the lowest mean trust
+    in cross-national surveys (Mishler & Rose 2001; Dalton 2004) but
+    still loads positively on the institutional-trust dimension. We
+    set min_correlation: 0.10 on this loader to suppress weak-loader
+    warnings without abandoning the directional claim.
+
+anchor:
+  variable: trust_national_government
+  expected_direction: positive
+  notes: >
+    Higher harmonized value = more trust. Per
+    src/config/abs/harmonize_validated/institutional_trust.yml, ABS W1
+    and W2 are identity (raw 1=None at all -> 4=Great deal); W3, W4, W6
+    are reverse-coded by safe_reverse_4pt; W5 uses safe_6pt_to_4pt
+    (ABS W5 used a 6-point scale). After harmonization the direction is
+    uniform across W1-W6 so no per_wave override is needed. Anchor for
+    the institutional-trust construct in the Norris (2017) /
+    Newton-Norris (2000) regime-confidence framework.
+
+loaders:
+  # ============================================================================
+  # ABS / WVS / LBS / Afro / Arab Barometer cross-survey loaders
+  # ============================================================================
+
+  - id: trust_parliament
+    expected_sign: positive
+    surveys: [abs, wvs, lbs, afro, arab-barometer]
+    justification: >
+      Trust in parliament/legislature loads with trust in government as
+      the elected-branch dimension of institutional trust (Newton &
+      Norris 2000); among the most consistent loadings in the cross-
+      national institutional-trust battery (Marien 2011).
+
+  - id: trust_courts
+    expected_sign: positive
+    surveys: [abs, wvs, lbs, afro, arab-barometer]
+    justification: >
+      Trust in courts/judiciary captures the rule-of-law institutional
+      cluster and covaries with general government trust as part of
+      regime-institutional confidence (Norris 2017; Hibbing & Theiss-
+      Morse 2002 on shared legitimacy of the elected and judicial
+      branches).
+
+  - id: trust_police
+    expected_sign: positive
+    surveys: [abs, wvs, lbs, afro, arab-barometer]
+    justification: >
+      Police trust loads with broader institutional trust as part of
+      the security/order cluster (Tyler 2006 on procedural legitimacy);
+      the police are the most-encountered street-level state agent so
+      their trust is tightly linked to system-level confidence in many
+      contexts.
+
+  - id: trust_armed_forces
+    expected_sign: either
+    surveys: [wvs, lbs, afro, arab-barometer]
+    justification: >
+      Trust in the armed forces typically loads positively on
+      institutional trust (Norris 2017) but the relationship is
+      contested in countries with histories of military intervention
+      (Latin America, parts of Africa, Thailand) where high military
+      trust can coincide with low civilian-government trust (Pion-
+      Berlin & Trinkunas 2007). Default to either to avoid over-
+      claiming a uniform sign.
+
+  - id: trust_political_parties
+    expected_sign: positive
+    surveys: [abs, wvs, lbs, afro, arab-barometer]
+    min_correlation: 0.10
+    justification: >
+      Trust in political parties loads with general government trust
+      as the partisan-representation dimension (Dalton 2004) but is
+      typically the weakest loader in the institutional-trust battery
+      (Mishler & Rose 2001) - parties are the least-trusted political
+      institution in most cross-national surveys. Sign-positive,
+      min_correlation 0.10 to absorb the weaker pooled magnitude.
+
+  - id: trust_civil_service
+    expected_sign: positive
+    surveys: [abs, wvs]
+    justification: >
+      Trust in the civil service captures the administrative-state
+      dimension of institutional trust; bureaucratic competence and
+      impartiality covary with general government trust (Rothstein &
+      Teorell 2008 on quality of government).
+
+  - id: trust_election_commission
+    expected_sign: positive
+    surveys: [abs]
+    justification: >
+      Trust in the election commission loads with government trust as
+      the election-administration dimension; in democracies, perceived
+      EMB integrity strongly predicts general institutional trust
+      (Birch 2008).
+
+  - id: trust_elections
+    expected_sign: positive
+    surveys: [wvs, lbs, afro, arab-barometer]
+    justification: >
+      Trust in elections (as a process/institution) loads with general
+      government trust as the procedural-legitimacy dimension; cross-
+      survey analogue to ABS trust_election_commission (Norris 2014 on
+      electoral integrity).
+
+  - id: trust_local_government
+    expected_sign: positive
+    surveys: [abs]
+    justification: >
+      Trust in local government covaries with national-government trust
+      though typically weaker (Fitzgerald & Wolak 2016 - local-national
+      trust correlation positive but heterogeneous); the multi-level
+      governance literature treats them as parts of the same
+      regime-confidence cluster.
+
+  - id: trust_local_govt
+    expected_sign: positive
+    surveys: [afro, arab-barometer, kamos]
+    justification: >
+      Cross-survey local-government trust analogue to ABS
+      trust_local_government; expected positive loading with national-
+      government trust as multi-level institutional confidence (Norris
+      2011; Fitzgerald & Wolak 2016).
+
+  - id: trust_president
+    expected_sign: positive
+    surveys: [abs, lbs, afro, arab-barometer, kinu]
+    justification: >
+      Trust in the president/head of state loads with general
+      government trust as the executive-leadership dimension;
+      especially strong in presidential systems where the president
+      is the focal political evaluator (Hetherington 1998 on the
+      president-government trust nexus in the US, with cross-national
+      generalizations in Mishler & Rose 2001).
+
+  - id: trust_television
+    expected_sign: either
+    surveys: [abs, wvs, lbs]
+    justification: >
+      TV media trust is theoretically contested in relation to
+      government trust: the media-malaise tradition (Patterson 1993)
+      predicts negative, the virtuous-circle tradition (Norris 2000)
+      predicts positive, and evidence is mixed across media-system
+      types (Hallin & Mancini 2004). Either, observed sign for review.
+
+  # ============================================================================
+  # KGSS-only loaders (conf_* items, 1-3 scale)
+  # ============================================================================
+
+  - id: conf_govt_national
+    expected_sign: positive
+    surveys: [kgss]
+    justification: >
+      KGSS conf_govt_national is the direct semantic analogue of the
+      anchor (trust_national_government) - "confidence in leaders of
+      the national government" on a 1-3 scale. Expected positive
+      loading by definition; this is the closest item KGSS has to the
+      institutional-trust anchor (Newton & Norris 2000 framework).
+
+  - id: conf_legislature
+    expected_sign: positive
+    surveys: [kgss]
+    justification: >
+      KGSS confidence in the National Assembly leadership (1-3 scale);
+      cross-survey analogue to trust_parliament. Expected to load
+      positively as the elected-branch dimension of institutional
+      trust (Newton & Norris 2000).
+
+  - id: conf_judiciary
+    expected_sign: positive
+    surveys: [kgss]
+    justification: >
+      KGSS confidence in the Supreme Court leadership (1-3 scale);
+      analogue of trust_courts. Expected positive loading as the
+      rule-of-law dimension of institutional trust (Norris 2017).
+
+  - id: conf_bluehouse
+    expected_sign: positive
+    surveys: [kgss]
+    justification: >
+      KGSS confidence in the Blue House (Korean presidential office)
+      leadership (1-3 scale); analogue of trust_president. Strong
+      expected positive loading - Korea is a presidential system in
+      which the Blue House is the focal executive evaluator (Mishler
+      & Rose 2001 framework applied to Korean comparative work, e.g.
+      Park & Shin 2006).
+
+  - id: conf_election_commission
+    expected_sign: positive
+    surveys: [kgss]
+    justification: >
+      KGSS confidence in the National Election Commission (1-3 scale);
+      analogue of ABS trust_election_commission. Expected positive
+      loading as the electoral-administration dimension (Birch 2008).
