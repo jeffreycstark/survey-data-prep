@@ -21,6 +21,8 @@ variables:
       w7: Q1002
       w8: Q1002
     note: "W2 uses 0=missing,1=male,2=female; W5 has extra codes 3=MALE,5=FEMALE (cleaned by missing_conventions + valid_range)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -42,6 +44,8 @@ variables:
     scale:
       min: 18
       max: 110
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -70,6 +74,8 @@ variables:
         3: "40-49"
         4: "50-59"
         5: "60+"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -90,6 +96,8 @@ variables:
       w7: Q1003
       w8: Q1003
     note: "Scale differs across waves — will need custom recode for cross-wave comparison."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -108,6 +116,8 @@ variables:
       w7: Q13
       w8: Q13
     note: "W5 uses lowercase q13, labeled 'SETTLEMENT'"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -126,6 +136,8 @@ variables:
       w7: DATE
       w8: DATE
     note: "W3=Date class, W7/W8=character 'YYYY-MM-DD'. W2/W4/W5 have no date variable."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -148,6 +160,8 @@ variables:
     scale:
       min: 1
       max: 12
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -174,6 +188,8 @@ variables:
     scale:
       min: 2006
       max: 2025
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -192,6 +208,8 @@ variables:
       w5: wt
       w7: WT
       w8: WT
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

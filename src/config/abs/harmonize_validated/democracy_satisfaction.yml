@@ -32,6 +32,8 @@ variables:
         2: "Somewhat dissatisfied"
         3: "Somewhat satisfied"
         4: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -75,6 +77,8 @@ variables:
         2: "Does not cover needs, some difficulties"
         3: "Covers needs, without much difficulty"
         4: "Covers needs well, can save"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

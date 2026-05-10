@@ -38,6 +38,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -69,6 +71,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -99,6 +103,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -129,6 +135,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -159,6 +167,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -189,6 +199,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -219,6 +231,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -249,6 +263,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -279,6 +295,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -309,6 +327,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -339,6 +359,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -369,6 +391,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -400,6 +424,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -430,6 +456,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -460,6 +488,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -490,6 +520,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -520,6 +552,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -550,6 +584,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -580,6 +616,8 @@ variables:
         2: "Not very much"
         3: "Quite a lot"
         4: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

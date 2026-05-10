@@ -56,6 +56,8 @@ variables:
       w2022: q1
       w2023: q1
     scale: {min: 1, max: 6, labels: {1: "Not at all prevalent", 6: "Very prevalent"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -89,6 +91,8 @@ variables:
       w2022: q2
       w2023: q2
     scale: {min: 1, max: 6, labels: {1: "Not at all serious", 6: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -122,6 +126,8 @@ variables:
       w2022: q9
       w2023: q9
     scale: {min: 1, max: 6, labels: {1: "Much lower", 6: "Much higher"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -155,6 +161,7 @@ variables:
       w2021: a13
     scale: {min: 1, max: 2, labels: {1: "Yes, gave bribe", 2: "No"}}
     missing:
+      use_convention: treat_as_na
       # Code 3 appears in gated waves (2018-2020) for respondents routed past
       # the question by the prior contact-screener. Treat as NA, not a response.
       codes: [3]

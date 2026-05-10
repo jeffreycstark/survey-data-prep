@@ -59,6 +59,8 @@ variables:
         2: "A little impact"
         3: "Quite some impact"
         4: "A great deal of impact"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -94,6 +96,8 @@ variables:
         2: "Not very well"
         3: "Fairly well"
         4: "Very well"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -122,6 +126,8 @@ variables:
         2: "Most of the time"
         3: "Sometimes"
         4: "Rarely/Never"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -164,6 +170,8 @@ variables:
         1: "Never"
         2: "Occasionally"
         3: "Frequently"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -205,6 +213,8 @@ variables:
         3: "Once or twice a week"
         4: "Several times a week"
         5: "Everyday"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -349,6 +359,8 @@ variables:
         2: "Not very interested"
         3: "Somewhat interested"
         4: "Very interested"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -385,6 +397,8 @@ variables:
         2: "Somewhat dissatisfied"
         3: "Somewhat satisfied"
         4: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -416,6 +430,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -444,6 +460,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -472,6 +490,8 @@ variables:
         2: "Needs minor change"
         3: "Needs major change"
         4: "Should be replaced"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -500,6 +520,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -528,6 +550,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

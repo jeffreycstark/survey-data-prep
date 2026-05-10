@@ -29,6 +29,8 @@ variables:
         1: "Democracy is always preferable"
         2: "Authoritarian sometimes preferable"
         3: "Doesn't matter what kind of regime"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -72,6 +74,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -103,6 +107,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -128,6 +134,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -153,6 +161,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -178,6 +188,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -206,6 +218,8 @@ variables:
         2: "A little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -235,6 +249,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -288,6 +304,8 @@ variables:
         2: "A democracy, with major problems"
         3: "A democracy, but with minor problems"
         4: "A full democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -320,6 +338,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -347,6 +367,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -377,6 +399,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -408,6 +432,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -441,6 +467,8 @@ variables:
         3: "Democracy is somewhat more important"
         4: "Democracy is definitely more important"
         5: "They are both equally important"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -475,6 +503,8 @@ variables:
         3: "Both equally important"
         4: "Political freedom somewhat more important"
         5: "Political freedom definitely more important"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -503,6 +533,8 @@ variables:
       labels:
         1: "Complete dictatorship"
         10: "Complete democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -531,6 +563,8 @@ variables:
       labels:
         1: "Democracy is capable of solving problems"
         0: "Democracy cannot solve problems"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -576,6 +610,8 @@ variables:
         2: "Not very satisfied"
         3: "Fairly satisfied"
         4: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -610,6 +646,8 @@ variables:
       labels:
         1: "Not suitable at all"
         10: "Completely suitable"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -639,6 +677,8 @@ variables:
         3: "Much the same"
         4: "Somewhat better"
         5: "Much better than before"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -673,6 +713,8 @@ variables:
         3: "Much the same"
         4: "Somewhat better"
         5: "Much better than before"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -703,6 +745,8 @@ variables:
         3: "Much the same"
         4: "Somewhat better"
         5: "Much better than before"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -733,6 +777,8 @@ variables:
         3: "Much the same"
         4: "Somewhat better"
         5: "Much better than before"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -763,6 +809,8 @@ variables:
         3: "Much the same"
         4: "Somewhat better"
         5: "Much better than before"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

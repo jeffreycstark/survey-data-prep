@@ -27,6 +27,8 @@ variables:
         2: "Some government responsibility"
         3: "Most is government's responsibility"
         4: "All government's responsibility"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -55,6 +57,8 @@ variables:
         2: "Some government responsibility"
         3: "Most is government's responsibility"
         4: "All government's responsibility"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -83,6 +87,8 @@ variables:
         2: "Some government responsibility"
         3: "Most is government's responsibility"
         4: "All government's responsibility"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -115,6 +121,8 @@ variables:
         2: "Some government responsibility"
         3: "Most is government's responsibility"
         4: "All government's responsibility"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

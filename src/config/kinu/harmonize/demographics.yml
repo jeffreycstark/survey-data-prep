@@ -71,6 +71,8 @@ variables:
       w2022:  age
       w2023:  age
     scale: {min: 18, max: 99, labels: {}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -98,6 +100,8 @@ variables:
       w2022:  age_rge
       w2023:  age_rge
     scale: {min: 1, max: 5, labels: {1: "18-29", 5: "60+"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -125,6 +129,8 @@ variables:
       w2022:  birthyear
       w2023:  birthyear
     scale: {min: 1925, max: 2010, labels: {}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -162,6 +168,8 @@ variables:
         5: "IMF generation"
         6: "Millennials"
         7: "Z generation"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -193,6 +201,8 @@ variables:
       w2022:  gender
       w2023:  gender
     scale: {min: 1, max: 2, labels: {1: "Male", 2: "Female"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -242,6 +252,8 @@ variables:
         17: "Sejong"
         18: "Foreign"
         19: "North Korea"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -269,6 +281,8 @@ variables:
       w2022:  reg_size
       w2023:  reg_size
     scale: {min: 1, max: 3, labels: {1: "Rural area", 2: "Medium/small city", 3: "Metropolitan area"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -318,6 +332,8 @@ variables:
         16: "Jeju"
         17: "North Korea"
         18: "Foreign"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -349,6 +365,8 @@ variables:
       w2022:  class
       w2023:  class
     scale: {min: 1, max: 5, labels: {1: "Much lower than average", 5: "Much higher than average"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -376,6 +394,8 @@ variables:
       w2022:  class_fam
       w2023:  class_fam
     scale: {min: 1, max: 6, labels: {1: "Lowest class", 6: "Highest class"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -403,6 +423,8 @@ variables:
       w2022:  income
       w2023:  income
     scale: {min: 0, max: 9998, labels: {}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -428,6 +450,8 @@ variables:
       w2022:  edu
       w2023:  edu
     scale: {min: 1, max: 8, labels: {1: "No education", 8: "Doctoral degree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -467,6 +491,8 @@ variables:
         3: "Roman Catholic"
         4: "No denomination"
         5: "Other"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -493,6 +519,8 @@ variables:
       w2022:  attend
       w2023:  attend
     scale: {min: 1, max: 6, labels: {1: "Never", 6: "More than once a week"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -532,6 +560,8 @@ variables:
         3: "Living together"
         4: "Divorced/separated"
         5: "Widowed"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -574,6 +604,8 @@ variables:
         10: "Armed forces/security"
         11: "Unemployed/retired"
         12: "Other"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

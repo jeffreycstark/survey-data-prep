@@ -71,6 +71,8 @@ variables:
       w2022:  pt2001
       w2023:  pt2001
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -99,6 +101,8 @@ variables:
       w2022:  pt2002
       w2023:  pt2002
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -127,6 +131,8 @@ variables:
       w2022:  pt2003
       w2023:  pt2003
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -155,6 +161,8 @@ variables:
       w2022:  pt2004
       w2023:  pt2004
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -183,6 +191,8 @@ variables:
       w2022:  pt2005
       w2023:  pt2005
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -211,6 +221,8 @@ variables:
       w2022:  pt2006
       w2023:  pt2006
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -239,6 +251,8 @@ variables:
       w2022:  pt2007
       w2023:  pt2007
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -270,6 +284,8 @@ variables:
       w2022:  pt05
       w2023:  pt05
     scale: {min: 0, max: 10, labels: {0: "Not democratic at all", 10: "Very democratic"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -296,6 +312,8 @@ variables:
       w2022:  pt07
       w2023:  pt07
     scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -320,6 +338,8 @@ variables:
       w2020a: pt08
       w2022:  pt08
     scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -346,6 +366,8 @@ variables:
       w2021a: pt04
       w2022:  pt04
     scale: {min: 1, max: 4, labels: {1: "Very dissatisfied", 4: "Very satisfied"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -375,6 +397,8 @@ variables:
       w2020b: pt1901
       w2021a: pt1901
     scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -400,6 +424,8 @@ variables:
       w2020b: pt1902
       w2021a: pt1902
     scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -428,6 +454,8 @@ variables:
       w2020b: pt1801
       w2021a: pt1801
     scale: {min: 0, max: 10, labels: {0: "Very liberal", 5: "Moderate", 10: "Very conservative"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -454,6 +482,8 @@ variables:
       w2022:  pt1303
       w2023:  pt1303
     scale: {min: 0, max: 100, labels: {0: "Very negative", 50: "Neutral", 100: "Very positive"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

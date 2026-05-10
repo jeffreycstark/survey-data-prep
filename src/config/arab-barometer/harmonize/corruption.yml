@@ -48,6 +48,8 @@ variables:
         2: "To a medium extent"
         3: "To a small extent"
         4: "Not at all"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -94,6 +96,8 @@ variables:
         3: "To a limited extent"
         4: "Not at all"
     note: "W4 missing. Variable name changes across waves but scale is consistent."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -126,6 +130,8 @@ variables:
         3: "Most"
         4: "Almost everyone"
     note: "W5 uses Q211A, W7-W8 use Q211B. W2-W4 not available."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -155,6 +161,8 @@ variables:
         2: "Similar"
         3: "Less serious than before"
     note: "W2-W3 only. W2 compares to last year, W3 to two years ago."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -180,6 +188,8 @@ variables:
       min: 1
       max: 4
     note: "W5-W8. Higher = disagrees (thinks religious leaders are less corrupt)."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -210,6 +220,8 @@ variables:
         3: "Not very essential"
         4: "Not essential at all"
     note: "W8 only. Directly measures whether Tunisians define democracy in anti-corruption terms."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

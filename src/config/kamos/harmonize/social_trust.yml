@@ -29,6 +29,8 @@ variables:
       min: 0
       max: 10
       direction: higher_more_trust
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -48,6 +50,8 @@ variables:
       min: 0
       max: 10
       direction: higher_more_trust
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

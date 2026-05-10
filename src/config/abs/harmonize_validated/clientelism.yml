@@ -97,6 +97,8 @@ variables:
         2: "Seldom"
         3: "Occasionally"
         4: "Often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -130,6 +132,8 @@ variables:
         2: "Yes, a few"
         3: "Yes, some"
         4: "Yes, a lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -166,6 +170,8 @@ variables:
         2: "Yes, a few"
         3: "Yes, some"
         4: "Yes, a lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

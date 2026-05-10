@@ -39,6 +39,8 @@ variables:
         2: "Not very proud"
         3: "Quite proud"
         4: "Very proud"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: recode

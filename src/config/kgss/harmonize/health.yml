@@ -60,6 +60,8 @@ variables:
       w2023: HEALTH23
       w2025: HEALTH23
     scale: {min: 1, max: 5, labels: {1: "Very poor", 5: "Very good"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

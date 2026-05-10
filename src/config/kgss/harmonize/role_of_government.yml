@@ -33,6 +33,8 @@ variables:
       w2006: GOVRES1
       w2016: GOVRES1
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -48,6 +50,8 @@ variables:
       w2006: GOVRES2
       w2016: GOVRES2
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -63,6 +67,8 @@ variables:
       w2006: GOVRES3
       w2016: GOVRES3
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -78,6 +84,8 @@ variables:
       w2006: GOVRES4
       w2016: GOVRES4
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -93,6 +101,8 @@ variables:
       w2006: GOVRES5
       w2016: GOVRES5
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -108,6 +118,8 @@ variables:
       w2006: GOVRES6
       w2016: GOVRES6
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -123,6 +135,8 @@ variables:
       w2006: GOVRES7
       w2016: GOVRES7
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -138,6 +152,8 @@ variables:
       w2006: GOVRES8
       w2016: GOVRES8
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -153,6 +169,8 @@ variables:
       w2006: GOVRES9
       w2016: GOVRES9
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -168,6 +186,8 @@ variables:
       w2006: GOVRES10
       w2016: GOVRES10
     scale: {min: 1, max: 4, labels: {1: "Definitely not", 4: "Definitely yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -190,6 +210,8 @@ variables:
       w2023: GOVSPD1
       w2025: GOVSPD1
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -210,6 +232,8 @@ variables:
       w2023: GOVSPD2
       w2025: GOVSPD2
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -230,6 +254,8 @@ variables:
       w2023: GOVSPD3
       w2025: GOVSPD3
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -250,6 +276,8 @@ variables:
       w2023: GOVSPD4
       w2025: GOVSPD4
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -270,6 +298,8 @@ variables:
       w2023: GOVSPD5
       w2025: GOVSPD5
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -290,6 +320,8 @@ variables:
       w2023: GOVSPD6
       w2025: GOVSPD6
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -310,6 +342,8 @@ variables:
       w2023: GOVSPD7
       w2025: GOVSPD7
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -330,6 +364,8 @@ variables:
       w2023: GOVSPD8
       w2025: GOVSPD8
     scale: {min: 1, max: 5, labels: {1: "Much less", 5: "Much more"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

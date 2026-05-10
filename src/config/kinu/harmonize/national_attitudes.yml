@@ -70,6 +70,8 @@ variables:
       w2022:  at01
       w2023:  at01
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -97,6 +99,8 @@ variables:
       w2022:  at0201
       w2023:  at0201
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -124,6 +128,8 @@ variables:
       w2022:  at0202
       w2023:  at0202
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -151,6 +157,8 @@ variables:
       w2022:  at0203
       w2023:  at0203
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -178,6 +186,8 @@ variables:
       w2022:  at0204
       w2023:  at0204
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -205,6 +215,8 @@ variables:
       w2022:  at0205
       w2023:  at0205
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -232,6 +244,8 @@ variables:
       w2022:  at0206
       w2023:  at0206
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -259,6 +273,8 @@ variables:
       w2022:  at0207
       w2023:  at0207
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -286,6 +302,8 @@ variables:
       w2022:  at0208
       w2023:  at0208
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -313,6 +331,8 @@ variables:
       w2022:  at0209
       w2023:  at0209
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -340,6 +360,8 @@ variables:
       w2022:  at0210
       w2023:  at0210
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -370,6 +392,8 @@ variables:
       w2021a: at06
       w2022:  at06
     scale: {min: 0, max: 10, labels: {0: "Hardly trustful", 10: "Very trustful"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -393,6 +417,8 @@ variables:
       w2021a: at0701
       w2022:  at0701
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -416,6 +442,8 @@ variables:
       w2021a: at0702
       w2022:  at0702
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -439,6 +467,8 @@ variables:
       w2021a: at0703
       w2022:  at0703
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -462,6 +492,8 @@ variables:
       w2021a: at0704
       w2022:  at0704
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -485,6 +517,8 @@ variables:
       w2021a: at0705
       w2022:  at0705
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -508,6 +542,8 @@ variables:
       w2021a: at0706
       w2022:  at0706
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -537,6 +573,8 @@ variables:
       w2021a: at0303
       w2022:  at0303
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -563,6 +601,8 @@ variables:
       w2021a: at0304
       w2022:  at0304
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -592,6 +632,8 @@ variables:
       w2020b: at1701
       w2021a: at1701
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -617,6 +659,8 @@ variables:
       w2020b: at1702
       w2021a: at1702
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -642,6 +686,8 @@ variables:
       w2020b: at1703
       w2021a: at1703
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -669,6 +715,8 @@ variables:
       w2020b: at2801
       w2021a: at2801
     scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -691,6 +739,8 @@ variables:
       w2020b: at2803
       w2021a: at2803
     scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

@@ -38,6 +38,8 @@ variables:
       y2020: WT
       y2023: WT
       y2024: WT
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

@@ -45,6 +45,8 @@ variables:
         0: "Not at all satisfied"
         5: "Average"
         10: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -76,6 +78,8 @@ variables:
         0: "Will get much worse"
         5: "Average"
         10: "Will get much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -100,6 +104,8 @@ variables:
         0: "Not at all satisfied"
         5: "Average"
         10: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -124,6 +130,8 @@ variables:
         0: "Will get much worse"
         5: "Average"
         10: "Will get much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

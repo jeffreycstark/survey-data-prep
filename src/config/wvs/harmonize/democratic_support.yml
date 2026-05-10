@@ -49,6 +49,8 @@ variables:
         2: "Fairly bad"
         3: "Fairly good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -80,6 +82,8 @@ variables:
         2: "Fairly bad"
         3: "Fairly good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -111,6 +115,8 @@ variables:
         2: "Fairly bad"
         3: "Fairly good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -142,6 +148,8 @@ variables:
         2: "Fairly bad"
         3: "Fairly good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -174,6 +182,8 @@ variables:
         2: "Fairly bad"
         3: "Fairly good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

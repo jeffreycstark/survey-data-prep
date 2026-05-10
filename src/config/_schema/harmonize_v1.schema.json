@@ -52,7 +52,7 @@
 
     "variable": {
       "type": "object",
-      "required": ["id", "concept", "description", "type", "source", "harmonize"],
+      "required": ["id", "concept", "description", "type", "source", "harmonize", "missing"],
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -125,8 +125,9 @@
     },
 
     "missingOverride": {
-      "description": "Per-variable override of missing handling. Either references a key in top-level missing_conventions via use_convention, or supplies codes directly, or both (codes are appended).",
+      "description": "Per-variable missing-code declaration. `use_convention` is REQUIRED — it names a key in the spec's top-level `missing_conventions:` block. `codes` may be supplied additionally; the engine appends them to the convention's codes (audit Phase F4).",
       "type": "object",
+      "required": ["use_convention"],
       "additionalProperties": false,
       "properties": {
         "use_convention": { "type": "string" },

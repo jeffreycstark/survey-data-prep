@@ -28,6 +28,8 @@ variables:
         1: "Statement A"
         2: "Statement B"
         3: "Statement C"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -57,6 +59,8 @@ variables:
       labels:
         1: "Statement A"
         2: "Statement B"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -82,6 +86,8 @@ variables:
       labels:
         1: "Strongly agree"
         2: "Just agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -107,6 +113,8 @@ variables:
       labels:
         1: "Statement A"
         2: "Statement B"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -132,6 +140,8 @@ variables:
       labels:
         1: "Strongly agree"
         2: "Just agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -157,6 +167,8 @@ variables:
       labels:
         1: "Statement A"
         2: "Statement B"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -182,6 +194,8 @@ variables:
       labels:
         1: "Strongly agree"
         2: "Just agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -207,6 +221,8 @@ variables:
       labels:
         1: "Statement A"
         2: "Statement B"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -232,6 +248,8 @@ variables:
       labels:
         1: "Strongly agree"
         2: "Just agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -257,6 +275,8 @@ variables:
       labels:
         1: "Statement A"
         2: "Statement B"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

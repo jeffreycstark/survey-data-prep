@@ -259,6 +259,8 @@ variables:
         3: "Government does not waste public money"
         4: "People free to express political views openly"
       note: "Options 1,3 = substantive/economic; Options 2,4 = procedural/political"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -287,6 +289,8 @@ variables:
         3: "People free to organize political groups"
         4: "Government provides quality public services"
       note: "Options 2,4 = substantive/economic; Options 1,3 = procedural/political"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -315,6 +319,8 @@ variables:
         3: "Government ensures job opportunities for all"
         4: "Multiple parties compete fairly in elections"
       note: "Options 1,3 = substantive/security-economic; Options 2,4 = procedural/political"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

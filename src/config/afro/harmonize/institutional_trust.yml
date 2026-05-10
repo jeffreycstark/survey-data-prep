@@ -41,6 +41,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -75,6 +77,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -104,6 +108,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -136,6 +142,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -168,6 +176,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -200,6 +210,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -233,6 +245,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -258,6 +272,8 @@ variables:
     scale:
       min: 1
       max: 4
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -287,6 +303,8 @@ variables:
         2: "Just a little"
         3: "Somewhat"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

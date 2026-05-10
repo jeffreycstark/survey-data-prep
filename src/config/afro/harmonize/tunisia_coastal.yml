@@ -42,6 +42,8 @@ variables:
       labels:
         0: "Interior"
         1: "Coastal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -79,6 +81,8 @@ variables:
       labels:
         0: "Interior"
         1: "Coastal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -116,6 +120,8 @@ variables:
       labels:
         0: "Other Tunisia governorate"
         1: "Tataouine"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

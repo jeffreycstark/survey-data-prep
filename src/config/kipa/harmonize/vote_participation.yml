@@ -48,6 +48,8 @@ variables:
         1: "Voted"
         2: "Did not vote"
         3: "Ineligible (no voting rights)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -79,6 +81,8 @@ variables:
         1: "Voted"
         2: "Did not vote"
         3: "Ineligible (no voting rights)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -110,6 +114,8 @@ variables:
         1: "Voted"
         2: "Did not vote"
         3: "Ineligible (no voting rights)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -141,6 +147,8 @@ variables:
         1: "Not at all important"
         4: "Average"
         7: "Very important"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

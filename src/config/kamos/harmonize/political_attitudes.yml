@@ -50,6 +50,8 @@ variables:
         3: "moderate"
         4: "somewhat conservative"
         5: "extremely conservative"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -74,6 +76,8 @@ variables:
         2: "somewhat unsatisfied"
         3: "somewhat satisfied"
         4: "very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -92,6 +96,8 @@ variables:
       w2: polisys
       w3: polisys
       w4: polisys
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -117,6 +123,8 @@ variables:
       w2: partyid1
       w3: partyid
       w4: partyid3
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -133,6 +141,8 @@ variables:
       w2: partyid2
       w3: partyid2
       w4: partyid4
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -158,6 +168,8 @@ variables:
         1: "conservative"
         2: "progressive"
         3: "none/other"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -190,6 +202,8 @@ variables:
     scale:
       min: 0
       max: 10
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -209,6 +223,8 @@ variables:
     scale:
       min: 0
       max: 10
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -227,6 +243,8 @@ variables:
     scale:
       min: 0
       max: 10
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -245,6 +263,8 @@ variables:
     scale:
       min: 0
       max: 10
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -264,6 +284,8 @@ variables:
       w2: null
       w3: null
       w4: vote16
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -280,6 +302,8 @@ variables:
       w2: null
       w3: null
       w4: vote15
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -296,6 +320,8 @@ variables:
       w2: null
       w3: null
       w4: vote17
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

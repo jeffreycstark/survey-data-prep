@@ -44,6 +44,8 @@ variables:
       w2022: q34
       w2023: q35
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -72,6 +74,8 @@ variables:
       w2022: q26
       w2023: q26
     scale: {min: 1, max: 7, labels: {1: "Very weak", 6: "Very strong (pre-2018) / High (2018+)", 7: "Very strong (2018+ only)"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -119,6 +123,8 @@ variables:
       w2022: q27
       w2023: q27
     scale: {min: 1, max: 7}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -150,6 +156,8 @@ variables:
       w2016: a105
       w2017: a105
     scale: {min: 1, max: 6, labels: {1: "Bribe-givers penalized much more strongly", 6: "Officials penalized much more strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -178,6 +186,8 @@ variables:
       w2022: q33_1
       w2023: q34_1
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -204,6 +214,8 @@ variables:
       w2022: q33_2
       w2023: q34_2
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -230,6 +242,8 @@ variables:
       w2022: q33_3
       w2023: q34_3
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -256,6 +270,8 @@ variables:
       w2022: q33_4
       w2023: q34_4
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -283,6 +299,8 @@ variables:
       w2022: q33_5
       w2023: q34_5
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -310,6 +328,8 @@ variables:
       w2022: q33_8
       w2023: q34_8
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -336,6 +356,8 @@ variables:
       w2022: q33_9
       w2023: q34_9
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

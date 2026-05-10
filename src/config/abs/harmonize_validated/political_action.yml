@@ -40,6 +40,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -73,6 +75,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -106,6 +110,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -137,6 +143,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -166,6 +174,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -194,6 +204,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -222,6 +234,8 @@ variables:
         1: "Never"
         2: "Once"
         3: "More than once"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -250,6 +264,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -278,6 +294,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -306,6 +324,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -334,6 +354,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -361,6 +383,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -388,6 +412,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -415,6 +441,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -443,6 +471,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -474,6 +504,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -502,6 +534,8 @@ variables:
         1: "Once"
         2: "More than once"
         9: "Never done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -530,6 +564,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -559,6 +595,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -588,6 +626,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -620,6 +660,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -649,6 +691,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -677,6 +721,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -706,6 +752,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -734,6 +782,8 @@ variables:
         3: "Have done once"
         4: "Have done 2-3 times"
         5: "Have done >3 times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -762,6 +812,8 @@ variables:
         1: "Never"
         2: "Once"
         3: "More than once"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -790,6 +842,8 @@ variables:
         2: "Once"
         3: "Twice"
         4: "Several times"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -815,6 +869,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -842,6 +898,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -873,6 +931,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -900,6 +960,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -927,6 +989,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -954,6 +1018,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -981,6 +1047,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1008,6 +1076,8 @@ variables:
       labels:
         0: "No (alone)"
         1: "Yes (with others)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1036,6 +1106,8 @@ variables:
         2: "Free and fair, with major problems"
         3: "Free and fair, but with minor problems"
         4: "Completely free and fair"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1063,6 +1135,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1091,6 +1165,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1124,6 +1200,8 @@ variables:
         3: "Sometimes"
         4: "Often"
         5: "Very often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -1154,6 +1232,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1180,6 +1260,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1349,6 +1431,8 @@ variables:
         2: "I vote in most elections"
         3: "I seldom vote"
         4: "I never vote"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -1376,6 +1460,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

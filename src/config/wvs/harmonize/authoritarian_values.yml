@@ -60,6 +60,8 @@ variables:
         1: "Good thing"
         2: "Don't mind"
         3: "Bad thing"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -93,6 +95,8 @@ variables:
       labels:
         1: "Mentioned"
         2: "Not mentioned"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -122,6 +126,8 @@ variables:
       labels:
         1: "Mentioned"
         2: "Not mentioned"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -151,6 +157,8 @@ variables:
       labels:
         1: "Mentioned"
         2: "Not mentioned"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -184,6 +192,8 @@ variables:
         1: "Materialist"
         2: "Mixed"
         3: "Post-materialist"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -213,6 +223,8 @@ variables:
       labels:
         0: "Materialist"
         5: "Post-materialist"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -245,6 +257,8 @@ variables:
       labels:
         1: "None at all"
         10: "A great deal"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -277,6 +291,8 @@ variables:
       labels:
         1: "Freedom"
         2: "Equality"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -306,6 +322,8 @@ variables:
       labels:
         1: "Freedom"
         2: "Security"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

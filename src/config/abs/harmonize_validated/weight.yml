@@ -29,6 +29,8 @@ variables:
     scale:
       min: 0
       max: 20
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -52,6 +54,8 @@ variables:
     scale:
       min: 0
       max: 20
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

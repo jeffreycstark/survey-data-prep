@@ -60,6 +60,8 @@ variables:
       labels:
         1: "Male"
         0: "Female"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -86,6 +88,8 @@ variables:
     scale:
       min: 16
       max: 110
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -112,6 +116,8 @@ variables:
         1: "Primary or less"
         2: "Secondary"
         3: "Tertiary"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -215,6 +221,8 @@ variables:
       labels:
         1: "Lowest income group"
         10: "Highest income group"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -246,6 +254,8 @@ variables:
         3: "Lower middle class"
         4: "Upper middle class"
         5: "Upper class"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -279,6 +289,8 @@ variables:
         4: "Separated"
         5: "Widowed"
         6: "Single/Never married"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -322,6 +334,8 @@ variables:
         6: "Student"
         7: "Unemployed"
         8: "Other"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -350,6 +364,8 @@ variables:
       labels:
         0: "Rural"
         1: "Urban"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

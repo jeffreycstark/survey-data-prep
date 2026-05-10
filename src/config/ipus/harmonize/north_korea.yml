@@ -59,6 +59,8 @@ variables:
       w2023: nk10
       w2024: nk10
     scale: {min: 1, max: 4, labels: {1: "Not threatened at all", 4: "Very threatened"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -100,6 +102,8 @@ variables:
         3: "Competitor"
         4: "Vigilance target"
         5: "Enemy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -132,6 +136,8 @@ variables:
       w2023: nk05_b
       w2024: nk05_b
     scale: {min: 1, max: 4, labels: {1: "Not changing at all", 4: "Changing a lot"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -162,6 +168,8 @@ variables:
       w2023: nk04
       w2024: nk04
     scale: {min: 1, max: 4, labels: {1: "Does not want at all", 4: "Strongly wants"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

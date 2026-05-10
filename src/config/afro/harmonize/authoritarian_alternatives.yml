@@ -42,6 +42,8 @@ variables:
         3: "Neither approve nor disapprove"
         4: "Disapprove"
         5: "Strongly disapprove (of one-party rule)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -73,6 +75,8 @@ variables:
         3: "Neither approve nor disapprove"
         4: "Disapprove"
         5: "Strongly disapprove (of military rule)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -104,6 +108,8 @@ variables:
         3: "Neither approve nor disapprove"
         4: "Disapprove"
         5: "Strongly disapprove (of one-man rule)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

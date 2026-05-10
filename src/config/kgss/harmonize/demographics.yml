@@ -52,6 +52,8 @@ variables:
       w2021: AGE
       w2023: AGE
       w2025: AGE
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -86,6 +88,8 @@ variables:
       labels:
         1: "Male"
         2: "Female"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -127,6 +131,8 @@ variables:
         6: "Graduate school (Masters)"
         7: "Graduate school (PhD)"
         8: "Other"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -165,6 +171,8 @@ variables:
         4: "Separated"
         5: "Never married"
         6: "Cohabiting"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -199,6 +207,8 @@ variables:
       labels:
         1: "Employed"
         2: "Not employed"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -228,6 +238,8 @@ variables:
       w2021: INCOME
       w2023: INCOME
       w2025: INCOME
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -267,6 +279,8 @@ variables:
         5: "Gyeongsang"
         6: "Jeolla"
         7: "Jeju"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -301,6 +315,8 @@ variables:
       labels:
         0: "Rural area"
         1: "Urban area"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -329,6 +345,8 @@ variables:
       w2021: RELIG
       w2023: RELIG
       w2025: RELIG
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -370,6 +388,8 @@ variables:
         6: "Once a year"
         7: "Less than once a year"
         8: "Never"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -408,6 +428,8 @@ variables:
         4: "Lower-middle"
         5: "Upper-lower"
         6: "Lower-lower"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -443,6 +465,8 @@ variables:
       labels:
         1: "Bottom"
         10: "Top"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

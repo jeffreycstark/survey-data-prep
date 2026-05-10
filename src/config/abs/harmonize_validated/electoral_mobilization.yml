@@ -27,6 +27,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -53,6 +55,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -79,6 +83,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -110,6 +116,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -136,6 +144,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -162,6 +172,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -188,6 +200,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -214,6 +228,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -240,6 +256,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -266,6 +284,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -292,6 +312,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -318,6 +340,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -344,6 +368,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -370,6 +396,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -396,6 +424,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -427,6 +457,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -453,6 +485,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -479,6 +513,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -505,6 +541,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -531,6 +569,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -557,6 +597,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -583,6 +625,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -609,6 +653,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -635,6 +681,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

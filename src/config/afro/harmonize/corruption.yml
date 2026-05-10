@@ -40,6 +40,8 @@ variables:
         1: "Once or twice"
         2: "A few times"
         3: "Often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -69,6 +71,8 @@ variables:
         1: "Once or twice"
         2: "A few times"
         3: "Often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -98,6 +102,8 @@ variables:
         1: "Once or twice"
         2: "A few times"
         3: "Often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -127,6 +133,8 @@ variables:
         1: "Once or twice"
         2: "A few times"
         3: "Often"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -158,6 +166,8 @@ variables:
         3: "Stayed the same"
         4: "Decreased somewhat"
         5: "Decreased a lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

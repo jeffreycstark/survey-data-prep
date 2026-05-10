@@ -38,6 +38,8 @@ variables:
       labels:
         1: "Completely undemocratic"
         10: "Completely democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -64,6 +66,8 @@ variables:
       labels:
         1: "Completely undemocratic"
         10: "Completely democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -90,6 +94,8 @@ variables:
       labels:
         1: "Completely undemocratic"
         10: "Completely democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -115,6 +121,8 @@ variables:
       labels:
         1: "Completely undemocratic"
         10: "Completely democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -145,6 +153,8 @@ variables:
         2: "Somewhat more harm than good"
         3: "Somewhat more good than harm"
         4: "Much more good than harm"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -173,6 +183,8 @@ variables:
         2: "Not much influence"
         3: "Some influence"
         4: "A great deal of influence"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -205,6 +217,8 @@ variables:
         2: "Not much influence"
         3: "Some influence"
         4: "A great deal of influence"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -235,6 +249,8 @@ variables:
         4: "Somewhat positive"
         5: "Positive"
         6: "Very positive"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -266,6 +282,8 @@ variables:
         4: "Somewhat positive"
         5: "Positive"
         6: "Very positive"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -412,6 +430,8 @@ variables:
         4: "Somewhat positive"
         5: "Positive"
         6: "Very positive"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -445,6 +465,8 @@ variables:
         3: "Not too closely"
         4: "Somewhat closely"
         5: "Very closely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -541,6 +563,8 @@ variables:
         2: "Somewhat more harm than good"
         3: "Somewhat more good than harm"
         4: "Much more good than harm"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -569,6 +593,8 @@ variables:
         2: "Not much influence"
         3: "Some influence"
         4: "A great deal of influence"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -598,6 +624,8 @@ variables:
         2: "Not much influence"
         3: "Some influence"
         4: "A great deal of influence"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -628,6 +656,8 @@ variables:
         4: "Somewhat positive"
         5: "Positive"
         6: "Very positive"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -659,6 +689,8 @@ variables:
         4: "Somewhat positive"
         5: "Positive"
         6: "Very positive"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

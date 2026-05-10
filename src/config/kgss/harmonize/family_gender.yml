@@ -54,6 +54,8 @@ variables:
       w2012: HUBBYWRK
       w2018: HBBYWK08
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -71,6 +73,8 @@ variables:
       w2003: TWOINCS
       w2012: TWOINCS
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -88,6 +92,8 @@ variables:
       w2003: HOMEKID
       w2012: HOMEKID
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -106,6 +112,8 @@ variables:
       w2012: FAMSUFFR
       w2016: FAMSUFFR
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -123,6 +131,8 @@ variables:
       w2003: DIVBEST
       w2012: DIVBEST
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -140,6 +150,8 @@ variables:
       w2003: COHABOK
       w2012: COHABOK
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

@@ -50,6 +50,8 @@ variables:
         2: "Bad"
         3: "Good"
         4: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -83,6 +85,8 @@ variables:
         3: "Almost the same"
         4: "Somewhat better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -117,6 +121,8 @@ variables:
         4: "Somewhat better"
         5: "Much better"
     note: "W4-W5 only."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

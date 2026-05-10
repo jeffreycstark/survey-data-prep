@@ -57,6 +57,8 @@ variables:
       w2021a: int04
       w2022:  int04
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -82,6 +84,8 @@ variables:
       w2021a: int0501
       w2022:  int0501
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -107,6 +111,8 @@ variables:
       w2021a: int0502
       w2022:  int0502
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -132,6 +138,8 @@ variables:
       w2021a: int0503
       w2022:  int0503
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -157,6 +165,8 @@ variables:
       w2021a: int0504
       w2022:  int0504
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -182,6 +192,8 @@ variables:
       w2021a: int0505
       w2022:  int0505
     scale: {min: 1, max: 4, labels: {1: "Not serious at all", 4: "Very serious"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

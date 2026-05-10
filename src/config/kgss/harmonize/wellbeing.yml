@@ -40,6 +40,8 @@ variables:
       w2023: HAPPINSS
       w2025: HAPPINSS
     scale: {min: 1, max: 5, labels: {1: "Very unhappy", 5: "Very happy"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -61,6 +63,8 @@ variables:
       w2023: LIFESAT
       w2025: LIFESAT
     scale: {min: 1, max: 5, labels: {1: "Very dissatisfied", 5: "Very satisfied"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -90,6 +94,8 @@ variables:
       w2023: SATFIN
       w2025: SATFIN
     scale: {min: 1, max: 5, labels: {1: "Very dissatisfied", 5: "Very satisfied"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

@@ -33,6 +33,8 @@ variables:
       labels:
         1: "Most people can be trusted"
         0: "One can never be too careful"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

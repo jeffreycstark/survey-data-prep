@@ -56,6 +56,8 @@ variables:
       w2021: PRTYID21
       w2023: PRTYID23
       w2025: PRTYID25
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -82,6 +84,8 @@ variables:
       w2021: PRTYPR21
       w2023: PRTYPR23
       w2025: PRTYPR25
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -98,6 +102,8 @@ variables:
       w2008: VOTE07
       w2010: VOTE07
       w2013: VOTE13
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -117,6 +123,8 @@ variables:
       w2016: VOTE16
       w2021: VOTE20
       w2025: VOTE24
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -136,6 +144,8 @@ variables:
       w2014: VOTE14
       w2018: VOTE18
       w2023: VOTE22
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -170,6 +180,8 @@ variables:
       labels:
         1: "Very unsatisfied"
         5: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -203,6 +215,8 @@ variables:
       labels:
         1: "Very unsatisfied"
         5: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -233,6 +247,8 @@ variables:
       labels:
         1: "Much worse"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -263,6 +279,8 @@ variables:
       labels:
         1: "Much worse outlook"
         5: "Much better outlook"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

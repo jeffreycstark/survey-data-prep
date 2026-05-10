@@ -48,6 +48,8 @@ variables:
         1: "Democracy is preferable"
         2: "Authoritarian sometimes preferable"
         3: "Doesn't matter"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -92,6 +94,8 @@ variables:
         2: "Not very satisfied"
         3: "Quite satisfied"
         4: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -137,6 +141,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -180,6 +186,8 @@ variables:
       labels:
         1: "Not democratic"
         10: "Totally democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

@@ -36,6 +36,8 @@ variables:
       labels:
         0: "No"
         1: "Yes"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

@@ -35,6 +35,8 @@ variables:
       w7: null
       w8: null
     note: "W2-W3 only. Value labels vary — decode from questionnaire PDF."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -53,6 +55,8 @@ variables:
       w7: null
       w8: null
     note: "W2-W3 only."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

@@ -35,6 +35,8 @@ variables:
       labels:
         1: "Not at all important"
         10: "Absolutely important"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -63,6 +65,8 @@ variables:
       labels:
         1: "Not at all democratic"
         10: "Completely democratic"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -92,6 +96,8 @@ variables:
       labels:
         1: "Not satisfied at all"
         10: "Completely satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

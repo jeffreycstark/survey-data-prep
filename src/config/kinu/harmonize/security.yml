@@ -64,6 +64,8 @@ variables:
       w2022:  se0201
       w2023:  se0201
     scale: {min: 1, max: 5, labels: {1: "Very low", 5: "Very high"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -88,6 +90,8 @@ variables:
       w2022:  nk1804
       w2023:  nk1804
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -114,6 +118,8 @@ variables:
       w2022:  se0401
       w2023:  se0401
     scale: {min: 1, max: 4, labels: {1: "Not necessary at all", 4: "Absolutely necessary"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -136,6 +142,8 @@ variables:
       w2022:  se0403
       w2023:  se0403
     scale: {min: 1, max: 4, labels: {1: "Not at all needed", 4: "Very needed"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -158,6 +166,8 @@ variables:
       w2022:  se0404
       w2023:  se0404
     scale: {min: 1, max: 4, labels: {1: "Not at all needed", 4: "Very needed"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -181,6 +191,8 @@ variables:
       w2022:  nk1701
       w2023:  nk1701
     scale: {min: 1, max: 4, labels: {1: "Absolute no", 4: "Absolute yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -204,6 +216,8 @@ variables:
       w2022:  nk1702
       w2023:  nk1702
     scale: {min: 1, max: 4, labels: {1: "Absolute no", 4: "Absolute yes"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -230,6 +244,8 @@ variables:
       w2022:  se0501
       w2023:  se0501
     scale: {min: 1, max: 5, labels: {1: "US much more important", 3: "Equally important", 5: "China much more important"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -252,6 +268,8 @@ variables:
       w2022:  se0502
       w2023:  se0502
     scale: {min: 1, max: 5, labels: {1: "US much more important", 3: "Equally important", 5: "China much more important"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -279,6 +297,8 @@ variables:
       w2022:  nk21a
       w2023:  nk21a
     scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -302,6 +322,8 @@ variables:
       w2022:  nk21b
       w2023:  nk21b
     scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -325,6 +347,8 @@ variables:
       w2022:  nk21c
       w2023:  nk21c
     scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -348,6 +372,8 @@ variables:
       w2022:  nk21d
       w2023:  nk21d
     scale: {min: -5, max: 5, labels: {-5: "Strongly dislike", 0: "Neither", 5: "Strongly like"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -369,6 +395,8 @@ variables:
       w2021b: se0804
       w2023:  se0804
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -389,6 +417,8 @@ variables:
       w2021b: se0806
       w2023:  se0806
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -408,6 +438,8 @@ variables:
       w2021b: se0807
       w2023:  se0807
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

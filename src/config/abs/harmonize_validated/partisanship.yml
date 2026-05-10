@@ -30,6 +30,8 @@ variables:
       labels:
         0: "No party attachment"
         1: "Has party attachment"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -61,6 +63,8 @@ variables:
         1: "Just a little close"
         2: "Somewhat close"
         3: "Very close"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

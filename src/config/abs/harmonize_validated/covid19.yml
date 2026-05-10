@@ -30,6 +30,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -58,6 +60,8 @@ variables:
         2: "Fairly badly"
         3: "Fairly well"
         4: "Very well"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -84,6 +88,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -110,6 +116,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -136,6 +144,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -162,6 +172,8 @@ variables:
       labels:
         1: "Yes"
         0: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -190,6 +202,8 @@ variables:
         2: "Not very serious"
         3: "Somewhat serious"
         4: "Very serious"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -221,6 +235,8 @@ variables:
         2: "Not much trust"
         3: "Quite a lot of trust"
         4: "A great deal of trust"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -252,6 +268,8 @@ variables:
         1: "Never"
         2: "Sometimes"
         3: "Always"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -280,6 +298,8 @@ variables:
         1: "Never"
         2: "Sometimes"
         3: "Always"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -308,6 +328,8 @@ variables:
         1: "Never"
         2: "Sometimes"
         3: "Always"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -336,6 +358,8 @@ variables:
         1: "Never"
         2: "Sometimes"
         3: "Always"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -364,6 +388,8 @@ variables:
         1: "Never"
         2: "Sometimes"
         3: "Always"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -397,6 +423,8 @@ variables:
         2: "Not very justified"
         3: "Somewhat justified"
         4: "Very justified"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -426,6 +454,8 @@ variables:
         2: "Not very justified"
         3: "Somewhat justified"
         4: "Very justified"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -455,6 +485,8 @@ variables:
         2: "Not very justified"
         3: "Somewhat justified"
         4: "Very justified"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -484,6 +516,8 @@ variables:
         2: "Not very justified"
         3: "Somewhat justified"
         4: "Very justified"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -513,6 +547,8 @@ variables:
         2: "Not very justified"
         3: "Somewhat justified"
         4: "Very justified"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -545,6 +581,8 @@ variables:
         2: "Somewhat unfair"
         3: "Somewhat fair"
         4: "Very fair"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -574,6 +612,8 @@ variables:
         1: "Not serious at all"
         2: "Not very serious"
         3: "Somewhat/Very serious"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -605,6 +645,8 @@ variables:
         2: "Not very worried"
         3: "Somewhat worried"
         4: "Very worried"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

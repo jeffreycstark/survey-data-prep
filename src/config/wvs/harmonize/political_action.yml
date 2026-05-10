@@ -37,6 +37,8 @@ variables:
         1: "Would never do"
         2: "Might do"
         3: "Have done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -67,6 +69,8 @@ variables:
         1: "Would never do"
         2: "Might do"
         3: "Have done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -97,6 +101,8 @@ variables:
         1: "Would never do"
         2: "Might do"
         3: "Have done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -127,6 +133,8 @@ variables:
         1: "Would never do"
         2: "Might do"
         3: "Have done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -158,6 +166,8 @@ variables:
         1: "Would never do"
         2: "Might do"
         3: "Have done"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

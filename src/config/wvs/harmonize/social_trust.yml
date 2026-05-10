@@ -44,6 +44,8 @@ variables:
       labels:
         1: "Most people can be trusted"
         0: "Need to be very careful"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -78,6 +80,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -109,6 +113,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -140,6 +146,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -170,6 +178,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -200,6 +210,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -230,6 +242,8 @@ variables:
         2: "Do not trust very much"
         3: "Trust somewhat"
         4: "Trust completely"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

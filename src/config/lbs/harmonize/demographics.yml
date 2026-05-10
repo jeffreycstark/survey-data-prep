@@ -50,6 +50,8 @@ variables:
     scale:
       min: 15
       max: 99
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -97,6 +99,8 @@ variables:
         5: "Complete secondary/technical"
         6: "Incomplete higher education"
         7: "Complete higher education"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -146,6 +150,8 @@ variables:
         6: "50,001 - 100,000"
         7: "100,001 and more"
         8: "Capital"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

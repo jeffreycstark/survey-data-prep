@@ -31,6 +31,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -70,6 +72,8 @@ variables:
         2: "Unfair"
         3: "Fair"
         4: "Very fair"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -105,6 +109,8 @@ variables:
       labels:
         1: "Environment priority"
         2: "Economic growth priority"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -139,6 +145,8 @@ variables:
         2: "Unfair"
         3: "Fair"
         4: "Very fair"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -176,6 +184,8 @@ variables:
         4: "A little fair"
         5: "Somewhat fair"
         6: "Very fair"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -207,6 +217,8 @@ variables:
         3: "About the same"
         4: "More opportunities"
         5: "Substantially more opportunities"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -241,6 +253,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -271,6 +285,8 @@ variables:
         2: "Not too concerned"
         3: "Somewhat concerned"
         4: "Very concerned"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -298,6 +314,8 @@ variables:
         1: "Could manage just fine"
         2: "Serious but could deal with it"
         3: "Serious and would have difficulty coping"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -328,6 +346,8 @@ variables:
         3: "About the same"
         4: "A little better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -364,6 +384,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -396,6 +418,8 @@ variables:
         2: "Not too worried"
         3: "Somewhat worried"
         4: "Very worried"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

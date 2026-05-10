@@ -54,6 +54,8 @@ variables:
         3: "Regular/Neither"
         4: "Good"
         5: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -100,6 +102,8 @@ variables:
         3: "Regular/Neither"
         4: "Good"
         5: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

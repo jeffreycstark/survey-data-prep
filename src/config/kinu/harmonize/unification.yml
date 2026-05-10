@@ -65,6 +65,8 @@ variables:
       w2022:  uni01
       w2023:  uni01
     scale: {min: 1, max: 4, labels: {1: "Strongly unnecessary", 4: "Strongly necessary"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -97,6 +99,8 @@ variables:
       w2022:  uni0201
       w2023:  uni0201
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -120,6 +124,8 @@ variables:
       w2021a: uni0203
       w2022:  uni0203
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -143,6 +149,8 @@ variables:
       w2021a: uni0204
       w2022:  uni0204
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -166,6 +174,8 @@ variables:
       w2021a: uni0206
       w2022:  uni0206
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -188,6 +198,8 @@ variables:
       w2021a: uni0209
       w2022:  uni0209
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -210,6 +222,8 @@ variables:
       w2021a: uni0211
       w2022:  uni0211
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -234,6 +248,8 @@ variables:
       w2022:  uni0212
       w2023:  uni0212
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -256,6 +272,8 @@ variables:
       w2021a: uni0213
       w2022:  uni0213
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -279,6 +297,8 @@ variables:
       w2022:  uni0214
       w2023:  uni0214
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -310,6 +330,8 @@ variables:
       w2022:  uni0301
       w2023:  uni0301
     scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -337,6 +359,8 @@ variables:
       w2022:  uni0302
       w2023:  uni0302
     scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -362,6 +386,8 @@ variables:
       w2022:  uni0303
       w2023:  uni0303
     scale: {min: 1, max: 4, labels: {1: "No benefit at all", 4: "Very much beneficial"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -393,6 +419,8 @@ variables:
       w2021a: uni0601
       w2022:  uni0601
     scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -418,6 +446,8 @@ variables:
       w2021a: uni0602
       w2022:  uni0602
     scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -443,6 +473,8 @@ variables:
       w2021a: uni0603
       w2022:  uni0603
     scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -468,6 +500,8 @@ variables:
       w2021a: uni0604
       w2022:  uni0604
     scale: {min: 1, max: 5, labels: {1: "Will get much better", 5: "Will get much worse"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

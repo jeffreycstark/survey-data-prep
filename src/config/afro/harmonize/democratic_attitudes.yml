@@ -41,6 +41,8 @@ variables:
         1: "Democracy is preferable to any other kind of government"
         2: "In some circumstances, a non-democratic government can be preferable"
         3: "For someone like me, it doesn't matter what kind of government we have"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -103,6 +105,8 @@ variables:
         2: "Not very satisfied"
         3: "Fairly satisfied"
         4: "Very satisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -160,6 +164,8 @@ variables:
         2: "A democracy with major problems"
         3: "A democracy with minor problems"
         4: "A full democracy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -189,6 +195,8 @@ variables:
     scale:
       min: 1
       max: 10
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -217,6 +225,8 @@ variables:
     scale:
       min: 1
       max: 4
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

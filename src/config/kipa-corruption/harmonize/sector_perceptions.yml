@@ -52,6 +52,8 @@ variables:
       w2022: q11_1
       w2023: q11_1
     scale: {min: 1, max: 6, labels: {1: "Not at all corrupt", 6: "Very corrupt"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -84,6 +86,8 @@ variables:
       w2022: q11_2
       w2023: q11_2
     scale: {min: 1, max: 6, labels: {1: "Not at all corrupt", 6: "Very corrupt"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -117,6 +121,8 @@ variables:
       w2022: q23_1
       w2023: q23_1
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -148,6 +154,8 @@ variables:
       w2022: q23_2
       w2023: q23_2
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -179,6 +187,8 @@ variables:
       w2022: q23_3
       w2023: q23_3
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -211,6 +221,8 @@ variables:
       w2022: q23_4
       w2023: q23_4
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -242,6 +254,8 @@ variables:
       w2022: q23_5
       w2023: q23_5
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -273,6 +287,8 @@ variables:
       w2022: q23_6
       w2023: q23_6
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -304,6 +320,8 @@ variables:
       w2022: q23_7
       w2023: q23_7
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -335,6 +353,8 @@ variables:
       w2022: q23_8
       w2023: q23_8
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -366,6 +386,8 @@ variables:
       w2022: q23_9
       w2023: q23_9
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -397,6 +419,8 @@ variables:
       w2022: q23_13
       w2023: q23_13
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -428,6 +452,8 @@ variables:
       w2022: q23_11
       w2023: q23_11
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -459,6 +485,8 @@ variables:
       w2022: q23_10
       w2023: q23_10
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -491,6 +519,8 @@ variables:
       w2022: q22_1
       w2023: q22_1
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -522,6 +552,8 @@ variables:
       w2022: q22_2
       w2023: q22_2
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -553,6 +585,8 @@ variables:
       w2022: q22_4
       w2023: q22_4
     scale: {min: 1, max: 6}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

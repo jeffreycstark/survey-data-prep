@@ -49,6 +49,8 @@ variables:
         1: "Would take advantage of you"
         2: "Would try to be fair"
         3: "Depends"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -87,6 +89,8 @@ variables:
         2: "Usually can't be too careful"
         3: "People can usually be trusted"
         4: "People can almost always be trusted"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -123,6 +127,8 @@ variables:
       labels:
         0: "Hardly trustful"
         10: "Very trustful"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

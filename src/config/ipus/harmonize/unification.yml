@@ -66,6 +66,8 @@ variables:
       w2023: uni01_a
       w2024: uni01_a
     scale: {min: 1, max: 5, labels: {1: "Not at all necessary", 5: "Very necessary"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -110,6 +112,8 @@ variables:
         2: "Should wait for conditions to mature"
         3: "Status quo is fine"
         4: "Should not happen"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -163,6 +167,8 @@ variables:
     # raw 4 ("within 30 years") + raw 5 ("30+ years") into harmonized 4
     # ("decades away") and maps raw 6 ("impossible") to harmonized 5.
     # Verified against value labels in data/ipus/raw/2011/ipus_2011.sav.
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: recode

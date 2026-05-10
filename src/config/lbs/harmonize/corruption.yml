@@ -54,6 +54,8 @@ variables:
       labels:
         1: "Yes"
         2: "No"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -100,6 +102,8 @@ variables:
         3: "Some"
         4: "Much"
         5: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

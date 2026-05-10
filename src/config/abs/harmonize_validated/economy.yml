@@ -31,6 +31,8 @@ variables:
         3: "About the same"
         4: "Better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -75,6 +77,8 @@ variables:
         3: "About the same"
         4: "A little better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -120,6 +124,8 @@ variables:
         3: "So so"
         4: "Good"
         5: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -162,6 +168,8 @@ variables:
         3: "About the same"
         4: "Somewhat better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -207,6 +215,8 @@ variables:
         3: "So so"
         4: "Good"
         5: "Very good"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -254,6 +264,8 @@ variables:
         3: "About the same"
         4: "Better"
         5: "Much better"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -298,6 +310,8 @@ variables:
       labels:
         1: "Elite"
         0: "Mass"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

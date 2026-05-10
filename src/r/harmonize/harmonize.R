@@ -167,8 +167,17 @@ harmonize_variable <- function(
     }
 
     # ---- apply missing code handling ----
-    # First check for variable-specific convention, then use global treat_as_na
-    miss_convention_key <- var_spec$missing$use_convention %||% "treat_as_na"
+    # Each variable MUST explicitly declare which named missing-code
+    # convention to use; the engine no longer falls back to a default.
+    # See audit Phase F4 (commit Phase-F4-Step2): an implicit fallback
+    # was masking ~2,000 undeclared missing codes across ABS/KINU/IPUS.
+    miss_convention_key <- var_spec$missing$use_convention
+    if (is.null(miss_convention_key)) {
+      stop(sprintf(
+        "Variable '%s' has no missing.use_convention declared. Each variable must explicitly state which missing-code convention to use (no implicit defaults).",
+        var_spec$id
+      ), call. = FALSE)
+    }
     missing_codes <- numeric(0)
 
     if (!is.null(missing_conventions[[miss_convention_key]])) {

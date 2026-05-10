@@ -31,6 +31,8 @@ variables:
       w2: wt
       w3: wt
       w4: null
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

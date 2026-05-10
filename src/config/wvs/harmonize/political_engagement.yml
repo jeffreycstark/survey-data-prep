@@ -44,6 +44,8 @@ variables:
         2: "Not very interested"
         3: "Somewhat interested"
         4: "Very interested"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -75,6 +77,8 @@ variables:
         1: "Never"
         2: "Occasionally"
         3: "Frequently"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

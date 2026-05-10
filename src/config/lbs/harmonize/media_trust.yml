@@ -56,6 +56,8 @@ variables:
         2: "A little"
         3: "Some"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -102,6 +104,8 @@ variables:
         2: "A little"
         3: "Some"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -148,6 +152,8 @@ variables:
         2: "A little"
         3: "Some"
         4: "A lot"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

@@ -45,6 +45,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -78,6 +80,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -110,6 +114,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -142,6 +148,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -174,6 +182,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -206,6 +216,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -238,6 +250,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -271,6 +285,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -303,6 +319,8 @@ variables:
         3: "Monthly"
         4: "Weekly"
         5: "Daily"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

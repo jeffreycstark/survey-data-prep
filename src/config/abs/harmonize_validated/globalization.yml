@@ -29,6 +29,8 @@ variables:
       labels:
         1: "Defend our way of life"
         2: "Learn from other countries"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -87,6 +89,8 @@ variables:
       labels:
         1: "Strongly"
         2: "Not strongly"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -117,6 +121,8 @@ variables:
         2: "Reduce the inflow"
         3: "Maintain the current inflow"
         4: "Increase the flow"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -147,6 +153,8 @@ variables:
       labels:
         1: "Limit imports to protect workers/farmers"
         2: "Do more trade with other countries"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -195,6 +203,8 @@ variables:
       labels:
         1: "Strongly"
         2: "Not strongly"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

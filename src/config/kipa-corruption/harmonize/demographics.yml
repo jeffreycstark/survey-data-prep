@@ -45,6 +45,8 @@ variables:
       w2022: dq1
       w2023: dq1
     scale: {min: 1, max: 2, labels: {1: "Male", 2: "Female"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -78,6 +80,8 @@ variables:
       w2022: dq2
       w2023: dq2
     scale: {min: 1, max: 6, labels: {1: "20s or younger", 5: "60s", 6: "70+ (present only in waves with 6-band coding)"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -111,6 +115,8 @@ variables:
       w2022: dq3
       w2023: dq3
     scale: {min: 1, max: 10, labels: {1: "Lowest", 10: "Highest"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -144,6 +150,8 @@ variables:
       w2022: dq4
       w2023: dq4
     scale: {min: 1, max: 12, labels: {1: "Lowest", 12: "Highest"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

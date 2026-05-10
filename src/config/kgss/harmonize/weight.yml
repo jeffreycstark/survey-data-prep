@@ -38,6 +38,8 @@ variables:
       w2021: FINALWT
       w2023: FINALWT
       w2025: FINALWT
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

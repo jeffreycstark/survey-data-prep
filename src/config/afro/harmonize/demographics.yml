@@ -33,6 +33,8 @@ variables:
       labels:
         1: "Male"
         2: "Female"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -56,6 +58,8 @@ variables:
     scale:
       min: 18
       max: 110
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -87,6 +91,8 @@ variables:
         3: "40-49"
         4: "50-59"
         5: "60+"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -118,6 +124,8 @@ variables:
         1: "Primary"
         2: "Secondary"
         3: "Post-secondary"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -167,6 +175,8 @@ variables:
         7: "Some university"
         8: "University completed"
         9: "Post-graduate"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -194,6 +204,8 @@ variables:
       labels:
         1: "Urban"
         2: "Rural"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -219,6 +231,8 @@ variables:
     scale:
       min: 1
       max: 12
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -244,6 +258,8 @@ variables:
     scale:
       min: 1999
       max: 2024
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -266,6 +282,8 @@ variables:
       w8: DATEINTR
       w9: DATEINTR
     note: "Date class in R2-R9. R1 has no date variable."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

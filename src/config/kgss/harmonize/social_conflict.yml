@@ -42,6 +42,8 @@ variables:
       w2009: CONWLTH
       w2014: CONWLTH
     scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -60,6 +62,8 @@ variables:
       w2009: CONCLASS
       w2014: CONCLASS
     scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -78,6 +82,8 @@ variables:
       w2009: CONUNION
       w2014: CONUNION
     scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -96,6 +102,8 @@ variables:
       w2009: CONSOC
       w2014: CONSOC
     scale: {min: 1, max: 4, labels: {1: "No conflict", 4: "Very serious conflict"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

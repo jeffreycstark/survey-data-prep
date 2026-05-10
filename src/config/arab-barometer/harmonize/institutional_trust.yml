@@ -37,6 +37,8 @@ variables:
         2: "Not a lot of trust"
         3: "Quite a lot of trust"
         4: "A great deal of trust"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -57,6 +59,8 @@ variables:
       w7: Q201A_2
       w8: Q201A_2
     note: "W3 missing (q2012 not in W3 data)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -75,6 +79,8 @@ variables:
       w5: Q201A_3
       w7: Q201A_3
       w8: Q201A_3
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -98,6 +104,8 @@ variables:
       Q201A_42A_MOR (Morocco-only, 62% coverage within Morocco, 0% all other
       countries including Tunisia). AB W7 dropped the generic police battery.
       W8 restored it as Q201B_4 (Tunisia 100%, cross-country ~95-100%).
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -121,6 +129,8 @@ variables:
       (Tunisia ~50% response). W7 and W8 omit the generic political-parties
       trust item entirely (no Q201B_20; only country-specific sectarian-party
       items like Q201B_12 "main Sunni party" / Q201B_14 "main Shia party").
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -139,6 +149,8 @@ variables:
       w5: Q201B_6
       w7: Q201B_6
       w8: Q201B_6
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -157,6 +169,8 @@ variables:
       w5: Q201A_7
       w7: Q201A_7
       w8: Q201A_7
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -175,6 +189,8 @@ variables:
       w5: Q201B_13
       w7: Q201B_13
       w8: Q201B_13
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -201,6 +217,8 @@ variables:
       varies by constitutional form: populated in presidential/semi-presidential
       systems (Tunisia, Iraq, Palestine, Mauritania, Egypt in some waves),
       not in pure parliamentary monarchies (Jordan, Morocco, Kuwait).
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

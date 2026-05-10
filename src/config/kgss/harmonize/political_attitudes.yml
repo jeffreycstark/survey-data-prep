@@ -58,6 +58,8 @@ variables:
         3: "Neither good nor poor"
         4: "Somewhat poor"
         5: "Very poor"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -95,6 +97,8 @@ variables:
         3: "Neither"
         4: "Somewhat dissatisfied"
         5: "Very dissatisfied"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -132,6 +136,8 @@ variables:
         3: "Neither liberal nor conservative"
         4: "Somewhat conservative"
         5: "Very conservative"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -169,6 +175,8 @@ variables:
         2: "Somewhat proud"
         3: "Not very proud"
         4: "Not proud at all"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -205,6 +213,8 @@ variables:
         3: "About the same"
         4: "Somewhat worse"
         5: "Much worse"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -241,6 +251,8 @@ variables:
         3: "About the same"
         4: "Somewhat worse"
         5: "Much worse"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -277,6 +289,8 @@ variables:
         2: "A country to cooperate with"
         3: "A country to guard against"
         4: "A country to fight against"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -311,6 +325,8 @@ variables:
         1: "All should be admitted"
         2: "Should be admitted selectively"
         3: "Should not be admitted any more"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -348,6 +364,8 @@ variables:
         2: "Fairly necessary"
         3: "Not too necessary"
         4: "Not necessary at all"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

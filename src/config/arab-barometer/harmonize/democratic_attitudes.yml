@@ -43,6 +43,8 @@ variables:
         2: "Agree"
         3: "Disagree"
         4: "Strongly disagree (pro-dem)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -63,6 +65,8 @@ variables:
     scale:
       min: 1
       max: 4
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -84,6 +88,8 @@ variables:
       min: 1
       max: 4
     note: "Missing in W5"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -109,6 +115,8 @@ variables:
         2: "Disagree"
         3: "Agree"
         4: "Strongly agree (pro-dem)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -132,6 +140,8 @@ variables:
       min: 1
       max: 4
     note: "W2-W4 only"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -153,6 +163,8 @@ variables:
       min: 1
       max: 4
     note: "W2-W3 only"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -180,6 +192,8 @@ variables:
       min: 1
       max: 4
     note: "W2, W3, W8 only"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -203,6 +217,8 @@ variables:
       min: 1
       max: 4
     note: "W2-W4 and W8. Gap at W5/W7."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -226,6 +242,8 @@ variables:
       min: 1
       max: 4
     note: "W2-W4 and W8. Gap at W5/W7."
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -253,6 +271,8 @@ variables:
       min: 0
       max: 10
     note: "W2-W4 only"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -274,6 +294,8 @@ variables:
       min: 0
       max: 10
     note: "W2-W4 and W8"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -299,6 +321,8 @@ variables:
       min: 1
       max: 4
     note: "W7 only. Higher = more pro-democracy (disagrees that order > democracy)"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

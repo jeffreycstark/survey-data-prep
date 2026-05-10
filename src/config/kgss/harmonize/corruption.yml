@@ -38,6 +38,8 @@ variables:
       w2005: CORRUPT
       w2010: CORRUPT
     scale: {min: 1, max: 5, labels: {1: "Very poorly", 5: "Very well"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -56,6 +58,8 @@ variables:
       w2005: TAXFAIR
       w2010: TAXFAIR
     scale: {min: 1, max: 5, labels: {1: "Very poorly", 5: "Very well"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -72,6 +76,8 @@ variables:
       w2004: ELECVOTE
       w2014: ELECVOT14
     scale: {min: 1, max: 5, labels: {1: "Very opaque", 5: "Very transparent"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -90,6 +96,8 @@ variables:
       w2014: POLCORRU
       w2016: POLCORRU
     scale: {min: 1, max: 5, labels: {1: "Almost no one corrupt", 5: "Almost all corrupt"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -106,6 +114,8 @@ variables:
       w2014: OFFCORRU
       w2016: OFFCORRU
     scale: {min: 1, max: 5, labels: {1: "Almost no one corrupt", 5: "Almost all corrupt"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -121,6 +131,8 @@ variables:
       w2006: OFFBRIBE
       w2016: OFFBRIBE
     scale: {min: 1, max: 5, labels: {1: "Never", 5: "Very often"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -136,6 +148,8 @@ variables:
       w2009: CRRPTSUCD
       w2014: CRRPTSUCD
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -155,6 +169,8 @@ variables:
       w2023: SUCDBRIB
       w2025: SUCDBRIB
     scale: {min: 1, max: 5, labels: {1: "Not at all important", 5: "Absolutely important"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -171,6 +187,8 @@ variables:
     source:
       w2006: ASKTAKE
     scale: {min: 1, max: 4, labels: {1: "Never", 4: "Often"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -185,6 +203,8 @@ variables:
     source:
       w2006: ASKGIVE
     scale: {min: 1, max: 4, labels: {1: "None", 4: "Many"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -199,6 +219,8 @@ variables:
     source:
       w2006: OFFEQUIT
     scale: {min: 1, max: 5, labels: {1: "Never fair", 5: "Always fair"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -214,6 +236,8 @@ variables:
     source:
       w2006: OFFNEPOT
     scale: {min: 1, max: 4, labels: {1: "Definitely biased", 4: "Definitely impartial"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

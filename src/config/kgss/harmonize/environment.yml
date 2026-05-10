@@ -64,6 +64,8 @@ variables:
       w2014: GRNCON
       w2021: GRNCON
     scale: {min: 1, max: 5, labels: {1: "Not concerned at all", 5: "Very concerned"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -81,6 +83,8 @@ variables:
       w2014: GRNPRICE
       w2021: GRNPRICE
     scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -99,6 +103,8 @@ variables:
       w2014: GRNTAXES
       w2021: GRNTAXES
     scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -117,6 +123,8 @@ variables:
       w2014: GRNSOL
       w2021: GRNSOL
     scale: {min: 1, max: 5, labels: {1: "Not at all willing", 5: "Very willing"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -138,6 +146,8 @@ variables:
       w2010: TOODIFME
       w2021: TOODIFME
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -155,6 +165,8 @@ variables:
       w2010: IHLPGRN
       w2021: IHLPGRN
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -172,6 +184,8 @@ variables:
       w2010: IMPGRN
       w2021: IMPGRN
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -189,6 +203,8 @@ variables:
       w2010: OTHSSAME
       w2021: OTHSSAME
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -206,6 +222,8 @@ variables:
       w2010: GRNEXAGG
       w2021: GRNEXAGG
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -227,6 +245,8 @@ variables:
       w2010: HARMSGRN
       w2021: HARMSGRN
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -244,6 +264,8 @@ variables:
       w2010: GRNECON
       w2021: GRNECON
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -261,6 +283,8 @@ variables:
       w2010: GRNPROG
       w2021: GRNPROG
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -279,6 +303,8 @@ variables:
       w2014: GRWTHELP
       w2021: GRWTHELP
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -296,6 +322,8 @@ variables:
       w2010: GRWTHARM
       w2014: GRWTHARM
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -314,6 +342,8 @@ variables:
       w2013: SCIGRN
       w2021: SCIGRN
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -336,6 +366,8 @@ variables:
       w2014: CARSGEN
       w2021: CARSGEN
     scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -354,6 +386,8 @@ variables:
       w2014: INDUSGEN
       w2021: INDUSGEN
     scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -372,6 +406,8 @@ variables:
       w2014: CHEMGEN
       w2021: CHEMGEN
     scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -390,6 +426,8 @@ variables:
       w2014: WATERGEN
       w2021: WATERGEN
     scale: {min: 1, max: 5, labels: {1: "Not dangerous at all", 5: "Absolutely dangerous"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

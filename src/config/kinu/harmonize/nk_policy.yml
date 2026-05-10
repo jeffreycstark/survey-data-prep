@@ -63,6 +63,8 @@ variables:
       w2022:  pc0101
       w2023:  pc0101
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -85,6 +87,8 @@ variables:
       w2021a: pc0102
       w2023:  pc0102
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -111,6 +115,8 @@ variables:
       w2022:  pc0104
       w2023:  pc0104
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -136,6 +142,8 @@ variables:
       w2022:  pc0107
       w2023:  pc0107
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -160,6 +168,8 @@ variables:
       w2022:  pc0111
       w2023:  pc0111
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -184,6 +194,8 @@ variables:
       w2022:  pc0112
       w2023:  pc0112
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -206,6 +218,8 @@ variables:
       w2022:  pc0117
       w2023:  pc0117
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -235,6 +249,8 @@ variables:
       w2022:  pc0103
       w2023:  pc0103
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -269,6 +285,8 @@ variables:
         2: "Balanced US-China diplomacy"
         3: "Strengthen China relationship over US"
         4: "Independent diplomacy regardless"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -292,6 +310,8 @@ variables:
       w2021a: pc06
       w2022:  pc06
     scale: {min: 1, max: 4, labels: {1: "Not reflected at all", 4: "Reflected very much"}}
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

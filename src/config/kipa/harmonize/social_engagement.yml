@@ -44,6 +44,8 @@ variables:
         2: "Not really"
         3: "Somewhat"
         4: "Very much"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -76,6 +78,8 @@ variables:
         2: "Not really"
         3: "Somewhat"
         4: "Very much"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -108,6 +112,8 @@ variables:
         2: "Not really"
         3: "Somewhat"
         4: "Very much"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -138,6 +144,8 @@ variables:
         2: "Not really"
         3: "Somewhat"
         4: "Very much"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -172,6 +180,8 @@ variables:
         3: "Member but inactive"
         4: "Member, occasionally active"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -201,6 +211,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -230,6 +242,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -259,6 +273,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -288,6 +304,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -317,6 +335,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -346,6 +366,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -374,6 +396,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -402,6 +426,8 @@ variables:
       labels:
         1: "Never belonged"
         5: "Active member"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity
@@ -428,6 +454,8 @@ variables:
         2: "Not very interested"
         3: "Somewhat interested"
         4: "Very interested"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: identity

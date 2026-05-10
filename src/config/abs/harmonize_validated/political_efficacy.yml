@@ -30,6 +30,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -64,6 +66,8 @@ variables:
         3: "Somewhat agree"
         4: "Strongly agree"
       note: "NEGATIVE item - higher agreement = lower efficacy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -96,6 +100,8 @@ variables:
         3: "Somewhat agree"
         4: "Strongly agree"
       note: "NEGATIVE item - higher agreement = lower efficacy"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

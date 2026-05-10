@@ -30,6 +30,8 @@ variables:
         2: "Somewhat agree"
         3: "Somewhat disagree"
         4: "Strongly disagree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -59,6 +61,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -90,6 +94,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -118,6 +124,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -147,6 +155,8 @@ variables:
         2: "Somewhat agree"
         3: "Somewhat disagree"
         4: "Strongly disagree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -179,6 +189,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -210,6 +222,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -238,6 +252,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -269,6 +285,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -302,6 +320,8 @@ variables:
         2: "Somewhat agree"
         3: "Somewhat disagree"
         4: "Strongly disagree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -332,6 +352,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -365,6 +387,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -394,6 +418,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -423,6 +449,8 @@ variables:
         2: "Somewhat agree"
         3: "Somewhat disagree"
         4: "Strongly disagree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -452,6 +480,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -480,6 +510,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -511,6 +543,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -539,6 +573,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
@@ -570,6 +606,8 @@ variables:
         2: "Somewhat disagree"
         3: "Somewhat agree"
         4: "Strongly agree"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function

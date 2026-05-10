@@ -41,6 +41,8 @@ variables:
         0: "Out of labor force (not looking)"
         1: "Unemployed (looking for work)"
         2: "Employed"
+    missing:
+      use_convention: treat_as_na
     harmonize:
       default:
         method: r_function
