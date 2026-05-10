@@ -925,12 +925,20 @@ validate_range <- function(harmonized_vec, valid_range) {
 
 # Functions whose transformation can't be checked via correlation
 # (categorical recodes, monotonicity-breaking collapses, date extracts).
+#
+# Lossy-but-monotonic recodes (e.g. age->5-bin cohort) are listed here too:
+# Spearman correlation between continuous input and discretized output
+# is mechanically capped at ~0.97 due to within-bin ties, so the audit's
+# 0.99 threshold produces false-positive errors. Audit ticket Bug 3
+# (2026-05-10) confirmed that recode_age_cohort is correctly written;
+# the validator's blanket threshold was the issue.
 .vvw_skip_transform_fns <- c(
   "extract_month_from_date", "extract_year_from_date",
   "collapse_5pt_leader_to_3pt", "collapse_10pt_to_6pt",
   "collapse_5pt_to_4pt_then_reverse", "collapse_6pt_to_4pt_reverse",
   "safe_6pt_to_4pt", "recode_w1_discuss", "recode_w6_corruption",
-  "middle_identity_5pt", "middle_reverse_5pt"
+  "middle_identity_5pt", "middle_reverse_5pt",
+  "recode_age_cohort", "recode_age_to_5cat"
 )
 
 # Existence + length preflight. Returns a complete early-result list

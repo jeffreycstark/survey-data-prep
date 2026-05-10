@@ -152,11 +152,27 @@ variables:
         1: "Within 5 years"
         2: "Within 10 years"
         3: "Within 20 years"
-        4: "30 years or more"
+        4: "Within 30 years OR 30+ years (collapsed)"
         5: "Impossible"
+    # Bug fix 2026-05-10 (audit ticket Bug 5): Raw IPUS uni03 / a14 / b08 has
+    # SIX response categories, not five. The YAML previously declared
+    # method: identity with valid_range [1,5], silently NA-coercing the
+    # entire "impossible" category (raw code 6). Coverage loss grew from
+    # ~13% in 2007 to 38.6% in 2024 — exactly the most-pessimistic group
+    # being silently dropped. Switched to explicit recode that collapses
+    # raw 4 ("within 30 years") + raw 5 ("30+ years") into harmonized 4
+    # ("decades away") and maps raw 6 ("impossible") to harmonized 5.
+    # Verified against value labels in data/ipus/raw/2011/ipus_2011.sav.
     harmonize:
       default:
-        method: identity
+        method: recode
+        mapping:
+          1: 1   # within 5 years
+          2: 2   # within 10 years
+          3: 3   # within 20 years
+          4: 4   # within 30 years      \  collapsed to "decades away"
+          5: 4   # 30+ years            /
+          6: 5   # impossible
     qc:
       valid_range: [1, 5]
       skip_unmapped_check: true
