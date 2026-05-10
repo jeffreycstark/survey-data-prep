@@ -1,0 +1,316 @@
+# =============================================================================
+# Cross-wave wording-change registry (Layer 5 / audit ticket G2)
+# =============================================================================
+#
+# README
+# ------
+# This registry documents (survey x variable x wave-pair) cells where between-
+# wave marginal-distribution drift is EXPECTED. Two reasons drift can be
+# expected:
+#
+#   (a) MEASUREMENT artifact — the question wording, response scale, or
+#       coding scheme changed. Drift is not informative about the underlying
+#       attitude/behavior; it is informative about the questionnaire. Layer 5
+#       should mute these alerts so reviewers are not flooded with them on
+#       every audit run. Categories: wording_change, coding_change,
+#       scale_change, category_recode.
+#
+#   (b) REAL political change — a dated event drove a genuine attitudinal
+#       shift. Documented here for context (so reviewers know what the
+#       drift signal means) but NEVER muted, because the drift IS the
+#       finding. Category: real_political_change.
+#
+# Every entry must cite a specific source — codebook page, scale-direction
+# note from docs/surveys/<survey>.md, root CLAUDE.md scale-gotchas section,
+# or a dated political event.
+#
+# This seed is INTENDED TO GROW. The 14 entries below are the starting point,
+# derived from G1's 05-drift.csv top hits crossed with the documented scale
+# notes in docs/surveys/abs.md and the project memory. Add new entries when
+# either (i) a new survey lands and its codebook reveals a wording change, or
+# (ii) Layer 5 surfaces a high-drift cell whose explanation falls into one of
+# the five categories above.
+#
+# Schema: src/config/_wording_changes_v1.schema.json (validates this file).
+# Consumer: src/r/audit/05_drift_check.R (G1 today; G4 wires the mute logic).
+# =============================================================================
+
+schema_version: 1
+
+description: >-
+  Initial seed of known cross-wave wording, coding, scale, and category-recode
+  changes (mute-eligible) plus documented real political-change drifts (never
+  muted). Derived from G1 baseline drift CSV + docs/surveys/abs.md +
+  project_harmonization_whats_next memory + root CLAUDE.md scale notes.
+
+last_reviewed: "2026-05-10"
+
+entries:
+
+  # ---------------------------------------------------------------------------
+  # ABS — category recodes and scale changes documented in scale notes / codebook
+  # ---------------------------------------------------------------------------
+
+  - survey: abs
+    id: religion__w1_w2
+    variable: religion
+    wave_pair: [w1, w2]
+    category: category_recode
+    reason: >-
+      ABS W1 used a country-tailored religion list with different category
+      counts and folk-religion granularity per country; W2 unified religion
+      coding into a smaller cross-country category set. G1 drift CSV shows
+      pooled TVD = 0.979 W1→W2 with country-specific TVDs at or near 1.0 (KOR
+      country=3 = 1.0; PHL country=4 = 0.998), the signature of a wholesale
+      category remap rather than real religious change in 2-3 years.
+    source: "audit/reports/abs/05-drift.csv (top rows W1→W2 religion); docs/surveys/abs.md"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: problem_most_important__w3_w4
+    variable: problem_most_important
+    wave_pair: [w3, w4]
+    category: category_recode
+    reason: >-
+      The most-important-problem issue list was rewritten between W3 and W4 of
+      ABS. G1 drift CSV shows pooled TVD = 0.971 with several country-level
+      TVDs at or above 0.99 (HK country=2 = 1.0; IDN country=9 = 0.999), which
+      is impossible for a stable issue-coding scheme even under large political
+      shocks; only a category-set rewrite produces this signature.
+    source: "audit/reports/abs/05-drift.csv (top rows W3→W4 problem_most_important)"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: action_demonstration__w2_w3
+    variable: action_demonstration
+    wave_pair: [w2, w3]
+    category: scale_change
+    reason: >-
+      The political-action battery's response scale changed between ABS W2 and
+      W3. G1 drift CSV shows pooled TVD = 0.966 W2→W3 with country-level TVDs
+      uniformly above 0.96 across CHN, IDN, KOR, MNG, PHL, THA, VNM. Universal
+      cross-country drift at this magnitude is the canonical fingerprint of a
+      response-scale change rather than a synchronized political shift.
+    source: "audit/reports/abs/05-drift.csv (W2→W3 action_demonstration); docs/surveys/abs.md political-action note"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: action_demonstration__w4_w5
+    variable: action_demonstration
+    wave_pair: [w4, w5]
+    category: scale_change
+    reason: >-
+      The political-action battery's response scale was modified again between
+      ABS W4 and W5. G1 drift CSV shows pooled TVD ≈ 0.96 W4→W5 with
+      country-level TVDs uniformly above 0.95 (TWN country=10 = 0.993; CHN
+      country=4 = 0.986). Universal pattern again indicates response-scale
+      revision, not political change.
+    source: "audit/reports/abs/05-drift.csv (W4→W5 action_demonstration)"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: action_petition__w2_w3
+    variable: action_petition
+    wave_pair: [w2, w3]
+    category: scale_change
+    reason: >-
+      Companion to action_demonstration W2→W3 (same political-action battery
+      with the same response-scale revision). G1 drift CSV shows pooled TVD
+      around 0.95 W2→W3 with country-level TVDs uniformly above 0.95. The
+      paired cross-country signature confirms this is a battery-wide
+      response-scale change rather than item-specific.
+    source: "audit/reports/abs/05-drift.csv (W2→W3 action_petition)"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: action_petition__w4_w5
+    variable: action_petition
+    wave_pair: [w4, w5]
+    category: scale_change
+    reason: >-
+      Companion to action_demonstration W4→W5 (same battery, same response-
+      scale revision). G1 drift CSV shows country-level TVDs around 0.95 (PHL
+      country=14 = 0.975; CHN country=4 = 0.96). Pair-wise universality
+      confirms battery-level scale change rather than item-specific drift.
+    source: "audit/reports/abs/05-drift.csv (W4→W5 action_petition)"
+    suppress_until: 1.0
+
+  - survey: abs
+    id: dem_always_preferable__w2_w3
+    variable: dem_always_preferable
+    wave_pair: [w2, w3]
+    category: wording_change
+    reason: >-
+      Per docs/surveys/abs.md scale-direction notes, ABS W2's
+      dem_always_preferable response order differs from W3 and is remapped to
+      the W3 standard during harmonization. Even after remapping, a W2-vs-W3
+      drift residual is expected because the W2 question framing did not
+      cleanly map onto every W3 response category. G1 drift CSV shows
+      country-level TVD = 0.217 W2→W3 (KOR country=3), large enough to flag
+      under any conservative threshold but explained by the documented W2
+      response-order mismatch.
+    source: "docs/surveys/abs.md §Scale-direction notes (dem_always_preferable W2 response order)"
+    suppress_until: 0.40
+
+  - survey: abs
+    id: dem_vs_equality__w3_w4
+    variable: dem_vs_equality
+    wave_pair: [w3, w4]
+    category: category_recode
+    reason: >-
+      Per docs/surveys/abs.md scale-direction notes, the "both equally" raw
+      response was offered at category position 5 in some waves and remapped
+      to the center (3) during harmonization. The W3 wave was the introduction
+      point for this remap convention; comparing W3 vs W4 marginals shows the
+      ratchet from a 4-category-plus-side-option distribution to a 5-point
+      ordinal with center mass. G1 CSV shows HK country=2 W3→W4 TVD = 0.247.
+    source: "docs/surveys/abs.md §Scale-direction notes (dem_vs_equality 'both equally' remap)"
+    suppress_until: 0.50
+
+  # ---------------------------------------------------------------------------
+  # ABS — real political change (NEVER MUTED)
+  # ---------------------------------------------------------------------------
+
+  - survey: abs
+    id: dem_country_future__w3_w4_cambodia
+    variable: dem_country_future
+    wave_pair: [w3, w4]
+    category: real_political_change
+    reason: >-
+      Cambodia (country=12) experienced documented democratic closure between
+      ABS W3 (2010-2012 fieldwork window) and W4 (2014-2016): the 2013
+      contested election, opposition CNRP-CPP polarization, and the post-2017
+      CNRP dissolution and one-party Senate. Project memory paper3_task* notes
+      that hopes for democratic future rose then collapsed across W2/W3/W4/W6
+      — the W3→W4 drift IS the political finding, not a measurement artifact.
+      G1 CSV shows Cambodia W3→W4 TVD = 0.347, well above any threshold; this
+      entry documents that fact for reviewers but does NOT mute the alert.
+    source: "Project memory (paper3_task* / Cambodia ABS Fairy Tale); CNRP dissolution Nov 2017"
+    last_reviewed: "2026-05-10"
+
+  - survey: abs
+    id: dem_country_future__w3_w4_pooled
+    variable: dem_country_future
+    wave_pair: [w3, w4]
+    category: real_political_change
+    reason: >-
+      Pooled W3→W4 TVD for dem_country_future is 0.298 across all ABS
+      countries, driven by genuine post-2014 regional democratic backsliding
+      (Thailand 2014 coup, Cambodia 2013-2017 closure, Philippines 2016
+      Duterte transition, Myanmar 2015-2021 transition reversal). Universal
+      cross-country drift in this case reflects a regionally synchronized
+      political turn, not a wording change — verified by inspecting the
+      country-level TVD profile (THA, KHM, PHL, IDN all show similar
+      magnitudes consistent with their respective political shocks).
+    source: "audit/reports/abs/05-drift.csv pooled row; regional backsliding 2014-2017 (Thai coup, Cambodia closure, Duterte election)"
+    last_reviewed: "2026-05-10"
+
+  # ---------------------------------------------------------------------------
+  # KGSS — real political change (Korean party fragmentation, Park impeachment)
+  # ---------------------------------------------------------------------------
+
+  - survey: kgss
+    id: party_id__w2007_w2008
+    variable: party_id
+    wave_pair: [w2007, w2008]
+    category: real_political_change
+    reason: >-
+      Korean party system underwent a major realignment between 2007 and 2008.
+      The Grand National Party (GNP, 한나라당) won the December 2007 presidential
+      election under Lee Myung-bak; the United New Democratic Party (UNDP,
+      대통합민주신당) collapsed and reorganized into the Democratic Party (민주당);
+      pro-Roh forces split into separate vehicles. G1 CSV shows party_id
+      pooled TVD = 0.567, by far the largest party_id wave-pair drift. This
+      is name-level discontinuity from real party reorganization, not a
+      coding change in the KGSS questionnaire.
+    source: "Project memory (project_party_harmonization_decision); 17th Korean presidential election Dec 2007; UNDP→DP reorganization 2008"
+    last_reviewed: "2026-05-10"
+
+  - survey: kgss
+    id: party_id__w2008_w2009
+    variable: party_id
+    wave_pair: [w2008, w2009]
+    category: real_political_change
+    reason: >-
+      Continued Korean party-system churn: post-2008 GNP internal
+      Lee/Park-faction split deepens; 민주당 (Democratic Party) consolidates
+      from the 2008 UNDP fragments; minor parties (창조한국당, 자유선진당) gain
+      and lose members. G1 CSV shows party_id pooled TVD = 0.421, the second-
+      largest party_id wave-pair drift. Real party-name and faction churn,
+      not a measurement change.
+    source: "Project memory (project_party_harmonization_decision); GNP factional split 2008-2009"
+    last_reviewed: "2026-05-10"
+
+  - survey: kgss
+    id: party_pref__w2007_w2008
+    variable: party_pref
+    wave_pair: [w2007, w2008]
+    category: real_political_change
+    reason: >-
+      Companion to party_id W2007→W2008. party_pref tracks the same
+      underlying party-attachment construct but among respondents who decline
+      to claim formal party identification. G1 CSV shows pooled TVD = 0.328
+      — large but smaller than party_id, consistent with the looser
+      attachment of the party_pref subsample. Same realignment story,
+      same not-a-measurement-change classification.
+    source: "Project memory (project_party_harmonization_decision); 17th presidential election 2007 + 2008 party reorganization"
+    last_reviewed: "2026-05-10"
+
+  - survey: kgss
+    id: pol_govt_eval__w2016_w2018
+    variable: pol_govt_eval
+    wave_pair: [w2016, w2018]
+    category: real_political_change
+    reason: >-
+      Government evaluation between KGSS 2016 and 2018 spans the Park Geun-hye
+      impeachment (Constitutional Court ruling 2017-03-10) and Moon Jae-in's
+      presidential transition (2017-05-10). Pooled TVD = 0.342 reflects
+      genuine evaluative reorientation as respondents updated from a Park
+      administration referent to a Moon administration referent. Drift here
+      is the political finding, not a wording change.
+    source: "Park impeachment Constitutional Court ruling 2017-03-10; Moon Jae-in inauguration 2017-05-10"
+    last_reviewed: "2026-05-10"
+
+  - survey: kgss
+    id: pol_northkorea_view__w2016_w2018
+    variable: pol_northkorea_view
+    wave_pair: [w2016, w2018]
+    category: real_political_change
+    reason: >-
+      North Korea attitudes between KGSS 2016 and 2018 span the 2017 nuclear
+      test escalation and the 2018 Panmunjom inter-Korean summit (2018-04-27)
+      and Singapore Trump-Kim summit (2018-06-12). Pooled TVD = 0.313 reflects
+      genuine attitudinal shift driven by the engagement-vs-pressure pivot
+      under the Moon administration. Real political change, not a measurement
+      artifact.
+    source: "Inter-Korean summit 2018-04-27 (Panmunjom Declaration); Trump-Kim summit 2018-06-12"
+    last_reviewed: "2026-05-10"
+
+# =============================================================================
+# Notes
+# -----
+# - The KIPA judiciary mislabel (English SPSS labels mistranslate 사법부 as
+#   "legislature") is a STATIC label-translation issue that does not produce
+#   between-wave drift and is therefore not a registry entry. It is documented
+#   in CLAUDE.md root §Cross-survey scale gotchas and in project memory.
+#
+# - democracy_satisfaction W2/W3 reversal is documented in
+#   docs/surveys/abs.md but the reversal happens DURING harmonization (W2 raw
+#   1=Not at all → 4=Very is reversed; W3+ raw 1=Very → 4=Not at all is also
+#   reversed/identity-preserved depending on the spec). Post-harmonization
+#   both waves are in the standard direction, so drift between them in the
+#   harmonized output should be normal and is not registered here.
+#
+# - dem_best_form direction is reversed once and consistently across all
+#   waves (per docs/surveys/abs.md), so it is not a between-wave change and
+#   is not registered.
+#
+# - Threshold semantics: `suppress_until: 1.0` means ALWAYS mute (drift up to
+#   the maximum possible 1.0 is expected). Lower values (e.g. 0.40 for
+#   dem_always_preferable) mute residual drift but re-fire if the observed
+#   drift exceeds the threshold — a guard against the wording change being
+#   used to hand-wave a much larger residual than the change should produce.
+#   `category: real_political_change` ignores `suppress_until` entirely; G4
+#   will surface those entries as informational annotations on the alert
+#   without muting it.
+# =============================================================================

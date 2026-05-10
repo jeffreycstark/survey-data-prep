@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://survey-data-prep/_schema/wording_changes_v1.schema.json",
+  "title": "Cross-wave wording-change registry (v1)",
+  "description": "JSON Schema for src/config/_wording_changes.yml. The registry documents (variable x wave-pair) cells where between-wave drift is EXPECTED — either because the question wording, response scale, or coding scheme changed (a measurement artifact that should mute the Layer 5 drift alert) OR because a real political event drove the shift (kept visible as signal, never muted). Each entry must cite a specific source so reviewers can re-derive the classification, and `category` distinguishes mute-eligible measurement artifacts from non-mute real-change documentation. The headline guarantee is additionalProperties: false at every object level so typos like `wording_chnage:` or `suppres_until:` fail loud.",
+
+  "type": "object",
+  "required": ["schema_version", "entries"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "description": "Schema version. Must be the integer 1 for this revision.",
+      "const": 1
+    },
+    "description": {
+      "description": "Free-text paragraph describing the registry's scope and conventions.",
+      "type": "string"
+    },
+    "last_reviewed": {
+      "description": "ISO-8601 calendar date (YYYY-MM-DD) of the last human review of the registry as a whole. Per-entry review dates live on each entry.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "entries": {
+      "description": "List of registered (variable x wave-pair) drift annotations. The Layer 5 audit consults this list to decide whether a TVD/KS-D exceedance should mute (mute-eligible categories below `suppress_until`) or always fire (real_political_change, never muted).",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+
+  "$defs": {
+
+    "surveySlug": {
+      "description": "Survey slug matching the keys used by `list_survey_specs()` and the directory names under `src/config/<survey>/`. Snake-case-or-hyphen lowercase.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 2,
+      "maxLength": 32
+    },
+
+    "snakeCaseId": {
+      "description": "Snake-case identifier for this registry entry. Convention: <variable>__<wave_from>_<wave_to> (double underscore separating variable from wave-pair).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 3,
+      "maxLength": 128
+    },
+
+    "waveKey": {
+      "description": "Wave identifier. Surveys use heterogeneous conventions (w1, y1995, r5, w2003, w2025).",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 1,
+      "maxLength": 32
+    },
+
+    "categoryEnum": {
+      "description": "Type of cross-wave change documented by this entry. wording_change | coding_change | scale_change | category_recode are MEASUREMENT artifacts and mute drift alerts (subject to suppress_until). real_political_change is documented for context but does NOT mute — drift here is real signal.",
+      "type": "string",
+      "enum": [
+        "wording_change",
+        "coding_change",
+        "scale_change",
+        "category_recode",
+        "real_political_change"
+      ]
+    },
+
+    "entry": {
+      "description": "One registered (variable x wave-pair) annotation.",
+      "type": "object",
+      "required": ["survey", "id", "variable", "wave_pair", "category", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "survey": { "$ref": "#/$defs/surveySlug" },
+        "id": { "$ref": "#/$defs/snakeCaseId" },
+        "variable": {
+          "description": "Snake-case harmonized variable id (matches an `id:` declared in some harmonization YAML).",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "wave_pair": {
+          "description": "Two wave keys [from, to] in chronological order. Both must match a wave that exists in the harmonized output for this survey.",
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "$ref": "#/$defs/waveKey" }
+        },
+        "category": { "$ref": "#/$defs/categoryEnum" },
+        "reason": {
+          "description": "20-1000 character substantive explanation of what changed and why drift is expected. NOT tautological. Must cite a specific source (codebook page, scale-direction note, project memory, dated political event).",
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 1000
+        },
+        "source": {
+          "description": "Human-readable source citation — e.g. 'ABS Wave 3 codebook p.45', 'docs/surveys/abs.md scale-direction notes', 'CLAUDE.md root', 'Park impeachment 2017-03-10 Constitutional Court ruling'.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "suppress_until": {
+          "description": "TVD/KS-D threshold above which the registry entry STOPS muting and the drift alert fires anyway (because the change wasn't supposed to invert the entire distribution). Range [0, 1]. Defaults to 1.0 (always mute) if omitted. Has no effect for category=real_political_change because that category never mutes.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "last_reviewed": {
+          "description": "ISO-8601 calendar date (YYYY-MM-DD) of the last human review of this entry's classification.",
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "notes": {
+          "description": "Optional free-text notes — caveats, related entries, follow-up TODOs.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}
