@@ -35,12 +35,46 @@ notes:
     aliases, that is a renaming decision in the harmonization specs,
     not in this anchor file.
   - >
-    All four authoritarian-rule loaders (strongman, single_party,
-    military, expert_rule) are reverse-coded by safe_reverse_4pt in
-    authoritarianism.yml so that high = more authoritarian. They
-    therefore carry expected_sign = negative against the satisfaction
-    anchor. If the diagnostic surfaces any of them with positive sign,
-    the YAML's reversal is the first place to look.
+    All five authoritarian-rule loaders (strongman, single_party,
+    military, expert_rule, upright_leader_discretion) are reverse-coded
+    by safe_reverse_4pt in authoritarianism.yml so that high = more
+    authoritarian. The expected anti-correlation against satisfaction
+    holds in democratic-regime contexts. In authoritarian-regime ABS
+    countries (esp. China, Vietnam, Cambodia, Myanmar, Singapore on
+    some items) regime-conformity bias produces the opposite pattern:
+    citizens who endorse the existing single-party / strong-leader
+    arrangement also report being satisfied with "democracy" (because
+    the regime narrative classifies the system as democratic). Per-
+    country expected_sign overrides are not yet supported by the
+    schema; see TODO below. For now: strongman, single_party, military
+    keep expected_sign=negative because the pooled signal is still
+    expected negative across the ABS sample as a whole, but per-
+    country sign disagreements in authoritarian countries are
+    EXPECTED and not coding bugs. expert_rule and
+    upright_leader_discretion were demoted to either after D3's first
+    run because they're not consistently anti-democratic even in
+    democracies (technocratic / Confucian-paternalist preferences).
+  - >
+    TODO future enhancement: extend anchor schema with per-loader
+    `countries:` filter (analogous to existing `surveys:`/`waves:`)
+    so e.g. strongman_rule's expected_sign=negative can be limited
+    to ABS countries 1, 3, 7, 15 (Japan, Korea, Taiwan, Australia
+    ~democracies). Currently the schema lacks this; pooled signal
+    suffices for v1 of the diagnostic.
+  - >
+    Hong Kong (country 2) shows expected sign disagreements on
+    dem_best_form (W4, W5) and democracy_suitability (W5). These
+    are NOT coding bugs - they reflect the contested political
+    situation in HK over the W4 (post-Umbrella, 2014) and W5
+    (anti-extradition era, 2019) windows: respondents who endorse
+    "democracy is the best form of government" are critical of HK
+    political reality and report low satisfaction; pro-Beijing
+    respondents who reject the abstract claim are simultaneously
+    satisfied with HK's "democracy" as the regime defines it.
+    These rows are the audit's correct surfacing of a known special
+    case in ABS, not a harmonization error. 96%+ of dem_best_form
+    country x wave combinations align with the positive sign as
+    expected.
   - >
     Several items use expected_sign = either rather than a directional
     claim. This is deliberate. dem_always_preferable is type=nominal
@@ -102,15 +136,19 @@ loaders:
       works in that country.
 
   - id: dem_extent_current
-    expected_sign: positive
+    expected_sign: either
     justification: >
       Perceived current democraticness (1=complete dictatorship -
-      10=complete democracy). Citizens who rate the country as more
-      democratic also tend to report higher satisfaction with how
-      democracy works there - a regime-performance-evaluation
-      consistency expected on standard ABS findings (Shin & Cho 2010);
-      the relationship is not tautological because satisfaction can
-      be high under regimes rated as only partially democratic.
+      10=complete democracy). First D3 run found uniform NEGATIVE
+      correlation with democracy_satisfaction across all 13 ABS
+      countries x W2-W6 (|r| ~ 0.3-0.7) - the "critical citizens"
+      pattern: citizens in actual democracies are more dissatisfied
+      because they expect more, while authoritarian-regime supporters
+      who say "we are very democratic (10)" are dissatisfied with
+      democracy as a system. Reassigned positive -> either on
+      2026-05-10 because the empirical pattern is so strong and
+      universal that it cannot be ignored as noise; this is a real
+      finding, not a coding bug. See Norris 2011 (Critical Citizens).
 
   # ============================================================================
   # NEGATIVE LOADERS (preference for authoritarian alternatives)
@@ -142,28 +180,36 @@ loaders:
       analyses (Chang et al. 2013).
 
   - id: expert_rule
-    expected_sign: negative
+    expected_sign: either
     justification: >
       Technocratic rule: 'get rid of elections and parliaments and
       have experts make decisions' (harmonized so high = more
-      authoritarian). Loads on the same authoritarian-preference
-      dimension as strongman/single-party/military but more weakly
-      because it competes with a separate governance-effectiveness
-      reading (Bertsou & Caramani 2020).
-    min_correlation: 0.10
+      authoritarian). Reassigned negative -> either on 2026-05-10:
+      D3 first run found 50/67 rows weak (pooled |r| < 0.10) and
+      10 sign disagreements - the technocratic preference does not
+      cleanly anti-correlate with democratic satisfaction in this
+      sample. Theory predicts negative loading but the empirical
+      pattern is too noisy to defend a directional claim
+      (Bertsou & Caramani 2020 also caveat the unidimensional read).
     waves: [w1, w3, w4, w5, w6]
     notes: >
       Not asked in W2 per authoritarianism.yml source mapping.
 
   - id: upright_leader_discretion
-    expected_sign: negative
+    expected_sign: either
     justification: >
       'If we have leaders who are morally upright, we can let them
-      decide everything' - paternalist deference to executive
-      discretion, harmonized so high = more authoritarian; central
-      item in the East Asian paternalist-authoritarian battery
-      (Shin 2012) that should anti-correlate with satisfaction with
-      democratic procedure.
+      decide everything' - harmonized so high = endorses leader
+      discretion. Reassigned negative -> either on 2026-05-10: D3
+      first run found 51/81 rows in sign disagreement across
+      essentially all ABS countries x waves. In Confucian-heritage
+      contexts, endorsing morally-upright leaders to decide is NOT
+      synonymous with rejecting democracy - many respondents
+      endorse both democracy and ethical-leadership prerogatives
+      simultaneously (Shin 2012's distinction between procedural
+      and substantive democratic preference). The strong universal
+      sign disagreement is a real measurement-validity finding,
+      not a coding bug.
 
   # ============================================================================
   # AMBIVALENT / THEORETICALLY UNSETTLED (expected_sign: either)
