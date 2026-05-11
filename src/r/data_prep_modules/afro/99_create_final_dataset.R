@@ -133,6 +133,34 @@ cat("\nAdding country identifiers from raw .sav files...\n")
 for (wave_name in names(wave_list)) {
   raw_path <- raw_paths[[wave_name]]
 
+  # R10 special case: per-country .sav files (no merged release yet).
+  # The 0_load_waves.R stacker tags rows with country_iso3 from filename
+  # prefixes; replicate the same logic here to build the iso3 vector in
+  # the same row order.
+  if (wave_name == "w10" && (is.null(raw_path) || !file.exists(raw_path))) {
+    r10_dir <- here("data", "afro", "raw", "round10")
+    country_files <- list.files(r10_dir, pattern = "^[A-Z]{3}_R10.*\\.sav$",
+                                full.names = TRUE)
+    if (length(country_files) == 0L) {
+      warning("R10: no per-country files found either; setting country=NA")
+      wave_list[[wave_name]]$country <- NA_character_
+      next
+    }
+    cat(sprintf("  R10: assembling country from %d per-country files...\n",
+                length(country_files)))
+    iso3 <- unlist(lapply(country_files, function(f) {
+      iso_prefix <- substr(basename(f), 1L, 3L)
+      n <- nrow(haven::read_sav(f, encoding = "latin1"))
+      rep(iso_prefix, n)
+    }))
+    if (length(iso3) != nrow(wave_list[[wave_name]])) {
+      warning(sprintf("Row count mismatch for w10: master=%d, stacked=%d",
+                      nrow(wave_list[[wave_name]]), length(iso3)))
+    }
+    wave_list[[wave_name]]$country <- iso3
+    next
+  }
+
   if (is.null(raw_path) || !file.exists(raw_path)) {
     warning(sprintf("No raw file for %s", wave_name))
     wave_list[[wave_name]]$country <- NA_character_
