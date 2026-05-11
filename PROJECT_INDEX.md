@@ -31,7 +31,7 @@ survey-data-prep/
 │   ├── abs/raw/wave{1-6}/      # ABS SPSS .sav (gitignored)
 │   ├── wvs/raw/wave{6,7}/      # WVS parquet (gitignored)
 │   ├── lbs/raw/{2015-2023}/    # LBS SPSS .sav (gitignored)
-│   ├── afro/raw/wave9/         # Afro SPSS .sav (gitignored)
+│   ├── afro/raw/round{1-10}/   # Afro SPSS .sav + per-round codebook PDFs (gitignored)
 │   ├── kamos/raw/wave{1,4}/    # KAMOS SPSS .sav (gitignored)
 │   ├── v-dem/raw/v15/          # V-Dem RDS 4607 cols (gitignored)
 │   ├── abs/labels/             # ABS wave label text files (W1–W6)

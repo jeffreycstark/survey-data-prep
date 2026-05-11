@@ -102,22 +102,26 @@ country_name_to_iso3 <- c(
 # ==============================================================================
 
 raw_paths <- list(
-  w1 = here("data", "afro", "raw", "round1", "merged_r1_data.sav"),
-  w2 = here("data", "afro", "raw", "round2", "merged_r2_data.sav"),
-  w3 = here("data", "afro", "raw", "round3", "merged_r3_data.sav"),
-  w4 = here("data", "afro", "raw", "round4", "merged_r4_data.sav"),
-  w5 = here("data", "afro", "raw", "round5", "merged_r5_data.sav"),
-  w6 = here("data", "afro", "raw", "round6", "merged_r6_data.sav"),
-  w7 = here("data", "afro", "raw", "round7", "merged_r7_data.sav"),
-  w8 = here("data", "afro", "raw", "round8", "merged_r8_data.sav"),
-  w9 = here("data", "afro", "raw", "wave9",
-            "R9.Merge_39ctry.20Nov23.final_.release_Updated.4Jun25-3.sav")
+  w1  = here("data", "afro", "raw", "round1",  "merged_r1_data.sav"),
+  w2  = here("data", "afro", "raw", "round2",  "merged_r2_data.sav"),
+  w3  = here("data", "afro", "raw", "round3",  "merged_r3_data.sav"),
+  w4  = here("data", "afro", "raw", "round4",  "merged_r4_data.sav"),
+  w5  = here("data", "afro", "raw", "round5",  "merged_r5_data.sav"),
+  w6  = here("data", "afro", "raw", "round6",  "merged_r6_data.sav"),
+  w7  = here("data", "afro", "raw", "round7",  "merged_r7_data.sav"),
+  w8  = here("data", "afro", "raw", "round8",  "merged_r8_data.sav"),
+  w9  = here("data", "afro", "raw", "round9",
+             "R9.Merge_39ctry.20Nov23.final_.release_Updated.4Jun25-3.sav"),
+  w10 = here("data", "afro", "raw", "round10", "merged_r10_data.sav")
 )
 
-# Representative years for each round (midpoint of fieldwork)
+# Representative years for each round (midpoint of fieldwork).
+# w10 fieldwork year is a placeholder; update when the round's
+# technical report confirms the timeline.
 round_years <- c(
   w1 = 1999L, w2 = 2002L, w3 = 2005L, w4 = 2008L,
-  w5 = 2012L, w6 = 2015L, w7 = 2017L, w8 = 2019L, w9 = 2022L
+  w5 = 2012L, w6 = 2015L, w7 = 2017L, w8 = 2019L, w9 = 2022L,
+  w10 = 2025L
 )
 
 # ==============================================================================

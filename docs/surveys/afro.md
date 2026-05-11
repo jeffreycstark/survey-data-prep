@@ -1,6 +1,6 @@
 # Afrobarometer (Afro)
 
-**Status**: Complete (23 vars, 9 rounds R1–R9, 1999–2022, 351,815 respondents, 42 African countries).
+**Status**: Complete through R9 (23 vars, 9 rounds R1–R9, 1999–2022, 351,815 respondents, 42 African countries). R10 in progress — pilot codebook (South Africa) on disk; merged .sav not yet released. Loader has a `w10` placeholder that auto-loads when the merged file lands at `data/afro/raw/round10/merged_r10_data.sav`.
 
 ## Pipeline
 
@@ -10,7 +10,7 @@ Rscript src/r/data_prep_modules/afro/2_harmonize_all.R
 Rscript src/r/data_prep_modules/afro/99_create_final_dataset.R
 ```
 
-Raw rounds: `data/afro/raw/round1/ ... round8/, wave9/` (SPSS `.sav`).
+Raw rounds: `data/afro/raw/round1/ ... round10/` (SPSS `.sav`). Each round directory also contains the round's codebook PDF.
 
 ## Loading
 
