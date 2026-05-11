@@ -14,29 +14,71 @@ All previously identified high-priority bugs have been fixed. See "Resolved find
 
 ## 🟡 Medium priority — real but minor (review when convenient)
 
+> **All 4 medium-priority items investigated 2026-05-11.** Full evidence + recommended fixes in [`audit/findings_medium_2026-05-11.md`](audit/findings_medium_2026-05-11.md). Summary entries below — read the findings doc before editing.
+
 ### KINU `cohort` valid_range over-claim
 - **Where:** `src/config/kinu/harmonize/demographics.yml`
-- **Finding:** YAML claims `valid_range: [1, 7]`. Codebook only contains codes 1-6 across all 13 waves; the 7th cohort ("Z generation") is never observed.
-- **Action:** Either narrow to `[1, 6]` (drop the unobserved 7th cohort) or document why the claim anticipates future data. F4 reports 13 valid_range fails (one per wave) for this variable.
-- **Surfaced by:** F4 KINU run (commit `d6eb2e9`).
+- **Finding:** YAML claims `valid_range: [1, 7]`. Codebook only contains codes 1-6 across all 13 waves; the 7th cohort ("Z generation") is never observed in any of the 14 codebook-coverage rows.
+- **Decision required:** strict (narrow now) vs anticipatory (keep claim for when KINU adds Z generation). The "self-contained and explicit" principle (commit `47bc765`) argues for strict.
+- **Action (strict):** change `valid_range: [1, 7]` → `[1, 7]` in demographics.yml; same change to `scale.max` if it claims 7. Re-run KINU pipeline (Section A of README).
+- **Effort:** ~5 min.
+- **Surfaced by:** F4 KINU run (commit `d6eb2e9`). Investigated commit `3672fea`.
 
 ### KINU `home_region` valid_range over-claim
 - **Where:** `src/config/kinu/harmonize/demographics.yml`
 - **Finding:** YAML claims `valid_range: [1, 19]`. Codebook is `[1, 18]` (1-16 are Korean sido, 17 = North Korea, 18 = foreign). Code 19 never observed.
-- **Action:** Narrow to `[1, 18]`. F4 reports 13 valid_range fails (one per wave).
-- **Surfaced by:** F4 KINU run (commit `d6eb2e9`).
+- **Decision required:** none — no substantive ambiguity; no plausible code-19 candidate.
+- **Action:** narrow `valid_range` to `[1, 18]`; also update `scale.max` if it claims 19. Re-run KINU pipeline.
+- **Effort:** ~5 min.
+- **Surfaced by:** F4 KINU run (commit `d6eb2e9`). Investigated commit `3672fea`.
 
-### IPUS `uni_view` valid_range vs codebook
+### IPUS `uni_view` — Frankenstein scale across the 2019 questionnaire restructure
 - **Where:** `src/config/ipus/harmonize/unification.yml`
-- **Finding:** YAML claims `valid_range: [1, 4]`. Codebook contains only codes 1-3 in 12 of the 18 waves; code 4 ("should not happen") is empty in source data for those years. Some waves (W2007, etc.) flag code 4 as a missing code.
-- **Action:** Either narrow per-wave (`valid_range_by_wave`) or accept that code 4 is theoretically valid but empirically rare. Worth verifying against the IPUS questionnaire whether code 4 actually exists as an option in those years.
-- **Surfaced by:** F4 IPUS run.
+- **Finding:** **Much bigger than the original F4 report suggested.** Investigation showed:
+  1. **All 18 years have code 4** (F4's "absent in 12 waves" was wrong).
+  2. **2019 introduced a 5-category scheme** by splitting "ASAP at any cost" (old code 1) into two categories ("at any cost" + "ASAP"). Old codes 2/3/4 shifted down to new codes 3/4/5.
+  3. The identity-method harmonization silently conflates pre-2019 codes with post-2019 codes (same value, different meaning).
+  4. **YAML label 4="Should not happen" is wrong.** Neither codebook scheme has an "opposed" category. The actual label is "통일에 대한 관심이 별로 없다" = "not very interested in unification" (apathy, not opposition).
+  5. Post-2019 code 5 is silently NA-coerced by the [1,4] valid_range — same shape as the `uni_timing` bug fixed in `b6b315e`.
+- **Decision required:** confirm the 2019 1+2 split is granularity (give the "should happen" group more resolution) vs new category. If granularity (most plausible reading), the proposed collapse below is correct. If new category, a different mapping is needed.
+- **Action:** add per-wave recode mappings for 2019-2024:
+  ```yaml
+  harmonize:
+    default:
+      method: identity   # 2007-2018: passes through
+    exceptions:
+      w2019: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+      w2020: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+      w2021: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+      w2022: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+      w2023: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+      w2024: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
+  ```
+  Plus fix `scale.labels.4` from "Should not happen" → "Not very interested in unification". Re-run IPUS pipeline + verify F4 + verify the cross-wave drift (G1) for uni_view drops markedly post-fix.
+- **Effort:** ~30 min including substantive review of the 1+2 split.
+- **Surfaced by:** F4 IPUS run. Investigated commit `3672fea` (see findings doc §Finding 3).
 
 ### AFRO `dem_satisfaction` W2 coverage loss
 - **Where:** `src/config/afro/harmonize/democratic_attitudes.yml`
-- **Finding:** 1.6% coverage loss (355 / 22,005 values) at W2. Exceeds the 1% error threshold. The recode is dropping intended-valid codes.
-- **Action:** Compare raw W2 distribution to harmonized; identify which codes are being NA-coerced.
-- **Surfaced by:** E2 first run.
+- **Finding:** **NOT a bug — intentional.** `recode_afro_dem_sat` explicitly drops raw code 0 ("Country is not a democracy", 355 R2 respondents) as NA. The 1.6% coverage loss reflects this deliberate choice. The audit reports it as "loss" because the YAML doesn't declare the intent.
+- **Decision required:** none on behavior — current treatment is one defensible interpretation. The fix is just to make the intent visible to the audit.
+- **Action:** add per-wave coverage-missing-codes declaration:
+  ```yaml
+  qc:
+    valid_range: [1, 4]
+    coverage_missing_codes_by_wave:
+      w2: [0]
+      w3: [0]
+      w4: [0]
+      w5: [0]
+      w6: [0]
+      w7: [0]
+      w8: [0]
+    # w9 uses identity method; verify R9 raw doesn't have code 0 before adding w9
+  ```
+  Plus add a YAML comment explaining the substantive choice: "Raw code 0 = 'Country is not a democracy'. Treated as NA on the theory that satisfaction-with-democracy is undefined for non-democracies. Alternative interpretations: map 0 → 1 (lowest satisfaction) or split into a separate binary."
+- **Effort:** ~10 min.
+- **Surfaced by:** E2 first run. Investigated commit `3672fea` (see findings doc §Finding 4).
 
 ---
 
