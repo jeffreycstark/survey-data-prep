@@ -345,7 +345,20 @@ cat(strrep("=", 70), "\n\n")
 # raw_paths is the per-round .sav map already defined above; reuse it as the
 # manifest's input list (one .sav per round). Round 9 has the long filename;
 # the rest follow merged_r{N}_data.sav.
-manifest_inputs  <- unname(unlist(raw_paths))
+#
+# R10 special case: when merged_r10_data.sav doesn't exist yet, the actual
+# inputs are the 29 per-country .sav files. Substitute them so the manifest
+# records what's really being hashed (instead of a placeholder path that
+# doesn't exist).
+manifest_inputs <- unlist(lapply(names(raw_paths), function(wn) {
+  p <- raw_paths[[wn]]
+  if (wn == "w10" && !file.exists(p)) {
+    r10_files <- list.files(here("data", "afro", "raw", "round10"),
+                            pattern = "^[A-Z]{3}_R10.*\\.sav$", full.names = TRUE)
+    if (length(r10_files) > 0) return(r10_files)
+  }
+  p
+}), use.names = FALSE)
 manifest_outputs <- c(
   rds_path,
   parquet_path,
