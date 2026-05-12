@@ -58,27 +58,13 @@ All previously identified high-priority bugs have been fixed. See "Resolved find
 - **Effort:** ~30 min including substantive review of the 1+2 split.
 - **Surfaced by:** F4 IPUS run. Investigated commit `3672fea` (see findings doc §Finding 3).
 
-### AFRO `dem_satisfaction` W2 coverage loss
-- **Where:** `src/config/afro/harmonize/democratic_attitudes.yml`
-- **Finding:** **NOT a bug — intentional.** `recode_afro_dem_sat` explicitly drops raw code 0 ("Country is not a democracy", 355 R2 respondents) as NA. The 1.6% coverage loss reflects this deliberate choice. The audit reports it as "loss" because the YAML doesn't declare the intent.
-- **Decision required:** none on behavior — current treatment is one defensible interpretation. The fix is just to make the intent visible to the audit.
-- **Action:** add per-wave coverage-missing-codes declaration:
-  ```yaml
-  qc:
-    valid_range: [1, 4]
-    coverage_missing_codes_by_wave:
-      w2: [0]
-      w3: [0]
-      w4: [0]
-      w5: [0]
-      w6: [0]
-      w7: [0]
-      w8: [0]
-    # w9 uses identity method; verify R9 raw doesn't have code 0 before adding w9
-  ```
-  Plus add a YAML comment explaining the substantive choice: "Raw code 0 = 'Country is not a democracy'. Treated as NA on the theory that satisfaction-with-democracy is undefined for non-democracies. Alternative interpretations: map 0 → 1 (lowest satisfaction) or split into a separate binary."
-- **Effort:** ~10 min.
-- **Surfaced by:** E2 first run. Investigated commit `3672fea` (see findings doc §Finding 4).
+### ~~AFRO `dem_satisfaction` W2 coverage loss~~ — **RESOLVED 2026-05-12**
+- **Resolution:** Split off "Country is not a democracy" responses into a sister variable `dem_country_not_democracy` (binary) rather than just declaring them as missing. Preserves the substantive signal instead of hiding it.
+- **What changed:**
+  - New binary variable `dem_country_not_democracy` covers R1-R9 (R10 pending YAML mapping). Captures 4,898 respondents across all rounds who said their country is not a democracy (R1=436, R2=355, R3=391, R4=407, R5=965, R6=1054, R7=839, R8=849, R9=932). The R9 932-case group was a particularly important catch — previously silently NA-coerced by the engine's valid_range [1,4] under identity harmonization.
+  - `dem_satisfaction` now declares `coverage_missing_codes_by_wave: [0]` for w2-w9, making the intent visible to the audit.
+- **Audit impact:** AFRO L3 errors dropped 53 → 45. The 8 dem_satisfaction coverage errors are gone; new variable validates clean.
+- **Commit:** (pending) — same commit that lands this update.
 
 ---
 
@@ -128,6 +114,7 @@ For the record — items the audit caught and that have been investigated/fixed.
 | 2026-05-10 | IPUS `uni_timing` 13-26% coverage loss across 2007-2014 | Raw scale is 6-cat not 5; fixed mapping | `b6b315e` |
 | 2026-05-10 | KINU `urban_rural` "directional swap" | F4 false positive (post-harmonization labels vs raw codebook); F4 fixed to skip non-identity methods | `f624cfd` |
 | 2026-05-10 | `dem_extent_current` Frankenstein scale (W1 10pt vs W2-W6 4pt) | Verified against W2 codebook + .doc questionnaire; W1=null, type=ordinal, scale 1-4, reverse-coded | `66d1ed8` |
+| 2026-05-12 | AFRO `dem_satisfaction` "Country is not a democracy" responders silently dropped | Split into sister binary `dem_country_not_democracy` (R1-R9); 4,898 cases across rounds now captured instead of NA-coerced. R9's 932 cases were also being silently dropped under identity+range-coerce. | _this commit_ |
 
 ---
 

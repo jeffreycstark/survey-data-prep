@@ -83,9 +83,16 @@ variables:
   # R2-R8: 0=Not a democracy(→NA), 1-4 satisfaction → recode_afro_dem_sat
   # R9: 1-4 → identity
 
+  # NOTE: Raw code 0 ("Country is not a democracy") is intentionally dropped
+  # to NA here (R2-R8 via recode_afro_dem_sat; R9 via the valid_range [1,4]
+  # range-coercion of the identity method). The 0-responders are preserved
+  # as a separate binary in dem_country_not_democracy (added 2026-05-12).
+  # Without this intent declaration via coverage_missing_codes_by_wave, the
+  # audit's coverage check flagged the drops as 1.6-2.2% coverage loss
+  # (E2 finding pre-2026-05-12).
   - id: dem_satisfaction
     concept: democratic_attitudes
-    description: "Satisfaction with democracy (1-4, higher = more satisfied)"
+    description: "Satisfaction with democracy (1-4, higher = more satisfied). 'Country is not a democracy' responders are excluded here and captured in dem_country_not_democracy."
     type: ordinal
     source:
       w1: null
@@ -135,6 +142,94 @@ variables:
         fn: recode_afro_dem_sat
     qc:
       valid_range: [1, 4]
+      # Declare the intentional drop of code 0 ("Country is not a democracy")
+      # so the audit's coverage check classifies it as expected. The dropped
+      # respondents are preserved in dem_country_not_democracy.
+      coverage_missing_codes_by_wave:
+        w2: [0]
+        w3: [0]
+        w4: [0]
+        w5: [0]
+        w6: [0]
+        w7: [0]
+        w8: [0]
+        w9: [0]   # R9 uses identity but valid_range [1,4] also drops 0
+
+  # ===========================================================================
+  # Sister variable to dem_satisfaction: captures the "Country is not a
+  # democracy" responses that recode_afro_dem_sat treats as NA.
+  # ===========================================================================
+  # Authored 2026-05-12 after investigating the 1.6% R2 coverage loss
+  # finding (JEFF_MUST_INVESTIGATE.md medium TODO #4). Rather than declaring
+  # the 0 → NA mapping with coverage_missing_codes_by_wave (which loses the
+  # information), preserve it as a binary signal.
+  #
+  # Substantive distinction:
+  #   dem_satisfaction       = 1-4 satisfaction conditional on "yes, my
+  #                            country is democratic enough to be satisfied
+  #                            with". NA for everyone else.
+  #   dem_country_not_democracy = 1 if respondent said "my country is not a
+  #                               democracy" on this question, 0 if they
+  #                               answered the satisfaction scale, NA for
+  #                               DK/refused/etc.
+  #
+  # Per-wave raw scale check (verified 2026-05-12 against the merged .sav files):
+  #   R1 (dmpsat): 0=not democracy, 1-5=5-pt satisfaction (Ghana only uses 3),
+  #                97=N/A, 9=DK, 98/99=admin missing. Ghana/Nigeria didn't
+  #                offer code 0 (their respondents physically couldn't say
+  #                "not a democracy" on this question) — so their values
+  #                here will be 0 (= "did not pick not-democracy"), which
+  #                undercounts the construct in those two countries.
+  #                Acceptable for cross-wave use; flag in any R1 analysis.
+  #   R2-R8 (q40 etc.): 0=not democracy, 1-4=4-pt satisfaction, 9=DK,
+  #                98=Refused, -1=Missing.
+  #   R9 (Q31): 0=not democracy (932 cases — currently silently NA-coerced
+  #             by the engine's valid_range [1,4] in dem_satisfaction),
+  #             1-4=satisfaction, 8=Refused, 9=DK.
+
+  - id: dem_country_not_democracy
+    concept: democratic_attitudes
+    description: >
+      Binary: 1 = respondent said "my country is not a democracy" when
+      asked about satisfaction with democracy (raw code 0 on the
+      dem-satisfaction question); 0 = answered the satisfaction scale.
+      Sister to dem_satisfaction — captures the population that
+      recode_afro_dem_sat drops as NA.
+    type: binary
+    source:
+      w1: dmpsat
+      w2: q40
+      w3: q47
+      w4: Q43
+      w5: Q43
+      w6: Q41
+      w7: Q36
+      w8: Q37
+      w9: Q31
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Answered satisfaction scale (1-4 or 1-5)"
+        1: "Country is not a democracy"
+    missing:
+      use_convention: treat_as_na
+      codes: [97]   # R1-only N/A code; not in afro treat_as_na convention
+    harmonize:
+      default:
+        method: recode
+        mapping:
+          0: 1   # the substantive "not democracy" response
+          1: 0   # answered satisfaction = not "not democracy"
+          2: 0
+          3: 0   # R1 Ghana's neutral OR R2-R9 "Fairly satisfied"
+          4: 0
+          5: 0   # R1 only ("Very satisfied" in the 5-pt scheme)
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7, w8, w9]
+          phrase: "satisf.*democracy|democracy.*satisf"
 
   # ===========================================================================
   # How Democratic Is Country (qualitative, 1-4)
