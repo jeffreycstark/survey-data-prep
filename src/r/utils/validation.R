@@ -938,7 +938,21 @@ validate_range <- function(harmonized_vec, valid_range) {
   "collapse_5pt_to_4pt_then_reverse", "collapse_6pt_to_4pt_reverse",
   "safe_6pt_to_4pt", "recode_w1_discuss", "recode_w6_corruption",
   "middle_identity_5pt", "middle_reverse_5pt",
-  "recode_age_cohort", "recode_age_to_5cat"
+  "recode_age_cohort", "recode_age_to_5cat",
+  # 2026-05-12 bulk-add: categorical / scale-collapse recodes that
+  # legitimately lose Pearson/Spearman = 1 with raw. Same shape as
+  # the age_cohort false-positive class. Cleanup pass after the
+  # audit re-run on 2026-05-12.
+  # ABS:
+  "recode_internet_w2w3_to_6pt", "recode_internet_w4_to_6pt",
+  "recode_internet_w5w6_to_6pt",
+  # AFRO:
+  "recode_afro_educ_detailed", "recode_afro_employment",
+  "recode_afro_employment_r2",
+  # Arab Barometer:
+  "recode_arab_employment_w5w8",
+  # KAMOS:
+  "recode_party_bloc_w1", "recode_party_bloc_w2", "recode_party_bloc_w3w4"
 )
 
 # Existence + length preflight. Returns a complete early-result list
