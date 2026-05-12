@@ -14,13 +14,11 @@ All previously identified high-priority bugs have been fixed. See "Resolved find
 
 ## 🟡 Medium priority — real but minor (review when convenient)
 
-### NEW 2026-05-12: KINU codebook extractor should read from .sav labels, not xlsx
-- **Where:** `src/r/audit/extractors/kinu_codebook.R`
-- **Finding:** The current KINU extractor reads from `data/kinu/raw/kinu_2014-2024_codebook_en.xlsx`. That xlsx is incomplete relative to the .sav file's value labels — confirmed for `cohort` (xlsx documents only codes 1-6; .sav has code 7 "Z generation" with 290 observations). The .sav labels reflect KINU's actual data coding; the xlsx appears to be a partial documentation snapshot. Other variables may have similar gaps (untested as of 2026-05-12).
-- **Action:** Rebuild the KINU extractor to source from `data/kinu/raw/kinu_2014-2023_en.sav` using `haven::read_sav()` and `attr(x, "labels")`, mirroring the pattern in `src/r/audit/extractors/abs_codebook.R`. The xlsx can still be used as a secondary source for question_text (verbatim Korean wording) if .sav variable labels are too terse, but value labels should come from .sav.
-- **Decision required:** Should the new extractor PRIMARILY use .sav (recommended — single source of truth for codes/labels), or do a HYBRID merge of .sav + xlsx (more comprehensive but more complex)?
-- **Effort:** ~1-2 hours.
-- **Surfaced by:** cohort revert during the 2026-05-12 medium-TODO sweep.
+### ~~NEW 2026-05-12: KINU codebook extractor should read from .sav labels~~ — **RESOLVED 2026-05-12**
+- **Resolution:** Rebuilt `src/r/audit/extractors/kinu_codebook.R` to source from `data/kinu/raw/kinu_2014-2023_en.sav` via `haven::read_sav()`, mirroring the ABS pattern. Year column (1-13) maps to wave keys via `.KINU_YEAR_TO_WAVE`. Per (variable × wave) emits rows only where the variable has non-NA observations.
+- **Outcome:** Cohort code 7 (Z generation) now captured. F4 valid_range fails for KINU dropped 26 → 0 (cohort + home_region both reconcile cleanly). Rows 17,230 → 16,900; unique variables 912 → 901; missing-code detection slightly more aggressive (.sav exposes more codes than xlsx).
+- **Tradeoff documented:** question_text now comes from the .sav variable label (haven attr) which may be terser than the xlsx's full question wording. Accepted for label accuracy.
+- **Commit:** `bfd2062`.
 
 
 > **All 4 medium-priority items investigated 2026-05-11.** Full evidence + recommended fixes in [`audit/findings_medium_2026-05-11.md`](audit/findings_medium_2026-05-11.md). Summary entries below — read the findings doc before editing.
@@ -102,7 +100,8 @@ For the record — items the audit caught and that have been investigated/fixed.
 | 2026-05-12 | AFRO `dem_satisfaction` "Country is not a democracy" responders silently dropped | Split into sister binary `dem_country_not_democracy` (R1-R9); 4,898 cases across rounds now captured instead of NA-coerced. R9's 932 cases were also being silently dropped under identity+range-coerce. | `dda1b22` |
 | 2026-05-12 | KINU `home_region` over-claim `[1,19]` | Narrowed to `[1,18]` (raw `home` only has 18 codes — 17=NK, 18=Foreign). KINU has TWO region coding schemes; `home` and `region` are NOT parallel despite identical 1-16 codes. | _this commit_ |
 | 2026-05-12 | KINU `cohort` apparent over-claim `[1,7]` | Confirmed AGAINST narrowing after investigation. The xlsx codebook documents codes 1-6 only, but the raw .sav has code 7 ("Z generation") with 290 observations across 2014-2023. xlsx is incomplete; the YAML's [1,7] reflects reality. Kept at [1,7] with caveat note. | `7021664` |
-| 2026-05-12 | IPUS `uni_view` Frankenstein scale (2019 questionnaire restructure conflated with pre-2019) | Per-wave recode for 2019-2024 collapses post-2019 codes 1+2 → harmonized 1, shifts 3→2, 4→3, 5→4. Fixes wrong YAML label "Should not happen" (actual label = "not very interested in unification"). Preserves the post-2019 "not interested" group previously silently NA-coerced by valid_range [1,4]. IPUS L3 errors: 7 → 1. | _this commit_ |
+| 2026-05-12 | IPUS `uni_view` Frankenstein scale (2019 questionnaire restructure conflated with pre-2019) | Per-wave recode for 2019-2024 collapses post-2019 codes 1+2 → harmonized 1, shifts 3→2, 4→3, 5→4. Fixes wrong YAML label "Should not happen" (actual label = "not very interested in unification"). Preserves the post-2019 "not interested" group previously silently NA-coerced by valid_range [1,4]. IPUS L3 errors: 7 → 1. | `6b72f17` |
+| 2026-05-12 | KINU codebook extractor incomplete vs .sav labels | Rebuilt from xlsx to .sav source (haven::read_sav). Captures cohort code 7 ("Z generation") and other previously-omitted codes. F4 valid_range fails for KINU: 26 → 0. | `bfd2062` |
 
 ---
 
