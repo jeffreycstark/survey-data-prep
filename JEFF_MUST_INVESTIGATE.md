@@ -37,31 +37,11 @@ All previously identified high-priority bugs have been fixed. See "Resolved find
 - **Note:** KINU has TWO region coding schemes — demographics-region (used by `home` raw, 18 codes) and basic-region (used by `region` raw, 19 codes with Sejong=17 and NK=19). The two are NOT parallel despite identical-looking sido codes 1-16.
 - **Commit:** _this commit_.
 
-### IPUS `uni_view` — Frankenstein scale across the 2019 questionnaire restructure
-- **Where:** `src/config/ipus/harmonize/unification.yml`
-- **Finding:** **Much bigger than the original F4 report suggested.** Investigation showed:
-  1. **All 18 years have code 4** (F4's "absent in 12 waves" was wrong).
-  2. **2019 introduced a 5-category scheme** by splitting "ASAP at any cost" (old code 1) into two categories ("at any cost" + "ASAP"). Old codes 2/3/4 shifted down to new codes 3/4/5.
-  3. The identity-method harmonization silently conflates pre-2019 codes with post-2019 codes (same value, different meaning).
-  4. **YAML label 4="Should not happen" is wrong.** Neither codebook scheme has an "opposed" category. The actual label is "통일에 대한 관심이 별로 없다" = "not very interested in unification" (apathy, not opposition).
-  5. Post-2019 code 5 is silently NA-coerced by the [1,4] valid_range — same shape as the `uni_timing` bug fixed in `b6b315e`.
-- **Decision required:** confirm the 2019 1+2 split is granularity (give the "should happen" group more resolution) vs new category. If granularity (most plausible reading), the proposed collapse below is correct. If new category, a different mapping is needed.
-- **Action:** add per-wave recode mappings for 2019-2024:
-  ```yaml
-  harmonize:
-    default:
-      method: identity   # 2007-2018: passes through
-    exceptions:
-      w2019: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-      w2020: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-      w2021: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-      w2022: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-      w2023: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-      w2024: { method: recode, mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4} }
-  ```
-  Plus fix `scale.labels.4` from "Should not happen" → "Not very interested in unification". Re-run IPUS pipeline + verify F4 + verify the cross-wave drift (G1) for uni_view drops markedly post-fix.
-- **Effort:** ~30 min including substantive review of the 1+2 split.
-- **Surfaced by:** F4 IPUS run. Investigated commit `3672fea` (see findings doc §Finding 3).
+### ~~IPUS `uni_view` — Frankenstein scale across the 2019 questionnaire restructure~~ — **RESOLVED 2026-05-12**
+- **What happened:** IPUS restructured response options in 2019, splitting "ASAP at any cost" (pre-2019 code 1) into two separate codes (1 = "at any cost", 2 = "ASAP"), pushing all subsequent codes down by one. The identity-method harmonization silently conflated the two schemes. Plus the YAML's `scale.labels.4 = "Should not happen"` was fabricated — no "opposed to unification" category exists in either scheme; the actual label is "not very interested in unification" (apathy).
+- **Resolution:** Per-wave recode mappings for w2019-w2024 collapse codes 1+2 → harmonized 1 (treating the 2019 split as granularity within the "should happen" group rather than a new conceptual category) and shift 3→2, 4→3, 5→4. Pre-2019 waves (w2007-w2018) keep identity method. YAML labels corrected. Audit impact: IPUS L3 errors dropped 7 → 1 (the remaining 1 is `urban_rural w2008`, unrelated).
+- **Substantive caveat documented in YAML:** the 1+2 collapse loses the post-2019 finer-grained distinction between "at any cost" and "ASAP". Researchers who need that distinction should consume raw `uni02_01` directly. Distribution sanity-check confirmed n_4 ("not very interested") is now properly preserved at 69-132 cases per wave post-2019 (previously silently NA-coerced by valid_range [1,4]).
+- **Commit:** _this commit_.
 
 ### ~~AFRO `dem_satisfaction` W2 coverage loss~~ — **RESOLVED 2026-05-12**
 - **Resolution:** Split off "Country is not a democracy" responses into a sister variable `dem_country_not_democracy` (binary) rather than just declaring them as missing. Preserves the substantive signal instead of hiding it.
@@ -121,7 +101,8 @@ For the record — items the audit caught and that have been investigated/fixed.
 | 2026-05-10 | `dem_extent_current` Frankenstein scale (W1 10pt vs W2-W6 4pt) | Verified against W2 codebook + .doc questionnaire; W1=null, type=ordinal, scale 1-4, reverse-coded | `66d1ed8` |
 | 2026-05-12 | AFRO `dem_satisfaction` "Country is not a democracy" responders silently dropped | Split into sister binary `dem_country_not_democracy` (R1-R9); 4,898 cases across rounds now captured instead of NA-coerced. R9's 932 cases were also being silently dropped under identity+range-coerce. | `dda1b22` |
 | 2026-05-12 | KINU `home_region` over-claim `[1,19]` | Narrowed to `[1,18]` (raw `home` only has 18 codes — 17=NK, 18=Foreign). KINU has TWO region coding schemes; `home` and `region` are NOT parallel despite identical 1-16 codes. | _this commit_ |
-| 2026-05-12 | KINU `cohort` apparent over-claim `[1,7]` | Confirmed AGAINST narrowing after investigation. The xlsx codebook documents codes 1-6 only, but the raw .sav has code 7 ("Z generation") with 290 observations across 2014-2023. xlsx is incomplete; the YAML's [1,7] reflects reality. Kept at [1,7] with caveat note. | _this commit_ |
+| 2026-05-12 | KINU `cohort` apparent over-claim `[1,7]` | Confirmed AGAINST narrowing after investigation. The xlsx codebook documents codes 1-6 only, but the raw .sav has code 7 ("Z generation") with 290 observations across 2014-2023. xlsx is incomplete; the YAML's [1,7] reflects reality. Kept at [1,7] with caveat note. | `7021664` |
+| 2026-05-12 | IPUS `uni_view` Frankenstein scale (2019 questionnaire restructure conflated with pre-2019) | Per-wave recode for 2019-2024 collapses post-2019 codes 1+2 → harmonized 1, shifts 3→2, 4→3, 5→4. Fixes wrong YAML label "Should not happen" (actual label = "not very interested in unification"). Preserves the post-2019 "not interested" group previously silently NA-coerced by valid_range [1,4]. IPUS L3 errors: 7 → 1. | _this commit_ |
 
 ---
 

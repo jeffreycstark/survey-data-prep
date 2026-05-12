@@ -82,9 +82,30 @@ variables:
 
   - id: uni_view
     concept: unification
-    description: "View on whether unification should happen (categorical: 1=should happen as soon as possible … 4=should not happen)"
+    description: "View on whether unification should happen (categorical 1-4 after harmonization, aligned to the pre-2019 4-category scheme)"
     type: categorical
-    note: "18 waves (all). Korean stem: 남북한 통일에 대한 견해. Typical IPUS 4-category response: 1=가능한 한 빨리, 2=서두르지 말고 여건이 성숙되기를 기다려, 3=현재대로가 좋다, 4=통일에 반대. Categorical-ordinal — high values reflect anti-unification stance but the category structure (especially 3=현상유지 vs 4=반대) makes it more useful as a categorical breakdown than a continuous scale. Treat as nominal in harmonization; analyses can collapse into pro/anti groupings as needed."
+    note: |
+      18 waves (all). Korean stem: 남북한 통일에 대한 견해.
+      IPUS restructured the response options in 2019. The harmonized 1-4 scheme matches the pre-2019 categories:
+        1 = unify (at any pace — collapses 2019-2024 "at any cost" + "ASAP" into one)
+        2 = wait for conditions to mature
+        3 = status quo is fine
+        4 = not very interested in unification
+      Raw codings:
+        2007-2018 (raw vars a13/b07/uni02), 4 categories:
+          1=어떠한 대가를 치르더라도 가능한 한 빨리 통일되는 것이 좋다 (unify ASAP at any cost)
+          2=통일을 서두르기보다 여건이 성숙되기를 기다려야 한다 (wait for conditions)
+          3=현재대로가 좋다 (status quo is fine)
+          4=통일에 대한 관심이 별로 없다 (not very interested) -- NOT "opposed to unification"
+        2019-2024 (raw var uni02_01), 5 categories (the "ASAP at any cost" pre-2019 code 1 was split into two):
+          1=어떠한 대가를 치르더라도 통일되는 것이 좋다 (unify at any cost)
+          2=가능한 빨리 통일되는 것이 좋다 (unify ASAP)
+          3=여건이 성숙되기를 기다려 점진적으로 통일되는 것이 좋다 (wait, gradual)
+          4=현재대로가 좋다 (status quo is fine)
+          5=통일에 대한 관심이 별로 없다 (not very interested)
+      Harmonization decision (2026-05-12, audit ticket "IPUS uni_view Frankenstein"):
+        Per-wave recode for 2019-2024 collapses codes 1+2 (both "should happen") into harmonized 1, then shifts 3->2, 4->3, 5->4. This treats the 2019 split as added granularity within the "should happen" group rather than a new conceptual category — most plausible reading. Cost: post-2019 respondents who chose code 1 ("at any cost") and code 2 ("ASAP") are collapsed in the harmonized output. Researchers who need the post-2019 finer-grained distinction should consume raw uni02_01 directly.
+      Earlier YAML labeled code 4 as "Should not happen" — that label was wrong (no "opposed to unification" category exists in either codebook scheme; the actual concept is "not very interested in unification"). Corrected here.
     source:
       w2007: a13
       w2008: b07
@@ -108,15 +129,34 @@ variables:
       min: 1
       max: 4
       labels:
-        1: "Should happen as soon as possible"
+        1: "Should happen (any pace; collapses post-2019 'at any cost' + 'ASAP')"
         2: "Should wait for conditions to mature"
         3: "Status quo is fine"
-        4: "Should not happen"
+        4: "Not very interested in unification"
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: identity   # 2007-2018: raw codes 1-4 pass through unchanged
+      exceptions:
+        w2019:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
+        w2020:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
+        w2021:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
+        w2022:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
+        w2023:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
+        w2024:
+          method: recode
+          mapping: {1: 1, 2: 1, 3: 2, 4: 3, 5: 4}
     qc:
       valid_range: [1, 4]
       skip_unmapped_check: true
