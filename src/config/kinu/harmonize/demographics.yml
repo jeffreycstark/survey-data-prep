@@ -142,7 +142,7 @@ variables:
     concept: demographics
     description: "Korean named-generation cohort (1=war → 7=Z generation; categorical-ordinal)"
     type: categorical
-    note: "13 waves. Raw cohort: 1=war generation (pre-1953), 2=industrial, 3=386 generation (born 1960s), 4=X generation, 5=IMF generation, 6=Millennials, 7=Z generation. Treated as categorical because the named labels are the analytical unit (e.g., '386 generation' vs 'IMF generation'); the numeric ordering reflects descending age but does not represent an interval scale."
+    note: "13 waves. Raw cohort: 1=war generation (pre-1953), 2=industrial, 3=386 generation (born 1960s), 4=X generation, 5=IMF generation, 6=Millennials, 7=Z generation. Treated as categorical because the named labels are the analytical unit; the numeric ordering reflects descending age but does not represent an interval scale. CODEBOOK CAVEAT 2026-05-12: the extracted codebook xlsx documents only codes 1-6, but the raw .sav file has code 7 'Z generation' labeled and observed in 290 cases across all waves (growing from 19 in 2014 to 41 in 2023). The xlsx is incomplete vs the .sav."
     source:
       w2014:  cohort
       w2015:  cohort
@@ -212,9 +212,9 @@ variables:
 
   - id: region
     concept: demographics
-    description: "Survey region (sido/시도) as 17 administrative areas + foreign + NK; categorical"
+    description: "Survey region (sido/시도): 17 South Korean administrative areas + Foreign + North Korea; categorical"
     type: categorical
-    note: "13 waves. Raw region codes: 1=Seoul, 2=Busan, 3=Daegu, 4=Incheon, 5=Gwangju, 6=Daejeon, 7=Ulsan, 8=Gyeonggi, 9=Gangwon, 10=Chungbuk, 11=Chungnam, 12=Jeonbuk, 13=Jeonnam, 14=Gyeongbuk, 15=Gyeongnam, 16=Jeju, 17=Sejong (added later), 18=foreign, 19=North Korea. Per-wave coverage 968-975; the missing ~30 cases per wave likely correspond to overseas/special-status respondents. Nominal — not ordinal."
+    note: "13 waves. Raw region uses KINU's BASIC-region 19-code scheme (distinct from the DEMOGRAPHICS-region 18-code scheme used in raw `home`/home_region). Codes: 1=Seoul, 2=Busan, 3=Daegu, 4=Incheon, 5=Gwangju, 6=Daejeon, 7=Ulsan, 8=Gyeonggi, 9=Gangwon, 10=Chungbuk, 11=Chungnam, 12=Jeonbuk, 13=Jeonnam, 14=Gyeongbuk, 15=Gyeongnam, 16=Jeju, 17=Sejong (added in 2018), 18=foreign, 19=North Korea. Code 17 (Sejong) appears starting year 5 (2018) and grows over time — empty in years 1-4. Codes 18 (foreign) and 19 (NK) are unobserved in the cumulative data (KINU samples current SK residents). Nominal — not ordinal."
     source:
       w2014:  region
       w2015:  region
@@ -293,9 +293,9 @@ variables:
 
   - id: home_region
     concept: demographics
-    description: "Respondent's region of origin / regionalism (same 19-code sido scheme as `region`)"
+    description: "Respondent's region of origin / regionalism (1-18 sido scheme — 17=North Korea, 18=Foreign)"
     type: categorical
-    note: "13 waves. Raw home: same 19-code sido scheme as `region`. Distinct concept: 'home' captures regional identity / 고향, not current residence. Useful for analyses of regional cleavages (호남/영남) where origin matters more than current residence."
+    note: "13 waves. Raw home uses an 18-code sido scheme (NOT 19; differs from `region` which has 17=Sejong+18=foreign+19=NK). The 'home' scheme has 1-16=Korean sido, 17=North Korea, 18=foreign. Distinct concept: 'home' captures regional identity / 고향, not current residence. Useful for analyses of regional cleavages (호남/영남) where origin matters more than current residence. Narrowed from [1,19] to [1,18] on 2026-05-12 — code 19 was a stale claim, never declared in the codebook nor observed in data."
     source:
       w2014:  home
       w2015:  home
@@ -338,7 +338,7 @@ variables:
       default:
         method: identity
     qc:
-      valid_range: [1, 19]
+      valid_range: [1, 18]
       skip_unmapped_check: true
 
   # ─────────────────────────────────────────────────────────────────────────

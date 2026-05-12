@@ -14,23 +14,28 @@ All previously identified high-priority bugs have been fixed. See "Resolved find
 
 ## 🟡 Medium priority — real but minor (review when convenient)
 
+### NEW 2026-05-12: KINU codebook extractor should read from .sav labels, not xlsx
+- **Where:** `src/r/audit/extractors/kinu_codebook.R`
+- **Finding:** The current KINU extractor reads from `data/kinu/raw/kinu_2014-2024_codebook_en.xlsx`. That xlsx is incomplete relative to the .sav file's value labels — confirmed for `cohort` (xlsx documents only codes 1-6; .sav has code 7 "Z generation" with 290 observations). The .sav labels reflect KINU's actual data coding; the xlsx appears to be a partial documentation snapshot. Other variables may have similar gaps (untested as of 2026-05-12).
+- **Action:** Rebuild the KINU extractor to source from `data/kinu/raw/kinu_2014-2023_en.sav` using `haven::read_sav()` and `attr(x, "labels")`, mirroring the pattern in `src/r/audit/extractors/abs_codebook.R`. The xlsx can still be used as a secondary source for question_text (verbatim Korean wording) if .sav variable labels are too terse, but value labels should come from .sav.
+- **Decision required:** Should the new extractor PRIMARILY use .sav (recommended — single source of truth for codes/labels), or do a HYBRID merge of .sav + xlsx (more comprehensive but more complex)?
+- **Effort:** ~1-2 hours.
+- **Surfaced by:** cohort revert during the 2026-05-12 medium-TODO sweep.
+
+
 > **All 4 medium-priority items investigated 2026-05-11.** Full evidence + recommended fixes in [`audit/findings_medium_2026-05-11.md`](audit/findings_medium_2026-05-11.md). Summary entries below — read the findings doc before editing.
 
-### KINU `cohort` valid_range over-claim
-- **Where:** `src/config/kinu/harmonize/demographics.yml`
-- **Finding:** YAML claims `valid_range: [1, 7]`. Codebook only contains codes 1-6 across all 13 waves; the 7th cohort ("Z generation") is never observed in any of the 14 codebook-coverage rows.
-- **Decision required:** strict (narrow now) vs anticipatory (keep claim for when KINU adds Z generation). The "self-contained and explicit" principle (commit `47bc765`) argues for strict.
-- **Action (strict):** change `valid_range: [1, 7]` → `[1, 7]` in demographics.yml; same change to `scale.max` if it claims 7. Re-run KINU pipeline (Section A of README).
-- **Effort:** ~5 min.
-- **Surfaced by:** F4 KINU run (commit `d6eb2e9`). Investigated commit `3672fea`.
+### ~~KINU `cohort` valid_range over-claim~~ — **RESOLVED 2026-05-12 (different reason)**
+- **What happened:** Investigation initially concluded code 7 was never observed (xlsx codebook only documents codes 1-6, and the codebook parquet F-KINU extracted matched). On the basis of that conclusion, narrowed `valid_range` from [1,7] to [1,6]. Re-running validation surfaced 12 NEW coverage errors (1-4% loss across waves). Checking the .sav directly revealed **the raw KINU .sav DOES have code 7 ("Z generation") with 290 cases across 2014-2023 (growing from 19 in 2014 to 41 in 2023)**. The xlsx codebook is incomplete relative to the .sav.
+- **Resolution:** Reverted to [1, 7]. Added a CODEBOOK CAVEAT comment in the YAML documenting the xlsx-vs-.sav gap.
+- **Meta-finding:** The KINU codebook extractor (which reads from xlsx) is incomplete relative to .sav labels. This affects F4 reconciliation quality for KINU. See new "KINU codebook extractor should read from .sav labels" entry below.
+- **Commit:** _this commit_ — cohort kept at [1,7] after empirical verification against raw .sav.
 
-### KINU `home_region` valid_range over-claim
-- **Where:** `src/config/kinu/harmonize/demographics.yml`
-- **Finding:** YAML claims `valid_range: [1, 19]`. Codebook is `[1, 18]` (1-16 are Korean sido, 17 = North Korea, 18 = foreign). Code 19 never observed.
-- **Decision required:** none — no substantive ambiguity; no plausible code-19 candidate.
-- **Action:** narrow `valid_range` to `[1, 18]`; also update `scale.max` if it claims 19. Re-run KINU pipeline.
-- **Effort:** ~5 min.
-- **Surfaced by:** F4 KINU run (commit `d6eb2e9`). Investigated commit `3672fea`.
+### ~~KINU `home_region` valid_range over-claim~~ — **RESOLVED 2026-05-12**
+- **What happened:** YAML claimed `valid_range: [1, 19]`. Raw `home` in .sav has only codes 1-18 (1-16 sido, 17=North Korea, 18=Foreign). Code 19 not declared in .sav labels, not observed in data.
+- **Resolution:** Narrowed `valid_range` to [1, 18]. Removed `19: "..."` from scale.labels. Updated description.
+- **Note:** KINU has TWO region coding schemes — demographics-region (used by `home` raw, 18 codes) and basic-region (used by `region` raw, 19 codes with Sejong=17 and NK=19). The two are NOT parallel despite identical-looking sido codes 1-16.
+- **Commit:** _this commit_.
 
 ### IPUS `uni_view` — Frankenstein scale across the 2019 questionnaire restructure
 - **Where:** `src/config/ipus/harmonize/unification.yml`
@@ -114,7 +119,9 @@ For the record — items the audit caught and that have been investigated/fixed.
 | 2026-05-10 | IPUS `uni_timing` 13-26% coverage loss across 2007-2014 | Raw scale is 6-cat not 5; fixed mapping | `b6b315e` |
 | 2026-05-10 | KINU `urban_rural` "directional swap" | F4 false positive (post-harmonization labels vs raw codebook); F4 fixed to skip non-identity methods | `f624cfd` |
 | 2026-05-10 | `dem_extent_current` Frankenstein scale (W1 10pt vs W2-W6 4pt) | Verified against W2 codebook + .doc questionnaire; W1=null, type=ordinal, scale 1-4, reverse-coded | `66d1ed8` |
-| 2026-05-12 | AFRO `dem_satisfaction` "Country is not a democracy" responders silently dropped | Split into sister binary `dem_country_not_democracy` (R1-R9); 4,898 cases across rounds now captured instead of NA-coerced. R9's 932 cases were also being silently dropped under identity+range-coerce. | _this commit_ |
+| 2026-05-12 | AFRO `dem_satisfaction` "Country is not a democracy" responders silently dropped | Split into sister binary `dem_country_not_democracy` (R1-R9); 4,898 cases across rounds now captured instead of NA-coerced. R9's 932 cases were also being silently dropped under identity+range-coerce. | `dda1b22` |
+| 2026-05-12 | KINU `home_region` over-claim `[1,19]` | Narrowed to `[1,18]` (raw `home` only has 18 codes — 17=NK, 18=Foreign). KINU has TWO region coding schemes; `home` and `region` are NOT parallel despite identical 1-16 codes. | _this commit_ |
+| 2026-05-12 | KINU `cohort` apparent over-claim `[1,7]` | Confirmed AGAINST narrowing after investigation. The xlsx codebook documents codes 1-6 only, but the raw .sav has code 7 ("Z generation") with 290 observations across 2014-2023. xlsx is incomplete; the YAML's [1,7] reflects reality. Kept at [1,7] with caveat note. | _this commit_ |
 
 ---
 
