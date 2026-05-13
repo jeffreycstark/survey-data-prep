@@ -22,7 +22,15 @@ variables:
     concept: corruption
     description: "Have you or a family member known of a corruption act in the last 12 months? (1=Yes, 2=No)"
     type: nominal
-    note: "Sparse coverage. Not asked every year."
+    note: |
+      Sparse coverage. Not asked every year. y2013 EXCLUDED: the 2013
+      questionnaire replaced the binary item with a 5-category witnessing-
+      severity construct (1=personally witnessed, 2/3=told by family/friend,
+      4=never witnessed, 5=no one I know witnessed) — a different concept
+      than 'know of'. Any forced 5→2 collapse flattens the distinction
+      between personal witnessing and second-hand knowledge that 2013 was
+      redesigned to capture; null is the honest choice. y2015 (P66ST) and
+      y2016 (P38STA) verified binary 1=Yes/2=No (2026-05-13).
     source:
       y1995: null
       y1996: null
@@ -40,7 +48,7 @@ variables:
       y2009: p73st.d
       y2010: P70ST.E
       y2011: P80ST.F
-      y2013: P63TGBSM
+      y2013: null
       y2015: P66ST
       y2016: P38STA
       y2017: null

@@ -75,6 +75,14 @@ variables:
         fn: recode_afro_dem_pref_r2_r8
     qc:
       valid_range: [1, 3]
+      # R1 uses a 4-category scheme where code 4 = "Don't know" (substantive
+      # 4th category, not declared as missing in the codebook). R2+ drop DK
+      # via the engine's missing convention (code 9 or 8). For consistency,
+      # R1 DK is also treated as NA — declared here so the audit's coverage
+      # check sees the drop as intentional rather than as silent loss.
+      # Code 97 = "Not applicable" (R1) is similarly intentional.
+      coverage_missing_codes_by_wave:
+        w1: [4, 97]
 
   # ===========================================================================
   # Satisfaction with Democracy

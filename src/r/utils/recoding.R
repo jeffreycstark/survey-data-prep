@@ -1731,13 +1731,15 @@ recode_afro_dem_sat <- function(x,
 recode_afro_dem_pref_r1 <- function(x,
                                      data = NULL,
                                      var_name = NULL,
-                                     missing_codes = c(-1, 8, 9, 98, 99, 998, 999),
+                                     missing_codes = c(4, 97, 98, 99),
                                      validate_all = NULL) {
   #' Recode Afrobarometer R1 dem_support_preferable
   #'
-  #' R1 raw: 1=Dem pref, 2=Doesn't matter, 3=Non-dem pref
-  #' Target: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter
-  #' Swap positions 2 and 3
+  #' R1 raw codebook: 1=Dem pref, 2=Doesn't matter, 3=Non-dem pref,
+  #'   4=Don't know, 97=Not applicable, 98=Refused, 99=Missing.
+  #' Target: 1=Dem pref, 2=Non-dem pref, 3=Doesn't matter.
+  #' Swap positions 2 and 3; treat R1-specific missing codes (incl. DK=4)
+  #' as NA — consistent with R2-R8 where DK is also dropped to NA.
 
   x <- as.numeric(x)
   dplyr::case_when(
