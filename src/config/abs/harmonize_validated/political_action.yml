@@ -7,13 +7,13 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
   treat_as_na_winning_losing:
-    codes: [-1, 0, 3, 7, 8, 9, 97, 98, 99]
+    codes: [-1, 0, 3, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes plus 3=not applicable/other in winner-loser items"
   contact_binary_missing:
-    codes: [-1, 7, 8, 97, 98, 99]
+    codes: [-1, 7, 8, 97, 98, 99, 1099]
     description: |
       Binary gate participation items: keeps 0 and 9 as live values so recode functions
       can interpret them semantically. W1: 9=Never done (valid); W3: 0=Never Done (valid);

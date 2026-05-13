@@ -6,7 +6,7 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
   treat_as_na_dev_model:
     codes: [-1, 0, 90, 97, 98, 99]

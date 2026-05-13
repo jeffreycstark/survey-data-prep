@@ -7,7 +7,7 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 0, 7, 8, 9, 97, 98, 99]
+    codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes (97=not applicable, 98=don't know, 99=no answer)"
 variables:
   - id: mob_asked_clan_seniors

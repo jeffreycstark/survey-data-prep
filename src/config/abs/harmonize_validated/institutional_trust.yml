@@ -11,7 +11,7 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, -2, 0, 7, 8, 9, 97, 98, 99]
+    codes: [-1, -2, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes (-2 kept for legacy compatibility)"
 variables:
   - id: trust_civil_service
@@ -277,8 +277,15 @@ variables:
       w3: q16
       w4: q16
       w5: q54
-      w6: q16
-    note: "W5 uses q54 (different question block for media trust)"
+      w6: null
+    note: |
+      W5 uses q54 (different question block for media trust). W6 dropped
+      the media-trust battery entirely — q11-q17 in every W6 country file
+      is the standard institutional trust battery ending at NGOs (q17),
+      with NO trust-in-newspapers item anywhere in W6. Previously the YAML
+      mistakenly mapped w6: q16, which silently aliased trust_newspapers
+      W6 to trust_election_commission W6 values. Corrected to null on
+      2026-05-13.
     scale:
       min: 1
       max: 4
@@ -302,13 +309,10 @@ variables:
         w5:
           method: r_function
           fn: safe_6pt_to_4pt
-        w6:
-          method: r_function
-          fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5, w6]
+        - waves: [w1, w2, w3, w4, w5]
           phrase: "newspaper"
   - id: trust_ngos
     concept: institutional_trust
@@ -532,8 +536,15 @@ variables:
       w3: q17
       w4: q17
       w5: q53
-      w6: q17
-    note: "W5 uses q53 (different question block for media trust)"
+      w6: null
+    note: |
+      W5 uses q53 (different question block for media trust). W6 dropped
+      the media-trust battery entirely — verified across all 12 W6 country
+      .sav files: q11-q17 = parliament/civil-service/military/police/local-
+      government/election-commission/NGOs, with NO trust-in-television
+      item anywhere in W6. Previously the YAML mistakenly mapped w6: q17,
+      which silently aliased trust_television W6 to trust_ngos W6 values.
+      Corrected to null on 2026-05-13.
     scale:
       min: 1
       max: 4
@@ -557,11 +568,8 @@ variables:
         w5:
           method: r_function
           fn: safe_6pt_to_4pt
-        w6:
-          method: r_function
-          fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w1, w2, w3, w4, w5, w6]
+        - waves: [w1, w2, w3, w4, w5]
           phrase: "television|TV"
