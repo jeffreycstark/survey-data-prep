@@ -32,6 +32,11 @@
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/loader" }
+    },
+    "acknowledged_disagreements": {
+      "description": "Optional list of (variable × waves × countries) cells where the diagnostic's sign_disagreement flag is a DOCUMENTED measurement-validity finding rather than a coding bug — typically cross-cultural, political-context, or wave-specific patterns the harmonization can't fix because they aren't fixes (the paper has to engage analytically). D3 downgrades matching cells from status='sign_disagreement' to status='ok_acknowledged' and propagates the reason text into the per-row CSV + run_all SUMMARY.md so the finding stays visible without inflating the fail count. New disagreements that don't match any acknowledgment continue to fire as fail rows.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/acknowledgment" }
     }
   },
 
@@ -91,10 +96,10 @@
         "id": { "$ref": "#/$defs/varId" },
         "expected_sign": { "$ref": "#/$defs/signEnum" },
         "justification": {
-          "description": "One-sentence substantive justification (10-500 chars) citing literature OR codebook semantics. NOT tautological: 'they're related' is rejected on review even though the schema accepts it. Forces the author to write a real reason that an audit reviewer can evaluate.",
+          "description": "Substantive justification (10-1500 chars) citing literature OR codebook semantics. NOT tautological: 'they're related' is rejected on review even though the schema accepts it. Forces the author to write a real reason an audit reviewer can evaluate. Upper bound widened from 500 to 1500 in 2026-05-13 to accommodate empirically-grounded justifications that document the substantive history of why a loader's expected_sign was reassigned (e.g. dem_extent_current's 'critical citizens' demotion from positive to either, which is a multi-clause explanation citing Norris 2011 + observed cross-country pattern).",
           "type": "string",
           "minLength": 10,
-          "maxLength": 500
+          "maxLength": 1500
         },
         "min_correlation": {
           "description": "Loaders with |observed_correlation| below this threshold fire a 'weak loader' warning rather than a sign-disagreement error. Defaults to 0.05 in the diagnostic if omitted.",
@@ -136,6 +141,53 @@
           "items": { "type": "string" }
         }
       ]
+    },
+
+    "acknowledgment": {
+      "description": "One documented sign-disagreement finding. The diagnostic downgrades any (variable × wave × country) cell matching this acknowledgment from status='sign_disagreement' to status='ok_acknowledged'. The reason text is propagated to the per-row CSV and the audit SUMMARY so the finding stays visible.",
+      "type": "object",
+      "required": ["variable", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "variable": {
+          "description": "Snake-case loader id. Must match a declared loader in this anchor's loaders[].",
+          "$ref": "#/$defs/varId"
+        },
+        "countries": {
+          "description": "Optional list of country codes (integers for ABS — 4=China, 11=Vietnam, etc. — or string ISO codes for AFRO). Restricts the acknowledgment to per-country rows where row.country ∈ this list. The literal token '<pooled>' can be included to ALSO acknowledge the pooled (cross-country) row for the same (variable × wave) — useful when the regime-conformity pattern dominates the pooled aggregate. If countries is omitted, the acknowledgment matches every row for the (variable × waves) combination. Accepts a scalar code OR an array; jsonlite::toJSON(auto_unbox=TRUE) collapses length-1 arrays to scalars and the schema must accept both shapes.",
+          "oneOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "integer" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "oneOf": [
+                  { "type": "string", "minLength": 1 },
+                  { "type": "integer" }
+                ]
+              }
+            }
+          ]
+        },
+        "waves": {
+          "description": "Optional list of wave keys. Restricts the acknowledgment to per-wave rows where row.wave ∈ this list. If omitted, the acknowledgment matches every wave the loader sources.",
+          "oneOf": [
+            { "$ref": "#/$defs/waveKey" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/waveKey" }
+            }
+          ]
+        },
+        "reason": {
+          "description": "Brief (20-500 chars) explanation of why this disagreement is a documented finding rather than a coding bug. Appears verbatim in the per-row CSV's acknowledged_reason column AND in the audit SUMMARY.md 'Acknowledged findings' section. Cite the anchor file's notes block for the longer methodological discussion.",
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 500
+        }
+      }
     }
   }
 }

@@ -200,6 +200,27 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Acknowledged rows from a per-construct CSV (status == "ok_acknowledged").
+# These rows represent documented measurement-validity findings — preserved
+# verbatim in SUMMARY.md so reviewers see them, but counted separately from
+# fails. Returns up to n rows; n defaults large because we currently render
+# all acknowledgments grouped by (variable × reason).
+# ---------------------------------------------------------------------------
+.top_acknowledged_rows <- function(csv_path, n = 10000L) {
+  if (!file.exists(csv_path)) return(data.frame())
+  df <- tryCatch(
+    utils::read.csv(csv_path, stringsAsFactors = FALSE,
+                    na.strings = c("", "NA")),
+    error = function(e) NULL
+  )
+  if (is.null(df) || !"status" %in% names(df)) return(data.frame())
+  ack <- df[df$status == "ok_acknowledged", , drop = FALSE]
+  if (nrow(ack) == 0L) return(data.frame())
+  head(ack, n)
+}
+
+
+# ---------------------------------------------------------------------------
 # Module 1: Layer 1 schema + cross-reference validation.
 #
 # Iterates list_survey_specs(<survey>), parses each YAML, runs
@@ -357,7 +378,9 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     return(list(module = "L4 anchors", status = "skip",
                 summary = "no harmonized rds",
                 first_fails = character(0),
-                ok = 0L, fail = 0L, sign_disagreement = 0L,
+                first_acknowledged = list(),
+                ok = 0L, fail = 0L, acknowledged = 0L,
+                sign_disagreement = 0L,
                 weak = 0L, unreconciled = 0L))
   }
   d <- tryCatch(readRDS(harm_path), error = function(e) NULL)
@@ -365,7 +388,9 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     return(list(module = "L4 anchors", status = "skip",
                 summary = "harmonized rds unreadable",
                 first_fails = character(0),
-                ok = 0L, fail = 0L, sign_disagreement = 0L,
+                first_acknowledged = list(),
+                ok = 0L, fail = 0L, acknowledged = 0L,
+                sign_disagreement = 0L,
                 weak = 0L, unreconciled = 0L))
   }
   cols <- names(d)
@@ -389,7 +414,9 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     return(list(module = "L4 anchors", status = "skip",
                 summary = "no applicable anchors (anchor var absent)",
                 first_fails = character(0),
-                ok = 0L, fail = 0L, sign_disagreement = 0L,
+                first_acknowledged = list(),
+                ok = 0L, fail = 0L, acknowledged = 0L,
+                sign_disagreement = 0L,
                 weak = 0L, unreconciled = 0L))
   }
 
@@ -399,9 +426,10 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   # in sequence and aggregate counts from each per-construct CSV by reading
   # the freshly-written CSV after each run.
   total_ok <- 0L; total_fail <- 0L; total_sign <- 0L
-  total_weak <- 0L; total_unrec <- 0L
+  total_ack <- 0L; total_weak <- 0L; total_unrec <- 0L
   worst_status <- "ok"
   first_fails <- character(0)
+  acknowledged_rows <- list()
   for (af in applicable) {
     construct <- sub("\\.yml$", "", basename(af))
     .log_module(survey, "L4 anchor diagnostic (D3)", construct)
@@ -411,6 +439,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     csv_path <- here::here("audit/reports", survey, "04-anchors.csv")
     counts <- .count_csv_statuses(csv_path)
     total_ok    <- total_ok    + .count_get(counts, "ok")
+    total_ack   <- total_ack   + .count_get(counts, "ok_acknowledged")
     total_fail  <- total_fail  + .count_get(counts, "sign_disagreement")
     total_sign  <- total_sign  + .count_get(counts, "sign_disagreement")
     total_weak  <- total_weak  + .count_get(counts, "weak")
@@ -431,16 +460,36 @@ source(here::here("src/r/harmonize/validate_spec.R"))
         first_fails <- c(first_fails, head(lines, slots))
       }
     }
+    # Use a high cap: each CSV is rewritten per-construct so this is bounded
+    # by the rows-per-construct, and acknowledgments are typically O(100s).
+    ack_df <- .top_acknowledged_rows(csv_path, n = 10000L)
+    if (nrow(ack_df) > 0L) {
+      for (i in seq_len(nrow(ack_df))) {
+        r <- ack_df[i, ]
+        acknowledged_rows[[length(acknowledged_rows) + 1L]] <- list(
+          construct = construct,
+          variable  = r$variable %||% "?",
+          wave      = r$wave %||% "?",
+          country   = as.character(r$country %||% "?"),
+          expected  = r$expected_sign %||% "?",
+          observed  = r$observed_sign %||% "?",
+          reason    = r$acknowledged_reason %||% ""
+        )
+      }
+    }
   }
   list(
     module = "L4 anchors",
     status = worst_status,
     ok = total_ok, fail = total_fail,
+    acknowledged = total_ack,
     sign_disagreement = total_sign, weak = total_weak,
     unreconciled = total_unrec,
     first_fails = first_fails,
-    summary = sprintf("%d constructs, %d sign-disagreements, %d weak",
-                      length(applicable), total_sign, total_weak)
+    first_acknowledged = acknowledged_rows,
+    summary = sprintf(
+      "%d constructs, %d sign-disagreements, %d weak",
+      length(applicable), total_sign, total_weak)
   )
 }
 
@@ -638,11 +687,15 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   )
 }
 
-# Compact cell: icon + count summary.
+# Compact cell: icon + count summary. Appends "(+N ack)" when the module
+# downgraded N rows from sign_disagreement to ok_acknowledged via the anchor
+# spec's acknowledged_disagreements: block.
 .cell <- function(res) {
   ic <- .status_icon(res$status %||% "?")
   s <- res$summary %||% ""
-  if (!nzchar(s)) ic else sprintf("%s %s", ic, s)
+  ack <- as.integer(res$acknowledged %||% 0L)
+  ack_str <- if (ack > 0L) sprintf(" (+%d ack)", ack) else ""
+  if (!nzchar(s)) paste0(ic, ack_str) else sprintf("%s %s%s", ic, s, ack_str)
 }
 
 
@@ -727,6 +780,52 @@ source(here::here("src/r/harmonize/validate_spec.R"))
       csv_link <- sprintf("`audit/reports/%s/`", fr$survey)
       w(sprintf("%d. **[%s]** %s — %s  \n   See %s",
                 i, fr$survey, fr$module, fr$line, csv_link))
+    }
+  }
+  w("")
+
+  # ---- Acknowledged findings -------------------------------------------
+  # Anchor-diagnostic sign-disagreement rows whose anchor file's
+  # `acknowledged_disagreements:` block downgrades them from fail to
+  # ok_acknowledged. Surfaced here verbatim so the documented measurement-
+  # validity findings stay visible to a reviewer even though they don't
+  # count toward the fail tally.
+  ack_rows <- list()
+  for (s in surveys_attempted) {
+    r <- all_results[[s]]
+    if (is.null(r)) next
+    m <- r$L4_anchor
+    if (is.null(m)) next
+    if (length(m$first_acknowledged %||% list()) == 0L) next
+    for (a in m$first_acknowledged) {
+      ack_rows[[length(ack_rows) + 1L]] <- c(list(survey = s), a)
+    }
+  }
+  w("## Acknowledged findings (documented measurement-validity)")
+  w("")
+  if (length(ack_rows) == 0L) {
+    w("_No acknowledged disagreements in this run._")
+  } else {
+    w("Anchor-diagnostic rows the anchor YAMLs flag as documented findings")
+    w("(not coding bugs) via `acknowledged_disagreements:`. Counted as")
+    w("`ok_acknowledged` rather than fails. Group: variable × reason.")
+    w("")
+    # Group by (variable, reason); collapse waves/countries within each group.
+    keys <- vapply(ack_rows, function(x)
+      paste(x$variable, x$reason, sep = "::"), character(1))
+    for (k in unique(keys)) {
+      grp <- ack_rows[keys == k]
+      v <- grp[[1]]$variable
+      reason <- grp[[1]]$reason
+      surveys_in_grp <- unique(vapply(grp, function(x) x$survey, character(1)))
+      waves <- unique(vapply(grp, function(x) x$wave, character(1)))
+      countries <- unique(vapply(grp, function(x) x$country, character(1)))
+      w(sprintf("- **%s** (%s, %d row%s): waves=%s; countries=%s  ",
+                v, paste(surveys_in_grp, collapse = ","), length(grp),
+                if (length(grp) == 1L) "" else "s",
+                paste(sort(waves), collapse = ","),
+                paste(sort(countries), collapse = ",")))
+      w(sprintf("  Reason: %s", reason))
     }
   }
   w("")
@@ -830,6 +929,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 .print_tldr <- function(all_results, surveys_attempted, surveys_with_data,
                          jeff_open, summary_path, exit_code) {
   total_fail <- 0L
+  total_ack  <- 0L
   per_survey_fail <- integer(0)
   for (s in surveys_attempted) {
     r <- all_results[[s]]
@@ -838,6 +938,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     for (mod_name in names(r)) {
       m <- r[[mod_name]]
       sf <- sf + as.integer(m$fail %||% 0L)
+      total_ack <- total_ack + as.integer(m$acknowledged %||% 0L)
     }
     per_survey_fail <- c(per_survey_fail, setNames(sf, s))
     total_fail <- total_fail + sf
@@ -852,6 +953,9 @@ source(here::here("src/r/harmonize/validate_spec.R"))
               length(surveys_attempted), length(surveys_with_data)))
   cat(sprintf("Total fails: %d%s\n", total_fail,
               if (nzchar(top_str)) sprintf(" (%s)", top_str) else ""))
+  if (total_ack > 0L) {
+    cat(sprintf("Acknowledged findings (anchor disagreements): %d\n", total_ack))
+  }
   cat(sprintf("%d open finding%s in JEFF_MUST_INVESTIGATE.md\n",
               jeff_open, if (jeff_open == 1L) "" else "s"))
   cat(sprintf("Full report: %s\n",

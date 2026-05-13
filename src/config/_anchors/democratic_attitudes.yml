@@ -266,3 +266,99 @@ loaders:
       the full four-set battery. Cross-wave comparability is therefore
       degraded, which is an additional reason for either rather than
       a directional claim.
+
+# ============================================================================
+# ACKNOWLEDGED DISAGREEMENTS — documented measurement-validity findings
+# ============================================================================
+# These are sign_disagreement cells D3 surfaces that we have INVESTIGATED
+# and documented as substantive findings rather than coding bugs. The
+# harmonization itself is correct in every case below; the audit is doing
+# what it's supposed to (catching cross-wave / cross-country inconsistency)
+# but the inconsistency is a real-world property of the construct, not an
+# engine error. Per-row evidence (with sign + magnitude) remains in
+# audit/reports/abs/04-anchors.csv. The audit's SUMMARY.md surfaces a digest.
+#
+# Adding/removing entries here is a substantive editorial decision — the
+# countries / waves / reason should be evidence-backed.
+
+acknowledged_disagreements:
+
+  # -------------------------------------------------------------------------
+  # The authoritarianism battery: regime-conformity + hybrid-regime variation
+  # -------------------------------------------------------------------------
+  # Theory (encoded in expected_sign: negative for each of these loaders)
+  # predicts: people who endorse single-party / military / strong-leader rule
+  # should be LESS satisfied with how democracy works. Empirically this holds
+  # cleanly only in mature liberal-democratic ABS countries (Japan=1,
+  # Australia=15). Across the other 14 countries the correlation either
+  # inverts (regime-conformity in authoritarian states — China, Vietnam,
+  # Cambodia, Myanmar — where regime supporters endorse the existing
+  # arrangement AND report satisfaction with "democracy" as the regime
+  # defines it) or weakens / flips at the country-pooled level for reasons
+  # that cluster differently per item:
+  #   - Hybrid regimes (Singapore=10, Malaysia=13) — satisfaction tracks the
+  #     existing developmental-authoritarian arrangement.
+  #   - Young democracies (Indonesia=9, Philippines=6, Korea=3, Taiwan=7) —
+  #     institutional-distrust pulls satisfaction down even among
+  #     anti-authoritarian respondents, attenuating the correlation.
+  # The audit's flagging this pattern was the goal. We're declaring it as a
+  # documented finding so the SUMMARY's "fail" count tracks engine bugs
+  # rather than this anticipated substantive heterogeneity. New countries
+  # (e.g. India=18 added in W5) inherit the same caveat.
+
+  - variable: single_party_rule
+    countries: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, "<pooled>"]
+    reason: >
+      Regime-conformity + hybrid-regime + young-democracy variation. Theory's
+      negative correlation between single-party-rule endorsement and
+      democratic satisfaction holds only in mature liberal democracies
+      (Japan=1, Australia=15). In the other ABS countries the relationship
+      inverts (authoritarian states) or attenuates (hybrid / young democracies).
+      Documented; see the top-level notes block.
+
+  - variable: military_rule
+    countries: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, "<pooled>"]
+    reason: >
+      Same regime-conformity + hybrid-regime pattern as single_party_rule.
+      Particularly pronounced in countries with recent military-government
+      history (Thailand, Indonesia, Myanmar) where 'military rule' has
+      institutional rather than purely abstract meaning.
+
+  - variable: strongman_rule
+    countries: [2, 3, 4, 6, 8, 10, 11, 12, 13, 14, 18, "<pooled>"]
+    reason: >
+      Same regime-conformity pattern, somewhat attenuated relative to
+      single_party_rule and military_rule (W6 starts showing the theoretical
+      negative direction in some democracies). Documented; see the top-level
+      notes block.
+
+  # -------------------------------------------------------------------------
+  # Hong Kong contested-democracy items (W4 / W5)
+  # -------------------------------------------------------------------------
+  # ABS Hong Kong (country=2) in the post-Umbrella (W4 = 2014-15) and
+  # anti-extradition (W5 = 2018-19) periods shows a recurring sign-flip
+  # pattern: respondents who endorse "democracy is the best form of
+  # government" or "democracy is suitable for our country" are highly
+  # dissatisfied with how HK's democracy currently works, while pro-Beijing
+  # respondents who reject the abstract claim are satisfied with HK's
+  # "democracy" as the regime defines it. Not a harmonization issue;
+  # genuine cross-temporal political-contestation effect.
+
+  - variable: dem_best_form
+    countries: [2]
+    waves: [w4, w5]
+    reason: >
+      Hong Kong post-Umbrella / anti-extradition political contestation:
+      pro-democracy respondents are dissatisfied with HK reality while
+      pro-Beijing respondents are satisfied with HK's 'democracy' as the
+      regime defines it. 96%+ of dem_best_form country × wave combinations
+      align with the positive sign as expected; only HK W4/W5 inverts.
+
+  - variable: democracy_suitability
+    countries: [2]
+    waves: [w5]
+    reason: >
+      Same HK political-contestation pattern as dem_best_form (W4 + W5);
+      democracy_suitability specifically inverts in HK W5 (2018-19, the
+      anti-extradition period). Genuine local political effect, not a
+      harmonization error.

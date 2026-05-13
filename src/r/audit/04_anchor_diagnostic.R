@@ -160,6 +160,61 @@ normalize_wave_key <- function(x, survey = NULL) {
 
 
 # ---------------------------------------------------------------------------
+# Apply anchor_spec$acknowledged_disagreements: downgrade matching
+# sign_disagreement rows to ok_acknowledged and attach the reason text.
+#
+# A row r matches an acknowledgment entry a if:
+#   r$status == "sign_disagreement"
+#   a$variable == r$variable
+#   (no a$waves  OR r$wave    %in% a$waves)
+#   (no a$countries OR as.character(r$country) %in% as.character(a$countries))
+#
+# `<pooled>` is a literal sentinel — include it in a$countries to acknowledge
+# the cross-country pooled row as well as per-country rows.
+# ---------------------------------------------------------------------------
+.apply_acknowledgments <- function(results, anchor_spec) {
+  # Add the acknowledged_reason column up-front so the CSV schema is stable
+  # regardless of whether any acknowledgments matched.
+  results$acknowledged_reason <- NA_character_
+
+  ack_list <- anchor_spec$acknowledged_disagreements %||% list()
+  if (length(ack_list) == 0L || nrow(results) == 0L) {
+    return(results)
+  }
+
+  # Normalize: each acknowledgment may have countries as scalar or array, same
+  # for waves. Coerce countries to character for cross-type comparison
+  # (ABS integer vs Afro ISO string vs '<pooled>' sentinel).
+  for (a_idx in seq_along(ack_list)) {
+    a <- ack_list[[a_idx]]
+    a_var      <- a$variable
+    a_reason   <- a$reason
+    a_countries <- if (!is.null(a$countries)) as.character(unlist(a$countries)) else NULL
+    a_waves     <- if (!is.null(a$waves))     as.character(unlist(a$waves))     else NULL
+
+    if (is.null(a_var) || is.null(a_reason)) next
+
+    wave_match    <- if (is.null(a_waves))     rep(TRUE, nrow(results)) else results$wave %in% a_waves
+    country_match <- if (is.null(a_countries)) rep(TRUE, nrow(results)) else as.character(results$country) %in% a_countries
+
+    match_idx <- which(
+      results$status   == "sign_disagreement" &
+      results$variable == a_var &
+      wave_match &
+      country_match
+    )
+
+    if (length(match_idx) == 0L) next
+
+    results$status[match_idx]              <- "ok_acknowledged"
+    results$acknowledged_reason[match_idx] <- a_reason
+  }
+
+  results
+}
+
+
+# ---------------------------------------------------------------------------
 # Public: parse + lightly validate an anchor file.
 #
 # Does NOT enforce the JSON Schema — that's a separate concern owned by D1's
@@ -495,22 +550,31 @@ run_anchor_diagnostic <- function(anchor_file, survey, harmonized = NULL,
 
   results <- compute_anchor_correlations(anchor_spec, harmonized, survey)
 
+  # Apply acknowledged_disagreements: downgrade matching sign_disagreement rows
+  # to status='ok_acknowledged' and propagate the reason text into a new
+  # acknowledged_reason column. New disagreements that don't match any
+  # acknowledgment continue to fire as sign_disagreement.
+  results <- .apply_acknowledgments(results, anchor_spec)
+
   csv_path <- file.path(output_dir, "04-anchors.csv")
   write.csv(results, csv_path, row.names = FALSE)
 
   # ----- Stdout summary ----------------------------------------------------
   status_counts <- if (nrow(results) > 0) {
     as.list(table(factor(results$status,
-                         levels = c("ok", "weak", "sign_disagreement",
+                         levels = c("ok", "ok_acknowledged", "weak",
+                                    "sign_disagreement",
                                     "unreconciled", "skip"))))
   } else {
-    list(ok = 0, weak = 0, sign_disagreement = 0, unreconciled = 0, skip = 0)
+    list(ok = 0, ok_acknowledged = 0, weak = 0, sign_disagreement = 0,
+         unreconciled = 0, skip = 0)
   }
   cat(sprintf("\n[anchor diagnostic] construct=%s survey=%s\n",
               anchor_spec$construct, survey))
-  cat(sprintf("  rows: %d (ok=%d, weak=%d, sign_disagreement=%d, unreconciled=%d, skip=%d)\n",
+  cat(sprintf("  rows: %d (ok=%d, acknowledged=%d, weak=%d, sign_disagreement=%d, unreconciled=%d, skip=%d)\n",
               nrow(results),
               status_counts$ok %||% 0,
+              status_counts$ok_acknowledged %||% 0,
               status_counts$weak %||% 0,
               status_counts$sign_disagreement %||% 0,
               status_counts$unreconciled %||% 0,
