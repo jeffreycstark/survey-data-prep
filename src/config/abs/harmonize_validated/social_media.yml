@@ -161,12 +161,16 @@ variables:
       # drop. Without these declarations the audit flags the drops as coverage
       # loss; with them, the audit correctly classifies them as expected.
       # Per the recode function notes above:
-      #   W2: 0 = "not aware" -> NA
-      #   W3: (no equivalent code in some country files)
-      #   W4: 0 = "not applicable" -> NA
-      #   W5/W6: 0 = "no access" -> NA
+      #   W2: 0 = "not aware" -> NA; 7/8/9 = DK/refused (W2/W3 are 1-6
+      #     substantive so 7/8/9 are out-of-scale missing).
+      #   W3: 7/8/9 = DK/refused (same as W2). (W3 has no code 0.)
+      #   W4: 0 = "not applicable" -> NA.
+      #   W5/W6: 0 = "no access" -> NA. 7/8/9 ARE valid scale responses
+      #     in W5/W6 (a few times/year, hardly ever, never) — do NOT
+      #     declare 7/8/9 missing for W5/W6.
       coverage_missing_codes_by_wave:
-        w2: [0]
+        w2: [0, 7, 8, 9]
+        w3: [7, 8, 9]
         w4: [0]
         w5: [0]
         w6: [0]

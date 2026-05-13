@@ -9,8 +9,12 @@ missing_conventions:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
   treat_as_na_never_tried:
-    codes: [-1, 0, 5, 7, 8, 9, 97, 98, 99, 1099]
-    description: "Standard missing codes plus 5=Never tried"
+    codes: [-1, 0, 5, 7, 8, 9, 10, 97, 98, 99, 1099]
+    description: |
+      Standard missing codes plus codes for "Never tried this service":
+      5=Never tried (W2-W5 convention); 10=Have not tried using this
+      service (W6 convention, code renumbered when W6 questionnaire
+      added the substantive 1-4 scale at the front).
 variables:
   - id: access_childcare
     concept: public_services

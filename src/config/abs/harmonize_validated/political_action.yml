@@ -1548,6 +1548,17 @@ variables:
           note: "W4: raw 1,2 (done) → 1; raw 3 (Never) → 0"
     qc:
       valid_range: [0, 1]
+      # contact_binary_missing keeps codes 0 and 9 live so the wave-specific
+      # recode functions can interpret them. In W2-W6 code 9 = "Decline to
+      # answer" (missing) and code 0 = "Not applicable" (W6, very rare),
+      # both correctly mapped to NA by the recode functions. Declare those
+      # wave-specific drops here so the coverage check sees them as intent.
+      coverage_missing_codes_by_wave:
+        w2: [0, 9]
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "elected.*official|legislative.*representative"
@@ -1613,6 +1624,12 @@ variables:
           note: "W4: raw 1,2 → 1; raw 3 → 0"
     qc:
       valid_range: [0, 1]
+      coverage_missing_codes_by_wave:
+        w2: [0, 9]
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "civil servant|official"
@@ -1683,6 +1700,18 @@ variables:
           note: "W4: raw 1,2 → 1; raw 3 → 0"
     qc:
       valid_range: [0, 1]
+      coverage_missing_codes_by_wave:
+        # NOTE: W2 30% loss is from a SEPARATE bug — country-specific concept
+        # substitution in HK/Taiwan/Indonesia (see editorial_note above) is
+        # corrected by a post-hoc NA assignment in 2_harmonize_all.R. The
+        # audit cannot see the country-level exclusion. The [0, 9] declaration
+        # here handles the universal code-9 drops; the country-specific cells
+        # need an engine-level skip_coverage_check_by_wave (deferred).
+        w2: [0, 9]
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w2, w3, w4, w5, w6]
           phrase: "influential|traditional leader|community leader"
@@ -1743,6 +1772,12 @@ variables:
           note: "W4: raw 1,2 → 1; raw 3 → 0"
     qc:
       valid_range: [0, 1]
+      coverage_missing_codes_by_wave:
+        w2: [0, 9]
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w2, w3, w4, w5, w6]
           phrase: "petition|raise.*issue"
@@ -1804,6 +1839,14 @@ variables:
           note: "W4: raw 1,2 → 1; raw 3 → 0"
     qc:
       valid_range: [0, 1]
+      coverage_missing_codes_by_wave:
+        # W2 has 482 raw-0 cases ("Not applicable") plus 145 raw-9 cases.
+        # The function maps both to NA — declare both as intent.
+        w2: [0, 9]
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "demonstration|protest"
@@ -1866,6 +1909,11 @@ variables:
           note: "W4: raw 1,2 → 1; raw 3 → 0"
     qc:
       valid_range: [0, 1]
+      coverage_missing_codes_by_wave:
+        w3: [9]
+        w4: [9]
+        w5: [9]
+        w6: [0, 9]
       validate:
         - waves: [w1, w3, w4, w5, w6]
           phrase: "news media|media"
