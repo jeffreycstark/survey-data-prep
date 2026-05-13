@@ -667,6 +667,14 @@
   requires_data: false
   notes: "Afro R2-R8: 0='Not a democracy'->NA; 1-4 identity. Monotone over valid range."
 
+- fn: recode_arab_gender_w5
+  input_scale: [1, 5]
+  output_scale: [1, 2]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "Arab Barometer W5 gender: standard 1=Male/2=Female + W5 country-16 non-standard 3=MALE/5=FEMALE; maps 1,3->1 and 2,5->2. Categorical."
+
 - fn: recode_afro_dem_pref_r1
   input_scale: [1, 3]
   output_scale: [1, 3]

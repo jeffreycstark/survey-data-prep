@@ -42,6 +42,7 @@ source(here::here("src/r/utils/recoding.R"))
 #' Extract missing codes from spec (per-variable aware)
 get_missing_codes <- function(spec, var_spec = NULL) {
   codes <- c()
+  has_explicit_declaration <- FALSE
 
   extract_codes <- function(convention) {
     if (is.null(convention)) return(numeric(0))
@@ -51,19 +52,26 @@ get_missing_codes <- function(spec, var_spec = NULL) {
     as.numeric(convention)
   }
 
-  # Variable-specific missing codes take precedence
+  # Variable-specific missing codes take precedence. Track whether the
+  # variable explicitly declared its convention — an empty convention
+  # (codes: []) is a valid intentional declaration and must not silently
+  # fall back to treat_as_na.
   if (!is.null(var_spec) && !is.null(var_spec$missing)) {
     if (!is.null(var_spec$missing$codes)) {
       codes <- c(codes, as.numeric(var_spec$missing$codes))
+      has_explicit_declaration <- TRUE
     }
     if (!is.null(var_spec$missing$use_convention)) {
       key <- var_spec$missing$use_convention
       codes <- c(codes, extract_codes(spec$missing_conventions[[key]]))
+      has_explicit_declaration <- TRUE
     }
   }
 
-  # Fallback to default convention
-  if (length(codes) == 0 && !is.null(spec$missing_conventions$treat_as_na)) {
+  # Fallback to default convention only when the variable did NOT explicitly
+  # declare its missing-code handling.
+  if (!has_explicit_declaration &&
+      !is.null(spec$missing_conventions$treat_as_na)) {
     codes <- c(codes, extract_codes(spec$missing_conventions$treat_as_na))
   }
 

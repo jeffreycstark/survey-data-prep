@@ -1896,6 +1896,27 @@ recode_age_cohort <- function(x, ...) {
   )
 }
 
+#' Recode Arab Barometer W5 gender to 1=Male, 2=Female
+#'
+#' W5 country 16 used non-standard codes 3=MALE, 5=FEMALE (per the SPSS
+#' value labels: "3.  MALE", "5.  FEMALE"). Other countries in W5 and
+#' all other waves use the standard 1=Male/2=Female. Map both schemes
+#' to the standard. 1,070 cases would otherwise be NA-coerced by the
+#' [1,2] valid_range.
+recode_arab_gender_w5 <- function(x,
+                                   data = NULL,
+                                   var_name = NULL,
+                                   missing_codes = c(0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999),
+                                   validate_all = NULL) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% c(1, 3) ~ 1,
+    x %in% c(2, 5) ~ 2,
+    TRUE ~ NA_real_
+  )
+}
+
 # ==============================================================================
 # PARTY CLOSENESS — AFROBAROMETER
 # ==============================================================================

@@ -10,8 +10,11 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999]
-    description: "Arab Barometer missing codes (varies by wave)"
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999, 99994, 99996, 99998, 99999]
+    description: |
+      Arab Barometer missing codes (varies by wave). 99994/99996/99998/99999
+      added 2026-05-13 for W2-W3 dem_feature_* — these are W2/W3-specific
+      DK/refused markers (Tunisia/Egypt fielding used 5-digit refusal codes).
 
 variables:
   # ===========================================================================
@@ -54,7 +57,13 @@ variables:
       w5: null
       w7: null
       w8: null
-    note: "W2-W3 only."
+    note: |
+      W2-W3 only. W2 raw has 81 cases of country-specific extension codes
+      (2001-10506: "Other: religious freedom / security / etc.") that fall
+      outside the [1, 10] standard scale. The YAML's analytic choice is to
+      keep only the universal 1-10 codes; the extension codes are declared
+      below so the audit recognizes them as intentional drops, not as
+      coverage loss.
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -62,3 +71,7 @@ variables:
         method: identity
     qc:
       valid_range: [1, 10]
+      coverage_missing_codes_by_wave:
+        w2: [2001, 2002, 2005, 2006, 3001, 3502, 3503, 3504, 3506, 3507,
+             8001, 8002, 8003, 8004, 8005, 8006, 9001, 10001,
+             10502, 10503, 10504, 10505, 10506]

@@ -5,8 +5,18 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999]
-    description: "Arab Barometer missing codes"
+    codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 997, 998, 999, 99999]
+    description: |
+      Arab Barometer missing codes. 99999 added 2026-05-13 for age W7/W8
+      where the raw .sav uses 99999 = refusal/missing for the Q1001
+      continuous-age variable (502 cases in W7, 214 in W8).
+  no_missing_codes:
+    codes: []
+    description: |
+      Empty convention for derived numeric variables whose values are
+      ordinary integers (e.g. int_month 1-12, int_year 2007-2024) and
+      would otherwise collide with the treat_as_na codes 8/9 (= month
+      Aug/Sep get incorrectly excluded from raw_valid).
 
 variables:
   - id: gender
@@ -20,12 +30,22 @@ variables:
       w5: Q1002
       w7: Q1002
       w8: Q1002
-    note: "W2 uses 0=missing,1=male,2=female; W5 has extra codes 3=MALE,5=FEMALE (cleaned by missing_conventions + valid_range)"
+    note: |
+      W2 uses 0=missing, 1=male, 2=female. W5 country 16 uses non-standard
+      codes 3=MALE, 5=FEMALE (1,070 respondents) — value labels in the W5
+      .sav confirm "3.  MALE" and "5.  FEMALE". Other W5 countries and
+      all other waves use standard 1/2. Previously these 1,070 cases were
+      NA-coerced by valid_range [1,2]; now mapped via recode_arab_gender_w5
+      to preserve the data (3→1, 5→2).
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
+      exceptions:
+        w5:
+          method: r_function
+          fn: recode_arab_gender_w5
     qc:
       valid_range: [1, 2]
 
@@ -106,7 +126,7 @@ variables:
 
   - id: urban_rural
     concept: demographics
-    description: "Urban/Rural residence"
+    description: "Urban/Rural/Camp residence (1=Urban, 2=Rural, 3=Refugee camp)"
     type: nominal
     source:
       w2: q13
@@ -115,14 +135,26 @@ variables:
       w5: q13
       w7: Q13
       w8: Q13
-    note: "W5 uses lowercase q13, labeled 'SETTLEMENT'"
+    note: |
+      W5 uses lowercase q13, labeled 'SETTLEMENT'. Raw scale is 3-category
+      in W4-W8 (1=Urban, 2=Rural, 3=Refugee camp). 159-348 respondents per
+      wave from refugee camps were previously NA-coerced by the [1,2]
+      valid_range; widened to [1,3] on 2026-05-13 to preserve the
+      substantive third category.
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Urban"
+        2: "Rural"
+        3: "Refugee camp"
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 2]
+      valid_range: [1, 3]
 
   - id: int_date
     concept: identifiers
@@ -135,7 +167,12 @@ variables:
       w5: null
       w7: DATE
       w8: DATE
-    note: "W3=Date class, W7/W8=character 'YYYY-MM-DD'. W2/W4/W5 have no date variable."
+    note: |
+      W3=Date class, W7/W8=character 'YYYY-MM-DD'. W2/W4/W5 have no date
+      variable. Harmonized output is R Date class — typeof=double but
+      is.numeric() returns FALSE (Date class blocks numeric semantics),
+      so the type_stability check sees storage as "double" not "numeric".
+      Skip the type check for this variable.
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -144,6 +181,7 @@ variables:
         fn: extract_date
     qc:
       skip_range_check: true
+      skip_type_stability: true
 
   - id: int_month
     concept: identifiers
@@ -156,12 +194,17 @@ variables:
       w5: null
       w7: DATE
       w8: DATE
-    note: "Extracted from date/DATE. W2/W4/W5 have no date variable."
+    note: |
+      Extracted from date/DATE. W2/W4/W5 have no date variable. Uses an
+      empty missing-codes convention because month values 8 (August) and
+      9 (September) would collide with the treat_as_na codes — 1,232 W8
+      September interviews were incorrectly excluded from raw_valid before
+      this was overridden.
     scale:
       min: 1
       max: 12
     missing:
-      use_convention: treat_as_na
+      use_convention: no_missing_codes
     harmonize:
       default:
         method: r_function
