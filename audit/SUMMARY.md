@@ -1,47 +1,47 @@
-# Audit summary — 2026-05-13 15:42:57 +07
+# Audit summary — 2026-05-14 20:16:12 +07
 
-git_commit: `355e2ca`  git_dirty: **true**
+git_commit: `bf6ec3a`  git_dirty: **true**
 
 Mode: `--quick` (G1, F4 skipped)
-Runtime: 99.8 s
+Runtime: 116.3 s
 
 ## Per-survey status
 
 | Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L5 drift | L6 determ | L6 input |
 |--------|-----------|---------------|-------------|------------|-----------|----------|-----------|----------|
-| abs | OK 28/28 | FAIL err=27 warn=130 | skip --quick | FAIL 3 constructs, 7 sign-disagreements, 435 weak (+107 ack) | OK 512 ok, 0 fail, 0 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
+| abs | OK 28/28 | FAIL err=3 warn=89 | skip --quick | FAIL 3 constructs, 7 sign-disagreements, 444 weak (+107 ack) | OK 510 ok, 0 fail, 0 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
 | wvs | OK 14/14 | skip needs harmonization rerun | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 219 skip | skip --quick | skip no manifest | skip no manifest |
-| lbs | OK 9/9 | FAIL err=8 warn=2 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 334 skip | skip --quick | skip no manifest | skip no manifest |
-| afro | OK 14/14 | FAIL err=45 warn=24 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 24 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| arab-barometer | OK 9/9 | FAIL err=12 warn=28 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 78 skip | skip --quick | skip no manifest | skip no manifest |
-| kamos | OK 6/6 | FAIL err=5 warn=2 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 8 skip | skip --quick | skip no manifest | skip no manifest |
+| lbs | OK 9/9 | OK err=0 warn=19 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 334 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
+| afro | OK 14/14 | OK err=0 warn=25 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 24 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
+| arab-barometer | OK 9/9 | OK err=0 warn=25 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 78 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
+| kamos | OK 6/6 | OK err=0 warn=6 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 8 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
 | kgss | OK 18/18 | OK err=0 warn=64 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 790 skip | skip --quick | skip no manifest | skip no manifest |
 | kipa-corruption | OK 4/4 | skip needs harmonization rerun | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 3 skip | skip --quick | skip no manifest | skip no manifest |
-| kinu | OK 8/8 | OK err=0 warn=219 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 43 skip | skip --quick | OK all paths match | OK all inputs unchanged |
-| ipus | OK 3/3 | FAIL err=1 warn=0 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 87 skip | skip --quick | OK all paths match | OK all inputs unchanged |
+| kinu | OK 8/8 | OK err=0 warn=219 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 43 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
+| ipus | OK 3/3 | OK err=0 warn=0 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 86 skip | skip --quick | OK all paths match | OK all inputs unchanged |
 
 ## Top audit findings
 
-1. **[afro]** L3 invariants — dem_support_preferable/w1/coverage: 5.6% coverage loss (1205 of 21378 values)  
-   See `audit/reports/afro/`
-2. **[afro]** L3 invariants — urban_rural/w5/coverage: 1.3% coverage loss (687 of 51587 values)  
-   See `audit/reports/afro/`
-3. **[afro]** L3 invariants — urban_rural/w6/coverage: 1.1% coverage loss (600 of 53935 values)  
-   See `audit/reports/afro/`
-4. **[abs]** L3 invariants — trust_ngos/w6/coverage: 1.6% coverage loss (151 of 9289 values)  
+1. **[abs]** L4 anchors — economic_evaluations/econ_outlook_1yr/w1: expected=positive observed=negative  
    See `audit/reports/abs/`
-5. **[abs]** L3 invariants — trust_television/w6/coverage: 1.6% coverage loss (151 of 9289 values)  
+2. **[abs]** L4 anchors — economic_evaluations/econ_family_outlook/w1: expected=positive observed=negative  
    See `audit/reports/abs/`
-6. **[abs]** L3 invariants — election_free_fair/w6/coverage: 1.4% coverage loss (198 of 13797 values)  
+3. **[abs]** L4 anchors — economic_evaluations/gov_basic_necessities/w2: expected=positive observed=negative  
    See `audit/reports/abs/`
-7. **[arab-barometer]** L3 invariants — gender/w5/coverage: 3.8% coverage loss (1070 of 27818 values)  
+4. **[abs]** L3 invariants — idnumber/w6/coverage: Gained 19 values (harmonized > raw) - check logic  
+   See `audit/reports/abs/`
+5. **[abs]** L3 invariants — gate_contact_influential/w2/coverage: 30.0% coverage loss (4006 of 13347 values)  
+   See `audit/reports/abs/`
+6. **[abs]** L3 invariants — gate_contact_influential/w2/crosstab: 3 raw values map to multiple outputs  
+   See `audit/reports/abs/`
+7. **[abs]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
+   See `audit/reports/abs/`
+8. **[afro]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
+   See `audit/reports/afro/`
+9. **[arab-barometer]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
    See `audit/reports/arab-barometer/`
-8. **[arab-barometer]** L3 invariants — age/w7/coverage: 1.9% coverage loss (502 of 26148 values)  
-   See `audit/reports/arab-barometer/`
-9. **[arab-barometer]** L3 invariants — age/w8/coverage: 1.4% coverage loss (214 of 15596 values)  
-   See `audit/reports/arab-barometer/`
-10. **[lbs]** L3 invariants — corruption_experience/y2013/coverage: 81.1% coverage loss (15571 of 19195 values)  
-   See `audit/reports/lbs/`
+10. **[kamos]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
+   See `audit/reports/kamos/`
 
 ## Acknowledged findings (documented measurement-validity)
 
@@ -72,14 +72,14 @@ Anchor-diagnostic rows the anchor YAMLs flag as documented findings
 ## Skipped modules (prerequisites missing)
 
 - **wvs**: L3 invariants (needs harmonization rerun); L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 219 skip); L6 determinism (no manifest); L6 input drift (no manifest)
-- **lbs**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 334 skip); L6 determinism (no manifest); L6 input drift (no manifest)
+- **lbs**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 334 skip)
 - **afro**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 24 skip)
-- **arab-barometer**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 78 skip); L6 determinism (no manifest); L6 input drift (no manifest)
-- **kamos**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 8 skip); L6 determinism (no manifest); L6 input drift (no manifest)
+- **arab-barometer**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 78 skip)
+- **kamos**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 8 skip)
 - **kgss**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 790 skip); L6 determinism (no manifest); L6 input drift (no manifest)
 - **kipa-corruption**: L3 invariants (needs harmonization rerun); L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 3 skip); L6 determinism (no manifest); L6 input drift (no manifest)
 - **kinu**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 43 skip)
-- **ipus**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 87 skip)
+- **ipus**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 86 skip)
 
 ---
-Generated by `src/r/audit/run_all.R` at 2026-05-13 15:42:57 +07.
+Generated by `src/r/audit/run_all.R` at 2026-05-14 20:16:12 +07.
