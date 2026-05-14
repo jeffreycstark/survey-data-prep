@@ -59,6 +59,7 @@ variables:
         note: "R6 governorate codes collapsed to region-level coastal/interior (Tataouine misclassified to match R7-R8)"
     qc:
       valid_range: [0, 1]
+      skip_coverage_check: true  # Tunisia-only by design; non-Tunisia respondents intentionally NA.
 
   - id: tunisia_coastal_gov
     concept: geography
@@ -98,6 +99,7 @@ variables:
         note: "R9 character governorate names via LOCATION.LEVEL.1 (precise)"
     qc:
       valid_range: [0, 1]
+      skip_coverage_check: true  # Tunisia-only by design; non-Tunisia respondents intentionally NA.
 
   - id: tataouine
     concept: geography
@@ -137,3 +139,4 @@ variables:
         note: "R9 character governorate names"
     qc:
       valid_range: [0, 1]
+      skip_coverage_check: true  # Tunisia-only by design; non-Tunisia respondents intentionally NA.

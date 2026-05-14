@@ -11,6 +11,13 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 10, 98, 99, 101, 998, 999]
     description: "Afrobarometer standard missing codes"
+  no_missing_codes:
+    codes: []
+    description: |
+      Empty convention for derived numeric variables whose values are
+      ordinary integers (e.g. int_month 1-12) and would otherwise collide
+      with the treat_as_na codes 8/9 (month Aug/Sep get incorrectly excluded
+      from raw_valid).
 
 variables:
   - id: gender
@@ -186,7 +193,7 @@ variables:
 
   - id: urban_rural
     concept: demographics
-    description: "Urban or rural PSU (1=Urban, 2=Rural)"
+    description: "Urban / Rural / Semi-Urban PSU (1=Urban, 2=Rural, 3=Semi-Urban)"
     type: nominal
     source:
       w1: urbrur
@@ -198,20 +205,26 @@ variables:
       w7: URBRUR
       w8: URBRUR
       w9: URBRUR
+    note: |
+      R5+ raw includes a 3rd category 3=Semi-Urban (~600-720 respondents
+      per round). Previously the YAML's `note` claimed "Peri-urban (3) ->
+      1 (Urban)" but the harmonize method was identity, so code 3 was
+      actually being NA-coerced by valid_range [1,2]. Widened scale to
+      [1,3] on 2026-05-14 to preserve the substantive category.
     scale:
       min: 1
-      max: 2
+      max: 3
       labels:
         1: "Urban"
         2: "Rural"
+        3: "Semi-Urban"
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
-        note: "1=Urban, 2=Rural. Peri-urban (3) -> 1 (Urban)."
     qc:
-      valid_range: [1, 2]
+      valid_range: [1, 3]
 
   - id: int_month
     concept: identifiers
@@ -227,12 +240,15 @@ variables:
       w7: DATEINTR
       w8: DATEINTR
       w9: DATEINTR
-    note: "DATEINTR is Date class in R2-R9. R1 has no date variable."
+    note: |
+      DATEINTR is Date class in R2-R9. R1 has no date variable. Uses an
+      empty missing-codes convention because month values 8 (August) and
+      9 (September) would collide with treat_as_na codes 8/9.
     scale:
       min: 1
       max: 12
     missing:
-      use_convention: treat_as_na
+      use_convention: no_missing_codes
     harmonize:
       default:
         method: r_function
@@ -281,7 +297,11 @@ variables:
       w7: DATEINTR
       w8: DATEINTR
       w9: DATEINTR
-    note: "Date class in R2-R9. R1 has no date variable."
+    note: |
+      Date class in R2-R9. R1 has no date variable. Harmonized output is
+      R Date class — typeof=double but is.numeric() returns FALSE (Date
+      class blocks numeric semantics), so the type_stability check sees
+      storage as "double" not "numeric". Skip the type check.
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -290,3 +310,4 @@ variables:
         fn: extract_date
     qc:
       skip_range_check: true
+      skip_type_stability: true

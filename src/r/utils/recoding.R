@@ -2001,13 +2001,16 @@ recode_afro_employment_r2 <- function(x, missing_codes = c(-1, 9, 60, 98, 998, 9
 }
 
 recode_afro_employment <- function(x, missing_codes = c(-1, 8, 9, 98, 99, 998, 999, 9994), ...) {
-  # R3-R9: 4-category → 3-category
+  # R3-R4: 5-category raw (0=No-not-looking, 1=No-looking, 2=PT-not-looking,
+  #   3=PT-looking, 4=FT-not-looking, 5=FT-looking).
+  # R5-R9: 4-category raw (0-3) where 2=PT, 3=FT.
+  # Target: 0=Out of labor force, 1=Unemployed, 2=Employed.
   x <- as.numeric(x)
   dplyr::case_when(
     x %in% missing_codes ~ NA_real_,
     x == 0 ~ 0,           # No, not looking → out of labor force
     x == 1 ~ 1,           # No, looking → unemployed
-    x %in% 2:3 ~ 2,       # Yes, PT or FT → employed
+    x %in% 2:5 ~ 2,       # Yes (PT or FT, looking or not) → employed
     TRUE ~ NA_real_
   )
 }

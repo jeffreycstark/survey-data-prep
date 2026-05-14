@@ -12,8 +12,12 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 7, 8, 9, 98, 99, 998, 999]
-    description: "Afrobarometer standard missing codes (7=Not applicable)"
+    codes: [-1, 7, 8, 9, 94, 98, 99, 998, 999]
+    description: |
+      Afrobarometer standard missing codes (7=Not applicable). Code 94 added
+      2026-05-14 for R8/R9 country-level "Question not asked" cells
+      (4,200 cases in W8 and 2,376 in W9 — entire countries that didn't
+      field the local-government trust item).
 
 variables:
   - id: trust_local_govt

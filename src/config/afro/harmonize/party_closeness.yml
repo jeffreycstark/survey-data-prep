@@ -12,7 +12,7 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 8, 9, 98, 99, 998, 999]
+    codes: [-1, 8, 9, 94, 98, 99, 998, 999]
     description: "Afrobarometer standard missing codes"
 
 variables:

@@ -756,12 +756,12 @@
   notes: "Afro R2 6-cat employment -> 3-cat (0=OLF, 1=Unemployed, 2=Employed). Categorical collapse."
 
 - fn: recode_afro_employment
-  input_scale: [0, 3]
+  input_scale: [0, 5]
   output_scale: [0, 2]
   reverses: false
   monotonic: false
   requires_data: false
-  notes: "Afro R3-R9 4-cat employment -> 3-cat (0=OLF, 1=Unemployed, 2=Employed). Categorical."
+  notes: "Afro R3-R9 employment -> 3-cat (0=OLF, 1=Unemployed, 2=Employed). R3-R4 raw is 5-cat (0-5; codes 2-5 all = Employed); R5-R9 raw is 4-cat (0-3; codes 2-3 = Employed). Categorical."
 
 - fn: recode_arab_employment_w2w4
   input_scale: [1, 2]
