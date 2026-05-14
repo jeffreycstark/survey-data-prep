@@ -21,7 +21,13 @@ variables:
     concept: demographics
     description: "Respondent age in years"
     type: continuous
-    note: "Variable name changes across eras: s2 (1995-2004), s7/s6 (2005-2009), EDAD/reedad (2007+)"
+    note: |
+      Variable name changes across eras: s2 (1995-2004), s7/s6 (2005-2009),
+      EDAD/edad (2007+). y2008/y2013/y2015 were initially mapped to
+      reedad/REEDAD which is a 4-category age cohort (1-4) — corrected
+      2026-05-14 to use the continuous-age columns edad/S11/S13. y2010
+      EDAD has 2,483 cases of raw value 0 = missing (no value label;
+      LBS .sav convention for that year); declared per-wave below.
     source:
       y1995: s2
       y1996: s2
@@ -35,12 +41,12 @@ variables:
       y2005: s7
       y2006: s7
       y2007: edad
-      y2008: reedad
+      y2008: edad
       y2009: s6
       y2010: EDAD
       y2011: EDAD
-      y2013: REEDAD
-      y2015: REEDAD
+      y2013: S11
+      y2015: S13
       y2016: EDAD
       y2017: EDAD
       y2018: EDAD
@@ -57,6 +63,8 @@ variables:
         method: identity
     qc:
       valid_range: [15, 110]
+      coverage_missing_codes_by_wave:
+        y2010: [0]
 
   - id: education_level
     concept: demographics
@@ -107,12 +115,22 @@ variables:
         note: "All waves use same 1-7 recoded scale. 2023 has 0=No data treated as NA by valid_range."
     qc:
       valid_range: [1, 7]
+      coverage_missing_codes_by_wave:
+        # y2004 reeduc1 has 2,491 cases of raw 0 = "No data" (~11.3%);
+        # declared as intentional drop matching the y2023 0-as-NA pattern
+        # documented in the note above.
+        y2004: [0]
 
   - id: urban_rural
     concept: demographics
     description: "Size of city/town (1-8, higher = larger; 8 = capital)"
     type: ordinal
-    note: "TAMCIUD. Not available 1995 or 1996. Available 1997-2024."
+    note: |
+      TAMCIUD. Not available 1995 or 1996. Available 1997-2024.
+      y1997/y1998 store values as 100/200/.../800 despite SPSS value labels
+      asserting 1-8 (a 100x data-entry mismatch between labels and stored
+      values). Those two waves use recode_lbs_tamciud_100x which maps
+      100→1, 200→2, ..., 800→8.
     source:
       y1995: null
       y1996: null
@@ -155,5 +173,12 @@ variables:
     harmonize:
       default:
         method: identity
+      exceptions:
+        y1997:
+          method: r_function
+          fn: recode_lbs_tamciud_100x
+        y1998:
+          method: r_function
+          fn: recode_lbs_tamciud_100x
     qc:
       valid_range: [1, 8]

@@ -675,6 +675,46 @@
   requires_data: false
   notes: "Arab Barometer W5 gender: standard 1=Male/2=Female + W5 country-16 non-standard 3=MALE/5=FEMALE; maps 1,3->1 and 2,5->2. Categorical."
 
+- fn: recode_lbs_tamciud_100x
+  input_scale: [100, 800]
+  output_scale: [1, 8]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "LBS y1997/y1998 tamciud stored as 100/200/.../800 despite SPSS labels asserting 1-8 (100x data-entry mismatch). Divides by 100 to align with 2000+ convention."
+
+- fn: recode_kamos_voted_general
+  input_scale: [1, 6]
+  output_scale: [1, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS voted-general binary. Raw stores election ID; maps 1 (General) → 1, else NA."
+
+- fn: recode_kamos_voted_presidential
+  input_scale: [1, 6]
+  output_scale: [1, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS voted-presidential binary. Raw stores election ID; maps 2 (Presidential) → 1, else NA."
+
+- fn: recode_kamos_voted_local
+  input_scale: [1, 6]
+  output_scale: [1, 1]
+  reverses: false
+  monotonic: false
+  requires_data: false
+  notes: "KAMOS voted-local binary. Raw stores election ID; maps 3 (Local) → 1, else NA."
+
+- fn: recode_ipus_urban_rural_w2008
+  input_scale: [1, 4]
+  output_scale: [1, 3]
+  reverses: true
+  monotonic: true
+  requires_data: false
+  notes: "IPUS w2008 urbanicity is 4-cat (1=대도시, 2=중소도시, 3=읍, 4=면). Maps to 3-cat reversed scale: 1→3, 2→2, 3/4→1 (combines township + rural village as rural)."
+
 - fn: recode_afro_dem_pref_r1
   input_scale: [1, 3]
   output_scale: [1, 3]

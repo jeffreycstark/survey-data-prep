@@ -121,7 +121,13 @@ variables:
     concept: demographics
     description: "Urbanicity of respondent's region (1=rural, 2=medium/small city, 3=metropolitan; reversed so higher=more urban)"
     type: ordinal
-    note: "18 waves (all). Raw scale 1=대도시 (metropolitan), 2=중소도시 (medium/small city), 3=읍/면 (rural). REVERSED so higher = more urban (matches KINU urban_rural convention and the project's higher=more-intensity rule)."
+    note: |
+      18 waves (all). Raw scale 1=대도시 (metropolitan), 2=중소도시
+      (medium/small city), 3=읍/면 (rural). REVERSED so higher = more urban
+      (matches KINU urban_rural convention and the project's higher=more-
+      intensity rule). w2008 raw is 4-category (1=대도시, 2=중소도시,
+      3=읍 township, 4=면 rural village); recode_ipus_urban_rural_w2008
+      combines raw {3, 4} → rural to fit the 3-cat target.
     source:
       w2007: siz
       w2008: siz
@@ -148,6 +154,10 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_3pt
+      exceptions:
+        w2008:
+          method: r_function
+          fn: recode_ipus_urban_rural_w2008
     qc:
       valid_range: [1, 3]
       skip_unmapped_check: true

@@ -277,7 +277,13 @@ variables:
   - id: voted_presidential
     concept: political_behaviour
     description: "Voted in most recent presidential election before fieldwork (binary: 1=yes, NA=no)"
-    note: "W1=Dec 2012 presidential (Park Geun-hye elected); W4=May 2017 presidential (Moon Jae-in elected post-impeachment)"
+    note: |
+      W1=Dec 2012 presidential (Park Geun-hye elected); W4=May 2017
+      presidential (Moon Jae-in elected post-impeachment). Raw variable
+      stores the election ID (2 = Presidential); recode maps 2 → 1 so the
+      harmonized output is a true binary. Without this recode the YAML
+      previously ran identity + valid_range [1,1], NA-coercing the entire
+      column (W1=Vote14_2 stores only 2's; W4=vote16 stores 2's and 3's).
     type: binary
     source:
       w1: Vote14_2
@@ -288,14 +294,23 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_kamos_voted_presidential
     qc:
       valid_range: [1, 1]
+      # W4 vote16 raw contains code 3 = "voted in June 2018 Local" (92
+      # cases). They didn't vote in the presidential; declare as intent.
+      coverage_missing_codes_by_wave:
+        w4: [3]
 
   - id: voted_general
     concept: political_behaviour
     description: "Voted in most recent National Assembly general election before fieldwork (binary)"
-    note: "W1=Apr 2012 general election; W4=Apr 2016 general election"
+    note: |
+      W1=Apr 2012 general election; W4=Apr 2016 general election. Raw
+      variable stores the election ID (1 = General); recode maps 1 → 1
+      and other election codes (2/3/4/5/6 = other elections / not eligible
+      / never voted) to NA.
     type: binary
     source:
       w1: Vote14_1
@@ -306,14 +321,24 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_kamos_voted_general
     qc:
       valid_range: [1, 1]
+      # W4 vote15 raw contains codes 2/3/4/5 = "voted in Presidential /
+      # Local / by-election / not eligible / never voted" (302 cases).
+      # They didn't vote in the general; declare as intent.
+      coverage_missing_codes_by_wave:
+        w4: [2, 3, 4, 5]
 
   - id: voted_local
     concept: political_behaviour
     description: "Voted in most recent local election before fieldwork (binary)"
-    note: "W1=Jun 2014 local; W4=Jun 2018 local"
+    note: |
+      W1=Jun 2014 local; W4=Jun 2018 local. Raw variable stores the
+      election ID (3 = Local); recode maps 3 → 1 so the harmonized output
+      is a true binary. W1=Vote14_3 stores only 3's; W4=vote17 also stores
+      only 3's.
     type: binary
     source:
       w1: Vote14_3
@@ -324,6 +349,7 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: recode_kamos_voted_local
     qc:
       valid_range: [1, 1]

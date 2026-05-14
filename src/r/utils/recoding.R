@@ -2187,3 +2187,79 @@ recode_arab_employment_w5w8 <- function(x, missing_codes = c(0, -1, -8, -9, 98, 
     TRUE ~ NA_real_
   )
 }
+
+# ==============================================================================
+# URBAN/RURAL — LATINOBAROMETRO
+# ==============================================================================
+
+#' Recode LBS y1997/y1998 tamciud (100/200/.../800) to the standard 1-8 scale.
+#'
+#' The 1997 and 1998 .sav files store tamciud values as 100, 200, ..., 800
+#' while the SPSS value labels assert 1-8 ("1 - 20.000 habitants" through
+#' "2.000.000 and more habitants"). This is a 100x data-entry discrepancy
+#' between the labels and the actual numeric values. Divide by 100 to align
+#' with the 1-8 convention used in 2000+.
+#'
+#' LBS-standard missing codes (-5 to -1) pass through to NA via the engine's
+#' apply_missing(); values outside {100, 200, ..., 800} return NA.
+recode_lbs_tamciud_100x <- function(x,
+                                     data = NULL,
+                                     var_name = NULL,
+                                     missing_codes = c(-5, -4, -3, -2, -1),
+                                     validate_all = NULL) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x %in% missing_codes ~ NA_real_,
+    x %in% c(100, 200, 300, 400, 500, 600, 700, 800) ~ x / 100,
+    TRUE ~ NA_real_
+  )
+}
+
+# ==============================================================================
+# VOTED-IN-ELECTION FLAGS — KAMOS
+# ==============================================================================
+# W1's Vote14_1/_2/_3 and W4's vote15/16/17 store the election ID a respondent
+# voted in (1=General, 2=Presidential, 3=Local, 4=By-election, 5=Not eligible,
+# 6=Never voted). Each harmonized voted_* binary maps the relevant election
+# code to 1; all other codes return NA (the respondent didn't vote in the
+# election in question, or never voted at all).
+
+#' KAMOS voted_general: raw 1=April General → 1; else NA.
+recode_kamos_voted_general <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(x == 1 ~ 1, TRUE ~ NA_real_)
+}
+
+#' KAMOS voted_presidential: raw 2=Presidential → 1; else NA.
+recode_kamos_voted_presidential <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(x == 2 ~ 1, TRUE ~ NA_real_)
+}
+
+#' KAMOS voted_local: raw 3=Local → 1; else NA.
+recode_kamos_voted_local <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(x == 3 ~ 1, TRUE ~ NA_real_)
+}
+
+# ==============================================================================
+# URBAN/RURAL — IPUS (2008 only)
+# ==============================================================================
+
+#' Recode IPUS w2008 siz (4-cat) to harmonized 3-cat urbanicity.
+#'
+#' Raw w2008 siz: 1=대도시 (metropolitan), 2=중소도시 (medium/small city),
+#'   3=읍 (township), 4=면 (rural village).
+#' Other waves use 3-cat (1=metropolitan, 2=medium/small, 3=rural).
+#' Combine raw {3, 4} as rural (matches the 3-cat harmonized 1=rural),
+#' then reverse so higher = more urban (matches the other waves' direction
+#' produced by safe_reverse_3pt).
+recode_ipus_urban_rural_w2008 <- function(x, ...) {
+  x <- as.numeric(x)
+  dplyr::case_when(
+    x == 1 ~ 3,           # metropolitan
+    x == 2 ~ 2,           # medium/small city
+    x %in% 3:4 ~ 1,       # township + rural village → rural
+    TRUE ~ NA_real_
+  )
+}
