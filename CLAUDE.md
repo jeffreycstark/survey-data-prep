@@ -150,6 +150,14 @@ The single most error-prone area. Read before merging or comparing across survey
 
 ---
 
+## Paper-time lookups (`src/r/lookups/`)
+
+Some context is deliberately not baked into harmonized RDS files — coalition labels are contested, crosswalks are partial, and downstream papers may want to choose-at-load rather than disagree-and-override. These lookups live in `src/r/lookups/` and are joined on demand.
+
+- **Cross-wave party lineage** — `join_party_crosswalk()` adds `party_lineage` and `coalition` columns from `data/processed/party_id_crosswalk.csv` (Korea / Taiwan / Thailand × W2-W6). Other (country × wave) combos get NA + a one-time warning. Country-code map at `data/lookups/abs_country_codes.csv`. See `src/r/lookups/README.md` for usage.
+
+---
+
 ## Key Functions
 
 | Function | Purpose | File |
