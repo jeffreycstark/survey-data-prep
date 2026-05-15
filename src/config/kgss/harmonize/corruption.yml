@@ -11,9 +11,11 @@
 #   others are "higher = better govt effort / more fairness" (evaluative items).
 #   There is no single global convention for this module.
 #
-# KGSS has NO direct respondent-experience bribery items (e.g., "did YOU pay a bribe"). All items
-# here are third-person perceptions, evaluations, or norms. Teacher-specific bribery (촌지 culture)
-# is NOT covered in KGSS; see specialized education-sector surveys for that.
+# KGSS does NOT ask whether the respondent has *paid* a bribe. The closest first-person item is
+# OFFBRIBE (corr_officials_bribe), which asks "in the last 5 years, how often have you or a member
+# of your immediate family come across a public official who hinted they wanted, or asked for, a
+# bribe or favour" — this measures being *solicited for* a bribe, not paying one. Teacher-specific
+# bribery (촌지 culture) is NOT covered in KGSS; see specialized education-sector surveys for that.
 #
 # COVERAGE GAPS vs ABS / WVS analogues:
 #   - No local-government corruption item (KGSS asks only about national 행정기관 / public service)
@@ -82,9 +84,9 @@ variables:
 
   - id: corr_election_transparency
     concept: corruption
-    description: "Perceived transparency of National Assembly election vote count and announcement (1-5, higher=more transparent after reversal)"
+    description: "Perceived transparency of election vote count and announcement (1-5, higher=more transparent after reversal)"
     type: ordinal
-    note: "Uses ELECVOTE (2004 general election, asked in 2004) and ELECVOT14 (2014 general election, asked in 2014). Raw scales identical: 1=매우 투명 (very transparent), 5=매우 불투명 (very opaque). Reversed so high=transparent."
+    note: "Uses ELECVOTE (2004 — asks about the April 2004 *National Assembly* general election) and ELECVOT14 (2014 — asks about the June 4 2014 *nationwide local* elections). DIFFERENT ELECTION TYPES across waves: longitudinal comparison conflates national and local races. Raw scales identical: 1=매우 투명 (very transparent), 5=매우 불투명 (very opaque). Reversed so high=transparent."
     source:
       w2004: ELECVOTE
       w2014: ELECVOT14

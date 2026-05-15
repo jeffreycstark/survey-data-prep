@@ -1617,3 +1617,207 @@ w2018,,corr_public_service,Corruption,,,,Not included in this wave
 w2021,,corr_public_service,Corruption,,,,Not included in this wave
 w2023,CORRUPTN,corr_public_service,Corruption,다음은 한국 행정기관에 대한 평가입니다 / The following question is about your evaluation of administrative agencies in South Korea.,How widespread do you think corruption is in the public service in South Korea? / 한국 행정기관의 부패가 어느 정도 만연되어 있다고 생각하십니까?,1=Hardly anyone is involved (부패한 사람이 거의 없다); 2=A small number of people are involved (부패한 사람이 소수 있다); 3=A moderate number of people are involved (부패한 사람이 어느 정도 있다); 4=A lot of people are involved (부패한 사람이 많다); 5=Almost everyone is involved (거의 모든 사람이 부패해 있다); -8=Can't choose; -1=IAP,Verbatim ABS corrupt_national_govt parallel — same 'hardly anyone → almost everyone is involved' construct on a 5pt vs ABS 4pt scale.
 w2025,,corr_public_service,Corruption,,,,Not included in this wave
+w2003,CORRUPT,corr_anticorrupt_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,부정부패 방지 / Preventing corruption,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 5 in the 'how well is the present government handling each of the following issues' battery. Higher raw value = worse evaluation; harmonized via safe_reverse_5pt so high = better evaluation.
+w2004,CORRUPT,corr_anticorrupt_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,부정부패 방지 / Preventing corruption,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 5 in the 'how well is the present government handling each of the following issues' battery. Higher raw value = worse evaluation; harmonized via safe_reverse_5pt so high = better evaluation.
+w2005,CORRUPT,corr_anticorrupt_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,부정부패 방지 / Preventing corruption,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 5 in the 'how well is the present government handling each of the following issues' battery. Higher raw value = worse evaluation; harmonized via safe_reverse_5pt so high = better evaluation.
+w2006,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2007,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2008,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2009,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2010,CORRUPT,corr_anticorrupt_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,부정부패 방지 / Preventing corruption,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 5 in the 'how well is the present government handling each of the following issues' battery. Higher raw value = worse evaluation; harmonized via safe_reverse_5pt so high = better evaluation.
+w2011,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2012,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2013,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2014,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2016,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2018,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2021,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2023,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2025,,corr_anticorrupt_policy,Corruption,,,,Not included in this wave
+w2003,TAXFAIR,corr_tax_fairness_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,과세 공정성 확보 / Maintaining just taxation policies,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 8 in the same battery as CORRUPT. Reversed harmonization.
+w2004,TAXFAIR,corr_tax_fairness_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,과세 공정성 확보 / Maintaining just taxation policies,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 8 in the same battery as CORRUPT. Reversed harmonization.
+w2005,TAXFAIR,corr_tax_fairness_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,과세 공정성 확보 / Maintaining just taxation policies,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 8 in the same battery as CORRUPT. Reversed harmonization.
+w2006,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2007,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2008,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2009,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2010,TAXFAIR,corr_tax_fairness_policy,Corruption,이번에는 현 정권이 다음의 일들을 어느 정도 잘하고 있다고 생각하시는지 말씀하여 주십시오. / Please tell me how well the government is handling each of the following issues:,과세 공정성 확보 / Maintaining just taxation policies,1=매우 잘하고 있다 (Very well); 2=다소 잘하고 있다 (Somewhat well); 3=보통이다 (About average); 4=다소 잘 못하고 있다 (Somewhat poorly); 5=매우 잘 못하고 있다 (Very poorly); 8=모르겠다 (DK),Item 8 in the same battery as CORRUPT. Reversed harmonization.
+w2011,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2012,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2013,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2014,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2016,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2018,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2021,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2023,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2025,,corr_tax_fairness_policy,Corruption,,,,Not included in this wave
+w2003,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2004,ELECVOTE,corr_election_transparency,Corruption,,"지난 4월 국회의원 선거에서 투표의 집계와 결과 발표가 어느 정도 투명했다고 생각하십니까? / Thinking of the last April's national election in South Korea, how honest was it regarding the counting and reporting of the votes?",1=매우 투명했다 (Very honest); 2=다소 투명했다 (Somewhat honest); 3=투명하지도 불투명하지도 않았다 (Neither honest nor dishonest); 4=다소 불투명했다 (Somewhat dishonest); 5=매우 불투명했다 (Very dishonest); 8=선택할 수 없다 (Can't choose),Refers to the April 2004 National Assembly (general) election.
+w2005,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2006,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2007,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2008,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2009,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2010,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2011,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2012,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2013,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2014,ELECVOT14,corr_election_transparency,Corruption,,"올해 6월 4일에 있었던 전국동시 지방선거 때 투표의 집계와 결과발표가 어느 정도 투명했다고 생각합니까? / Thinking of the Nationwide Local Elections held on June 4 this year, how honest was it regarding the counting and reporting of the votes?",1=매우 투명했다 (Very honest); 2=다소 투명했다 (Somewhat honest); 3=투명하지도 불투명하지도 않았다 (Neither honest nor dishonest); 4=다소 불투명했다 (Somewhat dishonest); 5=매우 불투명했다 (Very dishonest); 8=선택할 수 없다 (Can't choose),Refers to the June 4 2014 nationwide local elections — NOT a National Assembly / general election. The corruption.yml note for corr_election_transparency was updated 2026-05-15 to clarify that the longitudinal series mixes a national-election wave (2004) and a local-election wave (2014).
+w2016,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2018,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2021,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2023,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2025,,corr_election_transparency,Corruption,,,,Not included in this wave
+w2003,,corr_politicians,Corruption,,,,Not included in this wave
+w2004,,corr_politicians,Corruption,,,,Not included in this wave
+w2005,,corr_politicians,Corruption,,,,Not included in this wave
+w2006,POLCORRU,corr_politicians,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 정치인들이 부패와 연관되어 있다고 보십니까? / In your opinion, about how many politicians in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Identity harmonization — high raw = high perceived corruption.
+w2007,,corr_politicians,Corruption,,,,Not included in this wave
+w2008,,corr_politicians,Corruption,,,,Not included in this wave
+w2009,,corr_politicians,Corruption,,,,Not included in this wave
+w2010,,corr_politicians,Corruption,,,,Not included in this wave
+w2011,,corr_politicians,Corruption,,,,Not included in this wave
+w2012,,corr_politicians,Corruption,,,,Not included in this wave
+w2013,,corr_politicians,Corruption,,,,Not included in this wave
+w2014,POLCORRU,corr_politicians,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 정치인들이 부패와 연관되어 있다고 보십니까? / In your opinion, about how many politicians in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Identity harmonization — high raw = high perceived corruption.
+w2016,POLCORRU,corr_politicians,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 정치인들이 부패와 연관되어 있다고 보십니까? / In your opinion, about how many politicians in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Identity harmonization — high raw = high perceived corruption.
+w2018,,corr_politicians,Corruption,,,,Not included in this wave
+w2021,,corr_politicians,Corruption,,,,Not included in this wave
+w2023,,corr_politicians,Corruption,,,,Not included in this wave
+w2025,,corr_politicians,Corruption,,,,Not included in this wave
+w2003,,corr_officials,Corruption,,,,Not included in this wave
+w2004,,corr_officials,Corruption,,,,Not included in this wave
+w2005,,corr_officials,Corruption,,,,Not included in this wave
+w2006,OFFCORRU,corr_officials,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 공무원들이 부패와 연관되어 있다고 보십니까? / And in your opinion, about how many public officials in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Asked immediately after POLCORRU. Identity harmonization.
+w2007,,corr_officials,Corruption,,,,Not included in this wave
+w2008,,corr_officials,Corruption,,,,Not included in this wave
+w2009,,corr_officials,Corruption,,,,Not included in this wave
+w2010,,corr_officials,Corruption,,,,Not included in this wave
+w2011,,corr_officials,Corruption,,,,Not included in this wave
+w2012,,corr_officials,Corruption,,,,Not included in this wave
+w2013,,corr_officials,Corruption,,,,Not included in this wave
+w2014,OFFCORRU,corr_officials,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 공무원들이 부패와 연관되어 있다고 보십니까? / And in your opinion, about how many public officials in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Asked immediately after POLCORRU. Identity harmonization.
+w2016,OFFCORRU,corr_officials,Corruption,,"귀하의 생각에 한국에서 얼마나 많은 공무원들이 부패와 연관되어 있다고 보십니까? / And in your opinion, about how many public officials in Korea are involved in corruption?",1=거의 없다 (Almost none); 2=조금 있다 (A few); 3=어느 정도 있다 (Some); 4=많이 있다 (Quite a lot); 5=거의 대부분이다 (Almost all); 8=선택할 수 없음 (Can't choose),Asked immediately after POLCORRU. Identity harmonization.
+w2018,,corr_officials,Corruption,,,,Not included in this wave
+w2021,,corr_officials,Corruption,,,,Not included in this wave
+w2023,,corr_officials,Corruption,,,,Not included in this wave
+w2025,,corr_officials,Corruption,,,,Not included in this wave
+w2003,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2004,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2005,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2006,OFFBRIBE,corr_officials_bribe,Corruption,,"지난 5년 동안, 귀하나 귀하의 가족에게 공무원이 업무처리에 대해 암암리에 혹은 직접적으로 뇌물이나 대가를 요구한 경우가 얼마나 자주 있었습니까? / In the last five years, how often have you or a member of your immediate family come across a public official who hinted they wanted, or asked for, a bribe or favour in return for a service?",1=전혀 없었다 (Never); 2=별로 없었다 (Seldom); 3=가끔 있었다 (Occasionally); 4=자주 있었다 (Quite often); 5=매우 자주 있었다 (Very often); 8=선택할 수 없음 (Can't choose),FIRST-PERSON RESPONDENT/FAMILY EXPERIENCE — closest KGSS analogue to ABS corrupt_witnessed. Note: corruption.yml header currently states 'KGSS has NO direct respondent-experience bribery items' — that is incorrect for this item; OFFBRIBE asks the respondent or their immediate family directly.
+w2007,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2008,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2009,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2010,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2011,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2012,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2013,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2014,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2016,OFFBRIBE,corr_officials_bribe,Corruption,,"지난 5년 동안, 귀하나 귀하의 가족에게 공무원이 업무처리에 대해 암암리에 혹은 직접적으로 뇌물이나 대가를 요구한 경우가 얼마나 자주 있었습니까? / In the last five years, how often have you or a member of your immediate family come across a public official who hinted they wanted, or asked for, a bribe or favour in return for a service?",1=전혀 없었다 (Never); 2=별로 없었다 (Seldom); 3=가끔 있었다 (Occasionally); 4=자주 있었다 (Quite often); 5=매우 자주 있었다 (Very often); 8=선택할 수 없음 (Can't choose),FIRST-PERSON RESPONDENT/FAMILY EXPERIENCE — closest KGSS analogue to ABS corrupt_witnessed. Note: corruption.yml header currently states 'KGSS has NO direct respondent-experience bribery items' — that is incorrect for this item; OFFBRIBE asks the respondent or their immediate family directly.
+w2018,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2021,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2023,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2025,,corr_officials_bribe,Corruption,,,,Not included in this wave
+w2003,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2004,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2005,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2006,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2007,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2008,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2009,CRRPTSUCD,corr_cant_succeed_without,Corruption,귀하는 다음 의견에 어느 정도 동의 또는 반대하십니까? / How much do you agree or disagree with the following statements?,"오늘날 한국에서 정상에 오르려면 부패할 수 밖에 없다. / In Korea today, you have to be corrupt to reach the top.",1=매우 동의 (Strongly agree); 2=약간 동의 (Agree); 3=동의도 반대도 아님 (Neither agree nor disagree); 4=약간 반대 (Disagree); 5=매우 반대 (Strongly disagree); 8=선택할 수 없음 (Can't choose),Reversed via safe_reverse_5pt so high = stronger agreement = more cynical view.
+w2010,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2011,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2012,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2013,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2014,CRRPTSUCD,corr_cant_succeed_without,Corruption,귀하는 다음 의견에 어느 정도 동의 또는 반대하십니까? / How much do you agree or disagree with the following statements?,"오늘날 한국에서 정상에 오르려면 부패할 수 밖에 없다. / In Korea today, you have to be corrupt to reach the top.",1=매우 동의 (Strongly agree); 2=약간 동의 (Agree); 3=동의도 반대도 아님 (Neither agree nor disagree); 4=약간 반대 (Disagree); 5=매우 반대 (Strongly disagree); 8=선택할 수 없음 (Can't choose),Reversed via safe_reverse_5pt so high = stronger agreement = more cynical view.
+w2016,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2018,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2021,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2023,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2025,,corr_cant_succeed_without,Corruption,,,,Not included in this wave
+w2003,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2004,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2005,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2006,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2007,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2008,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2009,SUCDBRIB,corr_bribe_success,Corruption,"귀하는 인생에서 성공하는데, 다음과 같은 사항이 얼마나 중요하다고 생각하십니까? / How important do you think it is for getting ahead in life...",뇌물을 주는 것 / giving bribes,1=절대적으로 중요하다 (Essential); 2=매우 중요하다 (Very important); 3=대체로 중요하다 (Fairly important); 4=별로 중요하지 않다 (Not very important); 5=전혀 중요하지 않다 (Not important at all); 8=선택할 수 없음 (Can't choose),"Item 8 in the 'getting ahead in life' importance battery (alongside hard work, education, political connections, etc.). Reversed so high = more important = more cynical about success pathways."
+w2010,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2011,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2012,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2013,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2014,SUCDBRIB,corr_bribe_success,Corruption,"귀하는 인생에서 성공하는데, 다음과 같은 사항이 얼마나 중요하다고 생각하십니까? / How important do you think it is for getting ahead in life...",뇌물을 주는 것 / giving bribes,1=절대적으로 중요하다 (Essential); 2=매우 중요하다 (Very important); 3=대체로 중요하다 (Fairly important); 4=별로 중요하지 않다 (Not very important); 5=전혀 중요하지 않다 (Not important at all); 8=선택할 수 없음 (Can't choose),"Item 8 in the 'getting ahead in life' importance battery (alongside hard work, education, political connections, etc.). Reversed so high = more important = more cynical about success pathways."
+w2016,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2018,,corr_bribe_success,Corruption,,,,Not included in this wave
+w2021,SUCDBRIB,corr_bribe_success,Corruption,"귀하는 인생에서 성공하는데, 다음과 같은 사항이 얼마나 중요하다고 생각하십니까? / How important do you think it is for getting ahead in life...",뇌물을 주는 것 / giving bribes,1=절대적으로 중요하다 (Essential); 2=매우 중요하다 (Very important); 3=대체로 중요하다 (Fairly important); 4=별로 중요하지 않다 (Not very important); 5=전혀 중요하지 않다 (Not important at all); 8=선택할 수 없음 (Can't choose),"Item 8 in the 'getting ahead in life' importance battery (alongside hard work, education, political connections, etc.). Reversed so high = more important = more cynical about success pathways."
+w2023,SUCDBRIB,corr_bribe_success,Corruption,"귀하는 인생에서 성공하는데, 다음과 같은 사항이 얼마나 중요하다고 생각하십니까? / How important do you think it is for getting ahead in life...",뇌물을 주는 것 / giving bribes,1=절대적으로 중요하다 (Essential); 2=매우 중요하다 (Very important); 3=대체로 중요하다 (Fairly important); 4=별로 중요하지 않다 (Not very important); 5=전혀 중요하지 않다 (Not important at all); 8=선택할 수 없음 (Can't choose),"Item 8 in the 'getting ahead in life' importance battery (alongside hard work, education, political connections, etc.). Reversed so high = more important = more cynical about success pathways."
+w2025,SUCDBRIB,corr_bribe_success,Corruption,"귀하는 인생에서 성공하는데, 다음과 같은 사항이 얼마나 중요하다고 생각하십니까? / How important do you think it is for getting ahead in life...",뇌물을 주는 것 / giving bribes,1=절대적으로 중요하다 (Essential); 2=매우 중요하다 (Very important); 3=대체로 중요하다 (Fairly important); 4=별로 중요하지 않다 (Not very important); 5=전혀 중요하지 않다 (Not important at all); 8=선택할 수 없음 (Can't choose),"Item 8 in the 'getting ahead in life' importance battery (alongside hard work, education, political connections, etc.). Reversed so high = more important = more cynical about success pathways."
+w2003,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2004,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2005,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2006,ASKTAKE,corr_receive_requests,Corruption,"사람들은 자신의 직업, 지위, 연고 때문에 다른 사람들로부터 중요한 결정에 있어서 그들에게 유리하도록 영향력을 행사해 달라고 부탁을 받기도 합니다. / Some people because of their job, position in the community or contacts, are asked by others to help influence important decisions in their favour. What about you?",귀하의 경우에는 그런 부탁을 얼마나 자주 받습니까? / How often are you asked to help influence important decisions in other people's favour?,1=전혀 받지 않는다 (Never); 2=거의 받지 않는다 (Seldom); 3=가끔 받는다 (Occasionally); 4=자주 받는다 (Often); 8=선택할 수 없음 (Can't choose),"Single-wave item (2006 only). 청탁 / favor-seeking battery, item 1."
+w2007,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2008,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2009,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2010,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2011,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2012,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2013,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2014,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2016,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2018,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2021,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2023,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2025,,corr_receive_requests,Corruption,,,,Not included in this wave
+w2003,,corr_have_connections,Corruption,,,,Not included in this wave
+w2004,,corr_have_connections,Corruption,,,,Not included in this wave
+w2005,,corr_have_connections,Corruption,,,,Not included in this wave
+w2006,ASKGIVE,corr_have_connections,Corruption,"사람들은 자신의 직업, 지위, 연고 때문에 다른 사람들로부터 중요한 결정에 있어서 그들에게 유리하도록 영향력을 행사해 달라고 부탁을 받기도 합니다. / Some people because of their job, position in the community or contacts, are asked by others to help influence important decisions in their favour. What about you?",귀하는 귀하를 위해서 영향력을 행사해 달라고 부탁할 수 있는 사람들이 있습니까? / And are there people you could ask to help influence important decisions in your favour?,"1=전혀 없다 (No, nobody); 2=아주 조금 있다 (Yes, a few people); 3=어느 정도 있다 (Yes, some people); 4=많이 있다 (Yes, a lot of people); 8=선택할 수 없음 (Can't choose)","Single-wave item (2006 only). 청탁 / favor-seeking battery, item 2."
+w2007,,corr_have_connections,Corruption,,,,Not included in this wave
+w2008,,corr_have_connections,Corruption,,,,Not included in this wave
+w2009,,corr_have_connections,Corruption,,,,Not included in this wave
+w2010,,corr_have_connections,Corruption,,,,Not included in this wave
+w2011,,corr_have_connections,Corruption,,,,Not included in this wave
+w2012,,corr_have_connections,Corruption,,,,Not included in this wave
+w2013,,corr_have_connections,Corruption,,,,Not included in this wave
+w2014,,corr_have_connections,Corruption,,,,Not included in this wave
+w2016,,corr_have_connections,Corruption,,,,Not included in this wave
+w2018,,corr_have_connections,Corruption,,,,Not included in this wave
+w2021,,corr_have_connections,Corruption,,,,Not included in this wave
+w2023,,corr_have_connections,Corruption,,,,Not included in this wave
+w2025,,corr_have_connections,Corruption,,,,Not included in this wave
+w2003,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2004,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2005,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2006,OFFEQUIT,corr_officials_fair,Corruption,"마지막으로 공무원에 대해서 몇 가지 여쭈어 보겠습니다. 아래의 질문들에서 공무원은 지방 및 중앙 공무원, 하위 및 고위 공무원, 선출 및 임명된 공무원 모두를 포함합니다. / Finally, I would like to ask a few questions about public officials. In the questions below, 'public official' includes local and central, junior and senior, elected and appointed officials.","귀하가 보기에 공무원들은 귀하와 같은 사람들을 얼마나 자주 공정하게 대한다고 생각하십니까? / In your opinion, how often do public officials deal fairly with people like you?",1=항상 공정하게 대한다 (Almost always); 2=자주 공정하게 대한다 (Often); 3=가끔 공정하게 대한다 (Occasionally); 4=별로 공정하지 않게 대한다 (Seldom); 5=전혀 공정하지 않게 대한다 (Almost never); 8=선택할 수 없음 (Can't choose),Single-wave item (2006 only). Reversed so high = more fair.
+w2007,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2008,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2009,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2010,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2011,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2012,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2013,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2014,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2016,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2018,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2021,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2023,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2025,,corr_officials_fair,Corruption,,,,Not included in this wave
+w2003,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2004,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2005,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2006,OFFNEPOT,corr_officials_nepotism,Corruption,"마지막으로 공무원에 대해서 몇 가지 여쭈어 보겠습니다. 아래의 질문들에서 공무원은 지방 및 중앙 공무원, 하위 및 고위 공무원, 선출 및 임명된 공무원 모두를 포함합니다. / Finally, I would like to ask a few questions about public officials. In the questions below, 'public official' includes local and central, junior and senior, elected and appointed officials.",귀하는 사람들이 공무원들로부터 받는 대우가 인맥에 따라 좌우된다고 생각하십니까? / Do you think that the treatment people get from public officials in Korea depends on who they know?,1=당연히 그렇다 (Definitely does); 2=아마도 그렇다 (Probably does); 3=아마도 그렇지 않다 (Probably does not); 4=당연히 그렇지 않다 (Definitely does not); 8=선택할 수 없음 (Can't choose),Single-wave item (2006 only). Reversed so high = less perceived nepotism.
+w2007,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2008,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2009,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2010,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2011,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2012,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2013,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2014,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2016,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2018,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2021,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2023,,corr_officials_nepotism,Corruption,,,,Not included in this wave
+w2025,,corr_officials_nepotism,Corruption,,,,Not included in this wave
