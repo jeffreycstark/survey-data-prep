@@ -15,6 +15,19 @@
 # here are third-person perceptions, evaluations, or norms. Teacher-specific bribery (촌지 culture)
 # is NOT covered in KGSS; see specialized education-sector surveys for that.
 #
+# COVERAGE GAPS vs ABS / WVS analogues:
+#   - No local-government corruption item (KGSS asks only about national 행정기관 / public service)
+#   - No bribe-justifiability item (the WVS V196/Q181 "is accepting a bribe ever justifiable" battery
+#     has no KGSS equivalent; SUCDBRIB asks about bribery as a *factor in life success*, which is a
+#     different construct)
+#   - The closest analogue to ABS corrupt_witnessed is OFFBRIBE ("frequency civil servants requested
+#     bribes from you"), but it is fielded only in 2006 and 2016.
+#
+# NATIONAL-CORRUPTION-PERCEPTION TIME SERIES (closest to ABS corrupt_national_govt):
+#   corr_public_service (CORRUPTN, 2004/2014/2023) is the verbatim ABS parallel — same 1-5
+#   "hardly anyone → almost everyone is involved" structure. Pair with corr_politicians (POLCORRU)
+#   and corr_officials (OFFCORRU) for adjacent constructs in 2006/2014/2016.
+#
 # MISSING VALUES:
 # -8 = DK, -1 = IAP; legacy 8/9/88/98/99 sentinels
 
@@ -86,6 +99,30 @@ variables:
       valid_range: [1, 5]
 
   # -------- (2) CORRUPTION PERCEPTIONS / NORMS --------
+  - id: corr_public_service
+    concept: corruption
+    description: "Perceived corruption in the public service / administrative agencies (1-5, higher=more perceived corruption)"
+    type: ordinal
+    note: |
+      CORRUPTN — verbatim parallel of ABS corrupt_national_govt
+      ("How widespread do you think corruption is in the public service in South Korea?" /
+      "한국 행정기관의 부패가 어느 정도 만연되어 있다고 생각하십니까?").
+      Raw 1=거의 없다 (hardly anyone) → 5=거의 모든 사람이 부패해 있다 (almost everyone).
+      Identity — higher already means more corruption. KGSS uses a 5pt scale; ABS uses 4pt.
+      Fielded 2004, 2014, 2023 (sparse longitudinal coverage).
+    source:
+      w2004: CORRUPTN
+      w2014: CORRUPTN
+      w2023: CORRUPTN
+    scale: {min: 1, max: 5, labels: {1: "Hardly anyone is involved", 5: "Almost everyone is involved"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
   - id: corr_politicians
     concept: corruption
     description: "Perceived corruption among politicians (1-5, higher=more perceived corruption)"

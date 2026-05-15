@@ -1600,3 +1600,20 @@ w2018,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),"Now, some qu
 w2021,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
 w2023,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
 w2025,RELNW7,belief_ancestors_supernatural,Religion beliefs (ISSP),,,,Not included in this wave
+w2003,,corr_public_service,Corruption,,,,Not included in this wave
+w2004,CORRUPTN,corr_public_service,Corruption,다음은 한국 행정기관에 대한 평가입니다 / The following question is about your evaluation of administrative agencies in South Korea.,How widespread do you think corruption is in the public service in South Korea? / 한국 행정기관의 부패가 어느 정도 만연되어 있다고 생각하십니까?,1=Hardly anyone is involved (부패한 사람이 거의 없다); 2=A small number of people are involved (부패한 사람이 소수 있다); 3=A moderate number of people are involved (부패한 사람이 어느 정도 있다); 4=A lot of people are involved (부패한 사람이 많다); 5=Almost everyone is involved (거의 모든 사람이 부패해 있다); -8=Can't choose; -1=IAP,Verbatim ABS corrupt_national_govt parallel — same 'hardly anyone → almost everyone is involved' construct on a 5pt vs ABS 4pt scale.
+w2005,,corr_public_service,Corruption,,,,Not included in this wave
+w2006,,corr_public_service,Corruption,,,,Not included in this wave
+w2007,,corr_public_service,Corruption,,,,Not included in this wave
+w2008,,corr_public_service,Corruption,,,,Not included in this wave
+w2009,,corr_public_service,Corruption,,,,Not included in this wave
+w2010,,corr_public_service,Corruption,,,,Not included in this wave
+w2011,,corr_public_service,Corruption,,,,Not included in this wave
+w2012,,corr_public_service,Corruption,,,,Not included in this wave
+w2013,,corr_public_service,Corruption,,,,Not included in this wave
+w2014,CORRUPTN,corr_public_service,Corruption,다음은 한국 행정기관에 대한 평가입니다 / The following question is about your evaluation of administrative agencies in South Korea.,How widespread do you think corruption is in the public service in South Korea? / 한국 행정기관의 부패가 어느 정도 만연되어 있다고 생각하십니까?,1=Hardly anyone is involved (부패한 사람이 거의 없다); 2=A small number of people are involved (부패한 사람이 소수 있다); 3=A moderate number of people are involved (부패한 사람이 어느 정도 있다); 4=A lot of people are involved (부패한 사람이 많다); 5=Almost everyone is involved (거의 모든 사람이 부패해 있다); -8=Can't choose; -1=IAP,Verbatim ABS corrupt_national_govt parallel — same 'hardly anyone → almost everyone is involved' construct on a 5pt vs ABS 4pt scale.
+w2016,,corr_public_service,Corruption,,,,Not included in this wave
+w2018,,corr_public_service,Corruption,,,,Not included in this wave
+w2021,,corr_public_service,Corruption,,,,Not included in this wave
+w2023,CORRUPTN,corr_public_service,Corruption,다음은 한국 행정기관에 대한 평가입니다 / The following question is about your evaluation of administrative agencies in South Korea.,How widespread do you think corruption is in the public service in South Korea? / 한국 행정기관의 부패가 어느 정도 만연되어 있다고 생각하십니까?,1=Hardly anyone is involved (부패한 사람이 거의 없다); 2=A small number of people are involved (부패한 사람이 소수 있다); 3=A moderate number of people are involved (부패한 사람이 어느 정도 있다); 4=A lot of people are involved (부패한 사람이 많다); 5=Almost everyone is involved (거의 모든 사람이 부패해 있다); -8=Can't choose; -1=IAP,Verbatim ABS corrupt_national_govt parallel — same 'hardly anyone → almost everyone is involved' construct on a 5pt vs ABS 4pt scale.
+w2025,,corr_public_service,Corruption,,,,Not included in this wave
