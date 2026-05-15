@@ -1495,12 +1495,22 @@ recode_6pt_to_4pt <- function(x, ...) {
 
 #' Recode 10-point to 4-point scale
 #'
-#' Linear rescaling: (x-1) * (4/10) + 1 with rounding
-#' Maps 1-10 scale to 1-4 scale proportionally
+#' Bin mapping: 1-2 -> 1, 3-5 -> 2, 6-7 -> 3, 8-10 -> 4. Bounded in [1, 4]
+#' (the prior linear formula rounded source value 10 to 5, breaching the
+#' declared output range).
+#'
 #' @param x Numeric vector (1-10)
 #' @return Rescaled numeric vector (1-4)
 recode_10pt_to_4pt <- function(x, ...) {
-  round((as.numeric(x) - 1) * (4 / 10) + 1, 0)
+  x <- as.numeric(x)
+  dplyr::case_when(
+    is.na(x)      ~ NA_real_,
+    x >= 1 & x <= 2  ~ 1,
+    x >= 3 & x <= 5  ~ 2,
+    x >= 6 & x <= 7  ~ 3,
+    x >= 8 & x <= 10 ~ 4,
+    TRUE             ~ NA_real_
+  )
 }
 
 # ==============================================================================

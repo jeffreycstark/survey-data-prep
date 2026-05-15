@@ -1,0 +1,184 @@
+# WVS Corruption Items
+# Waves 1-7
+#
+# CONTEXT:
+# WVS corruption coverage is sparse and uneven across waves. Only the bribe-
+# justifiability item is present in every wave. Prevalence-perception items
+# (national / local) only appear in W3, W6, W7 and on incompatible scales,
+# so harmonization requires a 10pt -> 4pt collapse for W6/W7. Bribe-frequency
+# items are W6 + W7 only and serve as a partial analogue to the ABS
+# corrupt_witnessed item (frequency of bribery in society, not personal
+# witnessing).
+#
+# CONSTRUCT NOTES:
+#  - corrupt_national_govt: WVS asks about "public officials" (W3) /
+#    "government" (W6) / "your country" (W7). Treat as broadly equivalent
+#    to ABS corrupt_national_govt (perceived prevalence in national
+#    government).
+#  - corrupt_local_govt: only Q115 in W7 ("local authorities") matches
+#    the ABS construct. No prevalence-of-local-corruption item in earlier
+#    waves.
+#  - corrupt_bribe_justifiable: moral-acceptance construct. NOT
+#    interchangeable with prevalence perception, but cleanly comparable
+#    across all 7 waves.
+#  - corrupt_bribe_frequency: WVS asks about how often ordinary people
+#    pay bribes (society-level frequency). The ABS analogue
+#    (corrupt_witnessed) asks about personal/known witnessing. Construct
+#    overlap is partial — both tap concrete exposure to corruption rather
+#    than abstract perception, but the units differ.
+#
+# COVERAGE ASYMMETRY:
+# W6 MN_228* items are country-specific modules in WVS — coverage is
+# narrower than the main W6 questionnaire. Verify country×wave Ns before
+# any cross-national use.
+#
+# MISSING VALUES: WVS standard codes -5 to -1 are all NA.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "WVS standard missing codes"
+
+variables:
+  - id: corrupt_national_govt
+    concept: corruption
+    description: "Perceived corruption in national government / public officials"
+    type: ordinal
+    source:
+      w1: ~
+      w2: ~
+      w3: V213
+      w4: ~
+      w5: ~
+      w6: MN_228N
+      w7: Q112
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Hardly any officials are corrupt"
+        2: "A few are corrupt"
+        3: "Most are corrupt"
+        4: "Almost all officials are corrupt"
+      note: "Target 4-point matches ABS corrupt_national_govt direction (high = more corrupt). W6/W7 source is 10pt; W3 is native 4pt."
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "W3 V213 native 4pt, direction matches target."
+      exceptions:
+        w6:
+          method: r_function
+          fn: recode_10pt_to_4pt
+          note: "MN_228N: 10pt 'none/low → high' → bin map to 4pt (1-2/3-5/6-7/8-10). Country-specific module; verify coverage. Expected audit transformation-invariant warning: ρ ≈ 0.93 < 0.99 threshold (lossy collapse by design)."
+        w7:
+          method: r_function
+          fn: recode_10pt_to_4pt
+          note: "Q112: 10pt 'no corruption → abundant' → bin map to 4pt (1-2/3-5/6-7/8-10). Expected audit transformation-invariant warning: ρ ≈ 0.91 < 0.99 threshold (lossy collapse by design)."
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w3]
+          phrase: "corruption"
+        - waves: [w6, w7]
+          phrase: "corruption"
+
+  - id: corrupt_local_govt
+    concept: corruption
+    description: "Perceived corruption involvement among local authorities"
+    type: ordinal
+    source:
+      w1: ~
+      w2: ~
+      w3: ~
+      w4: ~
+      w5: ~
+      w6: ~
+      w7: Q115
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None of them"
+        2: "Few of them"
+        3: "Most of them"
+        4: "All of them"
+      note: "W7-only. No earlier-wave WVS item asks about local-authority corruption."
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "Q115 native 4pt, direction matches target (high = more corrupt)."
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w7]
+          phrase: "local"
+
+  - id: corrupt_bribe_justifiable
+    concept: corruption
+    description: "Justifiability of accepting a bribe in the course of duties"
+    type: ordinal
+    source:
+      w1: V196
+      w2: V306
+      w3: V196
+      w4: V207
+      w5: V201
+      w6: V202
+      w7: Q181
+    scale:
+      min: 1
+      max: 10
+      labels:
+        1: "Never justifiable"
+        10: "Always justifiable"
+      note: "Moral-acceptance construct (NOT prevalence perception). Higher = more permissive."
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "All waves coded 1=Never → 10=Always; direction is consistent."
+    qc:
+      valid_range: [1, 10]
+      validate:
+        - waves: [w1, w2, w3, w4, w5, w6, w7]
+          phrase: "bribe"
+
+  - id: corrupt_bribe_frequency
+    concept: corruption
+    description: "Reported frequency of ordinary people paying bribes/gifts to officials"
+    type: ordinal
+    source:
+      w1: ~
+      w2: ~
+      w3: ~
+      w4: ~
+      w5: ~
+      w6: MN_228Q
+      w7: Q118
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never / Very rarely"
+        2: "Rarely"
+        3: "Frequently / Often"
+        4: "Always / Very often"
+      note: "Society-level frequency, not personal witnessing. W6 MN_228Q is country-specific module; W7 Q118 has cross-national coverage. Partial analogue to ABS corrupt_witnessed."
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "Both source items native 4pt with low-to-high frequency direction matching target."
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [w6, w7]
+          phrase: "bribe"

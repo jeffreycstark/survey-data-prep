@@ -333,7 +333,7 @@
   reverses: false
   monotonic: true
   requires_data: false
-  notes: "Linear rescale (x-1)*(4/10)+1 with rounding"
+  notes: "Bin map: 1-2 -> 1, 3-5 -> 2, 6-7 -> 3, 8-10 -> 4 (bounded in [1, 4])"
 
 - fn: recode_6pt_freq_to_4pt
   input_scale: [1, 6]
