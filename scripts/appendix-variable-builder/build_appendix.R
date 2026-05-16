@@ -126,11 +126,41 @@ canonical_response_scale <- function(rows) {
   candidates[1]
 }
 
-#' Pick the canonical stem_text (longest non-empty).
+#' Pick the canonical stem_text.
+#'
+#' Strategy: prefer the shortest stem that ends in sentence-final
+#' punctuation (`?`, `.`, `!`). If none look complete, truncate each
+#' candidate at its first `?` (since most ABS battery stems are
+#' interrogative) — this strips PDF-extraction bleed where
+#' response-scale labels and the first item text got concatenated
+#' onto the stem.
 canonical_stem <- function(rows) {
   candidates <- rows$stem_text[!is.na(rows$stem_text) & nzchar(rows$stem_text)]
   if (length(candidates) == 0) return(NA_character_)
-  candidates[which.max(nchar(candidates))]
+  candidates <- trimws(candidates)
+  complete <- grepl("[\\.\\?!]$", candidates, perl = TRUE)
+  if (any(complete)) {
+    pool <- candidates[complete]
+    return(pool[which.min(nchar(pool))])
+  }
+  # Truncation fallback: most ABS battery stems are interrogative, so
+  # cut at the first `?` (preserving any embedded `.` that's mid-question,
+  # like "I'm going to name a number of institutions. For each one,
+  # please tell me how much trust do you have in them?").
+  truncated_q <- sub("([?]).*$", "\\1", candidates, perl = TRUE)
+  changed_q <- nzchar(truncated_q) & truncated_q != candidates
+  if (any(changed_q)) {
+    pool <- truncated_q[changed_q]
+    return(pool[which.min(nchar(pool))])
+  }
+  # No `?` to cut at: try `.` or `!`
+  truncated_p <- sub("([\\.!]).*$", "\\1", candidates, perl = TRUE)
+  changed_p <- nzchar(truncated_p) & truncated_p != candidates
+  if (any(changed_p)) {
+    pool <- truncated_p[changed_p]
+    return(pool[which.min(nchar(pool))])
+  }
+  candidates[which.min(nchar(candidates))]
 }
 
 #' Build the harmonization note from a YAML spec (per-wave aware).
@@ -251,26 +281,50 @@ render_variable <- function(var_id, display_name, verbatim, specs,
   }
 
   item_text     <- canonical_item_text(rows)
-  # Defensive fallback: if verbatim CSV item_text is suspiciously short
-  # (likely a PDF-extraction truncation that escaped patching), substitute
-  # the YAML description with a paraphrase marker.
-  if (!is.na(item_text) && nchar(item_text) < 15 &&
+  stem_text     <- canonical_stem(rows)
+
+  # Battery-item shortcut: if the variable is part of a battery (has a stem)
+  # and the item_text looks like just an item label (short, no terminal
+  # punctuation, no whitespace likely to indicate a full sentence), the
+  # rendered question is the stem with the item label appended in brackets.
+  is_battery_label <- !is.na(stem_text) && !is.na(item_text) &&
+                      nchar(item_text) < 40 &&
+                      !grepl("[\\.\\?!]$", item_text, perl = TRUE)
+
+  # Defensive fallback: if verbatim CSV item_text is suspiciously short and
+  # ALSO has no stem to provide context, substitute the YAML description.
+  # Don't fire when item_text is a battery label (stem provides context)
+  # OR when item_text is close in length to the YAML description (the
+  # variable is a genuinely short single question like "Gender of
+  # respondent").
+  if (!is.na(item_text) && nchar(item_text) < 15 && !is_battery_label &&
       !is.null(spec_entry) && !is.null(spec_entry$spec$description)) {
-    item_text <- paste0(spec_entry$spec$description, " *[paraphrased; verbatim CSV row appears truncated]*")
-    if (!is.null(warnings_env)) {
-      warnings_env$msgs <- c(warnings_env$msgs, sprintf(
-        "%s: verbatim CSV item_text < 15 chars; fell back to YAML description.",
-        var_id
-      ))
+    yaml_desc <- as.character(spec_entry$spec$description)
+    # Whitelist: if item_text is a substring of (or contains) the YAML
+    # description, treat it as the canonical short question, not a bug.
+    is_genuine_short <- grepl(item_text, yaml_desc, fixed = TRUE) ||
+                        grepl(yaml_desc, item_text, fixed = TRUE)
+    if (!is_genuine_short) {
+      item_text <- paste0(yaml_desc, " *[paraphrased; verbatim CSV row appears truncated]*")
+      if (!is.null(warnings_env)) {
+        warnings_env$msgs <- c(warnings_env$msgs, sprintf(
+          "%s: verbatim CSV item_text < 15 chars; fell back to YAML description.",
+          var_id
+        ))
+      }
     }
   }
+
   response_text <- canonical_response_scale(rows)
   harm_note     <- if (!is.null(spec_entry)) harmonization_note(spec_entry) else NA_character_
   qid_grid      <- format_qid_grid(qid_map)
 
   parts <- c(sprintf("### %s (`%s`)\n", display_name, var_id))
 
-  if (!is.na(item_text)) {
+  if (is_battery_label) {
+    # Render: stem + item label in brackets, as a single blockquote
+    parts <- c(parts, sprintf("> *\"%s — [%s]\"*\n", stem_text, item_text))
+  } else if (!is.na(item_text)) {
     parts <- c(parts, sprintf("> *\"%s\"*\n", item_text))
   } else {
     parts <- c(parts, "*[Item text not found in verbatim dictionary.]*\n")
