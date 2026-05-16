@@ -39,7 +39,33 @@ recode_note_table <- list(
   collapse_influence_country_to_5 = "Collapsed to 5-point country-influence scale.",
   middle_identity_5pt            = "5-point scale: midpoint preserved at 3.",
   middle_reverse_5pt             = "5-point scale: midpoint preserved at 3 and direction reversed.",
-  recode_kamos_gender_w1         = "W1 gender coding aligned with later waves."
+  recode_kamos_gender_w1         = "W1 gender coding aligned with later waves.",
+
+  # ABS political-participation gate items
+  recode_contact_to_binary_5pt   = "Dichotomized from 5-point frequency to binary (0 = never, 1 = ever).",
+  recode_contact_to_binary_w1    = "W1 wording dichotomized to binary (0 = never, 1 = ever).",
+  recode_contact_to_binary_w2w4  = "W2/W4 wording dichotomized to binary (0 = never, 1 = ever).",
+  recode_contact_to_binary_w3    = "W3 wording dichotomized to binary (0 = never, 1 = ever).",
+  recode_voted_default           = "Dichotomized: 1 = voted in last election, 0 = did not / not eligible.",
+  recode_voted_winning_losing_masked = "Constructed as 1 if respondent voted for the eventual winning party, 0 if loser; NA if abstained or refused.",
+  collapse_5pt_leader_to_3pt     = "Collapsed from 5-point to 3-point community-leader contact scale.",
+  recode_w3_leader_contact       = "W3 wording aligned with the W2/W4-W6 3-point community-leader contact scale.",
+
+  # ABS democracy/media items
+  recode_w1_dem_preferable       = "W1 response order remapped to match the W3+ 'Democracy always preferable' coding.",
+  recode_w2_dem_preferable       = "W2 response order remapped to match the W3+ 'Democracy always preferable' coding.",
+  recode_w1_news_follow          = "W1 wording remapped to the cross-wave news-following frequency scale.",
+  recode_w1_discuss              = "W1 wording remapped to the cross-wave political-discussion frequency scale.",
+  recode_internet_w4_to_6pt      = "W4 wording rescaled to the cross-wave 6-point internet-news frequency scale.",
+  recode_binary_01               = "Dichotomized to 0/1 (W1-W2 needed inversion to match W3+ direction).",
+
+  # Demographics
+  recode_gender_binary           = "Recoded to binary (1 = female, 0 = male).",
+  recode_urban_rural_reversed_binary = "Recoded to binary (1 = urban, 0 = rural); some waves use the reversed source coding.",
+  recode_urban_rural_binary      = "Recoded to binary (1 = urban, 0 = rural).",
+  recode_internet_w2w3_to_6pt    = "W2/W3 wording rescaled to the cross-wave 6-point internet-news frequency scale.",
+  recode_internet_w5w6_to_6pt    = "W5/W6 wording rescaled to the cross-wave 6-point internet-news frequency scale.",
+  recode                         = "Recoded per spec (see YAML)."
 )
 
 #' Look up a harmonization function and return a human-readable note.
