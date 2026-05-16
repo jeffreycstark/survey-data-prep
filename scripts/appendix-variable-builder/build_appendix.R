@@ -251,6 +251,19 @@ render_variable <- function(var_id, display_name, verbatim, specs,
   }
 
   item_text     <- canonical_item_text(rows)
+  # Defensive fallback: if verbatim CSV item_text is suspiciously short
+  # (likely a PDF-extraction truncation that escaped patching), substitute
+  # the YAML description with a paraphrase marker.
+  if (!is.na(item_text) && nchar(item_text) < 15 &&
+      !is.null(spec_entry) && !is.null(spec_entry$spec$description)) {
+    item_text <- paste0(spec_entry$spec$description, " *[paraphrased; verbatim CSV row appears truncated]*")
+    if (!is.null(warnings_env)) {
+      warnings_env$msgs <- c(warnings_env$msgs, sprintf(
+        "%s: verbatim CSV item_text < 15 chars; fell back to YAML description.",
+        var_id
+      ))
+    }
+  }
   response_text <- canonical_response_scale(rows)
   harm_note     <- if (!is.null(spec_entry)) harmonization_note(spec_entry) else NA_character_
   qid_grid      <- format_qid_grid(qid_map)

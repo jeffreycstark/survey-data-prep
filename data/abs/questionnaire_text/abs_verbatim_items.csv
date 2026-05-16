@@ -993,8 +993,8 @@ w1,,gov_courts_powerless,,,,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewha
 w2,,gov_courts_powerless,,,,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",Not included in this wave
 w3,q101,gov_courts_powerless,N.  QUALITY OF GOVERNANCE,,"When government leaders break the laws, there is nothing the court can do.","1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
 w4,q104,gov_courts_powerless,O. QUALITY OF GOVERNANCE,,"When government leaders break the laws, there is nothing the court can do.","1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
-w5,q111,gov_courts_powerless,O. QUALITY OF GOVERNANCE,,1,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
-w6,q102,gov_courts_powerless,O. QUALITY OF GOVERNANCE,,1,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
+w5,q111,gov_courts_powerless,O. QUALITY OF GOVERNANCE,,"When government leaders break the laws, there is nothing the court can do.","1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
+w6,q102,gov_courts_powerless,O. QUALITY OF GOVERNANCE,,"When government leaders break the laws, there is nothing the court can do.","1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
 w1,q106,gov_economic_equality,N.	REGIME EVALUATION,"We would like you now to compare the present system of government with the one our country had under [name of president, etc. having most recent authoritarian rule]. In each of the following areas, would you say that today things are MUCH BETTER THAN BEFORE, SOMEWHAT BETTER, MUCH THE SAME, SOMEWHAT WORSE, or MUCH WORSE?",Everyone is treated equally by the government.,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
 w2,q108,gov_economic_equality,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,"Now I am going to read to you a list of statements that describe how people often feel about the state of affairs in [country name]. Please tell me whether you strongly agree, somewhat agree, somewhat disagree, or strongly disagree with each of these statements.",Everyone is treated equally by the government.,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
 w3,q104,gov_economic_equality,N.  QUALITY OF GOVERNANCE,,Rich and poor people are treated equally by the government. 【GBS used the original design】,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
@@ -1008,11 +1008,11 @@ w4,,gov_elections_make_responsive,,,,"1=Not at all, 2=Not much, 3=Quite a lot, 4
 w5,q122,gov_elections_make_responsive,O. QUALITY OF GOVERNANCE,,How much do you feel that having elections make the government A,"1=Not at all, 2=Not much, 3=Quite a lot, 4=A good deal",
 w6,q113,gov_elections_make_responsive,O. QUALITY OF GOVERNANCE,,How much do you feel that having elections make the government A,"1=Not at all, 2=Not much, 3=Quite a lot, 4=A good deal",
 w1,,gov_elections_real_choice,,,,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",Not included in this wave
-w2,q114,gov_elections_real_choice,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,,How,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
-w3,q111,gov_elections_real_choice,N.  QUALITY OF GOVERNANCE,,How,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
-w4,q113,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
-w5,q119,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
-w6,q110,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
+w2,q114,gov_elections_real_choice,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,,How often do you think our elections offer the voters a real choice between different parties/candidates?,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
+w3,q111,gov_elections_real_choice,N.  QUALITY OF GOVERNANCE,,How often do you think our elections offer the voters a real choice between different parties/candidates?,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
+w4,q113,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How often do you think our elections offer the voters a real choice between different parties/candidates?,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
+w5,q119,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How often do you think our elections offer the voters a real choice between different parties/candidates?,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
+w6,q110,gov_elections_real_choice,O. QUALITY OF GOVERNANCE,,How often do you think our elections offer the voters a real choice between different parties/candidates?,"1=Rarely, 2=Sometimes, 3=Most of the time, 4=Always",
 w1,,gov_enforce_laws,,,,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",Not included in this wave
 w2,,gov_enforce_laws,,,,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",Not included in this wave
 w3,,gov_enforce_laws,,,,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",Not included in this wave
@@ -1033,10 +1033,10 @@ w5,q116,gov_free_to_organize,O. QUALITY OF GOVERNANCE,,People can join any organ
 w6,q107,gov_free_to_organize,O. QUALITY OF GOVERNANCE,,People can join any organization they like without fear.,"1=Strongly disagree, 2=Somewhat disagree, 3=Somewhat agree, 4=Strongly agree",
 w1,,gov_leaders_abuse_power,,,,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",Not included in this wave
 w2,,gov_leaders_abuse_power,,,,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",Not included in this wave
-w3,q110,gov_leaders_abuse_power,N.  QUALITY OF GOVERNANCE,,How,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
-w4,q112,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
-w5,q118,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
-w6,q109,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
+w3,q110,gov_leaders_abuse_power,N.  QUALITY OF GOVERNANCE,,How often do you think government leaders break the law or abuse their power?,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
+w4,q112,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How often do you think government leaders break the law or abuse their power?,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
+w5,q118,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How often do you think government leaders break the law or abuse their power?,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
+w6,q109,gov_leaders_abuse_power,O. QUALITY OF GOVERNANCE,,How often do you think government leaders break the law or abuse their power?,"1=Not at all, 2=Rarely, 3=Sometimes, 4=Most of the time, 5=Always",
 w1,,gov_legislature_oversight,,,,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",Not included in this wave
 w2,q115,gov_legislature_oversight,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,,To what extent is the legislature capable of keeping the government in check?,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",
 w3,q112,gov_legislature_oversight,N.  QUALITY OF GOVERNANCE,,To what extent is the legislature capable of keeping government leaders in check?,"1=Not at all capable, 2=Not capable, 3=Capable, 4=Very capable",
@@ -1116,11 +1116,11 @@ w4,q143,govt_should_censor_ideas,S. AGREEMENT/DISAGREEMENT WITH SPECIFIC STATEME
 w5,q150,govt_should_censor_ideas,S. AGREEMENT/DISAGREEMENT WITH SPECIFIC STATEMENTS (cont’d),,The government should decide whether certain ideas should be allowed to be discussed in society. Harmony of the community will be disrupted if people organize,"1=Strongly agree (pro-censorship), 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree (anti-censorship)",
 w6,q150,govt_should_censor_ideas,T. AGREEMENT/DISAGREEMENT WITH SPECIFIC STATEMENTS (cont’d),,The government should decide whether certain ideas should be allowed to be discussed in society. Harmony of the community will be disrupted if people organize,"1=Strongly agree (pro-censorship), 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree (anti-censorship)",
 w1,,govt_withholds_info,,,,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",Not included in this wave
-w2,q112,govt_withholds_info,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,,How,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
-w3,q109,govt_withholds_info,N.  QUALITY OF GOVERNANCE,,How,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
-w4,q111,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
-w5,q117,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
-w6,q108,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
+w2,q112,govt_withholds_info,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,,How often do government officials withhold important information from the public?,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
+w3,q109,govt_withholds_info,N.  QUALITY OF GOVERNANCE,,How often do government officials withhold important information from the public?,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
+w4,q111,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How often do government officials withhold important information from the public?,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
+w5,q117,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How often do government officials withhold important information from the public?,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
+w6,q108,govt_withholds_info,O. QUALITY OF GOVERNANCE,,How often do government officials withhold important information from the public?,"1=Always, 2=Most of the time, 3=Sometimes, 4=Rarely/Never",
 w1,q062,has_party_id,G.	PSYCHOLOGICAL INVOLVEMENT	(cont’d),,"Among the political parties listed here , which party if any do you feel closest to?","0=No party attachment, 1=Has party attachment",
 w2,q54,has_party_id,H.	PARTISANSHIP,,"Among the political parties listed here, which party if any do you feel closest to?","0=No party attachment, 1=Has party attachment",
 w3,q47,has_party_id,G.  PARTISANSHIP,,"Among the political parties listed here, which party if any do you feel closest to?","0=No party attachment, 1=Has party attachment",
@@ -1226,7 +1226,7 @@ w6,,internet_access_mobile,,,,"0=No, 1=Yes",Not included in this wave
 w1,,internet_political_info,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w2,,internet_political_info,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w3,,internet_political_info,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
-w4,q51,internet_political_info,G. Internet and Social Media,,How,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",
+w4,q51,internet_political_info,G. Internet and Social Media,,How often do you use the internet to find information about politics and government?,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",
 w5,,internet_political_info,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w6,,internet_political_info,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w1,,intl_china_asia_goodharm,,,,"1=Much more harm than good, 2=Somewhat more harm than good, 3=Somewhat more good than harm, 4=Much more good than harm",Not included in this wave
@@ -1518,11 +1518,11 @@ w4,q162,nat_willing_emigrate,V. CITIZENSHIP,,"Given the chance, how willing woul
 w5,q167,nat_willing_emigrate,V. CITIZENSHIP,,"Given the chance, how willing would you be to go and live in another Very willing ............................................................","1=Not willing at all, 2=Not willing, 3=Willing, 4=Very willing",
 w6,q167,nat_willing_emigrate,W. CITIZENSHIP,,"Given the chance, how willing would you be to go and live in another Very willing ............................................................","1=Not willing at all, 2=Not willing, 3=Willing, 4=Very willing",
 w1,,news_internet,,,,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",Not included in this wave
-w2,q66,news_internet,I.	AGREEMENT/DISAGREEMENT WITH SPECIFIC STATEMENTS,,How,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
-w3,q45,news_internet,F.  PSYCHOLOGICAL INVOLVEMENT,,How,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
-w4,q49,news_internet,G. Internet and Social Media,,How,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
-w5,q49,news_internet,G. INTERNET AND SOCIAL MEDIA,,How,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
-w6,q50,news_internet,G. INTERNET AND SOCIAL MEDIA,,How,"1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
+w2,q66,news_internet,I.	AGREEMENT/DISAGREEMENT WITH SPECIFIC STATEMENTS,,"How often do you use the internet, either through computer, tablet or smartphone?","1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
+w3,q45,news_internet,F.  PSYCHOLOGICAL INVOLVEMENT,,"How often do you use the internet, either through computer, tablet or smartphone?","1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
+w4,q49,news_internet,G. Internet and Social Media,,"How often do you use the internet, either through computer, tablet or smartphone?","1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
+w5,q49,news_internet,G. INTERNET AND SOCIAL MEDIA,,"How often do you use the internet, either through computer, tablet or smartphone?","1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
+w6,q50,news_internet,G. INTERNET AND SOCIAL MEDIA,,"How often do you use the internet, either through computer, tablet or smartphone?","1=Never, 2=Hardly ever, 3=A few times a year, 4=At least once a month, 5=At least once a week, 6=Daily or more",
 w1,,no_accountability_between_elections,,,,"1=Strongly agree (no accountability), 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree (have accountability)",Not included in this wave
 w2,q106,no_accountability_between_elections,N.	SATISFACTION WITH GOVERNMENT AND DEMOCRACY,"Now I am going to read to you a list of statements that describe how people often feel about the state of affairs in [country name]. Please tell me whether you strongly agree, somewhat agree, somewhat disagree, or strongly disagree with each of these statements.","Between elections, the people have","1=Strongly agree (no accountability), 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree (have accountability)",
 w3,q100,no_accountability_between_elections,N.  QUALITY OF GOVERNANCE,,"Between elections, the people have","1=Strongly agree (no accountability), 2=Somewhat agree, 3=Somewhat disagree, 4=Strongly disagree (have accountability)",
@@ -1571,31 +1571,31 @@ w3,q35,persuaded_others_vote,D.  PARTICIPATION IN ELECTIONS,"Thinking about the 
 w4,q36,persuaded_others_vote,D. PARTICIPATION IN ELECTIONS,"Thinking about the national election in [year], did you …",try to persuade others to vote for a certain candidate or party?,"0=No, 1=Yes",
 w5,q36,persuaded_others_vote,D. PARTICIPATION IN ELECTIONS,"Thinking about the national election in [year], did you …",try to persuade others to vote for a certain candidate or party?,"0=No, 1=Yes",
 w6,q36,persuaded_others_vote,D. PARTICIPATION IN ELECTIONS,"Thinking about the national election in [year], did you …",try to persuade others to vote for a certain candidate or party?,"0=No, 1=Yes",
-w1,q023,pol_discuss,C. 	SOCIAL CAPITAL	(cont’d),,How,"1=Never, 2=Occasionally, 3=Frequently",
+w1,q023,pol_discuss,C. 	SOCIAL CAPITAL	(cont’d),,"When you get together with your family members or friends, how often do you discuss political matters?","1=Never, 2=Occasionally, 3=Frequently",
 w2,q52,pol_discuss,G.	PSYCHOLOGICAL INVOLVEMENT,,"When you get together with your family members or friends, how","1=Never, 2=Occasionally, 3=Frequently",
 w3,q46,pol_discuss,F.  PSYCHOLOGICAL INVOLVEMENT,,"When you get together with your family members or friends, how","1=Never, 2=Occasionally, 3=Frequently",
 w4,q46,pol_discuss,F. PSYCHOLOGICAL INVOLVEMENT,,"When you get together with your family members or friends, how","1=Never, 2=Occasionally, 3=Frequently",
 w5,q48,pol_discuss,F. PSYCHOLOGICAL INVOLVEMENT,,"When you get together with your family members or friends, how","1=Never, 2=Occasionally, 3=Frequently",
 w6,q49,pol_discuss,F. PSYCHOLOGICAL INVOLVEMENT,,"When you get together with your family members or friends, how","1=Never, 2=Occasionally, 3=Frequently",
-w1,q057,pol_news_follow,G.	PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
-w2,q50,pol_news_follow,G.	PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
-w3,q44,pol_news_follow,F.  PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
-w4,q45,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
-w5,q47,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
-w6,q48,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w1,q057,pol_news_follow,G.	PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w2,q50,pol_news_follow,G.	PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w3,q44,pol_news_follow,F.  PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w4,q45,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w5,q47,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w6,q48,pol_news_follow,F. PSYCHOLOGICAL INVOLVEMENT,,How often do you follow news about politics and government?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
 w1,q058,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",NOT FOUND in questionnaire document
 w2,,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w3,,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w4,,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w5,,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w6,,pol_news_newspaper,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
-w1,q060,pol_news_radio,G.	PSYCHOLOGICAL INVOLVEMENT	(cont’d),,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w1,q060,pol_news_radio,G.	PSYCHOLOGICAL INVOLVEMENT	(cont’d),,How often do you follow news about politics on the radio?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
 w2,,pol_news_radio,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w3,,pol_news_radio,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w4,,pol_news_radio,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w5,,pol_news_radio,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w6,,pol_news_radio,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
-w1,q059,pol_news_television,G.	PSYCHOLOGICAL INVOLVEMENT	(cont’d),,How,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
+w1,q059,pol_news_television,G.	PSYCHOLOGICAL INVOLVEMENT	(cont’d),,How often do you follow news about politics on television?,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",
 w2,,pol_news_television,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w3,,pol_news_television,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
 w4,,pol_news_television,,,,"1=Practically never, 2=Not even once a week, 3=Once or twice a week, 4=Several times a week, 5=Everyday",Not included in this wave
@@ -1724,7 +1724,7 @@ w6,q52a,sm_connect_people,,,How often do you use social media to talk to or conn
 w1,,sm_express_political,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w2,,sm_express_political,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w3,,sm_express_political,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
-w4,q52,sm_express_political,G. Internet and Social Media,,How,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",
+w4,q52,sm_express_political,G. Internet and Social Media,,How often do you use social media to express your opinion on political issues?,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",
 w5,,sm_express_political,,,,"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Not included in this wave
 w6,q52b,sm_express_political,,,How often do you use social media to express your opinion on political issues? (frequency),"1=Never, 2=Seldom, 3=Sometimes, 4=Often",Sub-item/derived variable (not a standalone question)
 w1,,sm_express_political_binary,,,,"0=No, 1=Yes",Not included in this wave
