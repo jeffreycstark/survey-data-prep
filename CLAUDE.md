@@ -91,7 +91,7 @@ Every harmonized survey **must** have a verbatim question dictionary CSV that ma
 
 Per-survey dictionary status lives in each survey's docs page.
 
-**Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder-SKILL.md`). The skill filters to variables used in a given paper and generates formatted Appendix A prose. This repo owns the ground truth; paper repos only format and present.
+**Appendix A workflow:** Papers in paper-bank consume these dictionaries via the `appendix-variable-builder` skill (`scripts/appendix-variable-builder/`). The skill is an R generator (`build_appendix.R`) that joins the per-survey verbatim CSV with the harmonization YAMLs and emits paper-13-style markdown — per-wave question-ID grids, verbatim item text, response scales, harmonization notes, and shared-stem battery auto-detection. This repo owns the ground truth; paper repos only format and present. See `scripts/appendix-variable-builder/SKILL.md` for usage.
 
 ### Running pipelines
 
