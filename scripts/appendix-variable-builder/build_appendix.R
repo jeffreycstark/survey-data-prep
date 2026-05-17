@@ -549,7 +549,12 @@ build_multi_survey_appendix <- function(surveys,
     stop("`surveys` must be a non-empty list.")
   }
 
-  parts <- c(sprintf("# %s\n", title))
+  # `title = NULL` suppresses the top-level heading — useful when including
+  # the fragment under a parent appendix heading that already exists in the
+  # manuscript (e.g., paper 17's existing `# Appendix A. Survey Reporting
+  # and Variables`).
+  parts <- character(0)
+  if (!is.null(title)) parts <- c(parts, sprintf("# %s\n", title))
   if (!is.null(intro)) parts <- c(parts, paste0(intro, "\n"))
 
   for (spec in surveys) {

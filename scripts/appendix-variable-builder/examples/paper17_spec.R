@@ -45,27 +45,32 @@ paper17_kipa_groups <- list(
   )
 )
 
-paper17_kipa_intro <- paste(
-  "The KIPA Anti-Corruption Survey is a specialty-sample annual instrument",
-  "fielded by the Korea Institute of Public Administration since 2004.",
-  "**It is NOT a general-population survey** — respondents are corporate",
-  "employees and self-employed individuals with regular contact with public",
-  "officials. The sample is therefore selected on the basis of higher",
-  "exposure to bribery solicitation than the general public. KIPA results",
-  "in this paper triangulate the ABS Korea findings rather than serve as a",
-  "stand-alone trend series."
+paper17_kipa_intro <- paste0(
+  "The KIPA Anti-Corruption Survey is a specialty-sample annual instrument ",
+  "fielded by the Korea Institute of Public Administration since 2004. ",
+  "**It is NOT a general-population survey** — respondents are corporate ",
+  "employees and self-employed individuals with regular contact with public ",
+  "officials. The sample is therefore selected on the basis of higher ",
+  "exposure to bribery solicitation than the general public. KIPA results ",
+  "in this paper triangulate the ABS Korea findings rather than serve as a ",
+  "stand-alone trend series.\n\n",
+  "**Coverage caveat for `corr_bribery_experience_1yr`:** the bribery-",
+  "experience item is harmonized 2004–2021; the 2022 and 2023 waves ",
+  "restructured the question and are dropped from the harmonized series. ",
+  "The perceived-prevalence item `corr_prevalence_perception` is ",
+  "harmonized across the full 2004–2023 window."
 )
 
 paper17_surveys <- list(
   abs = list(
     survey    = "abs",
-    sub_label = "A1. Asian Barometer Survey (ABS)",
+    sub_label = "A2. ABS variable wording and coding",
     groups    = paper17_abs_groups,
     intro     = paper17_abs_intro
   ),
   kipa = list(
     survey    = "kipa-corruption",
-    sub_label = "A2. KIPA Anti-Corruption Survey",
+    sub_label = "A3. KIPA variable wording and coding",
     groups    = paper17_kipa_groups,
     intro     = paper17_kipa_intro
   )
