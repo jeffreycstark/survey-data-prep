@@ -104,10 +104,51 @@ the generator emits the battery format (stem once + items below):
 This matches paper 08b's KGSS Q35 trust battery treatment and paper 13's
 authoritarian openness scale.
 
-### Cross-survey papers
+### Cross-survey papers — `build_multi_survey_appendix()`
 
-For a paper that uses multiple surveys (e.g. KSIS + ABS like paper 08b),
-call `build_appendix()` once per survey and stitch the outputs with prose.
+For a paper that uses multiple surveys (e.g. ABS + KIPA like paper 17),
+use the multi-survey wrapper. It emits one combined fragment with a
+shared top-level heading and A1/A2/A3 sub-appendices nested beneath:
+
+```r
+build_multi_survey_appendix(
+  surveys = list(
+    abs = list(
+      survey    = "abs",
+      sub_label = "A1. Asian Barometer Survey (ABS)",
+      groups    = paper17_abs_groups,
+      intro     = paper17_abs_intro
+    ),
+    kipa = list(
+      survey    = "kipa-corruption",
+      sub_label = "A2. KIPA Anti-Corruption Survey",
+      groups    = paper17_kipa_groups,
+      intro     = paper17_kipa_intro
+    )
+  ),
+  title       = "A. Variable Descriptions",
+  intro       = paper17_intro,
+  output_file = "<paper-bank>/papers/17/manuscript/_appendix_a_generated.md"
+)
+```
+
+Each per-survey spec passes through to `build_appendix()` with
+`heading_offset = 1L`, so its top-level heading becomes the `##`
+sub-appendix label and its sections nest deeper accordingly. Result:
+
+```
+# A. Variable Descriptions
+## A1. Asian Barometer Survey (ABS)
+### [section 1 from ABS]
+#### [item from ABS]
+## A2. KIPA Anti-Corruption Survey
+### [section 1 from KIPA]
+#### [item from KIPA]
+```
+
+Year-based vs round-based wave keys (ABS `w1`-`w6` vs KIPA
+`w2004`-`w2023` vs Afrobarometer `r1`-`r9`) are normalized in the
+cross-check and rendered survey-appropriate in the QID line.
 
 ## Sources read
 

@@ -45,14 +45,24 @@ source(here::here("scripts", "appendix-variable-builder", "recode_notes.R"))
 # ---------------------------------------------------------------------------
 
 #' Load the verbatim question dictionary for a survey.
+#'
+#' Searches several conventional locations. Some surveys use dashes in
+#' the directory name (e.g. `kipa-corruption/`) but underscores in the
+#' filename (`kipa_corruption_verbatim_items.csv`); both are tried.
 load_verbatim <- function(survey, verbatim_path = NULL) {
   if (is.null(verbatim_path)) {
-    verbatim_path <- here::here(
-      "data", survey, "questionnaire_text",
-      paste0(survey, "_verbatim_items.csv")
+    candidates <- c(
+      here::here("data", survey, "questionnaire_text",
+                 paste0(survey, "_verbatim_items.csv")),
+      here::here("data", survey, "questionnaire_text",
+                 paste0(gsub("-", "_", survey), "_verbatim_items.csv"))
     )
-  }
-  if (!file.exists(verbatim_path)) {
+    verbatim_path <- candidates[file.exists(candidates)][1]
+    if (is.na(verbatim_path)) {
+      stop("verbatim CSV not found; tried:\n  ",
+           paste(candidates, collapse = "\n  "))
+    }
+  } else if (!file.exists(verbatim_path)) {
     stop("verbatim CSV not found: ", verbatim_path)
   }
   readr::read_csv(verbatim_path, show_col_types = FALSE)
@@ -216,6 +226,18 @@ format_qid_grid <- function(qid_map) {
   paste0(paste(waves_disp, qid_map, sep = " "), collapse = ", ")
 }
 
+#' Normalize a wave identifier to a comparable key.
+#'
+#' YAML wave keys are conventionally `w1`, `w2`, ... for round-numbered
+#' surveys and `w2003`, `w2004`, ... for year-based surveys. Verbatim
+#' CSVs sometimes store year-based waves as bare integers (2003, 2004)
+#' or strings ("y2003"). Normalize all forms to a single canonical key.
+normalize_wave_key <- function(x) {
+  x <- as.character(x)
+  x <- sub("^[wWyY]", "", x)
+  x
+}
+
 #' Cross-check that YAML source map and verbatim CSV agree on per-wave QIDs.
 #'
 #' Returns a character vector of warning messages (empty if all match).
@@ -224,31 +246,34 @@ crosscheck_qids <- function(var_id, qid_map, rows) {
   cv <- rows |>
     dplyr::filter(!is.na(question_id), nzchar(question_id)) |>
     dplyr::select(wave, question_id)
-  csv_map <- setNames(cv$question_id, cv$wave)
+  if (nrow(cv) == 0) return(msgs)
+  csv_map <- setNames(cv$question_id, normalize_wave_key(cv$wave))
 
-  yaml_waves <- names(qid_map)[!is.na(qid_map) & qid_map != "NULL"]
-  csv_waves  <- names(csv_map)
+  yaml_keys_raw <- names(qid_map)[!is.na(qid_map) & qid_map != "NULL"]
+  yaml_keys_norm <- normalize_wave_key(yaml_keys_raw)
+  names(yaml_keys_raw) <- yaml_keys_norm
+  yaml_norm_map <- setNames(qid_map[yaml_keys_raw], yaml_keys_norm)
 
-  missing_in_csv <- setdiff(yaml_waves, csv_waves)
+  missing_in_csv <- setdiff(yaml_keys_norm, names(csv_map))
   if (length(missing_in_csv) > 0) {
     msgs <- c(msgs, sprintf(
       "%s: waves %s in YAML have no verbatim CSV row",
       var_id, paste(missing_in_csv, collapse = ", ")
     ))
   }
-  missing_in_yaml <- setdiff(csv_waves, yaml_waves)
+  missing_in_yaml <- setdiff(names(csv_map), yaml_keys_norm)
   if (length(missing_in_yaml) > 0) {
     msgs <- c(msgs, sprintf(
       "%s: waves %s in verbatim CSV have no YAML source mapping",
       var_id, paste(missing_in_yaml, collapse = ", ")
     ))
   }
-  overlap <- intersect(yaml_waves, csv_waves)
+  overlap <- intersect(yaml_keys_norm, names(csv_map))
   for (w in overlap) {
-    if (!identical(as.character(qid_map[[w]]), as.character(csv_map[[w]]))) {
+    if (!identical(as.character(yaml_norm_map[[w]]), as.character(csv_map[[w]]))) {
       msgs <- c(msgs, sprintf(
         "%s wave %s: YAML says %s, verbatim CSV says %s",
-        var_id, w, qid_map[[w]], csv_map[[w]]
+        var_id, w, yaml_norm_map[[w]], csv_map[[w]]
       ))
     }
   }
@@ -445,6 +470,7 @@ build_appendix <- function(survey,
                            title = "Appendix A: Survey Items",
                            intro = NULL,
                            force_battery = character(0),
+                           heading_offset = 0L,
                            verbatim_path = NULL,
                            config_dir = NULL,
                            output_file = NULL) {
@@ -455,7 +481,8 @@ build_appendix <- function(survey,
   warnings_env <- new.env()
   warnings_env$msgs <- character(0)
 
-  parts <- c(sprintf("# %s\n", title))
+  hash <- strrep("#", 1L + heading_offset)
+  parts <- c(sprintf("%s %s\n", hash, title))
   if (!is.null(intro)) parts <- c(parts, paste0(intro, "\n"))
 
   for (group_name in names(groups)) {
@@ -472,10 +499,80 @@ build_appendix <- function(survey,
 
   md <- paste(parts, collapse = "\n")
 
+  # Apply heading offset: shift every ##/### one level deeper per offset
+  if (heading_offset > 0L) {
+    md <- gsub("(^|\n)(#+)\\s", paste0("\\1", strrep("#", heading_offset), "\\2 "), md, perl = TRUE)
+    # The title line above was already at the right level; fix double-shift
+    md <- sub(paste0("^", strrep("#", heading_offset), hash, " "),
+              paste0(hash, " "), md)
+  }
+
   if (length(warnings_env$msgs) > 0) {
     message("Cross-check warnings (", length(warnings_env$msgs), "):")
     for (m in warnings_env$msgs) message("  - ", m)
   }
+
+  if (!is.null(output_file)) {
+    writeLines(md, output_file)
+    message("Wrote ", output_file)
+  }
+  invisible(md)
+}
+
+#' Build a multi-survey Appendix A (e.g., ABS + KIPA for paper 17).
+#'
+#' Emits a single markdown document with a shared top-level `# title`
+#' heading, an optional shared intro, then one sub-appendix per survey.
+#' Each sub-appendix gets its own `# sub_label` heading and the per-survey
+#' content nested beneath (sections become `###`, items become `####`).
+#'
+#' @param surveys  Named list of per-survey specs. Each element is a list
+#'                 with fields:
+#'                   * `survey`    — character (e.g. "abs", "kipa-corruption")
+#'                   * `sub_label` — character heading for this sub-appendix
+#'                                   (e.g. "A1. Asian Barometer Survey")
+#'                   * `groups`    — same shape as build_appendix() groups
+#'                   * `intro`     — optional per-survey intro paragraph
+#'                   * `verbatim_path`, `config_dir` — optional overrides
+#' @param title    Top-level heading (default "Appendix A: Variable Descriptions").
+#' @param intro    Optional shared intro paragraph (renders below `title`,
+#'                 above the first sub-appendix).
+#' @param output_file Optional path to write markdown.
+#'
+#' @return Character: the rendered markdown.
+build_multi_survey_appendix <- function(surveys,
+                                        title = "A. Variable Descriptions",
+                                        intro = NULL,
+                                        output_file = NULL) {
+
+  if (!is.list(surveys) || length(surveys) == 0) {
+    stop("`surveys` must be a non-empty list.")
+  }
+
+  parts <- c(sprintf("# %s\n", title))
+  if (!is.null(intro)) parts <- c(parts, paste0(intro, "\n"))
+
+  for (spec in surveys) {
+    required <- c("survey", "sub_label", "groups")
+    missing <- setdiff(required, names(spec))
+    if (length(missing) > 0) {
+      stop("Per-survey spec missing required field(s): ",
+           paste(missing, collapse = ", "))
+    }
+    sub_md <- build_appendix(
+      survey         = spec$survey,
+      groups         = spec$groups,
+      title          = spec$sub_label,
+      intro          = spec$intro,
+      heading_offset = 1L,  # shift this survey's content one level deeper
+      verbatim_path  = spec$verbatim_path,
+      config_dir     = spec$config_dir,
+      output_file    = NULL
+    )
+    parts <- c(parts, sub_md)
+  }
+
+  md <- paste(parts, collapse = "\n")
 
   if (!is.null(output_file)) {
     writeLines(md, output_file)
