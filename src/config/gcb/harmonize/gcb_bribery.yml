@@ -1,0 +1,155 @@
+# GCB Bribery Experience — the flagship GCB measure
+#
+# First-person bribery frequency across six public services (the …FIN items),
+# plus the derived overall bribery-rate category (BRIBETOTFIN).
+#
+# SERVICE BATTERY (BRIBE1-6FIN): raw frequency 0=Never, 1=Once or twice,
+# 2=A few times, 3=Often, plus 5=No contact (structural skip) and 98/99 missing.
+# We treat 5=No contact as NA via the `bribe_freq` convention, so the harmonized
+# item is "bribery frequency among those who used the service" (0-3, higher=more
+# bribery). The contact/no-contact split lives in separate GCB rate variables
+# (CONTACTRATE…) not harmonized here.
+#
+# A dichotomized variant exists in the raw data as the …FINB columns
+# (1=Paid a bribe, 2=Did not). Not harmonized here; add a parallel battery if a
+# binary "paid vs not" indicator is preferred.
+
+schema_version: 1
+
+missing_conventions:
+  bribe_freq:
+    codes: [5, 98, 99]
+    description: "5=No contact (structural skip -> NA), 98=Refused, 99=Don't know"
+  dk_only:
+    codes: [99]
+    description: "DK/Refused (BRIBETOTFIN single missing code)"
+
+variables:
+
+  - id: bribe_school
+    concept: bribery_experience
+    description: "Bribery frequency: public school, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE1FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_clinic
+    concept: bribery_experience
+    description: "Bribery frequency: public clinic/hospital, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE2FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_id_docs
+    concept: bribery_experience
+    description: "Bribery frequency: ID/official documents, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE3FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_utilities
+    concept: bribery_experience
+    description: "Bribery frequency: water/sanitation/electric services, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE4FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_police
+    concept: bribery_experience
+    description: "Bribery frequency: police, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE5FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_courts
+    concept: bribery_experience
+    description: "Bribery frequency: courts, past 12 months (0=never -> 3=often)"
+    type: ordinal
+    source:
+      asia2020: BRIBE6FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "Never", 1: "Once or twice", 2: "A few times", 3: "Often"}
+    missing:
+      use_convention: bribe_freq
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: bribe_rate_overall
+    concept: bribery_experience
+    description: "Overall bribery-rate category (1=no contact, 2=had contact didn't pay, 3=paid a bribe)"
+    type: nominal
+    note: "Derived GCB variable BRIBETOTFIN. 1=no contact is a structural category, not a low bribery level."
+    source:
+      asia2020: BRIBETOTFIN
+    scale:
+      min: 1
+      max: 3
+      labels: {1: "No contact", 2: "Had contact, did not pay", 3: "Paid a bribe"}
+    missing:
+      use_convention: dk_only
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      skip_level_preservation: true

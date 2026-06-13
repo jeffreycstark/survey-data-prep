@@ -1,0 +1,116 @@
+# GCB Identifiers — structural columns carried through harmonization
+#
+# country, respondent id, survey weights, fieldwork year. Country VARIES per
+# respondent within an edition (GCB files are multi-country cross-sections), so
+# it must flow through as a per-row harmonized column, not be attached per-wave
+# in step 99. All identity passthrough.
+#
+# WAVE/EDITION KEYS: one per regional edition. Asia 2020 = `asia2020`. A second
+# region adds its raw variable name under each `source:` block.
+#
+# NOTES:
+#   - RespondentID is NOT unique (16,936 distinct over 19,416 rows; IDs restart
+#     per country). Use (wave, row_id, country) as the key, not respondent_id.
+#   - fieldwork_year (YEAR) is sparse: ~84% NA, remainder split 2019/2020
+#     (fieldwork straddled the calendar boundary). Kept as documentation; do not
+#     treat as a complete field. Derive precise dates from START_DATE if needed.
+
+schema_version: 1
+
+missing_conventions:
+  none:
+    codes: []
+    description: "No survey missing codes (identifiers / weights / structural)"
+
+variables:
+
+  - id: country
+    concept: identifiers
+    description: "Country (GCB TCOUNTRY numeric code, 1-17 for the Asia edition)"
+    type: nominal
+    note: "Per-respondent country. Codes are edition-specific; Asia 2020 labels below."
+    source:
+      asia2020: TCOUNTRY
+    scale:
+      min: 1
+      max: 17
+      labels: {1: Japan, 2: South Korea, 3: Taiwan, 4: India, 5: China,
+               6: Malaysia, 7: Indonesia, 8: Thailand, 9: Philippines,
+               10: Myanmar, 11: Nepal, 12: Bangladesh, 13: Cambodia,
+               14: Mongolia, 15: Sri Lanka, 16: Vietnam, 17: Maldives}
+    missing:
+      use_convention: none
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 17]
+      skip_level_preservation: true
+
+  - id: respondent_id
+    concept: identifiers
+    description: "GCB RespondentID (NOT unique across countries — see header)"
+    type: continuous
+    source:
+      asia2020: RespondentID
+    missing:
+      use_convention: none
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_crosstab_check: true
+      skip_level_preservation: true
+
+  - id: weight_within
+    concept: identifiers
+    description: "Within-country weighting factor (WITHINWT)"
+    type: continuous
+    source:
+      asia2020: WITHINWT
+    missing:
+      use_convention: none
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_crosstab_check: true
+      skip_level_preservation: true
+
+  - id: weight_cross
+    concept: identifiers
+    description: "Multi-country weight to 1000 completes per country (COMBINWT)"
+    type: continuous
+    source:
+      asia2020: COMBINWT
+    missing:
+      use_convention: none
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_crosstab_check: true
+      skip_level_preservation: true
+
+  - id: fieldwork_year
+    concept: identifiers
+    description: "Fieldwork year (YEAR; sparse — ~84% NA, see header)"
+    type: ordinal
+    source:
+      asia2020: YEAR
+    scale:
+      min: 2019
+      max: 2020
+      labels: {2019: "2019", 2020: "2020"}
+    missing:
+      use_convention: none
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [2019, 2020]
+      skip_level_preservation: true
+      skip_completeness_check: true

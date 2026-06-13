@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | KINU Unification | Complete | 127 vars, 13 waves 2014–2023 (biannual 2019–2021) | [docs/surveys/kinu.md](docs/surveys/kinu.md) |
 | IPUS Unification | Initial | 11 vars, 18 annual waves 2007–2024, 21,617 resp | [docs/surveys/ipus.md](docs/surveys/ipus.md) |
 | Korean Unification Tri-Survey Panel (derived) | Complete | KGSS + KINU + IPUS, 46 wave-rows | [docs/surveys/korean-unification-panel.md](docs/surveys/korean-unification-panel.md) |
+| Global Corruption Barometer (GCB) | Scaffold | 22 vars, 1 edition (Asia 2020), 19,416 resp, 17 countries; region-extensible | [docs/surveys/gcb.md](docs/surveys/gcb.md) |
 | V-Dem v15 | Scaffold | Country-year panel, 202 countries, 1789–2024 | [docs/surveys/vdem.md](docs/surveys/vdem.md) |
 
 ⚠️ KIPA Corruption is **NOT a general-population survey** — corporate employees + self-employed with gov-business contact. Cannot row-bind with KGSS/KAMOS/KIPA-social.

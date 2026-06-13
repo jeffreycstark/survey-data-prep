@@ -107,7 +107,9 @@ get_missing_codes <- function(spec, var_spec = NULL) {
   kinu             = list(script = "src/r/data_prep_modules/kinu/0_load_waves.R",
                           fn     = "load_kinu_waves"),
   ipus             = list(script = "src/r/data_prep_modules/ipus/0_load_waves.R",
-                          fn     = "load_ipus_waves")
+                          fn     = "load_ipus_waves"),
+  gcb              = list(script = "src/r/data_prep_modules/gcb/0_load_waves.R",
+                          fn     = "load_gcb_waves")
 )
 
 # Map survey -> harmonized .rds filename. Most use {survey}_harmonized.rds, but
@@ -122,7 +124,8 @@ get_missing_codes <- function(spec, var_spec = NULL) {
   kgss             = "kgss_harmonized.rds",
   `kipa-corruption` = "kipa_corruption_harmonized.rds",
   kinu             = "kinu_harmonized.rds",
-  ipus             = "ipus_harmonized.rds"
+  ipus             = "ipus_harmonized.rds",
+  gcb              = "gcb_harmonized.rds"
 )
 
 

@@ -1,0 +1,144 @@
+# GCB Corruption Perception & Anti-Corruption Institutions
+#
+# Perceived corruption trend, government's anti-corruption performance, the
+# salience of government corruption, awareness/performance of the Anti-Corruption
+# Commission, and whether people can report corruption without fear.
+#
+# DIRECTIONALITY is documented per variable (it is NOT uniform):
+#   - corr_change_perceived  : higher = MORE corruption (worse)
+#   - corr_govt_performance   : higher = BETTER government response
+#   - corr_institutional_problem : higher = BIGGER problem (worse)
+#   - acc_awareness / acc_performance : higher = more aware / better
+#   - report_without_fear     : 1 = can report without fear, 0 = fears reprisal
+#
+# MISSING-CODE HETEROGENEITY (important): "Don't know" is coded differently
+# across items. CORRCHANGE/CORRGOVRES use 99 only; TQ2 codes DK as 4 AND 99;
+# Q31/Q47 use 98 (Refused) + 99 (DK). Hence multiple conventions below.
+
+schema_version: 1
+
+missing_conventions:
+  dk_only:
+    codes: [99]
+    description: "Don't know (no separate Refused code on this item)"
+  dk_refused:
+    codes: [98, 99]
+    description: "Refused (98), Don't know (99)"
+  dk_tq2:
+    codes: [4, 99]
+    description: "TQ2 codes Don't know as 4; Don't answer as 99"
+
+variables:
+
+  - id: corr_change_perceived
+    concept: corruption_perception
+    description: "Perceived change in corruption over past year (0=decreased a lot -> 4=increased a lot; higher=more corruption)"
+    type: ordinal
+    source:
+      asia2020: CORRCHANGEFIN
+    scale:
+      min: 0
+      max: 4
+      labels: {0: "Decreased a lot", 1: "Somewhat decreased", 2: "Stayed the same",
+               3: "Somewhat increased", 4: "Increased a lot"}
+    missing:
+      use_convention: dk_only
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 4]
+
+  - id: corr_govt_performance
+    concept: corruption_perception
+    description: "Government handling of fighting corruption (1=very badly -> 4=very well; higher=better)"
+    type: ordinal
+    source:
+      asia2020: CORRGOVRESFIN
+    scale:
+      min: 1
+      max: 4
+      labels: {1: "Very badly", 2: "Fairly badly", 3: "Fairly well", 4: "Very well"}
+    missing:
+      use_convention: dk_only
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: corr_institutional_problem
+    concept: corruption_perception
+    description: "How big a problem is government corruption (0=no problem -> 3=very big; higher=worse)"
+    type: ordinal
+    source:
+      asia2020: TQ2
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "No problem at all", 1: "Fairly small", 2: "Quite big", 3: "A very big problem"}
+    missing:
+      use_convention: dk_tq2
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: acc_awareness
+    concept: anti_corruption_institutions
+    description: "Awareness of the Anti-Corruption Commission (1=never heard -> 4=a great deal)"
+    type: ordinal
+    source:
+      asia2020: Q31A
+    scale:
+      min: 1
+      max: 4
+      labels: {1: "Never heard of them", 2: "Heard name only", 3: "A fair amount", 4: "A great deal"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: acc_performance
+    concept: anti_corruption_institutions
+    description: "ACC performance at fighting corruption, 1-5 bad->well with neutral midpoint (recoded from raw 1-4 + 5=neither)"
+    type: ordinal
+    note: "Raw Q31B: 1=very badly,2=fairly badly,3=fairly well,4=very well,5=neither. Remapped so neutral sits at the centre (3): 1->1,2->2,5->3,3->4,4->5. Higher=better."
+    source:
+      asia2020: Q31B
+    scale:
+      min: 1
+      max: 5
+      labels: {1: "Very badly", 2: "Fairly badly", 3: "Neither bad nor well", 4: "Fairly well", 5: "Very well"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+
+  - id: report_without_fear
+    concept: corruption_perception
+    description: "Can ordinary people report corruption without fear (1=yes can report, 0=fears reprisal)"
+    type: nominal
+    note: "Raw Q47: 0=can report without fear, 2=fear reprisals. Recoded to a clean binary: 0->1, 2->0."
+    source:
+      asia2020: Q47
+    scale:
+      min: 0
+      max: 1
+      labels: {0: "Fears reprisal", 1: "Can report without fear"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: recode
+        mapping: {0: 1, 2: 0}
+    qc:
+      valid_range: [0, 1]

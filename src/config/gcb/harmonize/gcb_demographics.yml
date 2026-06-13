@@ -1,0 +1,91 @@
+# GCB Demographics — age, age group, gender, education
+#
+# Starter demographic set. GCB also carries occupation (DEMOCCUFIN),
+# income adequacy (DEMSALENOUGHFIN), area type (DEMAREATYPEFIN), and
+# subnational region (SUBREGION) — add as needed.
+#
+# MISSING: age uses 998/999 (refused/DK as out-of-range sentinels); the
+# categorical demographics use the standard 98/99.
+
+schema_version: 1
+
+missing_conventions:
+  dk_refused:
+    codes: [98, 99]
+    description: "Refused (98), Don't know (99)"
+  age_missing:
+    codes: [998, 999]
+    description: "DEMAGEFIN sentinels for refused / don't know"
+
+variables:
+
+  - id: age
+    concept: demographics
+    description: "Respondent age in years (DEMAGEFIN)"
+    type: continuous
+    source:
+      asia2020: DEMAGEFIN
+    missing:
+      use_convention: age_missing
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [18, 120]
+      skip_crosstab_check: true
+      skip_level_preservation: true
+
+  - id: age_group
+    concept: demographics
+    description: "Age group (1=18-24 ... 6=65+)"
+    type: ordinal
+    source:
+      asia2020: DEMAGEGROUP2FIN
+    scale:
+      min: 1
+      max: 6
+      labels: {1: "18-24", 2: "25-34", 3: "35-44", 4: "45-54", 5: "55-64", 6: "65+"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 6]
+
+  - id: gender
+    concept: demographics
+    description: "Respondent gender (1=Male, 2=Female)"
+    type: nominal
+    source:
+      asia2020: DEMGENDERFIN
+    scale:
+      min: 1
+      max: 2
+      labels: {1: "Male", 2: "Female"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+      skip_level_preservation: true
+
+  - id: education
+    concept: demographics
+    description: "Education condensed (0=none, 1=primary, 2=secondary, 3=post-secondary)"
+    type: ordinal
+    source:
+      asia2020: DEMEDU2FIN
+    scale:
+      min: 0
+      max: 3
+      labels: {0: "No formal education", 1: "Primary", 2: "Secondary", 3: "Post-secondary"}
+    missing:
+      use_convention: dk_refused
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
