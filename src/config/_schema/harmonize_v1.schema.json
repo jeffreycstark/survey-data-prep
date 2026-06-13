@@ -222,6 +222,8 @@
         "skip_type_stability": { "type": "boolean" },
         "skip_level_preservation": { "type": "boolean" },
         "skip_unmapped_check": { "type": "boolean" },
+        "skip_completeness_check": { "type": "boolean" },
+        "allow_empty": { "type": "boolean" },
         "coverage_missing_codes": { "$ref": "#/$defs/intOrIntArray" },
         "coverage_missing_codes_by_wave": {
           "type": "object",
