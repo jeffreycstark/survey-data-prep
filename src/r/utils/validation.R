@@ -171,6 +171,63 @@ validate_coverage <- function(raw_vec, harmonized_vec, missing_codes = c(),
 }
 
 
+#' Validate completeness — flag a harmonized (variable x wave) cell that is
+#' entirely missing
+#'
+#' Closes the silent-pass gap in [validate_coverage()]: when the raw source
+#' column is present in a wave but carries zero valid values, coverage loss is
+#' 0%% (diff / raw_valid is undefined and defaults to 0), so the cell passes as
+#' "ok" even though the harmonized variable is 100%% NA. This is how silently-
+#' empty columns slip through — e.g. the ABS Wave 1 / Wave 2 Korea interview-date
+#' variables, which exist as columns in the .sav but are entirely missing for all
+#' Korean respondents. A variable a spec actively maps for a wave should yield at
+#' least one non-missing harmonized value; if it yields none, that is almost
+#' always an empty raw column, a wrong source-variable name, or a recoding that
+#' dropped every value.
+#'
+#' Operates at the (variable x wave) grain, matching every other check in
+#' [validate_variable_wave()]. Per-country emptiness (a variable present overall
+#' but entirely missing for one country in a wave) is a finer grain not covered
+#' here.
+#'
+#' @param harmonized_vec Harmonized vector for one (variable, wave).
+#' @param allow_empty Logical. If TRUE, an all-missing cell is reported as "skip"
+#'   rather than "warn". Set via `qc.allow_empty` in the spec for variables that
+#'   are a legitimate placeholder column in some waves.
+#' @return List with status, check, n_valid, n_total, and message.
+validate_completeness <- function(harmonized_vec, allow_empty = FALSE) {
+  n_total <- length(harmonized_vec)
+  n_valid <- sum(!is.na(harmonized_vec))
+
+  if (n_valid > 0) {
+    return(list(
+      status = "ok", check = "completeness",
+      n_valid = n_valid, n_total = n_total,
+      message = sprintf("Completeness OK (%d non-missing values)", n_valid)
+    ))
+  }
+
+  if (isTRUE(allow_empty)) {
+    return(list(
+      status = "skip", check = "completeness",
+      n_valid = 0L, n_total = n_total,
+      message = "Entirely missing, but qc.allow_empty set in YAML"
+    ))
+  }
+
+  list(
+    status = "warn", check = "completeness",
+    n_valid = 0L, n_total = n_total,
+    message = sprintf(
+      paste0("Harmonized variable entirely missing (0 of %d values) - source ",
+             "column present but empty; possible silent drop, empty raw column, ",
+             "or wrong source variable"),
+      n_total
+    )
+  )
+}
+
+
 #' Validate transformation correctness via correlation
 #'
 #' For identity transforms, correlation should be ~1.0
@@ -1143,6 +1200,13 @@ validate_variable_wave <- function(raw_data, harmonized_data, var_spec,
     } else {
       validate_coverage(vecs$raw_for_coverage, harmonized_vec, coverage_codes)
     },
+    completeness = if (isTRUE(var_spec$qc$skip_completeness_check)) {
+      list(status = "skip", check = "completeness",
+           message = "Skipped: skip_completeness_check set in YAML")
+    } else {
+      validate_completeness(harmonized_vec,
+                            allow_empty = isTRUE(var_spec$qc$allow_empty))
+    },
     transformation = .vvw_run_transformation_check(
       vecs$raw_vec_check, harmonized_vec, var_spec, transform_type, fn_name, group_vec
     ),
@@ -1200,6 +1264,7 @@ generate_validation_summary <- function(results) {
       transform = r$transform_type %||% NA_character_,
       status = r$status,
       coverage = r$checks$coverage$status %||% NA_character_,
+      completeness = r$checks$completeness$status %||% NA_character_,
       transformation = r$checks$transformation$status %||% NA_character_,
       range = r$checks$range$status %||% NA_character_,
       crosstab = r$checks$crosstab$status %||% NA_character_,
@@ -1262,8 +1327,8 @@ generate_validation_report <- function(results, output_path = NULL) {
 
     lines <- c(lines, sprintf("### %s %s", var_status, var))
     lines <- c(lines, "")
-    lines <- c(lines, "| Wave | Source | Transform | Coverage | Transform | Range | Crosstab | Type | Levels |")
-    lines <- c(lines, "|------|--------|-----------|----------|-----------|-------|----------|------|--------|")
+    lines <- c(lines, "| Wave | Source | Transform | Coverage | Complete | Transform | Range | Crosstab | Type | Levels |")
+    lines <- c(lines, "|------|--------|-----------|----------|----------|-----------|-------|----------|------|--------|")
 
     for (i in seq_len(nrow(var_results))) {
       row <- var_results[i, ]
@@ -1278,11 +1343,12 @@ generate_validation_report <- function(results, output_path = NULL) {
       }
 
       lines <- c(lines, sprintf(
-        "| %s | %s | %s | %s | %s | %s | %s | %s | %s |",
+        "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
         row$wave,
         row$source %||% "-",
         row$transform %||% "-",
         status_icon(row$coverage),
+        status_icon(row$completeness),
         status_icon(row$transformation),
         status_icon(row$range),
         status_icon(row$crosstab),

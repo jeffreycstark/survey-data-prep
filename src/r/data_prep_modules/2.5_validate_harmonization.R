@@ -458,6 +458,7 @@ write_invariants_csv <- function(results, output_path) {
       # Pick the most informative numeric per check type.
       val <- switch(name,
         coverage           = fmt(chk$pct_loss),
+        completeness       = fmt(chk$n_valid),
         transformation     = fmt(chk$pearson),
         range              = fmt(chk$out_of_range),
         crosstab           = fmt(chk$n_raw_values),
