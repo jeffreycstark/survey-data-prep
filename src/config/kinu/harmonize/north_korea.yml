@@ -261,7 +261,7 @@ variables:
     type: ordinal
     note: "10 waves (missing 2014-2017, 2021b, 2023 — code coverage from prospector survey). Raw nk0701: 1=strongly disagree → 5=strongly agree. Identity. Reads as PRO-NK trust frame: high agreement = belief NK acts in good faith on unification."
     source:
-      w2014:  nk0701
+      w2014: null  # not fielded (codebook)
       w2016:  nk0701
       w2017:  nk0701
       w2018:  nk0701
@@ -287,7 +287,7 @@ variables:
     type: ordinal
     note: "11 waves (missing 2014, 2015). Raw nk0702: 1=strongly disagree → 5=strongly agree. Identity. ANTI-NK distrust frame: high agreement = belief NK pursues unification on its own ideological terms (i.e., not in good faith). Pairs with nk_pursues_unification — together they capture the 'NK has good intent vs NK has hostile intent' axis."
     source:
-      w2014:  nk0702
+      w2014: null  # not fielded (codebook)
       w2016:  nk0702
       w2017:  nk0702
       w2018:  nk0702

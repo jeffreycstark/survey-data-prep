@@ -96,7 +96,7 @@ variables:
       w2020b: at0201
       w2021a: at0201
       w2021b: at0201
-      w2022:  at0201
+      w2022: null  # not fielded (codebook)
       w2023:  at0201
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -125,7 +125,7 @@ variables:
       w2020b: at0202
       w2021a: at0202
       w2021b: at0202
-      w2022:  at0202
+      w2022: null  # not fielded (codebook)
       w2023:  at0202
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -154,7 +154,7 @@ variables:
       w2020b: at0203
       w2021a: at0203
       w2021b: at0203
-      w2022:  at0203
+      w2022: null  # not fielded (codebook)
       w2023:  at0203
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -183,7 +183,7 @@ variables:
       w2020b: at0204
       w2021a: at0204
       w2021b: at0204
-      w2022:  at0204
+      w2022: null  # not fielded (codebook)
       w2023:  at0204
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -212,7 +212,7 @@ variables:
       w2020b: at0205
       w2021a: at0205
       w2021b: at0205
-      w2022:  at0205
+      w2022: null  # not fielded (codebook)
       w2023:  at0205
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -241,7 +241,7 @@ variables:
       w2020b: at0206
       w2021a: at0206
       w2021b: at0206
-      w2022:  at0206
+      w2022: null  # not fielded (codebook)
       w2023:  at0206
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -270,7 +270,7 @@ variables:
       w2020b: at0207
       w2021a: at0207
       w2021b: at0207
-      w2022:  at0207
+      w2022: null  # not fielded (codebook)
       w2023:  at0207
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -299,7 +299,7 @@ variables:
       w2020b: at0208
       w2021a: at0208
       w2021b: at0208
-      w2022:  at0208
+      w2022: null  # not fielded (codebook)
       w2023:  at0208
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -328,7 +328,7 @@ variables:
       w2020b: at0209
       w2021a: at0209
       w2021b: at0209
-      w2022:  at0209
+      w2022: null  # not fielded (codebook)
       w2023:  at0209
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -357,7 +357,7 @@ variables:
       w2020b: at0210
       w2021a: at0210
       w2021b: at0210
-      w2022:  at0210
+      w2022: null  # not fielded (codebook)
       w2023:  at0210
     scale: {min: 1, max: 4, labels: {1: "Not proud at all", 4: "Very proud"}}
     missing:
@@ -386,9 +386,9 @@ variables:
       w2017:  at06
       w2018:  at06
       w2019a: at06
-      w2019b: at06
+      w2019b: null  # not fielded (codebook)
       w2020a: at06
-      w2020b: at06
+      w2020b: null  # not fielded (codebook)
       w2021a: at06
       w2022:  at06
     scale: {min: 0, max: 10, labels: {0: "Hardly trustful", 10: "Very trustful"}}
@@ -412,10 +412,10 @@ variables:
       w2017:  at0701
       w2018:  at0701
       w2019a: at0701
-      w2019b: at0701
+      w2019b: null  # not fielded (codebook)
       w2020a: at0701
       w2021a: at0701
-      w2022:  at0701
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -437,10 +437,10 @@ variables:
       w2017:  at0702
       w2018:  at0702
       w2019a: at0702
-      w2019b: at0702
+      w2019b: null  # not fielded (codebook)
       w2020a: at0702
       w2021a: at0702
-      w2022:  at0702
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -462,10 +462,10 @@ variables:
       w2017:  at0703
       w2018:  at0703
       w2019a: at0703
-      w2019b: at0703
+      w2019b: null  # not fielded (codebook)
       w2020a: at0703
       w2021a: at0703
-      w2022:  at0703
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -487,10 +487,10 @@ variables:
       w2017:  at0704
       w2018:  at0704
       w2019a: at0704
-      w2019b: at0704
+      w2019b: null  # not fielded (codebook)
       w2020a: at0704
       w2021a: at0704
-      w2022:  at0704
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -512,10 +512,10 @@ variables:
       w2017:  at0705
       w2018:  at0705
       w2019a: at0705
-      w2019b: at0705
+      w2019b: null  # not fielded (codebook)
       w2020a: at0705
       w2021a: at0705
-      w2022:  at0705
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -537,10 +537,10 @@ variables:
       w2017:  at0706
       w2018:  at0706
       w2019a: at0706
-      w2019b: at0706
+      w2019b: null  # not fielded (codebook)
       w2020a: at0706
       w2021a: at0706
-      w2022:  at0706
+      w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
       use_convention: treat_as_na
@@ -561,8 +561,8 @@ variables:
     type: ordinal
     note: "11 waves. Raw at0303: 1=strongly disagree → 5=strongly agree. Identity. Likely worded around displaying / respecting the flag."
     source:
-      w2014:  at0303
-      w2015:  at0303
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  at0303
       w2017:  at0303
       w2018:  at0303
@@ -589,8 +589,8 @@ variables:
     type: ordinal
     note: "11 waves. Raw at0304: 1=strongly disagree → 5=strongly agree. Identity."
     source:
-      w2014:  at0304
-      w2015:  at0304
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  at0304
       w2017:  at0304
       w2018:  at0304
@@ -621,8 +621,8 @@ variables:
     type: ordinal
     note: "10 waves. Raw at1701: 1=oppose strongly → 5=favor strongly. Identity. Substantively important for studies of Korean ethnic-nation identity transitions."
     source:
-      w2014:  at1701
-      w2015:  at1701
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  at1701
       w2017:  at1701
       w2018:  at1701
@@ -648,8 +648,8 @@ variables:
     type: ordinal
     note: "10 waves. Raw at1702. Identity."
     source:
-      w2014:  at1702
-      w2015:  at1702
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  at1702
       w2017:  at1702
       w2018:  at1702
@@ -675,8 +675,8 @@ variables:
     type: ordinal
     note: "10 waves. Raw at1703. Identity."
     source:
-      w2014:  at1703
-      w2015:  at1703
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  at1703
       w2017:  at1703
       w2018:  at1703
@@ -706,9 +706,9 @@ variables:
     type: ordinal
     note: "8 waves. Raw at2801: 1=do not agree at all, 5=neutral, 9=very much agree, 99=n/a. Identity. Note 1-9 odd-length scale (not 1-10); preserved as-is. Within-scale code 9 is a VALID response (very much agree), unlike 9 in 1-X scales used elsewhere."
     source:
-      w2016:  at2801
-      w2017:  at2801
-      w2018:  at2801
+      w2016: null  # not fielded (codebook)
+      w2017: null  # not fielded (codebook)
+      w2018: null  # not fielded (codebook)
       w2019a: at2801
       w2019b: at2801
       w2020a: at2801
@@ -730,9 +730,9 @@ variables:
     type: ordinal
     note: "8 waves. Raw at2803: same 1-9 scale. Identity."
     source:
-      w2016:  at2803
-      w2017:  at2803
-      w2018:  at2803
+      w2016: null  # not fielded (codebook)
+      w2017: null  # not fielded (codebook)
+      w2018: null  # not fielded (codebook)
       w2019a: at2803
       w2019b: at2803
       w2020a: at2803

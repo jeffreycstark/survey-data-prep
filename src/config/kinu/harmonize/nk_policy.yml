@@ -166,7 +166,7 @@ variables:
       w2020b: pc0111
       w2021a: pc0111
       w2022:  pc0111
-      w2023:  pc0111
+      w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
       use_convention: treat_as_na
@@ -192,7 +192,7 @@ variables:
       w2020b: pc0112
       w2021a: pc0112
       w2022:  pc0112
-      w2023:  pc0112
+      w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
       use_convention: treat_as_na
@@ -216,7 +216,7 @@ variables:
       w2020b: pc0117
       w2021a: pc0117
       w2022:  pc0117
-      w2023:  pc0117
+      w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
       use_convention: treat_as_na
@@ -269,8 +269,8 @@ variables:
     note: "9 waves (per inventory). Raw pc05: 1=strengthen alliance with US over China, 2=balanced US-China diplomacy, 3=strengthen relationship with China over US, 4=independent diplomacy regardless. Nominal — not ordinal. Useful for analyses of Korean foreign-policy realignment in light of US-China competition."
     source:
       w2016:  pc05
-      w2017:  pc05
-      w2018:  pc05
+      w2017: null  # not fielded (codebook)
+      w2018: null  # not fielded (codebook)
       w2019a: pc05
       w2019b: pc05
       w2020a: pc05
@@ -300,8 +300,8 @@ variables:
     type: ordinal
     note: "9 waves. Raw pc06: 1=reflected very much, 2=somewhat, 3=not reflected somewhat, 4=not reflected at all. REVERSED so higher = stronger sense of policy responsiveness on unification matters."
     source:
-      w2016:  pc06
-      w2017:  pc06
+      w2016: null  # not fielded (codebook)
+      w2017: null  # not fielded (codebook)
       w2018:  pc06
       w2019a: pc06
       w2019b: pc06

@@ -271,7 +271,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw pt05: 0=not democratic at all → 10=very democratic. Identity. Direct analogue to ABS dem_country_present_govt and KGSS dem_now."
     source:
-      w2014:  pt05
+      w2014: null  # not fielded (codebook)
       w2015:  pt05
       w2016:  pt05
       w2017:  pt05
@@ -299,7 +299,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw pt07: 1=very badly → 4=very well. Identity. Strongly correlated with administration cycles (Park → Moon → Yoon)."
     source:
-      w2014:  pt07
+      w2014: null  # not fielded (codebook)
       w2015:  pt07
       w2016:  pt07
       w2017:  pt07
@@ -328,10 +328,10 @@ variables:
     type: ordinal
     note: "9 waves. Raw pt08. Identity. Distinct from eval_admin — issue-specific evaluation focused on NK/unification policy. Pairs naturally with the unification.yml battery."
     source:
-      w2014:  pt08
-      w2015:  pt08
-      w2016:  pt08
-      w2017:  pt08
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
+      w2016: null  # not fielded (codebook)
+      w2017: null  # not fielded (codebook)
       w2018:  pt08
       w2019a: pt08
       w2019b: pt08
@@ -354,7 +354,7 @@ variables:
     type: ordinal
     note: "11 waves. Raw pt04: 1=very dissatisfied → 4=very satisfied. Identity. KGSS pol_econ_sat is reversed (1-5 with high=worse); KINU is identity (high=better) — opposite direction from KGSS."
     source:
-      w2014:  pt04
+      w2014: null  # not fielded (codebook)
       w2015:  pt04
       w2016:  pt04
       w2017:  pt04
@@ -386,8 +386,8 @@ variables:
     type: ordinal
     note: "10 waves. Raw pt1901: 1=much worse than a year ago → 5=much better than a year ago. Identity."
     source:
-      w2014:  pt1901
-      w2015:  pt1901
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  pt1901
       w2017:  pt1901
       w2018:  pt1901
@@ -413,8 +413,8 @@ variables:
     type: ordinal
     note: "10 waves. Raw pt1902. Identity. Pairs with econ_personal_year_change for sociotropic-vs-pocketbook analysis."
     source:
-      w2014:  pt1902
-      w2015:  pt1902
+      w2014: null  # not fielded (codebook)
+      w2015: null  # not fielded (codebook)
       w2016:  pt1902
       w2017:  pt1902
       w2018:  pt1902
@@ -444,9 +444,9 @@ variables:
     type: ordinal
     note: "9 waves. Raw pt1801: 0=very liberal, 5=moderate, 10=very conservative. Identity. KGSS pol_ideology runs 1-5 with same direction (higher=conservative); KINU offers finer-grained 0-10 resolution."
     source:
-      w2015:  pt1801
-      w2016:  pt1801
-      w2017:  pt1801
+      w2015: null  # not fielded (codebook)
+      w2016: null  # not fielded (codebook)
+      w2017: null  # not fielded (codebook)
       w2018:  pt1801
       w2019a: pt1801
       w2019b: pt1801
