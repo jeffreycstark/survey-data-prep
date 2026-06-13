@@ -86,6 +86,7 @@ variables:
     type: ordinal
     note: "12 waves (missing 2014). Raw at0201: same 1-4 pride scale. Substantively important for democratic-legitimacy analyses."
     source:
+      w2014: at0201
       w2015:  at0201
       w2016:  at0201
       w2017:  at0201
@@ -115,6 +116,7 @@ variables:
     type: ordinal
     note: "12 waves (missing 2014). Raw at0202."
     source:
+      w2014: at0202
       w2015:  at0202
       w2016:  at0202
       w2017:  at0202
@@ -144,6 +146,7 @@ variables:
     type: ordinal
     note: "12 waves (missing 2014). Raw at0203."
     source:
+      w2014: at0203
       w2015:  at0203
       w2016:  at0203
       w2017:  at0203
@@ -173,6 +176,7 @@ variables:
     type: ordinal
     note: "12 waves (missing 2014). Raw at0204."
     source:
+      w2014: at0204
       w2015:  at0204
       w2016:  at0204
       w2017:  at0204
@@ -202,6 +206,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0205."
     source:
+      w2014: at0205
       w2015:  at0205
       w2016:  at0205
       w2017:  at0205
@@ -231,6 +236,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0206."
     source:
+      w2014: at0206
       w2015:  at0206
       w2016:  at0206
       w2017:  at0206
@@ -260,6 +266,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0207. Substantively interesting given Hallyu (Korean Wave) cultural-export rise."
     source:
+      w2014: at0207
       w2015:  at0207
       w2016:  at0207
       w2017:  at0207
@@ -289,6 +296,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0208. Useful for security-attitude correlation analyses."
     source:
+      w2014: at0208
       w2015:  at0208
       w2016:  at0208
       w2017:  at0208
@@ -318,6 +326,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0209. Direct KGSS analogue: pride_history."
     source:
+      w2014: at0209
       w2015:  at0209
       w2016:  at0209
       w2017:  at0209
@@ -347,6 +356,7 @@ variables:
     type: ordinal
     note: "12 waves. Raw at0210. Useful as a 'pride in fairness' marker; pairs analytically with social inequality items."
     source:
+      w2014: at0210
       w2015:  at0210
       w2016:  at0210
       w2017:  at0210
@@ -390,7 +400,9 @@ variables:
       w2020a: at06
       w2020b: null  # not fielded (codebook)
       w2021a: at06
+      w2021b: at06
       w2022:  at06
+      w2023: at06
     scale: {min: 0, max: 10, labels: {0: "Hardly trustful", 10: "Very trustful"}}
     missing:
       use_convention: treat_as_na
@@ -415,6 +427,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0701
       w2021a: at0701
+      w2021b: at0701
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -440,6 +453,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0702
       w2021a: at0702
+      w2021b: at0702
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -465,6 +479,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0703
       w2021a: at0703
+      w2021b: at0703
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -490,6 +505,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0704
       w2021a: at0704
+      w2021b: at0704
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -515,6 +531,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0705
       w2021a: at0705
+      w2021b: at0705
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -540,6 +557,7 @@ variables:
       w2019b: null  # not fielded (codebook)
       w2020a: at0706
       w2021a: at0706
+      w2021b: at0706
       w2022: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Not confident at all", 10: "Very confident"}}
     missing:
@@ -571,7 +589,9 @@ variables:
       w2020a: at0303
       w2020b: at0303
       w2021a: at0303
+      w2021b: at0303
       w2022:  at0303
+      w2023: at0303
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
     missing:
       use_convention: treat_as_na
@@ -599,7 +619,9 @@ variables:
       w2020a: at0304
       w2020b: at0304
       w2021a: at0304
+      w2021b: at0304
       w2022:  at0304
+      w2023: at0304
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
     missing:
       use_convention: treat_as_na
@@ -631,6 +653,8 @@ variables:
       w2020a: at1701
       w2020b: at1701
       w2021a: at1701
+      w2021b: at1701
+      w2022: at1701
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
     missing:
       use_convention: treat_as_na
@@ -658,6 +682,8 @@ variables:
       w2020a: at1702
       w2020b: at1702
       w2021a: at1702
+      w2021b: at1702
+      w2022: at1702
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
     missing:
       use_convention: treat_as_na
@@ -685,6 +711,8 @@ variables:
       w2020a: at1703
       w2020b: at1703
       w2021a: at1703
+      w2021b: at1703
+      w2022: at1703
     scale: {min: 1, max: 5, labels: {1: "Oppose strongly", 5: "Favor strongly"}}
     missing:
       use_convention: treat_as_na
@@ -714,6 +742,9 @@ variables:
       w2020a: at2801
       w2020b: at2801
       w2021a: at2801
+      w2021b: at2801
+      w2022: at2801
+      w2023: at2801
     scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
     missing:
       use_convention: treat_as_na
@@ -738,6 +769,9 @@ variables:
       w2020a: at2803
       w2020b: at2803
       w2021a: at2803
+      w2021b: at2803
+      w2022: at2803
+      w2023: at2803
     scale: {min: 1, max: 9, labels: {1: "Do not agree at all", 5: "Neutral", 9: "Very much agree"}}
     missing:
       use_convention: treat_as_na

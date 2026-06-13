@@ -438,6 +438,8 @@ variables:
     type: ordinal
     note: "11 waves (missing 2014 and 2015 — early waves used a different educational coding). Raw edu: 1=no education, 2=primary, 3=middle, 4=high school, 5=college (2-3yr), 6=university (4yr), 7=master's, 8=doctoral. Identity. KGSS-comparable in DIRECTION though KGSS uses a 1-3 harmonization; for fine-grained analyses use this 1-8 scale."
     source:
+      w2014: edu
+      w2015: edu
       w2016:  edu
       w2017:  edu
       w2018:  edu
@@ -539,6 +541,7 @@ variables:
     type: categorical
     note: "12 waves (missing 2014 — used different coding 'old_mar' that wasn't fully harmonized). Raw marital: 1=never married, 2=married, 3=living together, 4=divorced/separated, 5=widowed. Nominal. KGSS-comparable in coding."
     source:
+      w2014: marital
       w2015:  marital
       w2016:  marital
       w2017:  marital

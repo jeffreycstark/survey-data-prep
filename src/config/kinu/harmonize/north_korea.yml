@@ -271,6 +271,7 @@ variables:
       w2020b: nk0701
       w2021a: nk0701
       w2022:  nk0701
+      w2023: nk0701
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}
     missing:
       use_convention: treat_as_na
@@ -296,6 +297,7 @@ variables:
       w2020a: nk0702
       w2020b: nk0702
       w2021a: nk0702
+      w2021b: nk0702
       w2022:  nk0702
       w2023:  nk0702
     scale: {min: 1, max: 5, labels: {1: "Strongly disagree", 5: "Strongly agree"}}

@@ -165,6 +165,7 @@ variables:
       w2020a: pc0111
       w2020b: pc0111
       w2021a: pc0111
+      w2021b: pc0111
       w2022:  pc0111
       w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
@@ -191,6 +192,7 @@ variables:
       w2020a: pc0112
       w2020b: pc0112
       w2021a: pc0112
+      w2021b: pc0112
       w2022:  pc0112
       w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
@@ -209,6 +211,7 @@ variables:
     type: ordinal
     note: "8 waves. Raw pc0117: 'NK policy- strengthen support for defectors.' Identity. Pairs analytically with the defector-perception items in north_korea.yml — policy preference vs perception."
     source:
+      w2017: pc0117
       w2018:  pc0117
       w2019a: pc0117
       w2019b: pc0117
@@ -300,6 +303,7 @@ variables:
     type: ordinal
     note: "9 waves. Raw pc06: 1=reflected very much, 2=somewhat, 3=not reflected somewhat, 4=not reflected at all. REVERSED so higher = stronger sense of policy responsiveness on unification matters."
     source:
+      w2014: pc06
       w2016: null  # not fielded (codebook)
       w2017: null  # not fielded (codebook)
       w2018:  pc06
@@ -309,6 +313,7 @@ variables:
       w2020b: pc06
       w2021a: pc06
       w2022:  pc06
+      w2023: pc06
     scale: {min: 1, max: 4, labels: {1: "Not reflected at all", 4: "Reflected very much"}}
     missing:
       use_convention: treat_as_na

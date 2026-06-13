@@ -281,6 +281,7 @@ variables:
       w2020a: pt05
       w2020b: pt05
       w2021a: pt05
+      w2021b: pt05
       w2022:  pt05
       w2023:  pt05
     scale: {min: 0, max: 10, labels: {0: "Not democratic at all", 10: "Very democratic"}}
@@ -309,6 +310,7 @@ variables:
       w2020a: pt07
       w2020b: pt07
       w2021a: pt07
+      w2021b: pt07
       w2022:  pt07
       w2023:  pt07
     scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
@@ -336,7 +338,11 @@ variables:
       w2019a: pt08
       w2019b: pt08
       w2020a: pt08
+      w2020b: pt08
+      w2021a: pt08
+      w2021b: pt08
       w2022:  pt08
+      w2023: pt08
     scale: {min: 1, max: 4, labels: {1: "Very badly", 4: "Very well"}}
     missing:
       use_convention: treat_as_na
@@ -364,6 +370,7 @@ variables:
       w2020a: pt04
       w2020b: pt04
       w2021a: pt04
+      w2021b: pt04
       w2022:  pt04
     scale: {min: 1, max: 4, labels: {1: "Very dissatisfied", 4: "Very satisfied"}}
     missing:
@@ -396,6 +403,8 @@ variables:
       w2020a: pt1901
       w2020b: pt1901
       w2021a: pt1901
+      w2021b: pt1901
+      w2022: pt1901
     scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
     missing:
       use_convention: treat_as_na
@@ -423,6 +432,8 @@ variables:
       w2020a: pt1902
       w2020b: pt1902
       w2021a: pt1902
+      w2021b: pt1902
+      w2022: pt1902
     scale: {min: 1, max: 5, labels: {1: "Much worse than a year ago", 5: "Much better than a year ago"}}
     missing:
       use_convention: treat_as_na
@@ -453,6 +464,9 @@ variables:
       w2020a: pt1801
       w2020b: pt1801
       w2021a: pt1801
+      w2021b: pt1801
+      w2022: pt1801
+      w2023: pt1801
     scale: {min: 0, max: 10, labels: {0: "Very liberal", 5: "Moderate", 10: "Very conservative"}}
     missing:
       use_convention: treat_as_na
