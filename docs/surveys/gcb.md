@@ -81,11 +81,10 @@ d <- readRDS("data/processed/gcb_harmonized.rds")
 
 ## Verbatim dictionary
 
-**TODO** — `data/gcb/questionnaire_text/gcb_verbatim_items.csv` not yet built. Source text from `GCB_2020_Asia_Master_Questionnaire_Final.docx` + `210114_GCB10_Asia_Codebook_Final_AFG.xlsx`.
+`data/gcb/questionnaire_text/gcb_verbatim_items.csv` — **Done** (22 rows, 1 edition asia2020; 1:1 with the harmonized dataset). Verbatim question text + response scales sourced from the official codebook (`210114_GCB10_Asia_Codebook_Final_AFG.xlsx`) and master questionnaire (`GCB_2020_Asia_Master_Questionnaire_Final.docx`), **not** SPSS labels. Bribery items carry a shared `stem_text`; harmonization transforms (acc_performance neutral-recode, report_without_fear binary, bribery no-contact→NA, education condensed) are documented in `notes`. Source documents copied to `data/gcb/questionnaires/originals/`.
 
 ## Not yet done (next steps)
 
 - Codebook extractor (`src/r/audit/extractors/gcb_codebook.R`) → unlocks the Layer-2 coverage reconciler.
-- Verbatim question dictionary (mandatory per repo standard before "Complete").
-- Second regional edition → verify cross-edition variable-name structure.
+- ~~Verbatim question dictionary~~ — done (see above).
 - Remaining GCB items not yet harmonized: sextortion (TQ17), right-to-information (TQ25A/B), COVID corruption (Q32_Asia), bribe reporting/solicitation, personal-connections battery (PERSONAL1–6), occupation/income/area-type demographics.
