@@ -1,0 +1,36 @@
+# Anchor-coverage exemptions
+# -----------------------------------------------------------------------------
+# The anchor-coverage meta-check (src/r/audit/04_anchor_coverage.R) requires
+# that every ordinal/continuous harmonized variable either (a) appears as a
+# loader (or the anchor) in some src/config/_anchors/<construct>.yml, or (b) is
+# explicitly exempted here. "Uncovered" is itself a finding — that is exactly
+# how system_deserves_support and the dem_* battery went unwatched by the
+# silent-killer anchor diagnostic.
+#
+# Exemption is a deliberate editorial act: a variable listed here is one we have
+# decided does NOT need anchor-correlation coverage (structural/demographic, or
+# a standalone item with no construct sibling to correlate against). Prefer
+# AUTHORING AN ANCHOR FILE over exempting an attitudinal variable.
+#
+# Two forms:
+#   exempt_concepts:  whole `concept:` groups that are structural/demographic.
+#   exempt_variables: individual variable ids, each with a reason.
+#
+# Matched per (survey, variable). `survey:` on a variable entry restricts the
+# exemption to that survey; omit it to exempt the id across all surveys.
+
+schema_version: 1
+
+exempt_concepts:
+  - demographics            # age, sex, education, income, region, marital, etc.
+  - identifiers             # respondent / country / wave id columns
+  - sampling                # survey weights (weight, weight_cross)
+  - electoral_mobilization  # turnout / vote-choice / party-id (nominal-ish, no construct direction)
+
+exempt_variables:
+  - variable: int_month
+    reason: "Interview month — administrative metadata, no construct direction."
+  - variable: int_year
+    reason: "Interview year — administrative metadata, no construct direction."
+  - variable: income_quintile
+    reason: "Derived household-income quintile — demographic, not an attitude."

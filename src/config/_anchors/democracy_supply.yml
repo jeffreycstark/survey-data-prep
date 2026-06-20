@@ -1,0 +1,74 @@
+# Construct anchor: democracy_supply (ABS, Phase 2 of harmonization auditor)
+#
+# Authored 2026-06-20 in response to the dem_* democracy-supply battery direction
+# bug (commit 6e622f5): these four items had NO anchor coverage, so the Layer 4
+# silent-killer diagnostic never evaluated them. This file closes that gap.
+#
+# DRAFT for Jeff's review. Conservative where theory/empirics are weak.
+#
+# Empirical check (post-fix abs_harmonized.rds, W2-W6 pooled): the four items
+# inter-correlate +0.09..+0.25 — all positive, consistent with a common
+# "perceived democratic supply" factor, though weak because each item taps a
+# distinct democratic feature (free speech, media access, electoral power,
+# electoral responsiveness). min_correlation is set low accordingly.
+
+schema_version: 1
+construct: democracy_supply
+last_reviewed: "2026-06-20"
+
+description: >
+  Perceived supply of democratic goods in the respondent's own country — the
+  extent to which core democratic features are seen to be actually present:
+  freedom of speech without fear, equal media access for parties, popular power
+  to change the government, and electoral responsiveness. Distinct from regime
+  preference (system_support) or satisfaction with democracy: these items ask how
+  democratic the country IS in practice, the "supply" side of the
+  supply/demand framework (Norris 2011; Welzel 2013). Anchored on dem_free_speech,
+  the most direction-stable liberty item.
+
+notes:
+  - >
+    All four items share raw coding 1=Strongly agree..4=Strongly disagree (or
+    1=A good deal..4=Not at all for dem_elections_attention) and are reverse-coded
+    by safe_reverse_4pt so that higher = the democratic feature is MORE present.
+    This direction was the 2026-06-20 fix (they had been left un-reversed under
+    safe_4pt_none). See CLAUDE.md and the democracy-supply battery memory.
+  - >
+    Inter-item correlations are modest (+0.09..+0.25): respondents distinguish
+    among democratic features (a country can have free speech but unresponsive
+    elections). The construct is real but loosely coupled, so min_correlation is
+    0.03 and dem_elections_attention (the weakest, r ~ 0.09-0.15) is flagged.
+
+anchor:
+  variable: dem_free_speech
+  expected_direction: positive
+  notes: >
+    "People are free to speak what they think without fear." Higher harmonized
+    value = more perceived free speech = more democratic supply. Reverse-coded
+    from raw 1=Strongly agree in democracy.yml.
+
+loaders:
+  - id: dem_equal_media_access
+    expected_sign: positive
+    justification: >
+      "Political parties/candidates have equal access to mass media during
+      elections." A fairness-of-contestation feature of democratic supply;
+      expected to covary positively with perceived free speech (observed
+      r ~ +0.25 with the anchor, the strongest pairing).
+
+  - id: dem_power_change_govt
+    expected_sign: positive
+    justification: >
+      "People have the power to change a government they don't like." Vertical
+      accountability — a defining democratic-supply feature (Dahl 1971); expected
+      positive with free speech (observed r ~ +0.20).
+
+  - id: dem_elections_attention
+    expected_sign: positive
+    min_correlation: 0.03
+    justification: >
+      "Having elections makes the government pay attention to what people think."
+      Electoral responsiveness; the weakest member of the battery (observed
+      r ~ +0.09..+0.15) because responsiveness perceptions are partly driven by
+      incumbent evaluation, not just regime features. Kept positive but low-
+      correlation-tolerant; a weak-loader warning here is expected, not a bug.

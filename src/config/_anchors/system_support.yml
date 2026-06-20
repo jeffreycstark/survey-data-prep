@@ -1,0 +1,88 @@
+# Construct anchor: system_support (ABS, Phase 2 of harmonization auditor)
+#
+# Authored 2026-06-20 directly in response to the system_deserves_support
+# direction bug (commit ebe4f00): this battery had NO anchor coverage, so the
+# Layer 4 silent-killer diagnostic never evaluated it. This file closes that gap.
+#
+# DRAFT for Jeff's review. expected_sign assignments and the anchor choice
+# should be scrutinized before this file is relied on as a gate. Conservative
+# where theory is unsettled.
+#
+# Empirical check (post-fix abs_harmonized.rds, W3-W6 pooled): the four
+# agree/disagree items inter-correlate +0.46..+0.60; system_needs_change (the
+# "works fine -> should be replaced" item, intentionally NOT reversed) correlates
+# -0.31..-0.40 with them — exactly the discriminant pattern expected of a diffuse
+# regime-support construct.
+
+schema_version: 1
+construct: system_support
+last_reviewed: "2026-06-20"
+
+description: >
+  Easton's (1975) diffuse support for the political system as a regime —
+  distinct from satisfaction with incumbent performance. The ABS system-support
+  battery taps generalized endorsement of "our system of government" regardless
+  of current outputs: preference for living under it, belief in its problem-
+  solving capacity, pride in it, and the conviction it deserves support even when
+  it falters. The inverse pole is the desire to replace the system
+  (system_needs_change). Anchored on system_prefer, the canonical "would rather
+  live under our system than any other" diffuse-support item (Chu, Diamond,
+  Nathan & Shin 2008; Dalton 2004).
+
+notes:
+  - >
+    All four agree/disagree items (system_prefer, system_capable, system_proud,
+    system_deserves_support) share raw coding 1=Strongly agree..4=Strongly
+    disagree and are reverse-coded by safe_reverse_4pt so that higher = more
+    system support. system_needs_change is a DIFFERENT item (raw 1=works fine..
+    4=should be replaced), NOT reversed, so higher = more desire for change =
+    LESS support; hence expected_sign: negative. See CLAUDE.md cross-survey
+    gotchas, "ABS system-support battery direction".
+  - >
+    This battery is the diffuse-support DV used by paper 19 (Lam extension),
+    which builds a Cronbach-alpha / PCA index over exactly these items. The
+    anchor diagnostic here is the upstream guard that each item loads in the
+    expected direction before any paper composites them.
+
+anchor:
+  variable: system_prefer
+  expected_direction: positive
+  notes: >
+    "I would rather live under our system of government than any other that I can
+    think of." Higher harmonized value = stronger preference for the existing
+    system = more diffuse support. Reverse-coded from raw 1=Strongly agree in
+    political_attitudes.yml.
+
+loaders:
+  - id: system_capable
+    expected_sign: positive
+    justification: >
+      "Over the long run, our system of government is capable of solving the
+      problems our country faces." A core diffuse-support belief in regime
+      efficacy; expected to covary positively with preference for the system
+      (Easton 1975; observed r ~ +0.46 with the anchor, W3-W6 pooled).
+
+  - id: system_proud
+    expected_sign: positive
+    justification: >
+      "I am proud of our system of government." Affective diffuse support;
+      strongest neighbor of system preference in the ABS battery (observed
+      r ~ +0.57 with the anchor). Pro-system pride should covary positively.
+
+  - id: system_deserves_support
+    expected_sign: positive
+    justification: >
+      "A system like ours, even if it runs into problems, deserves the people's
+      support." The definitional diffuse-support item (support independent of
+      performance); expected positive (observed r ~ +0.55). This is the variable
+      whose missing reversal was the 2026-06-20 bug — its inclusion here is the
+      whole point of authoring this anchor.
+
+  - id: system_needs_change
+    expected_sign: negative
+    justification: >
+      "Our system of government works fine / needs minor change / needs major
+      change / should be replaced." Higher = more desire to replace the system =
+      LESS diffuse support, so it should anti-correlate with the four
+      agree/disagree items (observed r ~ -0.31..-0.40). The discriminant item
+      that confirms the battery's direction is coherent.

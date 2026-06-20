@@ -1,19 +1,28 @@
 #!/usr/bin/env Rscript
 # src/r/audit/04_strict_reversal.R
 #
-# Layer 4 — Strict raw↔harmonized reversal check (audit ticket D4).
+# Layer 4 — Strict raw↔harmonized fidelity check (audit ticket D4; symmetrized
+# 2026-06-20 as Phase 2 of the harmonization auditor).
 #
-# For every (variable, wave) where the spec's wave-rule names a function that
-# REVERSES (per src/r/utils/recoding_registry.yml `reverses: true`), the
+# For every (variable, wave) whose resolved wave-rule names a PURE MONOTONE
+# SAME-SCALE function (per src/r/utils/recoding_registry.yml), assert the
 # Pearson correlation between (raw value after missing-code masking) and
-# (harmonized value) MUST equal -1.0 within rounding. Anything else means the
-# recoding produced a non-cleanly-reversed mapping — most commonly an
+# (harmonized value) equals the function's declared direction within rounding:
+#   - reversing fn  (reverses: true)  => pearson == -1.0
+#   - identity  fn  (reverses: false) => pearson == +1.0
+# Anything else means the recoding did NOT run cleanly — most commonly an
 # unexpected raw code that survived missing-code masking, or a wave whose raw
 # direction differs from what the YAML claims.
 #
-# This is the strictest mechanical reverse-check available: cheap to run,
-# broad coverage, no anchor needed. Complementary to the anchor diagnostic in
-# 04_anchor_diagnostic.R (which checks SIGN against an external construct).
+# DIVISION OF LABOR (important — this check and 04_label_reconciliation.R are
+# complementary halves):
+#   strict-reversal (this file) = "did the fn run cleanly?"  (mechanical fidelity)
+#   label-reconciliation        = "was choosing that fn correct?" (direction)
+# The identity arm proves safe_4pt_none produced a clean +1 identity, but it
+# CANNOT tell that choosing a non-reversing fn was the wrong call — that is
+# exactly how system_deserves_support shipped (clean +1 identity, wrong fn).
+# 04_label_reconciliation.R catches that by comparing raw-label polarity to the
+# declared scale.labels. Run BOTH.
 #
 # Public API:
 #   compute_strict_reversal(survey, ...)   -- returns a tibble
@@ -24,9 +33,12 @@
 #   Rscript src/r/audit/04_strict_reversal.R --all-surveys
 #
 # Status meanings:
-#   ok    — pearson <= -0.999, reversal clean
-#   fail  — pearson > -0.999, reversal NOT clean (audit finding)
+#   ok    — pearson matches the fn's declared direction (-1 reverse / +1 identity)
+#   fail  — pearson does NOT match declared direction (audit finding)
 #   skip  — n_paired < 10, harmonized output missing, or raw RDS missing
+#
+# CSV columns: survey, variable, wave, fn, direction (reverse|identity),
+#   expected_sign (-1|+1), n_paired, pearson, status, message.
 #
 # Exit code 0 if no fails; exit 1 if any fail rows present.
 #
@@ -123,34 +135,50 @@ suppressPackageStartupMessages({
 # ---------------------------------------------------------------------------
 .registry_cache <- new.env(parent = emptyenv())
 
+# A function is eligible for the strict pearson check only if it is monotone,
+# data-independent, and same-scale (pure n+1-x reversal or pure identity). The
+# `want_reverses` arg selects the reverse arm (TRUE) or the identity arm (FALSE).
+# Scale-changing or country-conditional fns are EXCLUDED from this check (their
+# raw↔harmonized pearson is not exactly ±1 even when correct); they are covered
+# by the anchor diagnostic and validation.R's Spearman transformation check.
+.is_pure_samescale <- function(e, want_reverses) {
+  if (!identical(isTRUE(e$reverses), want_reverses)) return(FALSE)
+  if (!isTRUE(e$monotonic)) return(FALSE)
+  if (isTRUE(e$requires_data)) return(FALSE)
+  isf <- e$input_scale; osf <- e$output_scale
+  if (is.null(isf) || is.null(osf)) return(FALSE)
+  if (length(isf) != 2 || length(osf) != 2) return(FALSE)
+  isf_n <- suppressWarnings(as.numeric(unlist(isf)))
+  osf_n <- suppressWarnings(as.numeric(unlist(osf)))
+  if (any(is.na(isf_n)) || any(is.na(osf_n))) return(FALSE)
+  identical(isf_n, osf_n)
+}
+
+.load_fn_set <- function(want_reverses, cache_key, registry_path) {
+  if (!is.null(.registry_cache[[cache_key]])) return(.registry_cache[[cache_key]])
+  if (!file.exists(registry_path)) {
+    stop(sprintf("recoding registry not found at %s", registry_path), call. = FALSE)
+  }
+  reg <- yaml::read_yaml(registry_path)
+  flags <- vapply(reg, function(e) .is_pure_samescale(e, want_reverses), logical(1))
+  fns <- vapply(reg, function(e) e$fn, character(1))[flags]
+  .registry_cache[[cache_key]] <- fns
+  fns
+}
+
+# Pure same-scale REVERSERS (reverses: true) — assert pearson == -1.
 load_reverser_set <- function(
   registry_path = here::here("src", "r", "utils", "recoding_registry.yml")
 ) {
-  if (!is.null(.registry_cache$reversers)) return(.registry_cache$reversers)
-  if (!file.exists(registry_path)) {
-    stop(sprintf("recoding registry not found at %s", registry_path),
-         call. = FALSE)
-  }
-  reg <- yaml::read_yaml(registry_path)
+  .load_fn_set(TRUE, "reversers", registry_path)
+}
 
-  is_strict <- function(e) {
-    if (!isTRUE(e$reverses)) return(FALSE)
-    if (!isTRUE(e$monotonic)) return(FALSE)
-    if (isTRUE(e$requires_data)) return(FALSE)
-    isf <- e$input_scale; osf <- e$output_scale
-    if (is.null(isf) || is.null(osf)) return(FALSE)
-    # Both scales must be 2-element numeric and identical for "pure" reversal.
-    if (length(isf) != 2 || length(osf) != 2) return(FALSE)
-    isf_n <- suppressWarnings(as.numeric(unlist(isf)))
-    osf_n <- suppressWarnings(as.numeric(unlist(osf)))
-    if (any(is.na(isf_n)) || any(is.na(osf_n))) return(FALSE)
-    identical(isf_n, osf_n)
-  }
-
-  flags <- vapply(reg, is_strict, logical(1))
-  reversers <- vapply(reg, function(e) e$fn, character(1))[flags]
-  .registry_cache$reversers <- reversers
-  reversers
+# Pure same-scale IDENTITY fns (reverses: false, e.g. safe_4pt_none) —
+# assert pearson == +1. Symmetric counterpart added Phase 2.
+load_identity_set <- function(
+  registry_path = here::here("src", "r", "utils", "recoding_registry.yml")
+) {
+  .load_fn_set(FALSE, "identities", registry_path)
 }
 
 
@@ -273,121 +301,88 @@ load_harmonized_wave <- function(survey, wave_key) {
 
 
 # ---------------------------------------------------------------------------
-# Single-(variable, wave) strict reversal check. Returns a one-row tibble.
+# Single-(variable, wave) strict fidelity check. Returns a one-row tibble.
+# `direction` is "reverse" (expect pearson -1) or "identity" (expect +1).
 # This is the unit the orchestrator collects.
 # ---------------------------------------------------------------------------
 .check_one <- function(survey, var_spec, wave_key, fn_name,
-                        missing_conventions) {
+                        missing_conventions, direction = "reverse") {
   var_id <- var_spec$id
+  expected_sign <- if (identical(direction, "reverse")) -1L else 1L
+
+  # Row builder: guarantees identical columns across every return path.
+  row <- function(status, message, n_paired = 0L, pearson = NA_real_) {
+    tibble(
+      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
+      direction = direction, expected_sign = expected_sign,
+      n_paired = as.integer(n_paired), pearson = pearson,
+      status = status, message = message
+    )
+  }
 
   # Resolve raw-data path for this (survey, wave).
   raw_path_resolver <- .SURVEY_RAW_LOADERS[[survey]]
   if (is.null(raw_path_resolver)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf(
-        "no raw-RDS resolver for survey '%s' (v1 supports ABS only)", survey
-      )
-    ))
+    return(row("skip", sprintf(
+      "no raw-RDS resolver for survey '%s' (v1 supports ABS only)", survey)))
   }
   raw_path <- raw_path_resolver(wave_key)
   if (is.null(raw_path) || !file.exists(raw_path %||% "")) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf("raw RDS not found for wave %s", wave_key)
-    ))
+    return(row("skip", sprintf("raw RDS not found for wave %s", wave_key)))
   }
 
   # Load harmonized wave slice.
   harm_df <- load_harmonized_wave(survey, wave_key)
   if (is.null(harm_df)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = "harmonized output missing for this wave"
-    ))
+    return(row("skip", "harmonized output missing for this wave"))
   }
   if (!var_id %in% names(harm_df)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf("variable '%s' not in harmonized output", var_id)
-    ))
+    return(row("skip", sprintf("variable '%s' not in harmonized output", var_id)))
   }
 
   # Load raw wave.
   raw_df <- tryCatch(readRDS(raw_path), error = function(e) NULL)
   if (is.null(raw_df)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf("failed to read raw RDS at %s", raw_path)
-    ))
+    return(row("skip", sprintf("failed to read raw RDS at %s", raw_path)))
   }
   src <- var_spec$source[[wave_key]]
   if (is.null(src) || !src %in% names(raw_df)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf("source variable '%s' not in raw wave", src %||% "NULL")
-    ))
+    return(row("skip", sprintf("source variable '%s' not in raw wave",
+                               src %||% "NULL")))
   }
 
   # Critical row-alignment invariant: nrow(raw_df) must equal nrow(harm_df).
-  # If it doesn't, the engine and audit are looking at different runs.
   if (nrow(raw_df) != nrow(harm_df)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = 0L, pearson = NA_real_, status = "skip",
-      message = sprintf(
-        "row-count mismatch: raw=%d, harmonized=%d (cannot align)",
-        nrow(raw_df), nrow(harm_df)
-      )
-    ))
+    return(row("skip", sprintf(
+      "row-count mismatch: raw=%d, harmonized=%d (cannot align)",
+      nrow(raw_df), nrow(harm_df))))
   }
 
   # Apply missing-code masking exactly as the engine does.
   missing_codes <- .resolve_missing_codes(var_spec, missing_conventions)
   raw_vec <- .coerce_numeric(raw_df[[src]])
   raw_masked <- .apply_missing(raw_vec, missing_codes)
-
-  # Harmonized vector — coerce to numeric in case it's stored as integer.
   harm_vec <- suppressWarnings(as.numeric(harm_df[[var_id]]))
 
   cr <- .pearson_paired(raw_masked, harm_vec)
   if (is.na(cr$pearson)) {
-    return(tibble(
-      survey = survey, variable = var_id, wave = wave_key, fn = fn_name,
-      n_paired = as.integer(cr$n), pearson = NA_real_, status = "skip",
-      message = sprintf(
-        "insufficient or degenerate paired data (n=%d)", cr$n
-      )
-    ))
+    return(row("skip",
+               sprintf("insufficient or degenerate paired data (n=%d)", cr$n),
+               n_paired = cr$n))
   }
 
-  if (cr$pearson <= -0.999) {
-    list_status <- "ok"
-    msg <- sprintf("clean reversal (r=%.4f, n=%d)", cr$pearson, cr$n)
+  clean <- if (identical(direction, "reverse")) cr$pearson <= -0.999 else
+                                                cr$pearson >= 0.999
+  if (clean) {
+    status <- "ok"
+    msg <- sprintf("clean %s (r=%.4f, n=%d)", direction, cr$pearson, cr$n)
   } else {
-    list_status <- "fail"
+    status <- "fail"
     msg <- sprintf(
-      "non-clean reversal (r=%.4f > -0.999, n=%d) — possible bug",
-      cr$pearson, cr$n
-    )
+      "non-clean %s (r=%.4f, expected %+d, n=%d) — possible bug",
+      direction, cr$pearson, expected_sign, cr$n)
   }
-
-  tibble(
-    survey   = survey,
-    variable = var_id,
-    wave     = wave_key,
-    fn       = fn_name,
-    n_paired = as.integer(cr$n),
-    pearson  = cr$pearson,
-    status   = list_status,
-    message  = msg
-  )
+  row(status, msg, n_paired = cr$n, pearson = cr$pearson)
 }
 
 
@@ -401,12 +396,13 @@ load_harmonized_wave <- function(survey, wave_key) {
 #   reversers: optional character vector of fn names that reverse. Default
 #              loads from the recoding registry.
 #
-# Returns: tibble with one row per (variable, wave) where the resolved rule
-# is a reverser (plus skip rows for failures-to-load).
+# Returns: tibble with one row per (variable, wave) whose resolved rule names a
+# pure same-scale reverser OR identity fn (plus skip rows for failures-to-load).
 # ---------------------------------------------------------------------------
 compute_strict_reversal <- function(survey, spec_files = NULL,
-                                    reversers = NULL) {
-  if (is.null(reversers)) reversers <- load_reverser_set()
+                                    reversers = NULL, identities = NULL) {
+  if (is.null(reversers))  reversers  <- load_reverser_set()
+  if (is.null(identities)) identities <- load_identity_set()
 
   if (is.null(spec_files)) {
     # Defer-load spec_discovery so callers don't have to source it.
@@ -425,9 +421,9 @@ compute_strict_reversal <- function(survey, spec_files = NULL,
     missing_conventions <- spec$missing_conventions %||% list()
 
     for (v in spec$variables %||% list()) {
-      # Iterate every wave declared in `source:` (this is the list of waves
-      # the YAML claims to harmonize). For each wave, resolve the rule and
-      # check whether the named function is a reverser.
+      # Iterate every wave declared in `source:` (the waves the YAML claims to
+      # harmonize). Resolve the rule; check the fn's strict direction (reverse
+      # or identity). fns outside both pure same-scale sets are skipped here.
       wave_keys <- names(v$source %||% list())
       for (wave_key in wave_keys) {
         src <- v$source[[wave_key]]
@@ -438,14 +434,18 @@ compute_strict_reversal <- function(survey, spec_files = NULL,
         if (!identical(method, "r_function")) next
 
         fn_name <- rule$fn %||% ""
-        if (!nzchar(fn_name) || !(fn_name %in% reversers)) next
+        if (!nzchar(fn_name)) next
+        direction <- if (fn_name %in% reversers) "reverse" else
+                     if (fn_name %in% identities) "identity" else NA_character_
+        if (is.na(direction)) next
 
         rows[[length(rows) + 1]] <- .check_one(
           survey = survey,
           var_spec = v,
           wave_key = wave_key,
           fn_name = fn_name,
-          missing_conventions = missing_conventions
+          missing_conventions = missing_conventions,
+          direction = direction
         )
       }
     }
@@ -454,7 +454,8 @@ compute_strict_reversal <- function(survey, spec_files = NULL,
   if (length(rows) == 0) {
     return(tibble(
       survey = character(0), variable = character(0), wave = character(0),
-      fn = character(0), n_paired = integer(0), pearson = numeric(0),
+      fn = character(0), direction = character(0), expected_sign = integer(0),
+      n_paired = integer(0), pearson = numeric(0),
       status = character(0), message = character(0)
     ))
   }
@@ -491,13 +492,18 @@ run_strict_reversal <- function(survey, output_dir = NULL) {
               counts$ok %||% 0,
               counts$fail %||% 0,
               counts$skip %||% 0))
+  if (nrow(results) > 0 && "direction" %in% names(results)) {
+    dir_tab <- table(factor(results$direction, levels = c("reverse", "identity")))
+    cat(sprintf("  by direction: reverse=%d, identity=%d\n",
+                dir_tab[["reverse"]], dir_tab[["identity"]]))
+  }
   cat(sprintf("  CSV: %s\n", csv_path))
 
   fails <- results[results$status == "fail", , drop = FALSE]
   if (nrow(fails) > 0) {
-    cat(sprintf("\n  *** %d FAIL row(s) — non-clean reversal(s):\n",
+    cat(sprintf("\n  *** %d FAIL row(s) — fidelity mismatch (fn ran un-cleanly):\n",
                 nrow(fails)))
-    print(as.data.frame(fails[, c("variable", "wave", "fn",
+    print(as.data.frame(fails[, c("variable", "wave", "fn", "direction",
                                   "n_paired", "pearson", "message")]),
           row.names = FALSE)
     cat("\n  → Each fail row is a Layer 4 audit finding. Investigate the\n")
