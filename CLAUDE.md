@@ -148,6 +148,7 @@ The single most error-prone area. Read before merging or comparing across survey
   - The pre-built `korean_unification_panel.rds` already aligns directions.
 - **`subjective_class_6pt` direction is OPPOSITE between KGSS and KINU**.
 - **KIPA judiciary mislabel**: English SPSS labels mistranslate 사법부 (judiciary) as "legislature". Korean-label matching is correct.
+- **ABS system-support battery direction**: the four agree/disagree items — `system_capable`, `system_prefer`, `system_proud`, `system_deserves_support` — all share raw coding **1=Strongly agree → 4=Strongly disagree** and are **reversed** in harmonization (`safe_reverse_4pt`) so higher = more system support. `system_needs_change` is a *different* item (raw 1=works fine → 4=should be replaced), **not** reversed → higher = more desire for change. ⚠️ Historical bug: `system_deserves_support` was harmonized **without** reversal until 2026-06-20 (fixed `safe_4pt_none` → `safe_reverse_4pt`). Any paper `analysis_data.rds` built before that date carries this one item backwards (opposite its three battery-mates); re-run against the corrected `abs_harmonized.rds`. Some papers applied a manual `5 - system_deserves_support` to compensate for the bug — those will **double-reverse** (become wrong) when re-run against fixed data, so remove the manual reversal there.
 
 ---
 
