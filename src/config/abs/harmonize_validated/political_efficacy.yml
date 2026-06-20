@@ -71,8 +71,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
-        note: "NOT reversed - higher = more agreement with low efficacy statement"
+        fn: safe_reverse_4pt
+        note: "Reversed (raw 1=SA..4=SD) so output higher = more agreement with low efficacy statement"
     qc:
       valid_range: [1, 4]
       validate:
@@ -105,8 +105,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
-        note: "NOT reversed - higher = more agreement with low efficacy statement"
+        fn: safe_reverse_4pt
+        note: "Reversed (raw 1=SA..4=SD) so output higher = more agreement with low efficacy statement"
     qc:
       valid_range: [1, 4]
       validate:
