@@ -223,7 +223,7 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
@@ -254,7 +254,7 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
@@ -343,7 +343,7 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
@@ -437,7 +437,7 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
     qc:
       valid_range: [1, 4]
       validate:
