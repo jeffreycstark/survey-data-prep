@@ -1,0 +1,119 @@
+# Bilingual (EN + KO) polarity lexicon — Phase 6 of the harmonization auditor.
+#
+# YAML port of the lexicon in src/r/audit/04_label_reconciliation.R
+# (default_polarity_lexicon + .MISSING_LABEL_PATTERNS + .KO_GENERIC_POLES),
+# consumed by the Python questionnaire reader's tri-source cross-validation.
+# If you edit a pattern here, mirror it in the R file — they MUST agree, or
+# Source A/B/C polarity signatures will diverge for lexical rather than
+# substantive reasons.
+#
+# Semantics (same as the R implementation):
+#   - Patterns are perl-compatible regexes matched against a normalized label
+#     (lowercased, punctuation -> space, whitespace collapsed).
+#   - A label is "pos"/"neg" when >=1 family matches that pole and NO family
+#     matches the opposite pole; pos+neg = contradiction -> unknown (this is
+#     what protects midpoints like "neither agree nor disagree").
+#   - Families must be internally consistent ACROSS LANGUAGES (많다 <-> "a
+#     lot" both pos): raw side may classify in Korean while the declared side
+#     classifies in English.
+#   - missing_patterns win before any family.
+#   - ko_generic is TIER 2: consulted only when no family matched at all;
+#     negation (지 않) is decisive, the affirmative needs an intensifier +
+#     predicative ending so bare 다$ cannot claim midpoints (보통이다).
+
+missing_patterns:
+  - "missing"
+  - "don'?t know"
+  - "do not know"
+  - "can'?t choose"
+  - "cannot choose"
+  - "decline"
+  - "refus"
+  - "no answer"
+  - "not applicable"
+  - "\\bn/?a\\b"
+  - "don'?t understand"
+  - "do not understand"
+  - "not asked"
+  - "no response"
+  - "haven'?t thought"
+  - "not sure"
+  - "모르겠"
+  - "모름"
+  - "잘 모르"
+  - "무응답"
+  - "응답\\s?거절"
+  - "거절"
+  - "해당\\s?없음"
+  - "비해당"
+  - "선택할 수 없"
+  - "생각해\\s?본\\s?적\\s?없"
+
+families:
+  agree:
+    pos: ["\\bagree\\b", "(?<!그저 )그렇다", "그런 편", "동의(?!\\s?하지)", "찬성"]
+    neg: ["\\bdisagree\\b", "그렇지 않", "동의하지 않", "동의\\s?하지\\s?않", "반대"]
+  satisfied:
+    pos: ["\\bsatisfied\\b", "\\bsatisfaction\\b", "(?<!불)만족"]
+    neg: ["\\bdissatisfied\\b", "not.*satisfied", "불만족", "만족하지 않"]
+  trust:
+    pos: ["great deal", "\\ba lot\\b", "quite a lot", "trust.*completely",
+          "\\bfully trust", "신뢰(?!\\s?하지)", "믿는다", "믿는 편"]
+    neg: ["not at all", "none at all", "no trust", "do not trust",
+          "don'?t trust", "not very much", "hardly any",
+          "신뢰하지 않", "불신", "믿지 않"]
+  amount:
+    pos: ["a great deal", "\\ba lot\\b", "very much", "\\bgood deal\\b",
+          "great extent", "매우 많", "많은 편", "많다"]
+    neg: ["not at all", "\\bnone\\b", "very little", "\\bnot much\\b",
+          "hardly any", "limited extent",
+          "전혀 없", "별로 없", "거의 없", "없다", "적다", "적은 편"]
+  everyone:
+    pos: ["\\beveryone\\b", "\\ball of them\\b"]
+    neg: ["\\bno one\\b", "\\bnobody\\b"]
+  essential:
+    pos: ["(?<!not )very essential"]
+    neg: ["not essential", "not very essential"]
+  necessary:
+    pos: ["(?<!not )very necessary", "(?<!불)필요(?!\\s?(하지|없))"]
+    neg: ["not.*necessary", "unnecessary", "필요\\s?하지 않", "필요\\s?없", "불필요"]
+  threat:
+    pos: ["(?<!not )very threatened", "(?<!not )threatened(?! at all)"]
+    neg: ["not threatened", "no threat"]
+  want:
+    pos: ["strongly wants?", "(?<!not )wants?\\b"]
+    neg: ["does not want", "not want", "원하지 않"]
+  strength:
+    pos: ["very strong", "\\bstrong\\b", "강하", "강력"]   # \b excludes "strongly (dis)agree"
+    neg: ["very weak", "\\bweak\\b", "약하"]
+  quality:
+    pos: ["very good", "\\bgood\\b", "much better", "\\bbetter\\b",
+          "좋다", "좋은", "좋아"]
+    neg: ["very bad", "\\bbad\\b", "much worse", "\\bworse\\b",
+          "나쁘", "나빠", "좋지 않"]
+  proud:
+    pos: ["\\bproud\\b", "자랑스럽(?!지)", "자랑스러"]
+    neg: ["\\bashamed\\b", "not.*proud", "자랑스럽지", "부끄럽"]
+  frequency:
+    pos: ["\\balways\\b", "\\boften\\b", "frequently", "항상", "자주", "언제나"]
+    neg: ["\\bnever\\b", "\\brarely\\b", "\\bseldom\\b",
+          "전혀\\s?(없|안|않|못)", "거의\\s?(없|안|않)", "드물게"]
+  serious:
+    pos: ["(?<!not )very serious",
+          "(?<!less\\s)(?<!more\\s)(?<!not\\s)\\bserious\\b",
+          "심각(?!\\s?하지)"]
+    neg: ["not.*serious", "심각하지 않"]
+  high_low:
+    pos: ["very high", "\\bhigh\\b", "높다", "높은"]
+    neg: ["very low", "\\blow\\b", "낮다", "낮은"]
+  fair:
+    pos: ["\\bfair\\b", "공정(?!\\s?하지)"]
+    neg: ["\\bunfair\\b", "불공정", "공정하지 않"]
+  likely:
+    pos: ["very likely", "\\blikely\\b"]
+    neg: ["\\bunlikely\\b", "not.*likely"]
+
+# Tier 2 — generic Korean predicative morphology (negation decisive).
+ko_generic:
+  pos: ["(매우|아주|다소|약간|많이).*(다|함|됨)\\s*$", "잘\\s?(하|되|한|된)"]
+  neg: ["지\\s?않"]

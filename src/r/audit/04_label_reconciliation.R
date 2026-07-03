@@ -102,6 +102,12 @@ default_polarity_lexicon <- function() {
   # negated forms ("만족" must not fire inside "불만족"). Negated Korean forms
   # conveniently change the final syllable ("그렇다" never occurs inside
   # "그렇지 않다"), which keeps most families disjoint without lookarounds.
+  #
+  # SYNC CONTRACT: this lexicon is mirrored in
+  # src/config/_audit/polarity_lexicon.yml (consumed by the Python
+  # questionnaire reader's tri-source cross-validation). Any pattern edit
+  # here must be mirrored there, or A/B/C polarity signatures will diverge
+  # for lexical rather than substantive reasons.
   list(
     agree     = list(pos = c("\\bagree\\b", "(?<!그저 )그렇다", "그런 편",  # 그저 그렇다 = "so-so" midpoint
                              "동의(?!\\s?하지)", "찬성"),
