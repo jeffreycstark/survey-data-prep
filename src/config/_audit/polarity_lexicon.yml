@@ -31,7 +31,9 @@ missing_patterns:
   - "refus"
   - "no answer"
   - "not applicable"
-  - "\\bn/?a\\b"
+  - "\\bn[/ ]?a\\b"   # normalization turns "n/a" into "n a"
+  - "\\bdk\\b"
+  - "\\biap\\b"
   - "don'?t understand"
   - "do not understand"
   - "not asked"
@@ -59,8 +61,8 @@ families:
   trust:
     pos: ["great deal", "\\ba lot\\b", "quite a lot", "trust.*completely",
           "\\bfully trust", "신뢰(?!\\s?하지)", "믿는다", "믿는 편"]
-    neg: ["not at all", "none at all", "no trust", "do not trust",
-          "don'?t trust", "not very much", "hardly any",
+    neg: ["not at all", "none at all", "no trust", "no confidence",
+          "do not trust", "don'?t trust", "not very much", "hardly any",
           "신뢰하지 않", "불신", "믿지 않"]
   amount:
     pos: ["a great deal", "\\ba lot\\b", "very much", "\\bgood deal\\b",

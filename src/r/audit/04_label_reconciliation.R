@@ -121,6 +121,7 @@ default_polarity_lexicon <- function() {
                              "trust.*completely", "\\bfully trust",
                              "신뢰(?!\\s?하지)", "믿는다", "믿는 편"),
                      neg = c("not at all", "none at all", "no trust",
+                             "no confidence",
                              "do not trust", "don'?t trust", "not very much",
                              "hardly any",
                              "신뢰하지 않", "불신", "믿지 않")),
@@ -177,7 +178,9 @@ default_polarity_lexicon <- function() {
 # Labels that denote missing / non-substantive responses; excluded from polarity.
 .MISSING_LABEL_PATTERNS <- c(
   "missing", "don'?t know", "do not know", "can'?t choose", "cannot choose",
-  "decline", "refus", "no answer", "not applicable", "\\bn/?a\\b",
+  "decline", "refus", "no answer", "not applicable",
+  "\\bn[/ ]?a\\b",  # normalization turns "n/a" into "n a"
+  "\\bdk\\b", "\\biap\\b",
   "don'?t understand", "do not understand", "not asked", "no response",
   "haven'?t thought", "not sure",
   # Korean missing/non-substantive conventions.
@@ -192,6 +195,10 @@ default_polarity_lexicon <- function() {
 
 .norm_label <- function(s) {
   s <- tolower(as.character(s))
+  # Apostrophes are DELETED (not spaced) so "don't/don’t know" collapses to
+  # "dont know", which the "don'?t know" missing patterns can match. (Same
+  # rule in the Python twin — see the SYNC CONTRACT note above.)
+  s <- gsub("['’`]", "", s)
   s <- gsub("[[:punct:]]", " ", s)
   s <- gsub("\\s+", " ", s)
   trimws(s)
@@ -667,18 +674,27 @@ reconcile_one <- function(survey, var_id, wave_key, source_var, fn_name,
 .VERBATIM_DECLARED_SURVEYS <- c("abs")
 .parse_response_scale <- function(s) {
   if (is.null(s) || is.na(s) || !nzchar(trimws(s))) return(NULL)
-  toks <- unlist(strsplit(as.character(s), "[,;]"))
+  s <- as.character(s)
+  # Labels are sliced between 'code=' anchors, so both comma-separated and
+  # space-separated ("1=18-29 2=30-39", the KINU convention) formats parse,
+  # and labels may contain commas. Mirrors the Python twin — SYNC CONTRACT.
+  m <- gregexpr("(-?[0-9]+(?:\\.[0-9]+)?)\\s*=", s, perl = TRUE)[[1]]
+  if (m[1] == -1 || length(m) < 2) return(NULL)
+  starts <- as.integer(m)
+  lens <- attr(m, "match.length")
   codes <- numeric(0); texts <- character(0)
-  for (t in toks) {
-    m <- regmatches(t, regexec("^\\s*(-?[0-9]+(?:\\.[0-9]+)?)\\s*=\\s*(.+?)\\s*$", t))[[1]]
-    if (length(m) == 3) {
-      codes <- c(codes, suppressWarnings(as.numeric(m[2])))
-      texts <- c(texts, m[3])
+  for (i in seq_along(starts)) {
+    code <- suppressWarnings(as.numeric(
+      sub("\\s*=$", "", substr(s, starts[i], starts[i] + lens[i] - 1))))
+    lab_start <- starts[i] + lens[i]
+    lab_end <- if (i < length(starts)) starts[i + 1] - 1L else nchar(s)
+    lab <- trimws(gsub("[,;]+\\s*$", "", substr(s, lab_start, lab_end)))
+    if (!is.na(code) && nzchar(lab)) {
+      codes <- c(codes, code); texts <- c(texts, lab)
     }
   }
-  keep <- !is.na(codes)
-  if (sum(keep) < 2) return(NULL)
-  setNames(codes[keep], texts[keep])
+  if (length(codes) < 2) return(NULL)
+  setNames(codes, texts)
 }
 
 # Digit-canonical wave key, so spec keys ("w2003") and verbatim keys ("y2003")
