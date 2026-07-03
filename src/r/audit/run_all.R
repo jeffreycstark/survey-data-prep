@@ -42,7 +42,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus"
+  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb"
 )
 
 # Survey slug → harmonized .rds filename. Most surveys map slug-to-filename
@@ -533,6 +533,97 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Module 4c: Layer 4 label reconciliation (Check A / D5) — HARD.
+# error = variable stored opposite its own documented scale.labels (the
+# wrong-fn class that shipped system_deserves_support). Errors count as
+# fails and drive exit code 1.
+# ---------------------------------------------------------------------------
+.run_layer_4_label_recon <- function(survey, verbose = FALSE) {
+  .log_module(survey, "L4 label reconciliation (D5)")
+  rr <- .run_external("src/r/audit/04_label_reconciliation.R",
+                      c("--survey", survey), verbose = verbose)
+  csv_path <- here::here("audit/reports", survey, "04-label-reconciliation.csv")
+  counts <- .count_csv_statuses(csv_path)
+  ok   <- .count_get(counts, "ok")
+  err  <- .count_get(counts, "error")
+  skip <- .count_get(counts, "skip")
+  status <- if (err > 0L) "fail" else if (ok == 0L && skip > 0L) "skip" else "ok"
+  first_fails <- character(0)
+  fails_df <- .top_fail_rows(csv_path, fail_statuses = "error")
+  if (nrow(fails_df) > 0L) {
+    first_fails <- vapply(seq_len(nrow(fails_df)), function(i) {
+      r <- fails_df[i, ]
+      sprintf("%s/%s/%s: raw pos@%s but declared pos@%s",
+              r$variable %||% "?", r$wave %||% "?", r$fn %||% "?",
+              r$raw_pos_end %||% "?", r$declared_pos_end %||% "?")
+    }, character(1))
+  }
+  list(
+    module = "L4 labels",
+    status = status, exit = rr$status,
+    ok = as.integer(ok), fail = as.integer(err), skip = as.integer(skip),
+    first_fails = first_fails,
+    summary = sprintf("%d ok, %d err, %d skip", ok, err, skip)
+  )
+}
+
+
+# ---------------------------------------------------------------------------
+# Module 4d: Layer 4 battery coherence (Check B) — SOFT. Hints are triage
+# leads, never fails (false positives expected); a hint coinciding with an
+# L4-labels error is high-confidence. Module crash still counts as fail.
+# ---------------------------------------------------------------------------
+.run_layer_4_battery <- function(survey, verbose = FALSE) {
+  .log_module(survey, "L4 battery coherence (Check B)")
+  rr <- .run_external("src/r/audit/04_battery_coherence.R",
+                      c("--survey", survey), verbose = verbose)
+  csv_path <- here::here("audit/reports", survey, "04-battery-coherence.csv")
+  counts <- .count_csv_statuses(csv_path)
+  ok   <- .count_get(counts, "ok")
+  hint <- .count_get(counts, "hint")
+  weak <- .count_get(counts, "weak")
+  skip <- .count_get(counts, "skip")
+  status <- if (rr$status != 0L) "fail"
+            else if (hint > 0L) "warn"
+            else if (ok == 0L && skip > 0L) "skip" else "ok"
+  list(
+    module = "L4 battery",
+    status = status, exit = rr$status,
+    ok = as.integer(ok), warn = as.integer(hint), fail = 0L,
+    skip = as.integer(skip),
+    first_fails = character(0),  # soft: hints stay out of the fail digest
+    summary = sprintf("%d ok, %d hint, %d weak", ok, hint, weak)
+  )
+}
+
+
+# ---------------------------------------------------------------------------
+# Module 4e: Layer 4 anchor coverage (Check C1) — SOFT. `uncovered` is the
+# visible backlog of direction-bearing variables no anchor watches; it warns
+# and should trend to zero as anchor files are authored.
+# ---------------------------------------------------------------------------
+.run_layer_4_coverage <- function(survey, verbose = FALSE) {
+  .log_module(survey, "L4 anchor coverage (Check C1)")
+  rr <- .run_external("src/r/audit/04_anchor_coverage.R",
+                      c("--survey", survey), verbose = verbose)
+  csv_path <- here::here("audit/reports", survey, "04-anchor-coverage.csv")
+  counts <- .count_csv_statuses(csv_path)
+  cov  <- .count_get(counts, "covered")
+  exm  <- .count_get(counts, "exempt")
+  unc  <- .count_get(counts, "uncovered")
+  status <- if (rr$status != 0L) "fail"
+            else if (unc > 0L) "warn" else "ok"
+  list(
+    module = "L4 coverage",
+    status = status, exit = rr$status,
+    ok = as.integer(cov + exm), warn = as.integer(unc), fail = 0L,
+    first_fails = character(0),
+    summary = sprintf("%d cov, %d ex, %d unc", cov, exm, unc)
+  )
+}
+
+
+# ---------------------------------------------------------------------------
 # Module 5: Layer 5 cross-wave drift (G1). One of the slowest modules —
 # skipped under --quick.
 #
@@ -666,6 +757,9 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   }
   results$L4_anchor <- .run_layer_4_anchor(survey, verbose)
   results$L4_strict <- .run_layer_4_strict(survey, verbose)
+  results$L4_labels <- .run_layer_4_label_recon(survey, verbose)
+  results$L4_battery <- .run_layer_4_battery(survey, verbose)
+  results$L4_coverage <- .run_layer_4_coverage(survey, verbose)
   results$L5_drift  <- .run_layer_5_drift(survey, verbose, skip = quick)
   results$L6_determ <- .run_layer_6_determinism(survey, verbose)
   results$L6_input  <- .run_layer_6_input_drift(survey, verbose)
@@ -726,18 +820,21 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   # ---- Per-survey table -------------------------------------------------
   w("## Per-survey status")
   w("")
-  w("| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L5 drift | L6 determ | L6 input |")
-  w("|--------|-----------|---------------|-------------|------------|-----------|----------|-----------|----------|")
+  w("| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L5 drift | L6 determ | L6 input |")
+  w("|--------|-----------|---------------|-------------|------------|-----------|-----------|------------|-------------|----------|-----------|----------|")
   for (s in surveys_attempted) {
     r <- all_results[[s]]
     if (is.null(r)) next
-    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s |",
+    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
               s,
               .cell(r$L1),
               .cell(r$L3),
               .cell(r$L2_codebook),
               .cell(r$L4_anchor),
               .cell(r$L4_strict),
+              .cell(r$L4_labels),
+              .cell(r$L4_battery),
+              .cell(r$L4_coverage),
               .cell(r$L5_drift),
               .cell(r$L6_determ),
               .cell(r$L6_input)))

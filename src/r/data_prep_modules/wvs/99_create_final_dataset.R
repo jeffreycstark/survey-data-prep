@@ -228,3 +228,14 @@ if (!is.null(results)) {
     nrow(results$summary)
   ))
 }
+
+# ==============================================================================
+# LAYER-4 DIRECTION GATE (harmonization auditor Phase 5)
+# ==============================================================================
+# Deterministic direction checks on the freshly built output: label
+# reconciliation (hard), battery coherence + anchor coverage (soft).
+# REPORT-ONLY by default: prints findings, never stops this script. Set
+# HARMONIZE_AUDIT_GATE=block to make label-reconciliation errors fail the
+# pipeline (flip once the label-recon backlog is cleared).
+source(here::here("src", "r", "audit", "99_post_harmonize_gate.R"))
+run_post_harmonize_gate("wvs", quiet_checks = TRUE)
