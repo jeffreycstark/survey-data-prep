@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Asian Barometer (ABS) | Complete | 330 vars, 6 waves, 113,945 resp; W6 = 12 countries | [docs/surveys/abs.md](docs/surveys/abs.md) |
 | World Values Survey (WVS) | Complete | 62 vars, 7 waves, 446,767 resp, 108 countries | [docs/surveys/wvs.md](docs/surveys/wvs.md) |
 | Latinobarómetro (LBS) | Complete | 19 vars, 24 waves 1995–2024, 489,771 resp | [docs/surveys/lbs.md](docs/surveys/lbs.md) |
-| Afrobarometer | Complete | 23 vars, 9 rounds R1–R9, 351,815 resp | [docs/surveys/afro.md](docs/surveys/afro.md) |
+| Afrobarometer | Complete | 38 vars + 3 indices, R1–R9 + partial R10, 391,815 resp; T&M extension items R5/R8/R9 | [docs/surveys/afro.md](docs/surveys/afro.md) |
 | Arab Barometer | Verbatim done; harmonization in progress | W1–W8 | [docs/surveys/arab-barometer.md](docs/surveys/arab-barometer.md) |
 | KAMOS | Complete | 39 vars, 2 waves (2016, 2019), 3,500 resp | [docs/surveys/kamos.md](docs/surveys/kamos.md) |
 | KGSS | Complete | 187 vars, 17 years 2003–2025, 23,282 resp | [docs/surveys/kgss.md](docs/surveys/kgss.md) |

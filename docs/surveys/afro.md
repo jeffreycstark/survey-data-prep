@@ -1,6 +1,6 @@
 # Afrobarometer (Afro)
 
-**Status**: Complete through R9 (23 vars, 9 rounds R1–R9, 1999–2022, 351,815 respondents, 42 African countries). R10 in progress — pilot codebook (South Africa) on disk; merged .sav not yet released. Loader has a `w10` placeholder that auto-loads when the merged file lands at `data/afro/raw/round10/merged_r10_data.sav`.
+**Status**: Complete through R9 + partial R10 (391,815 respondents; R10 = 40,000 across 29 country files stacked by the loader; no merged R10 .sav yet). 2026-07-03: +15 harmonized items and 3 derived indices for the Tambe & Monyake (2023) turnout/clientelism extension (see "T&M extension variables" below) — 70 columns total in the harmonized output.
 
 ## Pipeline
 
@@ -35,9 +35,32 @@ Round mapping: w1=R1(1999), w2=R2(2002), w3=R3(2005), w4=R4(2008), w5=R5(2012), 
 | Demographics (3) | int_month, int_year, int_date | R9 only |
 | Weights (1) | weight | continuous, mean ~1; raw: withinwt (R1-R7), withinwt_hh (R8-R9) |
 
+## T&M extension variables (added 2026-07-03)
+
+For the Tambe & Monyake (2023) replication/extension (paper-bank Block 1).
+Specs: `political_participation.yml`, `lived_poverty.yml`, and the
+`corr_perc_*` battery in `corruption.yml`. Q-codes verified against the
+R5/R6/R8/R9 merged .sav value labels.
+
+| Variable | Rounds | Notes |
+|----------|--------|-------|
+| turnout | R5, R8, R9 | binary; voted=1, substantive non-vote=0; **not-registered / too-young / can't-remember → NA** (judgment call logged in the spec) |
+| vote_buying | **R5, R8 only** | binary 0=never/1=ever offered. ⚠️ **NOT fielded in R6/R7/R9** — the extension window is **R8 only**; BLOCK1_DESIGN_LOCK.md's "Rounds 8–9" framing is infeasible |
+| corr_perc_president/_mp/_officials/_councilors/_police/_judges | R5, R8, R9 | 0–3 each; R5 judges = Q60G (Q60F = tax officials, excluded per T&M) |
+| corruption_perc (derived) | R5, R8, R9 | additive 0–18 index of the six items, complete cases (built in step 99) |
+| lpi_food/_water/_medicine/_fuel/_income | R5, R8, R9 | 0–4 each |
+| lived_poverty (derived) | R5, R8, R9 | respondent mean of 5 LPI items, complete cases |
+| poverty_ctry (derived) | R5, R8, R9 | unweighted country × round mean of lived_poverty |
+| polint | **R5, R6 only** | 0–3; unavailable R7–R9 → drop from the R8 extension control set |
+| region_admin1 | R5, R8, R9 | raw REGION passthrough; country-specific codes, join on (country, region_admin1) |
+
+Known QC notes: `corr_perc_mp`/`corr_perc_councilors` show 4–10% coverage
+loss in R8/R9 — that is the item's real "Don't know/Haven't heard" rate
+masked to NA per convention, not a harmonization defect.
+
 ## Verbatim dictionary
 
-`data/afro/questionnaire_text/afro_verbatim_items.csv` — Complete (46 vars, 9 rounds, 414 rows; text from R9 codebook).
+`data/afro/questionnaire_text/afro_verbatim_items.csv` — Complete (61 vars, 9 rounds, 549 rows; text from R9 codebook + T&M extension items 2026-07-03).
 
 ## Notes & gotchas
 

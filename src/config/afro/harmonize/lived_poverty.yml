@@ -1,0 +1,181 @@
+# Afrobarometer Lived Poverty Index (LPI) battery
+# Added 2026-07-03 for the Tambe & Monyake (2023) extension
+# (paper-bank Block 1). Q-codes verified against the R5/R8/R9 merged .sav
+# value labels on 2026-07-03.
+#
+# "Over the past year, how often, if ever, have you or anyone in your
+#  family gone without: ..." (0=Never, 1=Just once or twice, 2=Several
+#  times, 3=Many times, 4=Always). Higher = more lived poverty.
+#
+# The composite `lived_poverty` (respondent mean of the five items,
+# complete cases) and `poverty_ctry` (country x round mean) are built in
+# src/r/data_prep_modules/afro/99_create_final_dataset.R, following the
+# repo pattern for derived columns (education_level_01 etc.).
+#
+# Present and comparably worded in R5 (Q8A-E), R8 (Q7A-E), R9 (Q6A-E).
+# Earlier rounds also field LPI items but are outside the T&M design;
+# left unmapped.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 8, 9, 98, 99, 997, 998]
+    description: "Afrobarometer standard missing codes (8/998=Refused, 9=DK, 997=Not asked)"
+
+variables:
+  - id: lpi_food
+    concept: lived_poverty
+    description: "Gone without enough food (0=never ... 4=always)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q8A
+      w6: null
+      w7: null
+      w8: Q7A
+      w9: Q6A
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "Never"
+        1: "Just once or twice"
+        2: "Several times"
+        3: "Many times"
+        4: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "0-4 scale identical across R5/R8/R9."
+    qc:
+      valid_range: [0, 4]
+
+  - id: lpi_water
+    concept: lived_poverty
+    description: "Gone without clean water for home use (0=never ... 4=always)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q8B
+      w6: null
+      w7: null
+      w8: Q7B
+      w9: Q6B
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "Never"
+        1: "Just once or twice"
+        2: "Several times"
+        3: "Many times"
+        4: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 4]
+
+  - id: lpi_medicine
+    concept: lived_poverty
+    description: "Gone without medicines or medical treatment (0=never ... 4=always)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q8C
+      w6: null
+      w7: null
+      w8: Q7C
+      w9: Q6C
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "Never"
+        1: "Just once or twice"
+        2: "Several times"
+        3: "Many times"
+        4: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 4]
+
+  - id: lpi_fuel
+    concept: lived_poverty
+    description: "Gone without enough fuel to cook food (0=never ... 4=always)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q8D
+      w6: null
+      w7: null
+      w8: Q7D
+      w9: Q6D
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "Never"
+        1: "Just once or twice"
+        2: "Several times"
+        3: "Many times"
+        4: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 4]
+
+  - id: lpi_income
+    concept: lived_poverty
+    description: "Gone without a cash income (0=never ... 4=always)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q8E
+      w6: null
+      w7: null
+      w8: Q7E
+      w9: Q6E
+    scale:
+      min: 0
+      max: 4
+      labels:
+        0: "Never"
+        1: "Just once or twice"
+        2: "Several times"
+        3: "Many times"
+        4: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 4]

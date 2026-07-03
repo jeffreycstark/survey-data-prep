@@ -293,6 +293,38 @@ if ("education_detailed" %in% names(afro_harmonized)) {
 }
 
 # ==============================================================================
+# DERIVED INDICES (Tambe & Monyake 2023 extension, added 2026-07-03)
+# ==============================================================================
+
+# Perceived-corruption additive index: sum of the six 0-3 battery items
+# (0-18, higher = more perceived corruption). COMPLETE CASES ONLY — T&M
+# describe an additive index without an imputation rule, so a respondent
+# missing any sub-item gets NA (judgment call, logged in corruption.yml).
+corr_items <- c("corr_perc_president", "corr_perc_mp", "corr_perc_officials",
+                "corr_perc_councilors", "corr_perc_police", "corr_perc_judges")
+if (all(corr_items %in% names(afro_harmonized))) {
+  m <- as.matrix(afro_harmonized[, corr_items])
+  afro_harmonized$corruption_perc <-
+    ifelse(rowSums(is.na(m)) == 0, rowSums(m), NA_real_)
+}
+
+# Lived Poverty Index: respondent MEAN of the five 0-4 items (Mattes/
+# Afrobarometer LPI convention), complete cases only (T&M unspecified;
+# logged in lived_poverty.yml). poverty_ctry = UNWEIGHTED country x round
+# mean of lived_poverty — the level-2 predictor in the T&M design.
+lpi_items <- c("lpi_food", "lpi_water", "lpi_medicine", "lpi_fuel", "lpi_income")
+if (all(lpi_items %in% names(afro_harmonized))) {
+  m <- as.matrix(afro_harmonized[, lpi_items])
+  afro_harmonized$lived_poverty <-
+    ifelse(rowSums(is.na(m)) == 0, rowMeans(m), NA_real_)
+  afro_harmonized <- afro_harmonized %>%
+    group_by(country, wave) %>%
+    mutate(poverty_ctry = mean(lived_poverty, na.rm = TRUE)) %>%
+    ungroup() %>%
+    mutate(poverty_ctry = ifelse(is.nan(poverty_ctry), NA_real_, poverty_ctry))
+}
+
+# ==============================================================================
 # SUMMARY
 # ==============================================================================
 

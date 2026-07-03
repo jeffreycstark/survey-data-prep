@@ -14,8 +14,8 @@ schema_version: 1
 
 missing_conventions:
   treat_as_na:
-    codes: [-1, 7, 8, 9, 98, 99, 998]
-    description: "Afrobarometer standard missing codes; 7=Not applicable treated as NA"
+    codes: [-1, 7, 8, 9, 98, 99, 997, 998]
+    description: "Afrobarometer standard missing codes; 7=Not applicable treated as NA; 997=Not asked (R5 corruption battery)"
 
 variables:
   - id: bribe_document
@@ -139,6 +139,200 @@ variables:
       default:
         method: identity
         note: "0-3 scale consistent. R2/R4 not asked."
+    qc:
+      valid_range: [0, 3]
+
+  # ---------------------------------------------------------------------
+  # Perceived-corruption battery (added 2026-07-03, Tambe & Monyake 2023
+  # extension): "How many of the following people do you think are involved
+  # in corruption, or haven't you heard enough about them to say?"
+  # 0=None, 1=Some of them, 2=Most of them, 3=All of them. Higher = more
+  # perceived corruption. Q-codes verified against R5/R8/R9 merged .sav
+  # value labels 2026-07-03. Tax officials (Q60F/Q42G) exist but are NOT
+  # part of the T&M six-item index — deliberately excluded.
+  # The additive index `corruption_perc` (sum 0-18, complete cases) is
+  # built in src/r/data_prep_modules/afro/99_create_final_dataset.R.
+  # NB: R5 judges = Q60G (Q60F is tax officials); R8/R9 judges = Q42F/Q38F.
+  # ---------------------------------------------------------------------
+  - id: corr_perc_president
+    concept: corruption_perception
+    description: "Perceived corruption: President/PM and officials in their office (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60A
+      w6: null
+      w7: null
+      w8: Q42A
+      w9: Q38A
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 identical across R5/R8/R9; 9=DK/haven't heard masked."
+    qc:
+      valid_range: [0, 3]
+
+  - id: corr_perc_mp
+    concept: corruption_perception
+    description: "Perceived corruption: Members of Parliament (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60B
+      w6: null
+      w7: null
+      w8: Q42B
+      w9: Q38B
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: corr_perc_officials
+    concept: corruption_perception
+    description: "Perceived corruption: government/civil servants (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60C
+      w6: null
+      w7: null
+      w8: Q42C
+      w9: Q38C
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: corr_perc_councilors
+    concept: corruption_perception
+    description: "Perceived corruption: local government councilors (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60D
+      w6: null
+      w7: null
+      w8: Q42D
+      w9: Q38D
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: corr_perc_police
+    concept: corruption_perception
+    description: "Perceived corruption: police (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60E
+      w6: null
+      w7: null
+      w8: Q42E
+      w9: Q38E
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 3]
+
+  - id: corr_perc_judges
+    concept: corruption_perception
+    description: "Perceived corruption: judges and magistrates (0=none ... 3=all)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q60G
+      w6: null
+      w7: null
+      w8: Q42F
+      w9: Q38F
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "None"
+        1: "Some of them"
+        2: "Most of them"
+        3: "All of them"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "R5 judges item is Q60G (Q60F = tax officials, excluded from the T&M index)."
     qc:
       valid_range: [0, 3]
 
