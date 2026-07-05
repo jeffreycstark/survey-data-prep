@@ -1,0 +1,217 @@
+# Afrobarometer Government Performance ("handling") battery
+# Added 2026-07-05 for paper-bank paper 22 (clientelism × competitiveness),
+# to replicate Zeng (2019). These six government-HANDLING items are Zeng's
+# "club goods" inputs: paper-bank builds the PCA factor-1 composite there
+# (so the loadings are reported in that paper); this repo only harmonizes
+# the six raw items — do NOT build a composite here.
+#
+# Q-codes + scale verified against the merged R5/R6/R8 .sav value labels and
+# the round codebooks on 2026-07-05. Verbatim stem (all rounds):
+#   "How well or badly would you say the current government is handling the
+#    following matters, or haven't you heard enough to say: <item>?"
+# Raw scale is IDENTICAL 1=Very badly … 4=Very well (higher = better) across
+# R5/R6/R8, so an identity map is correct.
+#
+# ⚠️ R8 has no "enough to eat" item → perf_food is null in w8 (the R8 club-
+#    goods index is 5 items, not 6). Confirmed against the R8 codebook.
+#
+# MISSING CODES differ by round (all outside the substantive 1-4 range, so
+# valid_range [1,4] is a second safety net): R5 uses 9=DK, 998=Refused;
+# R6 uses 9=DK, 98=Refused, 99=Not asked in country; R8 uses 8=Refused,
+# 9=DK. The union convention below covers all of them.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 7, 8, 9, 94, 97, 98, 99, 997, 998]
+    description: "Afro standard; 9=DK/haven't heard, 8/98/998=Refused, 94/97/99/997=Not asked in country. Substantive range is 1-4, so none of these collide."
+
+variables:
+  - id: perf_health
+    concept: government_performance
+    description: "Govt handling: improving basic health services (1=very badly ... 4=very well)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65G
+      w6: Q66G
+      w7: null
+      w8: Q50G
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6/R8"
+    qc:
+      valid_range: [1, 4]
+
+  - id: perf_education
+    concept: government_performance
+    description: "Govt handling: addressing educational needs (1=very badly ... 4=very well)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65H
+      w6: Q66H
+      w7: null
+      w8: Q50H
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6/R8"
+    qc:
+      valid_range: [1, 4]
+
+  - id: perf_water
+    concept: government_performance
+    description: "Govt handling: providing water and sanitation services (1=very badly ... 4=very well)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65I
+      w6: Q66I
+      w7: null
+      w8: Q50I
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6/R8"
+    qc:
+      valid_range: [1, 4]
+
+  - id: perf_food
+    concept: government_performance
+    description: "Govt handling: ensuring everyone has enough to eat (1=very badly ... 4=very well)"
+    type: ordinal
+    note: "⚠️ R8 dropped this item → w8 is null. R8 club-goods index = 5 items."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65J
+      w6: Q66J
+      w7: null
+      w8: null
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6"
+    qc:
+      valid_range: [1, 4]
+
+  - id: perf_roads
+    concept: government_performance
+    description: "Govt handling: maintaining roads and bridges (1=very badly ... 4=very well)"
+    type: ordinal
+    note: "R6 raw code is Q66L (not Q66N)."
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65N
+      w6: Q66L
+      w7: null
+      w8: Q50K
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6/R8"
+    qc:
+      valid_range: [1, 4]
+
+  - id: perf_electricity
+    concept: government_performance
+    description: "Govt handling: providing a reliable supply of electricity (1=very badly ... 4=very well)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q65O
+      w6: Q66M
+      w7: null
+      w8: Q50L
+      w9: null
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very badly"
+        2: "Fairly badly"
+        3: "Fairly well"
+        4: "Very well"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "raw 1-4 identical across R5/R6/R8"
+    qc:
+      valid_range: [1, 4]

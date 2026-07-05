@@ -96,15 +96,19 @@ variables:
     note: >
       Tambe & Monyake (2023) key IV, their binary collapse (0=never,
       1=once or twice/a few times/often). ⚠️ NOT FIELDED in R6, R7, or R9
-      (verified against raw variable labels 2026-07-03) — the extension
-      window is R8 ONLY. R5 code 7 "No experience with this in past year"
-      treated as NA per the repo-wide Afrobarometer convention for code 7
-      (consistent with the bribe_* battery), not as 0=never; logged as a
-      judgment call since T&M do not discuss code 7.
+      (verified against raw variable labels 2026-07-03) — the T&M turnout
+      extension window is R8 ONLY. R5 code 7 "No experience with this in
+      past year" treated as NA per the repo-wide Afrobarometer convention
+      for code 7 (consistent with the bribe_* battery), not as 0=never;
+      logged as a judgment call since T&M do not discuss code 7.
+      R3 (q57f) ADDED 2026-07-05 for paper-bank paper 22 (Zeng 2019, whose
+      vote-buying result is Round 3): same 0=never / 1-3=ever collapse,
+      code 7 "No experience" → NA, verified against the R3 codebook. Item
+      now available in R3, R5, R8.
     source:
       w1: null
       w2: null
-      w3: null
+      w3: q57f
       w4: null
       w5: Q61F
       w6: null
@@ -121,6 +125,14 @@ variables:
       use_convention: treat_as_na
     harmonize:
       by_wave:
+        w3:
+          method: recode
+          mapping:
+            0: 0
+            1: 1
+            2: 1
+            3: 1
+          note: "R3 q57f: 7=No experience → NA (unmapped), 9=DK + 998=Refused masked by convention"
         w5:
           method: recode
           mapping:

@@ -1,0 +1,99 @@
+# Afrobarometer Ethnic Relations
+# Added 2026-07-05 for paper-bank paper 22 (clientelism × competitiveness),
+# to replicate Zeng (2019). Q-codes + scales verified against the merged
+# R3/R5/R6/R8 .sav value labels and the round codebooks on 2026-07-05.
+#
+#  - ethnic_unfair: Zeng's ethnic-grievance control (ordinal 0-3).
+#  - ethnic_group : nominal passthrough of the respondent's ethnic community;
+#                   paper-bank uses it (+ each ruling party's ethnic base) to
+#                   build the co-ethnicity control. Country-specific codes,
+#                   interpretable only via the value-label lookup (§7).
+
+schema_version: 1
+
+missing_conventions:
+  # For ethnic_unfair (ordinal 0-3). Substantive range 0-3, so masking
+  # 7=Not applicable / 8/98=Refused / 9=DK / 94/97/99/997=Not asked is safe.
+  treat_as_na:
+    codes: [-1, 7, 8, 9, 94, 97, 98, 99, 997, 998]
+    description: "7=Not applicable → NA; 8/98/998=Refused; 9=DK; 94/97/99/997=Not asked in country"
+  # For ethnic_group (NOMINAL passthrough). ⚠️ Ethnic codes 7/8/9 are
+  # SUBSTANTIVE groups (R5 Q84: Coloured/Dafing/English; R6 Q87:
+  # Afrikaner/Akan/Arab), so they must NOT be masked. This strips ONLY the
+  # reserved-missing codes, whose positions differ by round:
+  #   R3 (q79): 997=Not asked, 998=Refused, 999=DK      (3-digit)
+  #   R5 (Q84): 9997=Not asked, 9998=Refused, 9999=DK   (4-digit)
+  #   R6 (Q87): 99=Not asked, 9998=Refused, 9999=DK
+  #   R8 (Q81): 94=Not asked, 9996=Not asked, 9998=Refused, 9999=DK
+  # 990/9990 "National identity only" and 995/9995 "Other" are SUBSTANTIVE
+  # and preserved. None of the masked codes collide with a real ethnic code.
+  ethnic_group_missing:
+    codes: [-1, 94, 99, 997, 998, 999, 9996, 9997, 9998, 9999]
+    description: "Ethnic-group reserved-missing across rounds; substantive 1-46/100-2760/900s and 990/9990/995/9995 preserved"
+
+variables:
+  - id: ethnic_unfair
+    concept: ethnic_relations
+    description: "How often is R's ethnic group treated unfairly by government (0=never ... 3=always)"
+    type: ordinal
+    note: >
+      Verbatim varies slightly: R8 (Q82A) specifies "by the government";
+      R3/R5/R6 also say "by the government" ("How often are [R's identity
+      group] treated unfairly by the government?"). 0-3 coding identical
+      across R3/R5/R6/R8 (verified). Treat as comparable; flagged in codebook.
+    source:
+      w1: null
+      w2: null
+      w3: q81
+      w4: null
+      w5: Q85A
+      w6: Q88A
+      w7: null
+      w8: Q82A
+      w9: null
+    scale:
+      min: 0
+      max: 3
+      labels:
+        0: "Never"
+        1: "Sometimes"
+        2: "Often"
+        3: "Always"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+        note: "0-3 identical across R3/R5/R6/R8 (verified)"
+    qc:
+      valid_range: [0, 3]
+
+  - id: ethnic_group
+    concept: ethnic_relations
+    description: "Respondent's ethnic community / cultural group / tribe — country-specific codes (nominal)"
+    type: nominal
+    note: >
+      Raw passthrough; codes are country-specific and interpretable only via
+      the value-label lookup (data/processed/afro_value_labels.csv, §7). Verbatim
+      (R5/R6/R8): "Let us get back to talking about you. What is your ethnic
+      community, cultural group or tribe?" (R3 q79: "What is your tribe? You
+      know, your ethnic or cultural group."). Substantive codes 990/9990
+      ("national identity only") and 995/9995 ("other") are retained.
+    source:
+      w1: null
+      w2: null
+      w3: q79
+      w4: null
+      w5: Q84
+      w6: Q87
+      w7: null
+      w8: Q81
+      w9: null
+    missing:
+      use_convention: ethnic_group_missing
+    harmonize:
+      default:
+        method: identity
+        note: "retain codes + labels; export to label lookup (§7)"
+    qc:
+      skip_range_check: true

@@ -1,0 +1,107 @@
+# Afrobarometer Clientelism / Patronage (government-employee)
+# Added 2026-07-05 for paper-bank paper 22 (clientelism × competitiveness),
+# to replicate Zeng (2019). Q-codes + scales verified against the merged
+# R5/R6/R8 .sav value labels and the round codebooks on 2026-07-05.
+#
+# Zeng's "patronage" = the respondent's EMPLOYER is the government. The
+# employer item exists in R6 (Q96B) and R8 (Q95D), category 4=Government.
+# R5 has NO employer item (only an occupation item) → govt_employee is null
+# in R5. Zeng's patronage round is R6.
+#
+# Employer item is asked only of those with an employer: category 7="Not
+# applicable" (respondents with no wage employer — the large majority) is
+# masked to NA, so govt_employee is defined only within the employed frame
+# (matching Zeng's construction). The recode maps ONLY codes 1-4; every
+# other code (7/8/9/98, etc.) falls through to NA regardless.
+
+schema_version: 1
+
+missing_conventions:
+  # For govt_employee (binary employer type). Substantive range is 1-4, so
+  # masking 7=Not applicable / 8/98=Refused / 9=DK is safe.
+  employer_missing:
+    codes: [-1, 7, 8, 9, 98, 99, 998]
+    description: "7=Not applicable (no wage employer), 8/98/998=Refused, 9=DK, -1=Missing"
+  # For occupation (NOMINAL passthrough). ⚠️ Occupation codes 7/8/9 are
+  # SUBSTANTIVE categories (R5: Miner/Domestic worker/Armed services; R6/R8:
+  # Artisan/Clerical/Supervisor), so they must NOT be masked. This convention
+  # strips ONLY genuine missing codes, whose positions differ by round:
+  #   R5 (Q96_ARB): 997=Not asked, 998=Refused, 999=DK  (3-digit)
+  #   R6 (Q96A):    98=Refused, 99=DK                    (2-digit)
+  #   R8 (Q95C):    9998=Refused, 9999=DK                (4-digit)
+  # None of these collide with a substantive occupation code (0-24, 95=Other,
+  # 995/9995=Other, 1500/1580/1700=Retired are all kept). See §7 label lookup.
+  occupation_missing:
+    codes: [-1, 98, 99, 997, 998, 999, 9998, 9999]
+    description: "Occupation reserved-missing across rounds; substantive 0-24/95/995/9995/retired preserved"
+
+variables:
+  - id: govt_employee
+    concept: patronage
+    description: "Respondent's employer is the government (1=government, 0=self/private/NGO)"
+    type: binary
+    note: >
+      Zeng (2019) patronage measure. Verbatim (R6/R8): "Do you work for
+      yourself, for someone else in the private sector or the non-governmental
+      sector, or for government?" R5 has no employer item → null (patronage
+      unavailable R5). Category 7=Not applicable → NA (defined only within the
+      employed frame). Zeng's patronage round is R6.
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: null
+      w6: Q96B
+      w7: null
+      w8: Q95D
+      w9: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Self / private / NGO"
+        1: "Government"
+    missing:
+      use_convention: employer_missing
+    harmonize:
+      by_wave:
+        w6:
+          method: recode
+          mapping: {1: 0, 2: 0, 3: 0, 4: 1}   # 1 self, 2 private, 3 NGO, 4 government
+        w8:
+          method: recode
+          mapping: {1: 0, 2: 0, 3: 0, 4: 1}
+    qc:
+      valid_range: [0, 1]
+
+  - id: occupation
+    concept: demographics
+    description: "Respondent occupation — country/round-specific categories (nominal passthrough)"
+    type: nominal
+    note: >
+      Retains raw codes + value labels; codes are round-specific and only
+      interpretable via the value-label lookup (data/processed/afro_value_labels.csv,
+      built in step 99). Supports Zeng's Table-2 targeting and an R5 patronage
+      fallback from occupation. Verbatim (all rounds): "What is your main
+      occupation?" (R6/R8 add "If unemployed/retired/disabled, what was your
+      last main occupation?"). R5 uses Q96_ARB, which is fielded in only a
+      subset of countries (~6k valid respondents) — low coverage is expected.
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: Q96_ARB
+      w6: Q96A
+      w7: null
+      w8: Q95C
+      w9: null
+    missing:
+      use_convention: occupation_missing
+    harmonize:
+      default:
+        method: identity
+        note: "retain codes + labels; export to label lookup (§7)"
+    qc:
+      skip_range_check: true

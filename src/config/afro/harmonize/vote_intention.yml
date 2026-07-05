@@ -1,0 +1,99 @@
+# Afrobarometer Vote Intention (party-coded)  — paper 22 PRIMARY DV source
+# Added 2026-07-05 for paper-bank paper 22 (clientelism × competitiveness),
+# to replicate Zeng (2019). Q-codes + scales verified against the merged
+# R3/R5/R6/R8 .sav value labels and the round codebooks on 2026-07-05.
+#
+# Zeng codes DV = 1 "would vote for the ruling party". This repo harmonizes
+# the raw item RETAINING the country-specific party codes (NO collapse to
+# binary — that is exactly what makes party_close unusable for identifying
+# the ruling party). Paper-bank derives the binary DV from these codes + a
+# ruling-party crosswalk, joining on the value-label lookup (§7).
+#
+# The two variables need DIFFERENT missing conventions (see below): for the
+# vote-intention item the "would not vote / would vote for a candidate not a
+# party / other" codes are SUBSTANTIVE (paper maps them to 0), whereas for
+# "which party do you feel close to" the "not applicable" code (respondent
+# feels close to no party) is a filter and is masked to NA.
+#
+# Reserved-code SCHEMES differ by round (all verified):
+#   R3 (3-digit): 997=would-not-vote/not-applicable, 998=Refused, 999=DK
+#   R5 (4-digit): 9996=Not asked, 9997=would-not-vote/not-applicable,
+#                 9998=Refused, 9999=DK; plus 1=Best capable candidate/party
+#   R6 (4-digit): 99=Not asked in country, 9997=..., 9998=Refused, 9999=DK
+#   R8 (4-digit): 94=Not asked, 9997=Not applicable, 9998=Refused, 9999=DK
+
+schema_version: 1
+
+missing_conventions:
+  # vote_intent_party: strip ONLY DK / Refused / Not-asked / Missing. KEEP
+  # every party code AND the substantive non-party answers 1 (best capable),
+  # 990 (would vote for candidate not party), 995/9995 (other), and
+  # 997/9997 (would not vote / not applicable — paper maps these to DV=0).
+  vote_keep_substantive:
+    codes: [-1, 94, 99, 998, 999, 9996, 9998, 9999]
+    description: "NA only DK(999/9999) / Refused(998/9998) / Not-asked(94/99/9996) / Missing(-1); KEEP party codes + would-not-vote(997/9997) + other(995/9995) + best-capable(1) + candidate(990)"
+  # party_close_which: additionally strip 997/9997 "Not applicable" (feels
+  # close to no party — the binary is the separate `party_close` variable).
+  party_close_which_missing:
+    codes: [-1, 94, 97, 98, 99, 997, 998, 999, 9996, 9997, 9998, 9999]
+    description: "NA all DK/Refused/Not-asked/Not-applicable/Missing; KEEP party codes + other(995/9995)"
+
+variables:
+  - id: vote_intent_party
+    concept: vote_choice
+    description: "Party R would vote for if election held tomorrow — country-specific party codes retained"
+    type: nominal
+    note: >
+      Codes change meaning every country×round — join via the value-label
+      lookup (data/processed/afro_value_labels.csv, §7). Verbatim (R3/R5/R6):
+      "If a presidential election were held tomorrow, which party's candidate
+      would you vote for?" (R8: "If [presidential elections] were held
+      tomorrow, which [party's candidate] would you vote for?"). The
+      'would not vote / not applicable' codes (997 in R3, 9997 in R5/R6/R8)
+      are RETAINED as substantive (paper maps them to 0). Do NOT collapse.
+    source:
+      w1: null
+      w2: null
+      w3: q99
+      w4: null
+      w5: Q99
+      w6: Q99
+      w7: null
+      w8: Q99
+      w9: null
+    missing:
+      use_convention: vote_keep_substantive
+    harmonize:
+      default:
+        method: identity
+        note: "retain country-specific party codes + value labels; NO collapse"
+    qc:
+      skip_range_check: true
+
+  - id: party_close_which
+    concept: vote_choice
+    description: "Which party R feels close to — country-specific codes retained (nominal)"
+    type: nominal
+    note: >
+      Companion for the 'feel close' DV variant. Verbatim (all rounds):
+      "Which party is that?" (asked of respondents who feel close to a party;
+      the yes/no filter is the separate `party_close` variable). Codes join via
+      the §7 value-label lookup. 997/9997 "Not applicable" (no party) → NA.
+    source:
+      w1: null
+      w2: null
+      w3: q86
+      w4: null
+      w5: Q89B
+      w6: Q90B
+      w7: null
+      w8: Q91B
+      w9: null
+    missing:
+      use_convention: party_close_which_missing
+    harmonize:
+      default:
+        method: identity
+        note: "retain country-specific party codes + value labels; NO collapse"
+    qc:
+      skip_range_check: true

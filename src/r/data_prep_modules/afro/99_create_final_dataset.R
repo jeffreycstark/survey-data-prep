@@ -372,6 +372,88 @@ cat(sprintf("\nafro_harmonized saved: %s rows, %d columns\n",
 cat(strrep("=", 70), "\n\n")
 
 # ==============================================================================
+# VALUE-LABEL LOOKUP EXPORT (paper 22, §7)
+# ==============================================================================
+# The harmonize engine zaps haven_labelled at harmonize time, so the final
+# dataset keeps numeric codes only. For the nominal party / ethnic / occupation
+# variables those codes are meaningless without the country×round value labels,
+# so export a lookup rebuilt from the RAW .sav attr(,"labels"). Paper-bank joins
+# afro_value_labels.csv on (variable, wave, country, code) to recover party
+# names / ethnic groups / occupations and identify the ruling party.
+
+cat("\nBuilding value-label lookup (afro_value_labels.csv)...\n")
+
+label_var_map <- list(
+  vote_intent_party = c(w3 = "q99", w5 = "Q99",     w6 = "Q99",  w8 = "Q99"),
+  party_close_which = c(w3 = "q86", w5 = "Q89B",    w6 = "Q90B", w8 = "Q91B"),
+  ethnic_group      = c(w3 = "q79", w5 = "Q84",     w6 = "Q87",  w8 = "Q81"),
+  occupation        = c(           w5 = "Q96_ARB", w6 = "Q96A", w8 = "Q95C")
+)
+
+# Reuse the same country-name → ISO3 logic as the country-identifier section.
+raw_to_iso3 <- function(raw, ccol) {
+  cn <- as.character(haven::as_factor(raw[[ccol]]))
+  cn <- gsub("â", "'", cn)
+  cn <- gsub("Ã´", "o", cn)
+  cn <- gsub("Ã£", "a", cn)
+  cn <- gsub("Ã­", "i", cn)
+  cn <- trimws(cn)
+  iso <- country_name_to_iso3[cn]
+  iso[grepl("Tom", cn, ignore.case = TRUE)] <- "STP"
+  iso[grepl("Ivoire|voire", cn, ignore.case = TRUE)] <- "CIV"
+  unname(iso)
+}
+
+vl_rows <- list()
+for (varname in names(label_var_map)) {
+  wmap <- label_var_map[[varname]]
+  for (wn in names(wmap)) {
+    raw_col <- wmap[[wn]]
+    path <- raw_paths[[wn]]
+    if (is.null(path) || !file.exists(path)) next
+    hdr <- haven::read_sav(path, n_max = 0)
+    real_col <- names(hdr)[match(tolower(raw_col), tolower(names(hdr)))]
+    ccol <- grep("^country$", names(hdr), ignore.case = TRUE, value = TRUE)[1]
+    if (is.na(real_col) || is.na(ccol)) {
+      warning(sprintf("value-labels: %s/%s — column '%s' or COUNTRY missing",
+                      varname, wn, raw_col))
+      next
+    }
+    raw <- haven::read_sav(path, col_select = dplyr::all_of(c(real_col, ccol)))
+    x <- raw[[real_col]]
+    labs <- attr(x, "labels")
+    lab_map <- if (!is.null(labs)) {
+      setNames(names(labs), as.character(as.numeric(labs)))
+    } else character(0)
+    codes <- suppressWarnings(as.numeric(haven::zap_labels(x)))
+    iso3  <- raw_to_iso3(raw, ccol)
+    keep  <- !is.na(codes) & !is.na(iso3)
+    df <- unique(data.frame(country = iso3[keep], code = codes[keep],
+                            stringsAsFactors = FALSE))
+    df$label    <- unname(lab_map[as.character(df$code)])
+    df$variable <- varname
+    df$wave     <- as.integer(sub("w", "", wn))
+    vl_rows[[paste(varname, wn)]] <- df[, c("variable", "wave", "country", "code", "label")]
+  }
+}
+
+afro_value_labels <- do.call(rbind, vl_rows)
+afro_value_labels <- afro_value_labels[order(afro_value_labels$variable,
+                                             afro_value_labels$wave,
+                                             afro_value_labels$country,
+                                             afro_value_labels$code), ]
+value_labels_path <- here("data", "processed", "afro_value_labels.csv")
+if (requireNamespace("readr", quietly = TRUE)) {
+  readr::write_csv(afro_value_labels, value_labels_path)
+} else {
+  utils::write.csv(afro_value_labels, value_labels_path, row.names = FALSE)
+}
+cat(sprintf("  Value labels: %s rows across %d variables → %s\n",
+            format(nrow(afro_value_labels), big.mark = ","),
+            length(unique(afro_value_labels$variable)),
+            basename(value_labels_path)))
+
+# ==============================================================================
 # RUN MANIFEST (audit ticket C2)
 # ==============================================================================
 # raw_paths is the per-round .sav map already defined above; reuse it as the
@@ -394,7 +476,8 @@ manifest_inputs <- unlist(lapply(names(raw_paths), function(wn) {
 manifest_outputs <- c(
   rds_path,
   parquet_path,
-  here("outputs", "afro", "afro_harmonized.rds")
+  here("outputs", "afro", "afro_harmonized.rds"),
+  value_labels_path
 )
 
 write_manifest(
