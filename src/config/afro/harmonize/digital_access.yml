@@ -1,0 +1,74 @@
+# Afrobarometer EA-level Digital Access (mobile/cell service)
+# Added 2026-07-05 for the paper-bank Paper 20 registered sub-national test
+# (AsPredicted #300177 — "Does Digitalization Erode Vote-Buying?").
+#
+# `ea_mobile_service` is the interviewer-recorded PSU/EA observation
+# EA-SVC-D ("Is there mobile/cell-phone service in the enumeration area?").
+# It supplies WITHIN-COUNTRY, BETWEEN-REGION variation in connectivity that
+# national ITU/World Bank penetration cannot (national penetration is collinear
+# with national development). Paper 20 aggregates it to region_admin1 downstream
+# (share of EAs in the region with service) as the registered moderator.
+#
+# ⚠️ SOURCE VERIFIED against the merged .sav value labels on 2026-07-05:
+#   EA_SVC_D is present and IDENTICALLY coded in R5, R6, R7, R8, R9:
+#     -1 = Missing ; 0 = No ; 1 = Yes ; 9 = Can't determine
+#   Label wording only: "Cell phone service" (R5-R7) -> "Mobile phone service"
+#   (R8-R9); same construct. R10 also carries EA_SVC_D (all 29 country files),
+#   but the R10 loader lowercases names to `ea_svc_d`; w10 is left unmapped
+#   here pending a case-consistency check, and paper 20 does not need R10 for
+#   this variable (its clientelism models are R5+R8 only).
+#
+# MEASUREMENT NOTES (for the paper-bank side, not the harmonizer):
+#   * Exposed at the respondent level: every respondent in an EA carries that
+#     EA's value. The Afrobarometer public release has NO EA/PSU identifier, so
+#     the region-level measure is the respondent-weighted share of service
+#     within region_admin1 x country-round (a near-identical proxy for the
+#     share-of-EAs measure; no EA id required).
+#
+# MISSING VALUES: -1=Missing and 9=Can't determine -> NA. 0=No is SUBSTANTIVE
+# (service absent) and must NOT be treated as missing.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, 9]
+    description: "-1=Missing, 9=Can't determine -> NA; 0=No is substantive (service absent)"
+
+variables:
+  - id: ea_mobile_service
+    concept: digital_access
+    description: "Mobile/cell-phone service present in the respondent's PSU/EA (0=no, 1=yes), interviewer observation EA-SVC-D"
+    type: binary
+    note: >
+      Interviewer-recorded enumeration-area observation (EA-SVC-D). Coding is
+      identical across R5-R9 (0=No, 1=Yes; -1 and 9 -> NA), verified against the
+      merged .sav value labels 2026-07-05. Used by paper 20 as the in-survey,
+      sub-national digital-connectivity moderator (aggregated to region_admin1),
+      replacing the national ITU/World Bank penetration fallback for the
+      registered within-country test.
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: EA_SVC_D
+      w6: EA_SVC_D
+      w7: EA_SVC_D
+      w8: EA_SVC_D
+      w9: EA_SVC_D
+      w10: null   # present as lowercase `ea_svc_d` (loader lowercases R10); deferred — see header
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No service in EA"
+        1: "Service present in EA"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+    tags: [digital_access, connectivity, ea_observation, paper20]
