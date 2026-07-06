@@ -43,6 +43,8 @@ The pipeline is YAML-driven: change a YAML, re-run the pipeline, the harmonized 
 
 If you skip the audit after a change, you don't know whether you introduced a silent bug. The audit is the only mechanism that catches them.
 
+> **Not sure how far to trust "clean"?** [`docs/QA.md`](docs/QA.md) is the QA **confidence guide** — every layer with *proof* it catches its fault class (verified by fault injection), an honest list of what it does **not** catch, and the calibration for when a green run is defensible in a paper. Start there.
+
 ---
 
 ## Routine maintenance — runbooks
@@ -268,7 +270,7 @@ The audit is a 7-layer infrastructure that runs on every harmonization. Full des
 | 6. Provenance | Non-deterministic outputs, untracked input changes | `06_check_determinism.R` (C4), `06_check_input_drift.R` (C5) |
 | 7. CI gating | (Not implemented; see Phase H notes in `audit/02-implementation-tickets.md`) | — |
 
-The framework's design notes, original third-party audit deliverables, and ticket queue are all in [`audit/`](audit/).
+The framework's design notes, original third-party audit deliverables, and ticket queue are all in [`audit/`](audit/). For the **verified** view — what each layer provably catches, what it misses, and how much to trust a clean run — see the confidence guide [`docs/QA.md`](docs/QA.md).
 
 ---
 
