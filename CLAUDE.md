@@ -26,6 +26,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## QA & confidence
+
+The harmonization is guarded by a layered audit system (`src/r/audit/`). Before trusting a "clean" run — or defending the data in a paper — read [docs/QA.md](docs/QA.md): the **confidence guide** that verifies (by fault injection) what each QA layer provably catches and, critically, what it does **not**. Key caveat baked in there: the post-harmonize direction gate is **report-only by default**, and ABS currently carries a known 18-error label-reconciliation backlog that a normal run passes silently (set `HARMONIZE_AUDIT_GATE=block` to enforce).
+
+---
+
 ## Project Purpose
 
 This repo houses reusable survey data harmonization infrastructure:
