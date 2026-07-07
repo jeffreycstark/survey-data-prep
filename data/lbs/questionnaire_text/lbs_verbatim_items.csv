@@ -719,3 +719,99 @@ y2018,WT,weight,Survey Administration,,Survey weight [Computed by Latinobarometr
 y2020,WT,weight,Survey Administration,,Survey weight [Computed by Latinobarometro based on sample design],Continuous (mean approximately 1),Wording stable across waves
 y2023,WT,weight,Survey Administration,,Survey weight [Computed by Latinobarometro based on sample design],Continuous (mean approximately 1),Wording stable across waves
 y2024,WT,weight,Survey Administration,,Survey weight [Computed by Latinobarometro based on sample design],Continuous (mean approximately 1),Wording stable across waves
+y1995,,pres_approval,Presidential Approval,,,,Not included in this wave
+y1996,,pres_approval,Presidential Approval,,,,Not included in this wave
+y1997,,pres_approval,Presidential Approval,,,,Not included in this wave
+y1998,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2000,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2001,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2002,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2003,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2004,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2005,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2006,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2007,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2008,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2009,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2010,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2011,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2013,,pres_approval,Presidential Approval,,,,Not included in this wave
+y2015,P48STGBS,pres_approval,Presidential Approval,,Approval of the management of the government headed by the President (running the country),"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2016,P16STGBS,pres_approval,Presidential Approval,,Approves how the government led by the President is running the country,"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2017,P17STGBSC,pres_approval,Presidential Approval,,Approves how the government led by the President is running the country,"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2018,P20STGBSC,pres_approval,Presidential Approval,,Do you approve or disapprove the way (president's name) is leading the country?,"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2020,P17STGBS,pres_approval,Presidential Approval,,Do you approve or disapprove the way (president's name) is leading the country?,"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2023,P15STGBS,pres_approval,Presidential Approval,,Approval of the management of the government led by the President,"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y2024,P15STGBS,pres_approval,Presidential Approval,,Aprobacion de la gestion del gobierno que encabeza el Presidente [Approval of the management of the government led by the President],"1=Approve; 2=Disapprove (harmonized 1→1, 2→0; negatives=missing)","Presidential approval DV (paper 29). 1=Approve→1, 2=Disapprove→0. Wording drifts: 2015-17/23-24 'government led by the President' vs 2018/20 'the way the president is leading the country' — same construct."
+y1995,,crime_victim,Crime & Security,,,,Not included in this wave
+y1996,,crime_victim,Crime & Security,,,,Not included in this wave
+y1997,,crime_victim,Crime & Security,,,,Not included in this wave
+y1998,,crime_victim,Crime & Security,,,,Not included in this wave
+y2000,,crime_victim,Crime & Security,,,,Not included in this wave
+y2001,,crime_victim,Crime & Security,,,,Not included in this wave
+y2002,,crime_victim,Crime & Security,,,,Not included in this wave
+y2003,,crime_victim,Crime & Security,,,,Not included in this wave
+y2004,,crime_victim,Crime & Security,,,,Not included in this wave
+y2005,,crime_victim,Crime & Security,,,,Not included in this wave
+y2006,,crime_victim,Crime & Security,,,,Not included in this wave
+y2007,,crime_victim,Crime & Security,,,,Not included in this wave
+y2008,,crime_victim,Crime & Security,,,,Not included in this wave
+y2009,,crime_victim,Crime & Security,,,,Not included in this wave
+y2010,,crime_victim,Crime & Security,,,,Not included in this wave
+y2011,,crime_victim,Crime & Security,,,,Not included in this wave
+y2013,,crime_victim,Crime & Security,,,,Not included in this wave
+y2015,P60ST,crime_victim,Crime & Security,,You or a relative — victim of an assault or crime in the last 12 months?,"1=You; 2=Relative; 3=Both; 4=No (harmonized {1,2,3}→1, 4→0)","Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2016,P37ST,crime_victim,Crime & Security,,Have you or your family been a victim of a crime?,1=You; 2=A relative; 3=Both; 4=No,"Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2017,P65ST.A + P65ST.B,crime_victim,Crime & Security,Have you or any relative in the last twelve months been:,(A) mugged/assaulted; (B) victim of a crime — combined to any victimization,each 1=You; 2=Relative; 3=Both; 4=No,"Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2018,P69ST.1 + P69ST.2,crime_victim,Crime & Security,,(1) You or relative assaulted; (2) victim of a crime — combined to any victimization,each 1=You; 2=(Some) relative; 3=Both; 4=No,"Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2020,P64ST,crime_victim,Crime & Security,,"You or a relative assaulted, attacked, or victim of a crime in the last 12 months?",1=You; 2=Relative; 3=Both; 4=None,"Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2023,P58ST,crime_victim,Crime & Security,,"Have you or a relative been assaulted, attacked, or the victim of a crime in the last 12 months?","1=You; 2=Relative; 3=Both; 4=No (harmonized {1,2,3}→1, 4→0)","Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y2024,P50ST.A,crime_victim,Crime & Security,,Usted o su familia han sido victimas de un delito en los ultimos doce meses [You or your family been a victim of a crime in the last 12 months],"1=Yes; 2=No (harmonized 1→1, 2→0)","Crime victimization IV. {1,2,3}→1, 4→0. 2017/2018 split across two columns → combined to any-victimization via combine_lbs_victim_any. 2024 uses 1=Yes/2=No coding."
+y1995,,crime_fear,Crime & Security,,,,Not included in this wave
+y1996,,crime_fear,Crime & Security,,,,Not included in this wave
+y1997,,crime_fear,Crime & Security,,,,Not included in this wave
+y1998,,crime_fear,Crime & Security,,,,Not included in this wave
+y2000,,crime_fear,Crime & Security,,,,Not included in this wave
+y2001,,crime_fear,Crime & Security,,,,Not included in this wave
+y2002,,crime_fear,Crime & Security,,,,Not included in this wave
+y2003,,crime_fear,Crime & Security,,,,Not included in this wave
+y2004,,crime_fear,Crime & Security,,,,Not included in this wave
+y2005,,crime_fear,Crime & Security,,,,Not included in this wave
+y2006,,crime_fear,Crime & Security,,,,Not included in this wave
+y2007,,crime_fear,Crime & Security,,,,Not included in this wave
+y2008,,crime_fear,Crime & Security,,,,Not included in this wave
+y2009,,crime_fear,Crime & Security,,,,Not included in this wave
+y2010,,crime_fear,Crime & Security,,,,Not included in this wave
+y2011,,crime_fear,Crime & Security,,,,Not included in this wave
+y2013,,crime_fear,Crime & Security,,,,Not included in this wave
+y2015,P57ST,crime_fear,Crime & Security,,How often are you concerned that you could be a victim of a violent crime?,raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2016,P39ST,crime_fear,Crime & Security,,Concern about being a victim of a crime with violence,raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2017,P66ST,crime_fear,Crime & Security,,How often do you care that you may become the victim of a crime with violence?,raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2018,P70ST,crime_fear,Crime & Security,,How often do you care that you may become the victim of a crime with violence?,raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2020,P65ST,crime_fear,Crime & Security,,Frequency of worrying about being the victim of a crime with violence,raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2023,P59ST,crime_fear,Crime & Security,,"How often, if at all, do you worry about becoming a victim of violent crime?",raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y2024,P51ST,crime_fear,Crime & Security,,Frecuencia con la que se preocupa de que pueda llegar a ser victima de un crimen violento [How often you worry about becoming a victim of a violent crime],raw 1=All/almost all the time; 2=Sometimes; 3=Occasionally; 4=Never — REVERSED to 1=Never … 4=All the time,Subjective insecurity IV. safe_reverse_4pt (5−raw) so higher = more insecure (1=Never … 4=All the time).
+y1995,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y1996,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y1997,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y1998,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2000,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2001,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2002,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2003,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2004,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2005,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2006,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2007,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2008,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2009,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2010,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2011,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2013,,female,Demographics,,,,Not included in this wave (female currently mapped 2015-2024 only)
+y2015,S12,female,Demographics,,Respondent's sex,1=Male; 2=Female (harmonized female=(sex==2)),Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2016,SEXO,female,Demographics,,Respondent's sex,1=Male; 2=Female,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2017,SEXO,female,Demographics,,Respondent's sex,1=Male; 2=Female,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2018,SEXO,female,Demographics,,Respondent's sex,1=Man; 2=Woman,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2020,SEXO,female,Demographics,,Respondent's gender,1=Man; 2=Woman,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2023,SEXO,female,Demographics,,Sex,1=Man; 2=Woman,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).
+y2024,SEXO,female,Demographics,,Sexo [Sex],1=Man; 2=Woman,Sex control (paper 29). female=(sex==2). Mapped 2015-2024; earlier years use different sex columns (see demographics.yml note).

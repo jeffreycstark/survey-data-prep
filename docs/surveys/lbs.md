@@ -31,11 +31,34 @@ Wave keys (year-based): y1995, y1996, y1997, y1998, y2000, y2001, y2002, y2003, 
 | Social Trust (1) | trust_generalized_binary | 1-2 |
 | Democratic Attitudes (4) | dem_always_preferable (1-3), dem_satisfaction (1-4), dem_best_system (18 waves, 1-4), dem_how_democratic_10pt (13 waves, 1-10) | varies |
 | Democratic Support (4) | dem_nondem_ok, dem_military_support, dem_solves_problems, pol_say_what_think | sparse (2-3 waves each) |
+| Security Voting — paper 29 (3) | pres_approval (0/1), crime_victim (0/1), crime_fear (1-4, higher=more insecure) | 2015-2024 |
+| Demographics (+1) | female (0/1) | 2015-2024 (extendable) |
 | Weights (1) | weight | continuous, mean ~1; raw: WT (all waves) |
+
+### Paper 29 "security voting" items (added 2026-07-07)
+
+For paper-bank paper 29 (Veiga, Ribeiro & Borba 2022 — crime victimization / subjective
+insecurity → presidential approval, with an incumbent-ideology moderator). Spec:
+`src/config/lbs/harmonize/security_voting.yml` (+ `female` in `demographics.yml`). Q-codes
+pinned per year against raw English `.sav` value labels 2026-07-07 (LBS renames variables
+almost every year).
+
+| Column | Recode | Per-year source |
+|--------|--------|-----------------|
+| `pres_approval` (DV) | 1=Approve→1, 2=Disapprove→0 | 2015 P48STGBS, 2016 P16STGBS, 2017 P17STGBSC, 2018 P20STGBSC, 2020 P17STGBS, 2023/2024 P15STGBS |
+| `crime_victim` (IV) | {1,2,3}→1, 4→0 | 2015 P60ST, 2016 P37ST, **2017 P65ST.A+.B**, **2018 P69ST.1+.2** (split → any-victimization via `combine_lbs_victim_any`), 2020 P64ST, 2023 P58ST, **2024 P50ST.A (1=Yes/2=No)** |
+| `crime_fear` (IV) | `safe_reverse_4pt` (higher=more insecure) | 2015 P57ST, 2016 P39ST, 2017 P66ST, 2018 P70ST, 2020 P65ST, 2023 P59ST, 2024 P51ST |
+| `female` (control) | (sex==2)→1 | 2015 S12, 2016-2024 SEXO |
+
+**Usable window = 2015, 2016, 2017, 2018, 2020, 2023, 2024** — all seven target years carry
+approval + victimization + fear. `pres_approval` wording drifts across years
+("government led by the President" vs. "the way the president is leading the country") but is the
+same construct. `incumbent_ideology` (the extension moderator) is hand-coded in paper-bank, not here.
 
 ## Verbatim dictionary
 
-`data/lbs/questionnaire_text/lbs_verbatim_items.csv` — Complete (30 vars, 24 waves, 720 rows).
+`data/lbs/questionnaire_text/lbs_verbatim_items.csv` — Complete (34 vars, 24 waves, 816 rows;
++4 paper-29 items 2026-07-07).
 
 ## Notes & gotchas
 

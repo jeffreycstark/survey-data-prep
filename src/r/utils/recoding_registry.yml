@@ -954,3 +954,11 @@
   monotonic: false
   requires_data: true
   notes: "Derive function defined in src/r/harmonize/harmonize.R:396 (NOT recoding.R). Computes 0-4 procedural-vs-substantive index from 4 forced-choice items. Used by ABS meaning_of_democracy.yml for procedural_preference_index (W3, W4, W6). Categorical recode internally — not monotonic w.r.t. any single source column."
+
+- fn: combine_lbs_victim_any
+  input_scale: null
+  output_scale: [0, 1]
+  reverses: false
+  monotonic: false
+  requires_data: true
+  notes: "LBS derive (defined in recoding.R): combines split crime-victimization items (2017 P65ST.A/.B, 2018 P69ST.1/.2) into any-victimization 0/1. 1/2/3 (You/Relative/Both)→1, all 4=No→0, all missing→NA. Used by security_voting.yml crime_victim."

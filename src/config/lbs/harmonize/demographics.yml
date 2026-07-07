@@ -182,3 +182,57 @@ variables:
           fn: recode_lbs_tamciud_100x
     qc:
       valid_range: [1, 8]
+
+  - id: female
+    concept: demographics
+    description: "Respondent is female (1=female, 0=male)"
+    type: binary
+    note: >
+      Added 2026-07-07 for paper 29. From SEXO (1=Man/Male, 2=Woman/Female) →
+      female = (sex==2). Sex column verified per year: 2015 S12; 2016-2024 SEXO
+      (all 1/2 coded). Currently mapped for the paper-29 window (2015-2024) only;
+      earlier years use different sex columns (s1 1995-2004, s6 2005, sexo
+      2007-2008, s5 2009, S7 2010, SEXO 2011, S10 2013 — NB 2006's auto-match
+      is a "sexual harassment" trap) and can be added after per-year verification.
+      skip_unmapped_check suppresses the pre-flight warning for nulled years
+      where SEXO still exists.
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: S12
+      y2016: SEXO
+      y2017: SEXO
+      y2018: SEXO
+      y2020: SEXO
+      y2023: SEXO
+      y2024: SEXO
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Male"
+        1: "Female"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 0, 2: 1}   # 1=Male→0, 2=Female→1; negatives masked by convention
+    qc:
+      valid_range: [0, 1]
+      skip_unmapped_check: true

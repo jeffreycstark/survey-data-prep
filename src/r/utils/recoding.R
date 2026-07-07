@@ -2273,3 +2273,39 @@ recode_ipus_urban_rural_w2008 <- function(x, ...) {
     TRUE ~ NA_real_
   )
 }
+
+# ==============================================================================
+# CRIME VICTIMIZATION — LATINOBARÓMETRO (split-item combine)
+# ==============================================================================
+
+#' Combine split Latinobarómetro crime-victimization items into "any victimization".
+#'
+#' Some LBS years split victimization into two items (assault vs. other crime;
+#' e.g. 2017 P65ST.A/.B, 2018 P69ST.1/.2), each coded 1=You, 2=Relative, 3=Both,
+#' 4=No, negatives = LBS missing. This derive function (called via `method: derive`
+#' with a `sources:` list) returns 1 if ANY item indicates victimization (1/2/3),
+#' 0 if all valid items are 4=No, NA if all items are missing.
+#'
+#' @param data Raw wave data frame.
+#' @param wave_name Wave key (unused; present for the derive() interface).
+#' @param sources Character vector of the split source column names.
+#' @return Numeric 0/1/NA vector, length nrow(data).
+#' @export
+combine_lbs_victim_any <- function(data, wave_name = NULL, sources = NULL) {
+  if (is.null(sources) || length(sources) == 0) {
+    stop("combine_lbs_victim_any: `sources` (split victim columns) required")
+  }
+  to_num <- function(col) {
+    if (inherits(col, "haven_labelled")) as.numeric(haven::zap_labels(col))
+    else suppressWarnings(as.numeric(col))
+  }
+  mats <- lapply(sources, function(s) to_num(data[[s]]))
+  M <- do.call(cbind, mats)
+  apply(M, 1, function(r) {
+    r <- r[!is.na(r) & r >= 0]              # drop LBS negatives (missing)
+    if (length(r) == 0) return(NA_real_)    # all missing → NA
+    if (any(r %in% c(1, 2, 3))) return(1)   # any victimization → 1
+    if (all(r == 4)) return(0)              # all "No" → 0
+    NA_real_                                # unexpected code → NA
+  })
+}
