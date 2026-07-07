@@ -1,0 +1,190 @@
+# Latinobarómetro "Security Voting" items
+# Added 2026-07-07 for paper-bank paper 29 (Veiga, Ribeiro & Borba 2022 —
+# crime victimization / subjective insecurity → presidential approval, with an
+# incumbent-ideology moderator extension).
+#
+# Q-codes + value labels VERIFIED against the raw English yearly .sav files on
+# 2026-07-07. Latinobarómetro renames variables almost every year, so every
+# item is pinned per year against the value labels, not by name.
+#
+# USABLE WINDOW (all three of approval + victimization + fear present):
+#   2015, 2016, 2017, 2018, 2020, 2023, 2024  — all seven target years.
+#
+# Paper-specific `incumbent_ideology` (each country×year president's left/right
+# placement — the extension's moderator) is hand-coded in paper-bank, NOT here.
+#
+# MISSING VALUES: LBS standard −5..−1. No 0/9x variants seen for these items.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "LBS standard missing codes (-5 Missing/DK-NA, -4 Not asked, -3 Not applicable, -2 No answer/Refused, -1 Don't know)"
+
+variables:
+  - id: pres_approval
+    concept: political_support
+    description: "Approve of the way the president is leading the country (1=approve, 0=disapprove)"
+    type: binary
+    note: >
+      Paper 29 DV. The only approve/disapprove item each year (1=Approve,
+      2=Disapprove). Wording drifts: 2018/2020 = "Do you approve or disapprove
+      the way (president) is leading the country?"; 2015/2016/2017/2023/2024 =
+      "Approval of the management of the government led by the President" — same
+      construct, treated as comparable. 2024 variable label is Spanish (English
+      value labels); item is P15STGBS as in 2023.
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: P48STGBS
+      y2016: P16STGBS
+      y2017: P17STGBSC
+      y2018: P20STGBSC
+      y2020: P17STGBS
+      y2023: P15STGBS
+      y2024: P15STGBS
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Disapprove"
+        1: "Approve"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 0}   # 1=Approve→1, 2=Disapprove→0; negatives masked by convention
+    qc:
+      valid_range: [0, 1]
+
+  - id: crime_victim
+    concept: crime_security
+    description: "Respondent or a relative was a victim of a crime in the last 12 months (1=victimized, 0=not)"
+    type: binary
+    note: >
+      Paper 29 IV. Most years code 1=You, 2=Relative, 3=Both, 4=No → {1,2,3}→1,
+      4→0. 2017 (P65ST.A mugged/assaulted + P65ST.B other crime) and 2018
+      (P69ST.1 assaulted + P69ST.2 crime) SPLIT the item across two columns —
+      combined to "any victimization = 1" via combine_lbs_victim_any. 2024
+      (P50ST.A) uses a different 1=Yes/2=No coding → {1}→1, {2}→0. Source lists
+      one column for the split years (extraction anchor); the derive rule reads
+      both via `sources:`.
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: P60ST
+      y2016: P37ST
+      y2017: P65ST.A
+      y2018: P69ST.1
+      y2020: P64ST
+      y2023: P58ST
+      y2024: P50ST.A
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Not victimized"
+        1: "Victimized (self or relative)"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      by_wave:
+        y2015: {method: recode, mapping: {1: 1, 2: 1, 3: 1, 4: 0}}
+        y2016: {method: recode, mapping: {1: 1, 2: 1, 3: 1, 4: 0}}
+        y2017:
+          method: derive
+          fn: combine_lbs_victim_any
+          sources: ["P65ST.A", "P65ST.B"]
+        y2018:
+          method: derive
+          fn: combine_lbs_victim_any
+          sources: ["P69ST.1", "P69ST.2"]
+        y2020: {method: recode, mapping: {1: 1, 2: 1, 3: 1, 4: 0}}
+        y2023: {method: recode, mapping: {1: 1, 2: 1, 3: 1, 4: 0}}
+        y2024: {method: recode, mapping: {1: 1, 2: 0}}   # 2024 is 1=Yes/2=No
+    qc:
+      valid_range: [0, 1]
+
+  - id: crime_fear
+    concept: crime_security
+    description: "Subjective insecurity — how often R worries about being a violent-crime victim (1=never ... 4=all the time; higher = more insecure)"
+    type: ordinal
+    note: >
+      Paper 29 IV. Raw is 1=All/almost all the time … 4=Never (identical
+      direction all years). REVERSE-ORIENTED with safe_reverse_4pt (5−raw) so
+      higher = MORE insecure → 1=Never, 4=All the time. Item wording drifts
+      ("concerned"/"care"/"worry") but scale and direction are constant.
+    source:
+      y1995: null
+      y1996: null
+      y1997: null
+      y1998: null
+      y2000: null
+      y2001: null
+      y2002: null
+      y2003: null
+      y2004: null
+      y2005: null
+      y2006: null
+      y2007: null
+      y2008: null
+      y2009: null
+      y2010: null
+      y2011: null
+      y2013: null
+      y2015: P57ST
+      y2016: P39ST
+      y2017: P66ST
+      y2018: P70ST
+      y2020: P65ST
+      y2023: P59ST
+      y2024: P51ST
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Never"
+        2: "Occasionally"
+        3: "Sometimes"
+        4: "All or almost all the time"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "Raw 1=All the time…4=Never; reverse (5−raw) so higher = more insecure."
+    qc:
+      valid_range: [1, 4]
