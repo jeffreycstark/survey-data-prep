@@ -2,6 +2,12 @@
 # Test cases for codebook analysis and YAML generation
 
 library(testthat)
+library(here)
+
+# Load the functions under test so this file runs standalone (Rscript) as well
+# as under a testthat harness.
+source(here::here("src/r/codebook/codebook_analysis.R"))
+source(here::here("src/r/codebook/codebook_workflow.R"))
 
 # ==============================================================================
 # TEST SUITE 1: SCALE DETECTION
@@ -217,6 +223,9 @@ test_that("parse_search_results: missing columns error", {
 # ==============================================================================
 
 test_that("generate_codebook_yaml: end-to-end", {
+  # Build the frame first, then attach the list-column. Passing
+  # value_labels = list(<length-4 vectors>) straight to data.frame() makes it
+  # infer 4 rows (the element length) and clash with the 3 from other columns.
   search_df <- data.frame(
     wave = c("w1", "w2", "w3"),
     variable_name = c("q001", "q1", "q1"),
@@ -225,12 +234,12 @@ test_that("generate_codebook_yaml: end-to-end", {
       "Overall national economy",
       "Overall national economy"
     ),
-    value_labels = list(
-      c("1" = "Very bad", "2" = "Bad", "3" = "Good", "4" = "Very good"),
-      c("1" = "Very bad", "2" = "Bad", "3" = "Good", "4" = "Very good"),
-      c("1" = "Very good", "2" = "Good", "3" = "Bad", "4" = "Very bad")
-    ),
     stringsAsFactors = FALSE
+  )
+  search_df$value_labels <- list(
+    c("1" = "Very bad", "2" = "Bad", "3" = "Good", "4" = "Very good"),
+    c("1" = "Very bad", "2" = "Bad", "3" = "Good", "4" = "Very good"),
+    c("1" = "Very good", "2" = "Good", "3" = "Bad", "4" = "Very bad")
   )
 
   yaml_str <- generate_codebook_yaml(search_df, concept = "economy")

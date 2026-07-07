@@ -75,6 +75,46 @@ Two checks: a 5-row synthetic spec (Korea code 301 W3 → Uri/Democratic
 lineage / progressive) and a regression sample against
 `data/processed/party_winner_loser.csv`.
 
+## `kipa_bribery_series.R` — `kipa_bribery_series()`
+
+Returns the per-year KIPA first-person bribery-experience rate
+(`corr_bribery_experience_1yr`), computed **both** ways so a caller cannot
+silently pick the wrong denominator:
+
+- `uncond_pct` — yes ÷ **full annual sample** (routed-out + refusals as
+  structural zeros). The population rate; use this for trend/triangulation.
+- `cond_pct` — yes ÷ answerers only (`mean(x == 1, na.rm = TRUE)`). From 2016
+  this is **conditional on official contact** and not comparable across waves.
+
+### Why this exists
+
+From 2016 (all waves 2016–2021) KIPA routes the bribery question only to
+respondents who passed a prior official-contact screener; ~50% are skipped
+(비해당, stored as `-1` → NA in the harmonized file). The naive `na.rm` rate
+therefore runs ~2× the population rate from 2016 on and shows a spurious uptick
+at the 2015→2016 gate (cond 1.90% → 3.46% vs uncond 1.90% → 1.60%). This helper
+encodes the gotcha documented in
+`src/config/kipa-corruption/harmonize/core_corruption.yml` so the next consumer
+doesn't re-discover it the hard way. (KIPA is itself a specialty sample, so even
+`uncond_pct` is a within-frame prevalence, not a general-population rate.)
+
+```r
+source(here::here("src", "r", "lookups", "kipa_bribery_series.R"))
+
+series <- kipa_bribery_series()          # reads data/processed/kipa_corruption_harmonized.rds
+# series: year, n, yes, no, n_missing, gated, uncond_pct, cond_pct, se_uncond
+```
+
+Tests:
+
+```bash
+Rscript src/r/lookups/test_kipa_bribery_series.R
+```
+
+Synthetic count check (gated vs ungated denominators) + regression anchors
+against the harmonized RDS (2004/2016/2019 rates, the 2016 gate artifact, total
+yes = 531, 2022–2023 excluded).
+
 ## Out of scope
 
 - Electoral context (`winning_coalition`, `is_winner`) — those live in

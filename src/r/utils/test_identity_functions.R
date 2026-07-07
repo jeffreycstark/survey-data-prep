@@ -7,7 +7,7 @@
 library(dplyr)
 
 # Source the recoding functions
-source(here::here("R/utils/recoding.R"))
+source(here::here("src/r/utils/recoding.R"))
 
 cat("=== Testing Identity Recoding Functions ===\n\n")
 

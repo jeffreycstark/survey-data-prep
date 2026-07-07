@@ -232,49 +232,47 @@ batch_generate_yaml <- function(search_results_list, output_dir = "src/config/ab
     dir.create(output_dir, recursive = TRUE)
   }
 
-  results_df <- data.frame(
-    concept = character(),
-    file_path = character(),
-    n_matches = numeric(),
-    status = character(),
-    stringsAsFactors = FALSE
-  )
+  # Accumulate one status row per concept; tryCatch returns the row from both
+  # branches, so no <<- global assignment and no rbind-in-loop.
+  status_rows <- list()
 
   for (concept in names(search_results_list)) {
 
     search_results <- search_results_list[[concept]]
     file_path <- file.path(output_dir, sprintf("%s.yml", concept))
 
-    tryCatch({
+    status_rows[[concept]] <- tryCatch({
       generate_codebook_yaml(
         search_results,
         concept = concept,
         save_to = file_path
       )
-
-      results_df <- rbind(
-        results_df,
-        data.frame(
-          concept = concept,
-          file_path = file_path,
-          n_matches = nrow(search_results),
-          status = "✅ OK",
-          stringsAsFactors = FALSE
-        )
+      data.frame(
+        concept = concept,
+        file_path = file_path,
+        n_matches = nrow(search_results),
+        status = "✅ OK",
+        stringsAsFactors = FALSE
       )
-
     }, error = function(e) {
-      results_df <<- rbind(
-        results_df,
-        data.frame(
-          concept = concept,
-          file_path = file_path,
-          n_matches = nrow(search_results),
-          status = sprintf("❌ Error: %s", e$message),
-          stringsAsFactors = FALSE
-        )
+      data.frame(
+        concept = concept,
+        file_path = file_path,
+        n_matches = nrow(search_results),
+        status = sprintf("❌ Error: %s", e$message),
+        stringsAsFactors = FALSE
       )
     })
+  }
+
+  results_df <- if (length(status_rows) > 0) {
+    out <- do.call(rbind, status_rows)
+    rownames(out) <- NULL
+    out
+  } else {
+    data.frame(concept = character(), file_path = character(),
+               n_matches = numeric(), status = character(),
+               stringsAsFactors = FALSE)
   }
 
   print(results_df)

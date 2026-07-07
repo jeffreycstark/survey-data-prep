@@ -25,6 +25,8 @@
     "serena": {
       "command": "uvx",
       "args": [
+        "--python",
+        "3.11",
         "--from",
         "git+https://github.com/oraios/serena",
         "serena",

@@ -47,11 +47,11 @@ d <- readRDS("data/processed/kipa_corruption_harmonized.rds")
 - **"a-family"** (`a01`, `a02`, `a03`, `a13`, …): used 2010–2021 + the 2004–2007 cumulative
 - **"q-family"** (`q1`, `q2`, `q3`, `q9`, `q13`, …): used 2008, 2009, 2022, 2023
 
-Semantic content is stable across the naming shift. In 2022–2023 the wording was slightly broadened to include 향응/편의 (entertainment/favors) alongside 금품 (money), reflecting the Kim Young-ran Act's expanded definition. The harmonization maps per-wave raw names to stable harmonized IDs.
+Semantic content is broadly stable across the naming shift, but the Kim Young-ran Act's expanded definition (향응/편의 — entertainment/favors — alongside 금품/money) entered different items at different times: the `corr_prevalence_perception` stem broadened in 2022–2023, whereas the `corr_bribery_experience_1yr` item broadened earlier, in 2018 (also shifting its target noun 공무원 → 공직자). The harmonization maps per-wave raw names to stable harmonized IDs.
 
 ## Substantive signal in the 4 vars
 
-- `corr_bribery_experience_1yr` shows a dramatic drop after the Kim Young-ran Act (2016): from ~3–14% of respondents reporting having given a bribe in 2004–2015 to <1% in 2018–2020. Consistent with post-law reported behavior changes.
+- `corr_bribery_experience_1yr` shows a dramatic drop: ~14% reporting having given a bribe in 2004 falls to ~2% by the mid-2010s and to well under 1% by 2018–2021. ⚠️ **Denominator break**: from 2016 (all waves 2016–2021) the item is gated behind a prior official-contact screener (~50% routed out), so the harmonized variable's rate is *conditional on official contact* and runs ~2× the full-sample rate (e.g. 2019 = 1.55% conditional vs 0.71% full-sample; 2016 even shows a spurious uptick to 3.46% vs 1.60% full-sample). For an ABS-comparable full-sample prevalence, treat the routed-out as structural zeros — the unconditional series gives a clean ~95.7% decline 2004→2021. See `results/paper17_kipa_bribery_denominator.R`.
 - `corr_prevalence_perception` declines ~3.6 (2009) → ~2.9 (2020–2023).
 - `corr_change_vs_last_year` drops from above-midpoint (worse) to ~2.7 (better) after 2016.
 

@@ -139,7 +139,7 @@ variables:
     concept: corruption_experience
     description: "Personal experience of giving money/entertainment/favors to officials in past 1 year (1=yes, 2=no)"
     type: binary
-    note: "Raw a13 (2010-2021, cumulative) / q13 (2008, 2009). **NOT available in 2022-2023** — KIPA restructured the experience section; the 2022-2023 q13 variable captures a broader 'contact with officials' concept, not direct bribery. To harmonize 2022-2023 will require investigation of qa14+ item sequence. Some waves (2018-2020) show occasional value 3; likely a gate-artifact (respondent routed past the question) treated as NA by range check. **Gate**: 2016, 2019, 2020 route the bribery question only to respondents who answered 'yes' to a prior contact-with-officials screener; ~50% of the sample is legitimately skipped. Denominator for these waves is 'respondents with official contact', not full sample."
+    note: "Raw a13 (2004-2007 cumulative, 2010-2021) / q13 (2008, 2009). **NOT available in 2022-2023** — KIPA restructured the experience section; the 2022-2023 q13 variable captures a broader 'contact with officials' concept, not direct bribery. To harmonize 2022-2023 will require investigation of qa14+ item sequence. **Wording drift** (per raw SPSS labels): the object of the payment widens 금품 (money/goods, 2004-2010) → 금품 등 (2011-2017) → 금품/향응/편의 등 (money/entertainment/favors, 2018-2021), and the target shifts 공무원 → 공직자 in 2018, tracking the 2016 Kim Young-ran Act. **Gate / denominator break**: from 2016 onward (ALL waves 2016-2021, NOT just 2016/2019/2020) the item is routed only to respondents who passed a prior official-contact screener; ~50% are skipped (비해당, stored as -1 → NA). Routed-out per wave of n=1000: 2016=538, 2017=499, 2018=497, 2019=537, 2020=575, 2021=487. So the harmonized variable's rate is CONDITIONAL on official contact from 2016 on — it runs ~2x the full-sample rate and injects a spurious uptick at the 2015→2016 boundary (cond 1.90%→3.46% vs uncond 1.90%→1.60%). For an ABS-comparable full-sample prevalence, treat routed-out as structural zeros. Refusal/no-answer codes: 3 (응답거부, 2017-2020), 9 (무응답, 2021) → NA. See results/paper17_kipa_bribery_denominator.R for conditional vs. unconditional rates per wave."
     source:
       w2004: a13
       w2005: a13
@@ -162,9 +162,10 @@ variables:
     scale: {min: 1, max: 2, labels: {1: "Yes, gave bribe", 2: "No"}}
     missing:
       use_convention: treat_as_na
-      # Code 3 appears in gated waves (2018-2020) for respondents routed past
-      # the question by the prior contact-screener. Treat as NA, not a response.
-      codes: [3]
+      # Explicit refusal/no-answer codes: 3 (응답거부, 2017-2020) and 9 (무응답,
+      # 2021). These are DISTINCT from the screener routed-out group (비해당 =
+      # -1 / system-missing), which is also NA here. Treat all as NA, not a response.
+      codes: [3, 9]
     harmonize:
       default:
         method: identity
@@ -174,7 +175,8 @@ variables:
       # bribery experience. Suppress the engine's unmapped-wave warning since
       # we've already decided not to map those waves here.
       skip_unmapped_check: true
-      # Gate: in 2016, 2019, 2020 KIPA routed this question only to respondents
-      # who had prior contact with officials (~50% of sample skipped). High NA
-      # on these waves is by design — suppress the NA-rate warning.
-      gated_waves: [2016, 2019, 2020]
+      # Gate: from 2016 onward (ALL waves 2016-2021) KIPA routed this question
+      # only to respondents with prior official contact (~50% skipped: 2016=538,
+      # 2017=499, 2018=497, 2019=537, 2020=575, 2021=487 of 1000). High NA on
+      # these waves is by design — suppress the NA-rate warning.
+      gated_waves: [2016, 2017, 2018, 2019, 2020, 2021]

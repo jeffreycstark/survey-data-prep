@@ -187,14 +187,10 @@ extract_matches <- function(keywords, ...) {
     wave_names <- paste0("w", seq_along(waves_list))
   }
   
-  # Initialize results
-  all_results <- data.frame(
-    wave = character(),
-    variable_name = character(),
-    variable_label = character(),
-    value_labels = list(),
-    stringsAsFactors = FALSE
-  )
+  # Collect matches in a list, then build the data frame once at the end.
+  # Avoids the O(n^2) rbind-in-loop over every variable in every wave
+  # (mirrors extract_institutional_trust()'s accumulation pattern).
+  results_list <- list()
   
   # Search each wave
   for (wave_idx in seq_along(waves_list)) {
@@ -202,10 +198,18 @@ extract_matches <- function(keywords, ...) {
     wave_data <- waves_list[[wave_idx]]
     wave_name <- wave_names[wave_idx]
     
-    # Get variable labels and names
-    var_labels <- attr(wave_data, "variable.labels")
-    if (is.null(var_labels)) {
-      var_labels <- setNames(names(wave_data), names(wave_data))
+    # Per-column label lookup. haven::read_sav stores the question text in
+    # attr(col, "label"); the legacy foreign::read.spss convention used a
+    # data-frame-level "variable.labels" attribute. Support both, else fall
+    # back to the variable name. (The old code only read "variable.labels",
+    # which is NULL for haven imports, so label search silently became a
+    # name-only search.)
+    df_labels <- attr(wave_data, "variable.labels")
+    get_label <- function(vn) {
+      lbl <- attr(wave_data[[vn]], "label")
+      if (is.null(lbl) && !is.null(df_labels)) lbl <- df_labels[[vn]]
+      if (is.null(lbl) || length(lbl) != 1 || is.na(lbl) || !nzchar(lbl)) lbl <- vn
+      lbl
     }
     
     var_names <- names(wave_data)
@@ -214,7 +218,7 @@ extract_matches <- function(keywords, ...) {
     for (var_idx in seq_along(var_names)) {
       
       var_name <- var_names[var_idx]
-      var_label <- var_labels[[var_name]] %||% var_name
+      var_label <- get_label(var_name)
       
       # Check if any keyword matches (case-insensitive)
       matches <- any(
@@ -238,21 +242,36 @@ extract_matches <- function(keywords, ...) {
           val_labels_chr <- NULL
         }
         
-        # Add to results
-        all_results <- rbind(
-          all_results,
-          data.frame(
-            wave = wave_name,
-            variable_name = var_name,
-            variable_label = as.character(var_label),
-            value_labels = list(val_labels_chr),
-            stringsAsFactors = FALSE
-          )
+        # Accumulate; the data frame is built once after the loops
+        results_list[[length(results_list) + 1]] <- list(
+          wave = wave_name,
+          variable_name = var_name,
+          variable_label = as.character(var_label),
+          value_labels = val_labels_chr
         )
       }
     }
   }
   
+  # Build the result data frame once (mirrors extract_institutional_trust)
+  if (length(results_list) > 0) {
+    all_results <- data.frame(
+      wave           = vapply(results_list, function(x) x$wave, character(1)),
+      variable_name  = vapply(results_list, function(x) x$variable_name, character(1)),
+      variable_label = vapply(results_list, function(x) x$variable_label, character(1)),
+      stringsAsFactors = FALSE
+    )
+    all_results$value_labels <- lapply(results_list, function(x) x$value_labels)
+  } else {
+    all_results <- data.frame(
+      wave = character(),
+      variable_name = character(),
+      variable_label = character(),
+      value_labels = list(),
+      stringsAsFactors = FALSE
+    )
+  }
+
   # Print summary
   if (nrow(all_results) > 0) {
     cat(sprintf("\n✅ Found %d matching variables\n", nrow(all_results)))

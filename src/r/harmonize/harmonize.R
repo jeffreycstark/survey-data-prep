@@ -352,13 +352,17 @@ harmonize_variable <- function(
 #' @param spec List: parsed YAML specification
 #' @param waves List of named data frames
 #' @param silent Logical: suppress messages?
+#' @param oob_log Optional environment with a `records` list, passed through to
+#'   harmonize_variable() so out-of-range coercions are captured across all
+#'   variables. Create with `oob_log <- new.env(); oob_log$records <- list()`.
+#'   Leave NULL to disable logging (default).
 #'
 #' @return List of harmonized variables:
 #'   list(econ_national_now = list(w1=..., w2=..., ...),
 #'        politics_trust = list(w1=..., w2=..., ...))
 #'
 #' @export
-harmonize_all <- function(spec, waves, silent = FALSE) {
+harmonize_all <- function(spec, waves, silent = FALSE, oob_log = NULL) {
 
   # Pre-flight: catch r_function/derive typos before we start the loop,
   # so a misspelled fn: surfaces once at the top instead of per-variable.
@@ -386,7 +390,8 @@ harmonize_all <- function(spec, waves, silent = FALSE) {
       results[[var_id]] <- harmonize_variable(
         var_spec = spec$variables[[var_id]],
         waves = waves,
-        missing_conventions = spec$missing_conventions
+        missing_conventions = spec$missing_conventions,
+        oob_log = oob_log
       )
     }, error = function(e) {
       warning(sprintf("❌ %s: %s", var_id, e$message), call. = FALSE)

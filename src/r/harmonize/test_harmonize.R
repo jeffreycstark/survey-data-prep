@@ -4,6 +4,12 @@
 library(testthat)
 library(yaml)
 library(dplyr)
+library(here)
+
+# Load the engine under test so this file runs standalone (Rscript) as well as
+# under a testthat harness: harmonize_variable(), validate_harmonize_spec(),
+# report_harmonization().
+source(here::here("src/r/harmonize/_load_harmonize.R"))
 
 # Mock data for testing
 create_test_waves <- function() {
@@ -70,8 +76,10 @@ test_that("identity harmonization preserves values", {
   result <- harmonize_variable(var_spec, waves, missing_conventions)
   
   expect_equal(length(result), 3)
-  expect_equal(result$w1, c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
-  expect_equal(result$w2, c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
+  # as.numeric() drops the attr(,"provenance") lineage the engine attaches (C3),
+  # so these assert value preservation rather than attribute equality.
+  expect_equal(as.numeric(result$w1), c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
+  expect_equal(as.numeric(result$w2), c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
 })
 
 # ==============================================================================
@@ -126,7 +134,7 @@ test_that("missing source variable returns all NA", {
   # w1 source doesn't exist - should be all NA
   expect_true(all(is.na(result$w1)))
   # w2 source exists
-  expect_equal(result$w2, c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
+  expect_equal(as.numeric(result$w2), c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5))
 })
 
 # ==============================================================================
@@ -135,29 +143,38 @@ test_that("missing source variable returns all NA", {
 
 test_that("validate_harmonize_spec catches missing required fields", {
   
-  # Missing variables
+  # Missing top-level `variables` (schema requires schema_version,
+  # missing_conventions, variables).
   bad_spec1 <- list(
+    schema_version = 1L,
     missing_conventions = list(treat_as_na = c(-1, 0))
     # variables missing
   )
-  
+
   expect_error(
     validate_harmonize_spec(bad_spec1),
-    "variables list"
+    "variables"
   )
-  
-  # Missing concept in variable
+
+  # A variable missing the schema-required `concept`. Under
+  # harmonize_v1.schema.json `variables` is a JSON array, i.e. an *unnamed*
+  # list of variable objects.
   bad_spec2 <- list(
+    schema_version = 1L,
     missing_conventions = list(treat_as_na = c(-1, 0)),
     variables = list(
-      var1 = list(
+      list(
         id = "var1",
-        description = "desc"
+        description = "desc",
+        type = "ordinal",
+        source = list(w1 = "q1"),
+        harmonize = list(default = list(method = "identity")),
+        missing = list(use_convention = "treat_as_na")
         # concept missing
       )
     )
   )
-  
+
   expect_error(
     validate_harmonize_spec(bad_spec2),
     "concept"
@@ -167,22 +184,25 @@ test_that("validate_harmonize_spec catches missing required fields", {
 test_that("validate_harmonize_spec validates type field", {
   
   bad_spec <- list(
+    schema_version = 1L,
     missing_conventions = list(treat_as_na = c(-1, 0)),
     variables = list(
-      var1 = list(
+      list(
         id = "var1",
         concept = "test",
         description = "desc",
-        type = "invalid_type",  # Not ordinal/nominal/continuous
+        type = "invalid_type",  # not one of the schema enum values
         source = list(w1 = "q1"),
-        harmonize = list(default = list(method = "identity"))
+        harmonize = list(default = list(method = "identity")),
+        missing = list(use_convention = "treat_as_na")
       )
     )
   )
-  
+
+  # Schema reports: "/variables/0/type: must be equal to one of the allowed values"
   expect_error(
     validate_harmonize_spec(bad_spec),
-    "Invalid type"
+    "allowed values"
   )
 })
 

@@ -138,13 +138,7 @@ detect_label_direction <- function(value_labels) {
 detect_reversals <- function(wave_labels) {
 
   wave_names <- names(wave_labels)
-  reversals <- data.frame(
-    wave_1 = character(),
-    wave_2 = character(),
-    confidence = numeric(),
-    stringsAsFactors = FALSE
-  )
-
+  reversal_rows <- list()   # accumulate, rbind once after the loops
   notes <- character()
 
   # Compare each pair of waves
@@ -169,14 +163,11 @@ detect_reversals <- function(wave_labels) {
       is_reversed <- check_opposite_semantics(w1_first, w2_first)
 
       if (is_reversed$reversed) {
-        reversals <- rbind(
-          reversals,
-          data.frame(
-            wave_1 = w1_name,
-            wave_2 = w2_name,
-            confidence = is_reversed$confidence,
-            stringsAsFactors = FALSE
-          )
+        reversal_rows[[length(reversal_rows) + 1]] <- data.frame(
+          wave_1 = w1_name,
+          wave_2 = w2_name,
+          confidence = is_reversed$confidence,
+          stringsAsFactors = FALSE
         )
         notes <- c(
           notes,
@@ -187,6 +178,13 @@ detect_reversals <- function(wave_labels) {
         )
       }
     }
+  }
+
+  reversals <- if (length(reversal_rows) > 0) {
+    do.call(rbind, reversal_rows)
+  } else {
+    data.frame(wave_1 = character(), wave_2 = character(),
+               confidence = numeric(), stringsAsFactors = FALSE)
   }
 
   list(
