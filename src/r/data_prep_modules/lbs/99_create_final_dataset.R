@@ -15,6 +15,7 @@ library(arrow)
 source(here::here("src/r/data_prep_modules/lbs/0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
+source(here::here("src", "r", "utils", "education.R"))
 
 cat("\n")
 cat(strrep("=", 70), "\n")
@@ -138,18 +139,13 @@ if ("education_level" %in% names(lbs_harmonized)) {
     mutate(education_level_01 = (education_level - 1) / 6)
 }
 
-# 5-category education (LBS REEDUC 1-7 → 1-5)
-# 1=No studies(1), 2=Primary(2-3), 3=Secondary(4-5), 4=Incomplete higher(6), 5=Complete higher(7)
+# Shared 5-category education. Mapping lives in src/r/utils/education.R.
 if ("education_level" %in% names(lbs_harmonized)) {
   lbs_harmonized <- lbs_harmonized %>%
-    mutate(education_5cat = case_when(
-      education_level == 1             ~ 1L,
-      education_level %in% 2:3        ~ 2L,
-      education_level %in% 4:5        ~ 3L,
-      education_level == 6            ~ 4L,
-      education_level == 7            ~ 5L,
-      TRUE                            ~ NA_integer_
-    ))
+    mutate(
+      education_5cat    = edu5_from_lbs(education_level),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
 }
 
 # ==============================================================================

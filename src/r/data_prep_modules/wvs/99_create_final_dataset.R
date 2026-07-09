@@ -18,6 +18,7 @@ library(countrycode)
 
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
+source(here::here("src", "r", "utils", "education.R"))
 
 cat("\n")
 cat(strrep("=", 70), "\n")
@@ -133,10 +134,22 @@ wvs_harmonized <- wvs_combined %>%
 wvs_harmonized <- wvs_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")), ~ as.numeric(haven::zap_labels(.x))))
 
-# Rescale education to 0-1 (WVS raw: 1-3)
+# NOTE: education_level_01 is a min-max rescale of WVS's OWN 1-6 ladder (widened
+# from 1-3 on 2026-07-09, hence /5 not /2). It is NOT comparable with other
+# surveys' education_level_01 (different denominators). For cross-survey work use
+# education_5cat_01. See src/r/utils/education.R.
 if ("education_level" %in% names(wvs_harmonized)) {
   wvs_harmonized <- wvs_harmonized %>%
-    mutate(education_level_01 = (education_level - 1) / 2)
+    mutate(education_level_01 = (education_level - 1) / 5)
+}
+
+# Shared 5-category education. Mapping lives in src/r/utils/education.R.
+if ("education_level" %in% names(wvs_harmonized)) {
+  wvs_harmonized <- wvs_harmonized %>%
+    mutate(
+      education_5cat    = edu5_from_wvs(education_level),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
 }
 
 # ==============================================================================

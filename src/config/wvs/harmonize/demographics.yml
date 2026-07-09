@@ -99,8 +99,30 @@ variables:
 
   - id: education_level
     concept: demographics
-    description: "Highest educational level attained (harmonized 3-level: 1=Primary or less, 2=Secondary, 3=Tertiary)"
+    description: "Highest educational level attained (harmonized 6-level: 1=No formal, 2=Primary, 3=Secondary incomplete, 4=Secondary complete, 5=Post-secondary/some tertiary, 6=Tertiary degree)"
     type: ordinal
+    note: |
+      Widened from 3 to 6 levels on 2026-07-09.
+
+      WVS carries two incompatible raw schemes: waves 2-6 use a 9-category
+      ladder (1=No formal ... 9=University with degree), while wave 7 switched
+      to ISCED 2011 (0=Early childhood/none ... 8=Doctoral). Six levels is the
+      finest ladder BOTH schemes support without inventing distinctions the raw
+      data does not carry: ISCED has no vocational-vs-university-preparatory
+      split, so codes 4/6 (incomplete) and 5/7 (complete) collapse in pairs.
+
+      The previous 3-level collapse discarded resolution both schemes encode,
+      and mismapped two boundaries: ISCED 0 ("no education") was lumped with
+      ISCED 1 ("primary"), and ISCED 4 ("post-secondary non-tertiary") was
+      filed under "secondary".
+
+      Papers wanting coarser categories should collapse from here, or use
+      `education_5cat` (the cross-survey ABS/Afro/LBS standard), which merges
+      levels 3 and 4 into a single "Secondary".
+
+      W2's V375 codes DK/NA as 99 and W3 has stray high codes; `method: recode`
+      maps only the listed codes and NAs everything else, so these need no
+      missing-code entry.
     source:
       w1: null
       w2: V375
@@ -111,11 +133,14 @@ variables:
       w7: Q275
     scale:
       min: 1
-      max: 3
+      max: 6
       labels:
-        1: "Primary or less"
-        2: "Secondary"
-        3: "Tertiary"
+        1: "No formal education"
+        2: "Primary (incomplete or complete)"
+        3: "Secondary, incomplete"
+        4: "Secondary, complete"
+        5: "Post-secondary / some tertiary, no degree"
+        6: "Tertiary degree"
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -125,83 +150,87 @@ variables:
         w2:
           method: recode
           mapping:
-            1: 1
-            2: 1
-            3: 1
-            4: 2
-            5: 2
-            6: 2
-            7: 2
-            8: 3
-            9: 3
+            1: 1   # No formal education
+            2: 2   # Incomplete primary
+            3: 2   # Complete primary
+            4: 3   # Incomplete secondary, technical/vocational
+            5: 4   # Complete secondary, technical/vocational
+            6: 3   # Incomplete secondary, university-preparatory
+            7: 4   # Complete secondary, university-preparatory
+            8: 5   # Some university, no degree
+            9: 6   # University degree
           note: "W2 V375: same 1-9 scheme as W6"
         w3:
           method: recode
           mapping:
-            1: 1
-            2: 1
-            3: 1
-            4: 2
-            5: 2
-            6: 2
-            7: 2
-            8: 3
-            9: 3
+            1: 1   # No formal education
+            2: 2   # Incomplete primary
+            3: 2   # Complete primary
+            4: 3   # Incomplete secondary, technical/vocational
+            5: 4   # Complete secondary, technical/vocational
+            6: 3   # Incomplete secondary, university-preparatory
+            7: 4   # Complete secondary, university-preparatory
+            8: 5   # Some university, no degree
+            9: 6   # University degree
           note: "W3 V217: same 1-9 scheme as W6"
         w4:
           method: recode
           mapping:
-            1: 1
-            2: 1
-            3: 1
-            4: 2
-            5: 2
-            6: 2
-            7: 2
-            8: 3
-            9: 3
+            1: 1   # No formal education
+            2: 2   # Incomplete primary
+            3: 2   # Complete primary
+            4: 3   # Incomplete secondary, technical/vocational
+            5: 4   # Complete secondary, technical/vocational
+            6: 3   # Incomplete secondary, university-preparatory
+            7: 4   # Complete secondary, university-preparatory
+            8: 5   # Some university, no degree
+            9: 6   # University degree
           note: "W4 V226: same 1-9 scheme as W6"
         w5:
           method: recode
           mapping:
-            1: 1
-            2: 1
-            3: 1
-            4: 2
-            5: 2
-            6: 2
-            7: 2
-            8: 3
-            9: 3
+            1: 1   # No formal education
+            2: 2   # Incomplete primary
+            3: 2   # Complete primary
+            4: 3   # Incomplete secondary, technical/vocational
+            5: 4   # Complete secondary, technical/vocational
+            6: 3   # Incomplete secondary, university-preparatory
+            7: 4   # Complete secondary, university-preparatory
+            8: 5   # Some university, no degree
+            9: 6   # University degree
           note: "W5 V238: same 1-9 scheme as W6"
         w6:
           method: recode
           mapping:
-            1: 1
-            2: 1
-            3: 1
-            4: 2
-            5: 2
-            6: 2
-            7: 2
-            8: 3
-            9: 3
-          note: "W6 V248: 1-3 (no formal/primary) → 1; 4-7 (secondary) → 2; 8-9 (university) → 3"
+            1: 1   # No formal education
+            2: 2   # Incomplete primary
+            3: 2   # Complete primary
+            4: 3   # Incomplete secondary, technical/vocational
+            5: 4   # Complete secondary, technical/vocational
+            6: 3   # Incomplete secondary, university-preparatory
+            7: 4   # Complete secondary, university-preparatory
+            8: 5   # Some university, no degree
+            9: 6   # University degree
+          note: "W6 V248: same 1-9 scheme as W2-W5"
         w7:
           method: recode
           mapping:
-            0: 1
-            1: 1
-            2: 2
-            3: 2
-            4: 2
-            5: 3
-            6: 3
-            7: 3
-            8: 3
-          note: "W7 Q275 ISCED: 0-1 (primary) → 1; 2-4 (secondary/post-sec) → 2; 5-8 (tertiary) → 3"
+            0: 1   # ISCED 0: Early childhood education / no education
+            1: 2   # ISCED 1: Primary
+            2: 3   # ISCED 2: Lower secondary   -> secondary, incomplete
+            3: 4   # ISCED 3: Upper secondary   -> secondary, complete
+            4: 5   # ISCED 4: Post-secondary non-tertiary
+            5: 5   # ISCED 5: Short-cycle tertiary (no degree awarded)
+            6: 6   # ISCED 6: Bachelor
+            7: 6   # ISCED 7: Master
+            8: 6   # ISCED 8: Doctoral
+          note: |
+            W7 Q275 (ISCED 2011). ISCED 0 is "no education", NOT primary — the
+            old mapping merged them. ISCED 4 is post-secondary non-tertiary,
+            NOT secondary. ISCED 5 (short-cycle tertiary) confers no degree, so
+            it joins level 5 with ISCED 4; degrees (6/7/8) are level 6.
     qc:
-      valid_range: [1, 3]
+      valid_range: [1, 6]
 
   - id: income_scale
     concept: demographics

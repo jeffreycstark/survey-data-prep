@@ -17,6 +17,7 @@ library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
+source(here::here("src", "r", "utils", "education.R"))
 
 cat("\n")
 cat(strrep("=", 70), "\n")
@@ -86,6 +87,22 @@ kgss_harmonized <- kgss_combined %>%
 kgss_harmonized <- kgss_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")),
                 ~ as.numeric(haven::zap_labels(.x))))
+
+# ==============================================================================
+# DERIVED: shared 5-category education
+# ==============================================================================
+# KGSS `education` is 0-8 where 8 = "other", NOT a level above PhD (7). Never
+# min-max rescale the raw code: normalize_01(education) would rank "other" as
+# the most educated category. edu5_from_kgss() sends 8 to NA.
+# Mapping lives in src/r/utils/education.R. There is deliberately no
+# education_level_01 here — KGSS's raw ladder is not a clean ordinal.
+if ("education" %in% names(kgss_harmonized)) {
+  kgss_harmonized <- kgss_harmonized %>%
+    mutate(
+      education_5cat    = edu5_from_kgss(education),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
+}
 
 # ==============================================================================
 # SUMMARY

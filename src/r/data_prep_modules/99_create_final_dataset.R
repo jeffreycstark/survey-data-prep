@@ -14,6 +14,7 @@ library(haven)
 
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
+source(here::here("src", "r", "utils", "education.R"))
 
 cat("\n=== CREATING FINAL DATASET: abs_harmonized.rds ===\n\n")
 
@@ -82,23 +83,21 @@ abs_econdev_authpref <- abs_econdev_authpref %>%
 cat("  Added country_iso (ISO 3166 alpha-3)\n")
 
 # Rescale education to 0-1 (ABS raw: 1-10)
+# NOTE: education_level_01 is a min-max rescale of ABS's OWN 1-10 ladder. It is
+# NOT comparable with other surveys' education_level_01 (different denominators).
+# For cross-survey work use education_5cat_01. See src/r/utils/education.R.
 if ("education_level" %in% names(abs_econdev_authpref)) {
   abs_econdev_authpref <- abs_econdev_authpref %>%
     mutate(education_level_01 = (education_level - 1) / 9)
 }
 
-# 5-category education (ABS 1-10 → 1-5)
-# 1=No formal(1), 2=Primary(2-3), 3=Secondary(4-7), 4=Post-sec/some uni(8), 5=Uni+postgrad(9-10)
+# Shared 5-category education. Mapping lives in src/r/utils/education.R.
 if ("education_level" %in% names(abs_econdev_authpref)) {
   abs_econdev_authpref <- abs_econdev_authpref %>%
-    mutate(education_5cat = case_when(
-      education_level == 1             ~ 1L,
-      education_level %in% 2:3        ~ 2L,
-      education_level %in% 4:7        ~ 3L,
-      education_level == 8            ~ 4L,
-      education_level %in% 9:10       ~ 5L,
-      TRUE                            ~ NA_integer_
-    ))
+    mutate(
+      education_5cat    = edu5_from_abs(education_level),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
 }
 
 # Summary by wave

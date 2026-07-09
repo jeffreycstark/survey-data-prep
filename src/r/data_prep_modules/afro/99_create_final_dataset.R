@@ -13,6 +13,7 @@ library(haven)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "education.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -255,41 +256,30 @@ afro_harmonized <- afro_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")), ~ as.numeric(haven::zap_labels(.x))))
 
 # Rescale education to 0-1 (Afro raw: 0-3)
+# NOTE: education_level_01 is a min-max rescale of Afro's OWN 0-3 ladder. It is
+# NOT comparable with other surveys' education_level_01 (different denominators).
+# For cross-survey work use education_5cat_01. See src/r/utils/education.R.
 if ("education_level" %in% names(afro_harmonized)) {
   afro_harmonized <- afro_harmonized %>%
     mutate(education_level_01 = education_level / 3)
 }
 
-# 5-category education from education_detailed (0-9) where available
-# Source: q84 (R2), q90 (R3), Q89 (R4), Q97 (R5-R8), Q94 (R9)
-# R1 has only condensed educ (0-3), so fall back to education_level
-# 0-1→1(No formal), 2-3→2(Primary), 4-5→3(Secondary),
-# 6-7→4(Post-sec/some uni), 8-9→5(Uni complete+postgrad)
+# Shared 5-category education. Mapping lives in src/r/utils/education.R, which
+# prefers the 0-9 education_detailed ladder and falls back to the condensed
+# education_level for R1 (which has no detailed item, and so can never resolve
+# category 5).
 if ("education_detailed" %in% names(afro_harmonized)) {
   afro_harmonized <- afro_harmonized %>%
-    mutate(education_5cat = case_when(
-      !is.na(education_detailed) & education_detailed %in% 0:1 ~ 1L,
-      !is.na(education_detailed) & education_detailed %in% 2:3 ~ 2L,
-      !is.na(education_detailed) & education_detailed %in% 4:5 ~ 3L,
-      !is.na(education_detailed) & education_detailed %in% 6:7 ~ 4L,
-      !is.na(education_detailed) & education_detailed %in% 8:9 ~ 5L,
-      # R1 fallback: education_level 0-3
-      is.na(education_detailed) & education_level == 0 ~ 1L,
-      is.na(education_detailed) & education_level == 1 ~ 2L,
-      is.na(education_detailed) & education_level == 2 ~ 3L,
-      is.na(education_detailed) & education_level == 3 ~ 4L,
-      TRUE ~ NA_integer_
-    ))
+    mutate(
+      education_5cat    = edu5_from_afro(education_detailed, education_level),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
 } else if ("education_level" %in% names(afro_harmonized)) {
-  # Fallback if education_detailed not yet harmonized
   afro_harmonized <- afro_harmonized %>%
-    mutate(education_5cat = case_when(
-      education_level == 0 ~ 1L,
-      education_level == 1 ~ 2L,
-      education_level == 2 ~ 3L,
-      education_level == 3 ~ 4L,
-      TRUE                 ~ NA_integer_
-    ))
+    mutate(
+      education_5cat    = edu5_from_afro(NA_real_, education_level),
+      education_5cat_01 = edu5_to_01(education_5cat)
+    )
 }
 
 # ==============================================================================

@@ -6,8 +6,10 @@
 # Load required packages
 library(dplyr)
 
-# Source the recoding functions
-source(here::here("R/utils/recoding.R"))
+# Source the recoding functions.
+# Path was "R/utils/recoding.R" until 2026-07-09 — a leftover from before the
+# src/ reorganisation, so this test aborted on load and had never actually run.
+source(here::here("src", "r", "utils", "recoding.R"))
 
 cat("=== Testing Identity Recoding Functions ===\n\n")
 
