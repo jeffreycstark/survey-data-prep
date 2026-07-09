@@ -144,8 +144,9 @@ For deeper codebook tooling docs, see `src/r/codebook/` (README, QUICK_REFERENCE
 The single most error-prone area. Read before merging or comparing across surveys.
 
 - **Trust scales differ across surveys**:
-  - ABS / WVS / LBS / Afro / KINU institutional trust: **1–4**, higher=more trust.
+  - ABS / WVS / LBS / Afro institutional trust: **1–4**, higher=more trust.
   - KAMOS trust: **0–10**, higher=more trust.
+  - KINU `trust_*`: **0–10**, higher=more trust. ⚠️ This line previously listed KINU among the 1–4 surveys — it is not, and never was. Every `trust_*` column in `kinu_harmonized.rds` (`trust_general`, `trust_president`, `trust_administration`, `trust_courts`, `trust_assembly`, `trust_parties`, `trust_media`) is a 0–10 identity map of the raw `at07**` items, as `national_attitudes.yml` states. Pooling KINU trust with ABS/Afro trust on a 1–4 assumption silently produces nonsense. Also: **w2014 carries only `trust_general`** — the six institutional trust items are unmapped for that wave.
   - KGSS `conf_*`: **1–3**, higher=more confidence.
   - Do not combine without rescaling.
 - **Korean unification direction**:
@@ -154,6 +155,7 @@ The single most error-prone area. Read before merging or comparing across survey
   - The pre-built `korean_unification_panel.rds` already aligns directions.
 - **`subjective_class_6pt` direction is OPPOSITE between KGSS and KINU**.
 - **KIPA judiciary mislabel**: English SPSS labels mistranslate 사법부 (judiciary) as "legislature". Korean-label matching is correct.
+- **KIPA bribery denominator changes at 2016**: `corr_bribery_experience_1yr` is routed behind a prior official-contact screener from 2016 onward. Roughly half of each annual sample is skipped (비해당, raw `-1`), and the harmonized file collapses that to `NA`, where it is indistinguishable from a refusal. The naive `mean(x == 1, na.rm = TRUE)` therefore switches, mid-series, from a population rate to a rate **conditional on official contact** — about 2× higher — and manufactures a spurious uptick at the 2015→2016 boundary (1.90% → 3.46% conditional, vs 1.90% → 1.60% unconditional). Use `kipa_bribery_series()` (`src/r/lookups/kipa_bribery_series.R`), which returns both denominators; `uncond_pct` is the one comparable to a full-population measure such as ABS witnessed corruption. Gating is empirically present in **all** of 2016–2021 (≈49–58% routed out), though the YAML's `qc.gated_waves` lists only the three years the codebook formally documents (2016, 2019, 2020).
 - **ABS `region` numeric codes are NOT stable across waves** (Thailand verified; check before trusting any country). W4 `region` and W5 `Region` use **803=Central, 804=Northeast**; the W6 Thailand file `REGION` **swaps them: 803=Northeast, 804=Central**. W6's value *labels* are correct — the swap only bites code that pools the **raw numeric** code across waves. Always `as_factor()` **per file** before `bind_rows()`. W6's mapping is confirmed by sample allocation (Isan is the largest cell, n=415) and by `IR2c` (403/415 of code-803 interviews were conducted by Esan-language interviewers). Also: **W1–W3 have no region variable at all** for Thailand — only `level3` (urban/rural) — so ABS regional analysis is structurally W4–W6-only. Diagnostic: `results/paper05_thailand_deep_south.R`.
 - **ABS system-support battery direction**: the four agree/disagree items — `system_capable`, `system_prefer`, `system_proud`, `system_deserves_support` — all share raw coding **1=Strongly agree → 4=Strongly disagree** and are **reversed** in harmonization (`safe_reverse_4pt`) so higher = more system support. `system_needs_change` is a *different* item (raw 1=works fine → 4=should be replaced), **not** reversed → higher = more desire for change. ⚠️ Historical bug: `system_deserves_support` was harmonized **without** reversal until 2026-06-20 (fixed `safe_4pt_none` → `safe_reverse_4pt`). Any paper `analysis_data.rds` built before that date carries this one item backwards (opposite its three battery-mates); re-run against the corrected `abs_harmonized.rds`. Some papers applied a manual `5 - system_deserves_support` to compensate for the bug — those will **double-reverse** (become wrong) when re-run against fixed data, so remove the manual reversal there.
 
@@ -164,6 +166,7 @@ The single most error-prone area. Read before merging or comparing across survey
 Some context is deliberately not baked into harmonized RDS files — coalition labels are contested, crosswalks are partial, and downstream papers may want to choose-at-load rather than disagree-and-override. These lookups live in `src/r/lookups/` and are joined on demand.
 
 - **Cross-wave party lineage** — `join_party_crosswalk()` adds `party_lineage` and `coalition` columns from `data/processed/party_id_crosswalk.csv` (Korea / Taiwan / Thailand × W2-W6). Other (country × wave) combos get NA + a one-time warning. Country-code map at `data/lookups/abs_country_codes.csv`. See `src/r/lookups/README.md` for usage.
+- **KIPA bribery denominator** — `kipa_bribery_series()` returns `corr_bribery_experience_1yr` per year under both denominators (`uncond_pct` = full sample, use this; `cond_pct` = answerers only). Necessary because the item is gated behind an official-contact screener from 2016 on; see the gotcha above.
 
 ---
 
