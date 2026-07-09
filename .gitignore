@@ -204,3 +204,6 @@ outputs/prospecting/**/*.rds
 
 # R session artifacts
 .Rapp.history
+
+# hwp5html extraction artifacts (intermediate; extracted .txt is the kept output)
+data/*/questionnaires/extracted_html/
