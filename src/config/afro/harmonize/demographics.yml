@@ -11,6 +11,22 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 8, 9, 10, 98, 99, 101, 998, 999]
     description: "Afrobarometer standard missing codes"
+  education_ladder_missing:
+    codes: [-1, 98, 99, 998, 999]
+    description: |
+      For the 0-9 education ladder (q84/q90/Q89/Q97/Q94), where 8 and 9 are
+      SUBSTANTIVE values -- 8="University completed", 9="Post-graduate" --
+      not missing codes. The shared `treat_as_na` set lists 8/9 because on
+      Afrobarometer's 0-3 items they mean Refused/Don't-know; applying it to
+      the ladder silently deleted every university-completed and post-graduate
+      respondent (verified in raw R5/R7/R9: thousands per round).
+
+      Code 9 is genuinely ambiguous across waves: Post-graduate in the 0-9
+      detailed variable (R2-R4), but "Don't know" in the 0-3 EDUC_COND
+      (R5-R9). Since `missing:` cannot vary by wave and `codes:` only appends
+      to a convention, EDUC_COND's 9 is instead caught by `valid_range: [0,3]`
+      and converted to NA there. That is correct but shows up in the
+      out-of-range log rather than as a missing code -- expected, not a fault.
   no_missing_codes:
     codes: []
     description: |
@@ -132,7 +148,12 @@ variables:
         2: "Secondary"
         3: "Post-secondary"
     missing:
-      use_convention: treat_as_na
+      # NOT `treat_as_na`: R2-R4 read the 0-9 ladder, where 8/9 are substantive
+      # (University completed / Post-graduate) and must survive to be collapsed
+      # into 3 = Post-secondary. `codes: [10]` adds R1 educ's Don't-know code.
+      # EDUC_COND's 9 (Don't know, R5-R9) is NA'd by qc.valid_range below.
+      use_convention: education_ladder_missing
+      codes: [10]
     harmonize:
       default:
         method: identity
@@ -183,7 +204,9 @@ variables:
         8: "University completed"
         9: "Post-graduate"
     missing:
-      use_convention: treat_as_na
+      # NOT `treat_as_na`: 8 = "University completed", 9 = "Post-graduate" are
+      # substantive on this ladder. Using the shared convention deleted them.
+      use_convention: education_ladder_missing
     harmonize:
       default:
         method: identity

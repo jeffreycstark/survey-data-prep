@@ -1805,7 +1805,7 @@ recode_afro_reject_auth <- function(x,
 recode_afro_educ_detailed <- function(x,
                                        data = NULL,
                                        var_name = NULL,
-                                       missing_codes = c(-1, 8, 9, 10, 98, 99, 998, 999),
+                                       missing_codes = c(-1, 10, 98, 99, 998, 999),
                                        validate_all = NULL) {
   #' Afrobarometer detailed education (0-9) -> condensed (0-3)
   #'
@@ -1813,6 +1813,14 @@ recode_afro_educ_detailed <- function(x,
   #'       4=Some secondary, 5=Secondary complete, 6=Post-sec non-univ,
   #'       7=Some university, 8=University complete, 9=Post-graduate
   #' Target: 0=No formal, 1=Primary, 2=Secondary, 3=Post-secondary
+  #'
+  #' `missing_codes` MUST NOT contain 8 or 9. They are substantive values on
+  #' this ladder, and `case_when` evaluates the missing branch first — so
+  #' listing them there made the `x %in% c(6, 7, 8, 9) ~ 3` branch below
+  #' unreachable and silently deleted every university-completed and
+  #' post-graduate respondent in R2-R4. (Fixed 2026-07-09; the engine also
+  #' strips codes via the spec's `missing:` block before calling this, so the
+  #' spec must use `education_ladder_missing`, not `treat_as_na`.)
 
   x <- as.numeric(x)
   dplyr::case_when(
