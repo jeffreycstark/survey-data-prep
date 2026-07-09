@@ -23,6 +23,7 @@ Legend — **Enforcement:** 🔴 hard (nonzero exit / stops pipeline) · 🟡 so
 | 6a | Distribution drift | wave-to-wave distribution shifts | 📋 | 📋 | `src/r/audit/05_drift_check.R` |
 | 6b | Determinism | recorded outputs still hash-match | 🔴 | ✓ | `src/r/audit/06_check_determinism.R` |
 | 6c | Input drift | raw inputs unchanged since last run | 🔴 | ✓ | `src/r/audit/06_check_input_drift.R` |
+| 6d | **Pre-flight freshness** | would a re-run change the output? incl. **added** specs | 🔴 | ✓ | `src/r/audit/06_check_freshness.R` |
 | 7 | Coverage reconciliation | spec `source:` claims vs codebook reality | 🔴² | ✓ | `src/r/audit/02_*coverage*.R` |
 | 8 | Post-harmonize gate | runs 3+8 direction checks after each build | ⚪ | ✓ | `src/r/audit/99_post_harmonize_gate.R` |
 | 9 | Unit tests | the checks' own regression suite | 🔴 | ✓ | `src/r/**/test_*.R` |
@@ -71,7 +72,16 @@ For ABS variables using a pure monotone reverser, asserts pearson(raw, harmonize
 **Claim.** If any recorded input/spec/output changed since the last build, the outputs are potentially stale.
 **Proof (injected).** Corrupting one recorded `sha256` in a scratch copy of the manifest → `inputs … drift=1`, names the exact file, `*** 1 path(s) failed`, **exit 1**; the real manifest → all match, exit 0.
 **Catches.** A spec edited after the last harmonize; a hand-edited output; a changed/removed raw `.sav`.
-**Misses.** Only files listed in `outputs/<survey>/manifest.json`. No manifest (e.g. V-Dem scaffold) → not checked. It detects *that* something changed, not *whether* the change matters.
+**Misses.** Only files listed in `outputs/<survey>/manifest.json`. No manifest (e.g. V-Dem scaffold) → not checked. It detects *that* something changed, not *whether* the change matters. Crucially, it re-hashes only the paths the manifest *already records*, so a **newly added spec that was never harmonized** produces zero drift and exits 0 — see 6d.
+
+### 6d. Pre-flight freshness — 🔴 hard, **run this before consuming data**
+`06_check_freshness.R --all` answers one question per survey: *if I re-ran the pipeline right now, would the harmonized output change?* Verdicts are `FRESH` / `STALE` (a spec, input, or engine file changed, or a spec was **added or deleted**) / `TAMPERED` (a harmonized output no longer matches its recorded hash) / `SKIP` (no manifest). Exit 1 on any `STALE` or `TAMPERED`. Hashing is delegated to `.hash_file()` in `provenance.R`, so there is one hashing implementation in the repo.
+
+**Claim.** A gitignored `data/processed/*.rds` cannot silently drift behind the specs that produce it.
+**Proof (injected).** `src/r/audit/test_freshness_check.R` — 20 assertions, each building a throwaway fixture, asserting `FRESH`, injecting exactly one fault and asserting the verdict flips: spec edited → `STALE`; spec **added but never harmonized** → `STALE` (the case 6b/6c misses); spec deleted → `STALE`; engine file edited → `STALE`; input edited → `STALE`; output edited → `TAMPERED` (and *not* `STALE`); both → `STALE` wins; no manifest → `SKIP`; corrupt manifest → `STALE`, i.e. **fails closed, never `FRESH`**.
+**Catches.** Exactly the failure that left KIPA's `corr_punishment_*` stuck at `NA`-where-`7` for 2018–2020: the 7-point-ceiling spec fix was committed, nobody re-ran, and the gitignored `.rds` kept serving the old values with nothing to signal it.
+**Misses.** It says a re-run *would* change something, never *what*. Back up the `.rds`, re-run, and diff before trusting the result — most drift turns out behaviourally inert (on 2026-07-09, eight of nine stale surveys rebuilt byte-identical; the `recoding.R` hash had moved only because new functions were appended).
+**Blind spot it inherits.** Surveys with no manifest are `SKIP`, not `FRESH`. `gcb` is currently `SKIP`. And `wvs` is `STALE` **and unrebuildable** — its manifest records `data/wvs/raw/wave6|7/wvs_wave6|7.parquet` as inputs, those files no longer exist, and no script in the repo regenerates them from the `.sav` that is present.
 
 ### 7. Coverage reconciliation — 🔴
 `02_coverage_report.R` fails (exit 1) if <80% of spec `source:` claims reconcile to the extracted codebook. `02_source_coverage_reconcile.R` (ABS/IPUS/KINU only) emits `over` (spec maps a raw var with no data in that wave — a confirmable error, exit 1) and `under` (data exists but unmapped — needs review, does not fail). *Verified by code + the subagent's read; a live `over` injection would require editing a real spec, which the safety rule forbids, so it's described not demonstrated here.* Also note the harmonize engine's own pre-flight warns when a wave is unmapped but its raw var has valid values.
@@ -118,6 +128,12 @@ The third row is the point: the check *found* it (Phase 5, `1308831`); the repor
 ## How to run & read the output
 
 ```bash
+# BEFORE you read data/processed/*.rds into a paper — is it stale?
+Rscript src/r/audit/06_check_freshness.R --all           # exit 1 if any STALE/TAMPERED
+Rscript src/r/audit/06_check_freshness.R --all --quiet   # only the problems
+Rscript src/r/audit/06_check_freshness.R --survey kgss
+Rscript src/r/audit/test_freshness_check.R               # its 20 fault-injection tests
+
 # Full hygiene sweep (all surveys) → audit/SUMMARY.md + stdout tldr
 Rscript src/r/audit/run_all.R                    # exit 1 if any hard check fails
 Rscript src/r/audit/run_all.R --survey abs       # one survey
