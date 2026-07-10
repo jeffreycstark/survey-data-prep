@@ -1,0 +1,13 @@
+survey,wave_key,raw_var,harmonized_name,a_end,b_end,c_end,a_n,b_n,c_n,b_convention,verdict,detail
+lbs,2020,P13ST.E,trust_government,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13ST.F,trust_courts,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13ST.G,trust_political_parties,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13ST.H,trust_elections,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13ST.I,trust_president,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13STGBS.A,trust_armed_forces,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P13STGBS.B,trust_police,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P20ST.A,dem_best_system,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P20STM.C,dem_solves_problems,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P22STM.B,dem_nondem_ok,,low,low,,4,4,raw,concordant,"B=low,C=low"
+lbs,2020,P4STGBS,econ_national_current,,low,low,,5,5,raw,concordant,"B=low,C=low"
+lbs,2020,P7STGBS,econ_personal_current,,low,low,,5,10,raw,cardinality_mismatch,"B=5,C=10"

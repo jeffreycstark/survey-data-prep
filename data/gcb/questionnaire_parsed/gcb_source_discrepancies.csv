@@ -1,0 +1,8 @@
+survey,wave_key,raw_var,harmonized_name,a_end,b_end,c_end,a_n,b_n,c_n,b_convention,verdict,detail
+gcb,2020,BRIBE1FIN,bribe_school,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,BRIBE2FIN,bribe_clinic,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,BRIBE3FIN,bribe_id_docs,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,BRIBE4FIN,bribe_utilities,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,BRIBE5FIN,bribe_police,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,BRIBE6FIN,bribe_courts,,high,high,,5,5,raw,concordant,"B=high,C=high"
+gcb,2020,Q31A,acc_awareness,,high,high,,3,3,raw,concordant,"B=high,C=high"

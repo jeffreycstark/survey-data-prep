@@ -210,3 +210,29 @@ data/*/questionnaires/extracted_html/
 
 # Claude Code local settings (settings.local.json holds machine-specific permissions)
 .claude/
+
+# ── Raw survey microdata ─────────────────────────────────────────────────────
+# Re-downloadable from the barometer / agency sites, and far too large for git
+# (.dta alone is ~278 MB). Mirrors the existing wvs/afro/kgss rules above.
+# Questionnaires, codebooks, and README/SOURCE provenance notes ARE tracked;
+# the microdata behind them is not.
+data/abs/raw/wave*/
+data/arab-barometer/raw/wave*/
+data/gcb/raw/
+data/gcb/*.7z
+data/gcb/GCB_2020_Asia_Methodology_and_Data_v5/
+data/ipus/raw/
+data/kamos/raw/
+data/kinu/raw/
+data/kipa-corruption/raw/
+
+# ── Regenerable per-survey outputs ───────────────────────────────────────────
+# Rebuilt by 2_harmonize_all.R + 99_create_final_dataset.R. Matches the existing
+# outputs/{lbs,wvs,afro,kamos,kgss} rules.
+outputs/abs/
+outputs/arab-barometer/
+outputs/gcb/
+outputs/ipus/
+outputs/kinu/
+outputs/kipa-corruption/
+outputs/prospecting/
