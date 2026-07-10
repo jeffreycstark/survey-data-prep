@@ -13,6 +13,7 @@
 suppressPackageStartupMessages({
   library(here)
   library(dplyr)
+  library(yaml)
 })
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -74,6 +75,21 @@ sec <- c(abs  = edu5_to_01(edu5_from_abs(5)),
          kgss = edu5_to_01(edu5_from_kgss(3)),
          wvs  = edu5_to_01(edu5_from_wvs(4)))
 expect(all(sec == 0.5), "a secondary-educated respondent is 0.5 in all five surveys")
+
+cat("\n=== spec wiring: ABS education_years bounds ===\n")
+# Guards the 2026-07-09 fix: `97` is a declared missing code ("No answer"), and
+# range enforcement had been disabled via skip_range_check, letting 60 years of
+# formal education stand.
+abs_spec <- yaml::read_yaml(here::here("src", "config", "abs", "harmonize_validated",
+                                       "demographics.yml"))
+ey <- Filter(function(v) identical(v$id, "education_years"), abs_spec$variables)[[1]]
+conv <- as.numeric(unlist(abs_spec$missing_conventions$treat_as_na_education_years$codes))
+expect(97 %in% conv, "97 ('No answer') is a missing code for education_years")
+expect(all(c(-1, 90, 98, 99) %in% conv), "the original missing codes are retained")
+expect(is.null(ey$qc$skip_range_check), "skip_range_check removed — range is enforced")
+expect(identical(as.numeric(unlist(ey$qc$valid_range)), c(0, 35)),
+       "valid_range [0,35]: NAs the impossible 40+, keeps the 26-33 doctorate tail")
+expect(identical(as.numeric(ey$scale$max), 35), "scale.max agrees with valid_range")
 
 cat("\n=== NA propagation ===\n")
 expect(is.na(edu5_from_abs(NA_real_)),  "ABS NA -> NA")

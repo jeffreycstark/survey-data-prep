@@ -8,8 +8,8 @@ missing_conventions:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes for survey items"
   treat_as_na_education_years:
-    codes: [-1, 90, 98, 99]
-    description: "Missing codes for years of education (90=Not applicable)"
+    codes: [-1, 90, 97, 98, 99]
+    description: "Missing codes for years of education (90=Not applicable, 97=No answer / Not applicable in w1, 98=Cannot choose, 99=Decline to answer)"
   # Education: 7-9 are valid levels (secondary, some university, university); 11=Other is missing
   treat_as_na_education:
     codes: [-1, 11, 97, 98, 99]
@@ -171,6 +171,28 @@ variables:
     concept: demographics
     description: "Years of formal education"
     type: continuous
+    note: |
+      Raw se5a is a free numeric entry, so it carries both declared missing codes
+      and impossible values.
+
+      `97` is a declared missing code, not a duration: W2 and W3 label it
+      "No answer", W1's se005a labels it "Not applicable". It was absent from
+      `treat_as_na_education_years` and so leaked through as 97 years of
+      education (one respondent, W2, Philippines). Added 2026-07-09.
+
+      Range enforcement was previously disabled via `skip_range_check: true`,
+      which let physically impossible values stand: 60 years (W3 Singapore, x2),
+      51 (W3 Mainland China), 50 (W3 Thailand), 44 (W1 Mainland China), 43 (W3
+      Mainland China), 41 (W2 Philippines), 40 (W3 Mainland China; W3 Singapore).
+      Nine respondents, six of them in W3. The duplicated 60s suggest age was
+      entered in the education field, but that is a guess and no correction is
+      attempted — they are simply NA'd.
+
+      The ceiling is 35, not the 25 the scale used to declare. The observed
+      distribution has an empty gap between 33 and 40: 26-33 (47 respondents,
+      mostly Australia, India, Taiwan, Hong Kong) is unusual but attainable for
+      a doctorate counted from age 6, while everything from 40 up is impossible.
+      35 sits in that gap, so it removes the nonsense and keeps the long tail.
     missing:
       use_convention: treat_as_na_education_years
     source:
@@ -182,13 +204,12 @@ variables:
       w6: se5a
     scale:
       min: 0
-      max: 25
+      max: 35
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [0, 25]
-      skip_range_check: true
+      valid_range: [0, 35]
       validate:
         - waves: [w1, w2, w3, w4, w5, w6]
           phrase: "year.*education|education.*year"
