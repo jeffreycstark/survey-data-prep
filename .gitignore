@@ -207,3 +207,6 @@ outputs/prospecting/**/*.rds
 
 # hwp5html extraction artifacts (intermediate; extracted .txt is the kept output)
 data/*/questionnaires/extracted_html/
+
+# Claude Code local settings (settings.local.json holds machine-specific permissions)
+.claude/
