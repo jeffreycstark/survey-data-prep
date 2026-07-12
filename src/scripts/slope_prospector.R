@@ -78,65 +78,13 @@ if (!exists("DO_DASHBOARDS"))       DO_DASHBOARDS       <- TRUE
 # Plot title override (NULL = derived from INPUT_PATH)
 if (!exists("TITLE"))               TITLE               <- NULL
 
-# ── NARRATIVE PATTERN DEFINITIONS ────────────────────────────────────────────
-# Each pattern has required group directions and optional supporting directions.
-# Directions: "RISING", "FALLING", "FLAT". Use c() to allow multiple.
-# A country matches a pattern if ALL required conditions are met.
+# ── NARRATIVE PATTERN SIGNATURES ─────────────────────────────────────────────
+# Signature definitions now live in src/scripts/prospector/signatures.yml,
+# loaded and matched via the prospector/ module (see section 10 below).
 
-NARRATIVE_PATTERNS <- list(
-  output_legitimacy = list(
-    label       = "Output Legitimacy Signature",
-    description = "Economic satisfaction rising while democratic quality assessment is flat/falling",
-    required    = list(economic_present        = "RISING",
-                       democratic_satisfaction = "RISING"),
-    supporting  = list(democracy_assessment_empirical = c("FALLING", "FLAT"))
-  ),
-  demobilization = list(
-    label       = "Demobilization Sequence",
-    description = "Contacting/protest collapsing while authoritarian support rises",
-    required    = list(political_action_contacting_protest = "FALLING",
-                       authoritarian_support              = "RISING"),
-    supporting  = list()
-  ),
-  aspiration_gap = list(
-    label       = "Democratic Aspiration Gap",
-    description = "Normative democratic preference stable while empirical assessment falls",
-    required    = list(democracy_assessment_empirical = "FALLING"),
-    supporting  = list(democracy_support_normative   = c("RISING", "FLAT"))
-  ),
-  hollow_citizenship = list(
-    label       = "Hollow Citizenship",
-    description = "Voting stable/rising while contacting and protest fall sharply",
-    required    = list(political_action_contacting_protest = "FALLING"),
-    supporting  = list(political_action_voting            = c("RISING", "FLAT"))
-  ),
-  trust_collapse = list(
-    label       = "Trust Collapse",
-    description = "Both executive and intermediary institutions losing trust together",
-    required    = list(institutional_trust_executive    = "FALLING",
-                       institutional_trust_intermediary = "FALLING"),
-    supporting  = list()
-  ),
-  selective_legitimation = list(
-    label       = "Selective Legitimation",
-    description = "Executive trust rising while courts, parties, media fall",
-    required    = list(institutional_trust_executive    = "RISING",
-                       institutional_trust_intermediary = "FALLING"),
-    supporting  = list()
-  ),
-  economic_pessimism = list(
-    label       = "Economic Pessimism Decoupling",
-    description = "Present economic conditions stable while outlook deteriorates",
-    required    = list(economic_outlook = "FALLING"),
-    supporting  = list(economic_present = c("RISING", "FLAT"))
-  ),
-  corruption_normalization = list(
-    label       = "Corruption Normalization",
-    description = "Witnessed corruption falls while perceived systemic corruption stays high",
-    required    = list(corruption = "FLAT"),
-    supporting  = list()
-  )
-)
+source(here::here("src", "scripts", "prospector", "signature_features.R"))
+source(here::here("src", "scripts", "prospector", "signature_match.R"))
+SIGNATURES_PATH <- here::here("src", "scripts", "prospector", "signatures.yml")
 
 # ── 1. LOAD AND PREPARE DATA ──────────────────────────────────────────────────
 
@@ -603,58 +551,14 @@ if (DO_CLUSTERING && n_distinct(slopes$country) >= 3) {
 }
 
 # ── 10. NARRATIVE PATTERN TAGGING ────────────────────────────────────────────
-# Match countries against named theoretical signatures defined in NARRATIVE_PATTERNS.
-
 narrative_results <- tibble()
-
 if (DO_NARRATIVE && nrow(group_coherence) > 0) {
-
   cat("\n── Narrative pattern detection ──\n")
-
-  # Direction lookup per country × group
-  dir_lookup <- group_coherence %>%
-    select(country, group, group_direction)
-
-  match_pattern <- function(country_dirs, pattern) {
-    # Returns TRUE if all required conditions are satisfied
-    required_ok <- all(map_lgl(names(pattern$required), function(grp) {
-      dir <- country_dirs$group_direction[country_dirs$group == grp]
-      if (length(dir) == 0) return(FALSE)
-      dir %in% pattern$required[[grp]]
-    }))
-    if (!required_ok) return(FALSE)
-
-    # Supporting conditions: TRUE if present and matching, or absent (not penalised)
-    supporting_ok <- all(map_lgl(names(pattern$supporting), function(grp) {
-      dir <- country_dirs$group_direction[country_dirs$group == grp]
-      if (length(dir) == 0) return(TRUE)   # absent = don't penalise
-      dir %in% pattern$supporting[[grp]]
-    }))
-    supporting_ok
-  }
-
-  narrative_results <- map_dfr(unique(dir_lookup$country), function(cty) {
-    cty_dirs <- dir_lookup %>% filter(country == cty)
-    map_dfr(names(NARRATIVE_PATTERNS), function(pat_id) {
-      pat <- NARRATIVE_PATTERNS[[pat_id]]
-      if (match_pattern(cty_dirs, pat)) {
-        tibble(country = cty, pattern_id = pat_id,
-               label = pat$label, description = pat$description)
-      } else {
-        tibble()
-      }
-    })
-  })
-
-  if (nrow(narrative_results) > 0) {
-    cat(sprintf("%d narrative pattern matches found:\n", nrow(narrative_results)))
-    narrative_results %>%
-      arrange(country, pattern_id) %>%
-      print(n = 50)
-  } else {
-    cat("No narrative pattern matches found (check group coverage and FLAT_THRESHOLD)\n")
-  }
-
+  sigs <- load_signatures(SIGNATURES_PATH)
+  features <- group_coherence %>%
+    mutate(country = as.character(country))   # Phase 2 enriches this frame
+  narrative_results <- match_signatures(features, sigs)
+  cat(sprintf("%d narrative pattern matches found\n", nrow(narrative_results)))
   write_csv(narrative_results, file.path(OUTPUT_DIR, "narrative_patterns.csv"))
   cat(sprintf("── Saved: %s/narrative_patterns.csv ──\n", OUTPUT_DIR))
 }
