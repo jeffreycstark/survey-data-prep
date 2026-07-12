@@ -147,4 +147,34 @@ ok("accelerating_trust_collapse" %in% match_signatures(fc, sigs)$pattern_id, "ac
 fc2 <- fc %>% mutate(magnitude_tier = if_else(group=="institutional_trust_executive","SLOW",magnitude_tier))
 ok(!("accelerating_trust_collapse" %in% match_signatures(fc2, sigs)$pattern_id), "blocked when exec not FAST")
 
+# --- Phase-2 signature firing tests (prove each new signature can fire) ---
+
+# authoritarian_ascendant: authoritarian_support RISING at a HIGH level
+fa <- tibble(country="AA", group="authoritarian_support", group_direction="RISING",
+             magnitude_tier="SLOW", shape="STEADY", ends_level="HIGH", broke_at_wave=NA_real_)
+ok("authoritarian_ascendant" %in% match_signatures(fa, sigs)$pattern_id,
+   "authoritarian_ascendant fires (RISING + level HIGH)")
+ok(!("authoritarian_ascendant" %in% match_signatures(dplyr::mutate(fa, ends_level="MID"), sigs)$pattern_id),
+   "authoritarian_ascendant blocked when level not HIGH")
+
+# true_demobilization_sequence: protest breaks (FALLING) before authoritarian_support rises
+fd <- tribble(~country, ~group,                                  ~group_direction, ~broke_at_wave,
+              "DD",     "political_action_contacting_protest",   "FALLING",        3,
+              "DD",     "authoritarian_support",                 "RISING",         5)
+ok("true_demobilization_sequence" %in% match_signatures(fd, sigs)$pattern_id,
+   "true_demobilization_sequence fires (protest breaks before authoritarian rise)")
+ok(!("true_demobilization_sequence" %in% match_signatures(dplyr::mutate(fd, broke_at_wave=c(5,3)), sigs)$pattern_id),
+   "true_demobilization_sequence blocked when break order reversed")
+
+# efficacy_trap: within political_efficacy, feel able to participate (RISING) yet no influence (RISING)
+fe_feats <- tibble(country="EE", group="political_efficacy", group_direction="FLAT",
+                   magnitude_tier="SLOW", shape="STEADY", ends_level="MID", broke_at_wave=NA_real_)
+fe_vs  <- tibble(country="EE", variable=c("efficacy_ability_participate","efficacy_no_influence"),
+                 direction=c("RISING","RISING"))
+ok("efficacy_trap" %in% match_signatures(fe_feats, sigs, var_slopes=fe_vs)$pattern_id,
+   "efficacy_trap fires (able to participate but no influence)")
+fe_vs2 <- dplyr::mutate(fe_vs, direction=c("RISING","FALLING"))
+ok(!("efficacy_trap" %in% match_signatures(fe_feats, sigs, var_slopes=fe_vs2)$pattern_id),
+   "efficacy_trap blocked when one sub-variable mismatches")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
