@@ -55,6 +55,32 @@ eval_simple_condition <- function(cond, row) {
   }, logical(1)))
 }
 
+# within: every named sub-variable in the group must match its direction.
+eval_within <- function(within_spec, var_slopes, cty) {
+  if (is.null(within_spec) || length(within_spec) == 0) return(TRUE)
+  vs <- var_slopes[var_slopes$country == cty, , drop = FALSE]
+  all(vapply(names(within_spec), function(grp) {
+    reqs <- within_spec[[grp]]
+    all(vapply(names(reqs), function(v) {
+      d <- vs$direction[vs$variable == v]
+      length(d) == 1 && d %in% unlist(reqs[[v]])
+    }, logical(1)))
+  }, logical(1)))
+}
+
+# ordered: list in temporal order; each group's break wave must be non-NA,
+# its group_direction must match dir, and break waves must be non-decreasing.
+eval_ordered <- function(ordered_spec, features, cty) {
+  if (is.null(ordered_spec) || length(ordered_spec) == 0) return(TRUE)
+  rows <- lapply(ordered_spec, function(item) .row_for(features, cty, item$group))
+  if (any(vapply(rows, is.null, logical(1)))) return(FALSE)
+  waves <- vapply(rows, function(r) as.numeric(r$broke_at_wave %||% NA), numeric(1))
+  if (any(is.na(waves))) return(FALSE)
+  dirs_ok <- all(mapply(function(item, r) r$group_direction %in% unlist(item$dir),
+                        ordered_spec, rows))
+  dirs_ok && all(diff(waves) >= 0)
+}
+
 match_signatures <- function(features, sigs, var_slopes = NULL) {
   countries <- unique(features$country)
   out <- purrr::map_dfr(countries, function(cty) {
@@ -63,7 +89,9 @@ match_signatures <- function(features, sigs, var_slopes = NULL) {
       req <- .eval_required(s$required %||% list(), features, cty)
       sup <- .eval_supporting(s$supporting %||% list(), features, cty)
       lvl <- .eval_required(s$level %||% list(), features, cty)      # Phase 2, treated as required
-      if (req && sup && lvl)
+      wth <- eval_within(s$within, var_slopes, cty)
+      ord <- eval_ordered(s$ordered, features, cty)
+      if (req && sup && lvl && wth && ord)
         tibble(country = cty, pattern_id = pid, label = s$label, description = s$description)
       else tibble()
     })

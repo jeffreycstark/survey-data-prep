@@ -113,4 +113,21 @@ ok(gf$ends_level == "HIGH", "ends_level HIGH (0.8>0.66)")
 ok(gf$shape == "REVERSED_UP", "shape REVERSED_UP (down then up)")
 ok(gf$broke_at_wave == 2, "broke_at_wave = 2 (modal)")
 
+vs <- tibble(country="W", variable=c("efficacy_ability_participate","efficacy_no_influence"),
+             direction=c("RISING","RISING"))
+within_spec <- list(political_efficacy = list(efficacy_ability_participate="RISING",
+                                              efficacy_no_influence="RISING"))
+ok(eval_within(within_spec, vs, "W"), "within fires when all sub-vars match")
+vs2 <- vs %>% mutate(direction = c("RISING","FALLING"))
+ok(!eval_within(within_spec, vs2, "W"), "within blocked when one sub-var mismatches")
+
+fo <- tribble(~country,~group,~group_direction,~broke_at_wave,
+  "S","political_action_contacting_protest","FALLING",3,
+  "S","authoritarian_support","RISING",4)
+ordered_spec <- list(list(group="political_action_contacting_protest", dir="FALLING"),
+                     list(group="authoritarian_support", dir="RISING"))
+ok(eval_ordered(ordered_spec, fo, "S"), "ordered fires when protest breaks before authoritarian rise")
+fo2 <- fo %>% mutate(broke_at_wave = c(5,4))  # protest breaks AFTER
+ok(!eval_ordered(ordered_spec, fo2, "S"), "ordered blocked when order reversed")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
