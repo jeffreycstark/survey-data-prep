@@ -38,3 +38,21 @@ f_absent_sup <- tribble(~country, ~group,                             ~group_dir
                         "R2",      "democracy_assessment_empirical",   "FALLING")  # normative (supporting) missing
 ok("aspiration_gap" %in% match_signatures(f_absent_sup, sigs)$pattern_id,
    "aspiration_gap fires when the supporting group is absent")
+
+gold_dir <- file.path("outputs", "prospecting", "abs_all")
+if (file.exists(file.path(gold_dir, "slope_groups.csv"))) {
+  sg   <- readr::read_csv(file.path(gold_dir, "slope_groups.csv"), show_col_types = FALSE)
+  gold <- readr::read_csv(file.path(gold_dir, "narrative_patterns.csv"), show_col_types = FALSE)
+  feats_real <- sg %>% dplyr::select(country, group, group_direction) %>%
+    dplyr::mutate(country = as.character(country))
+  got <- match_signatures(feats_real, sigs) %>%
+    dplyr::mutate(country = as.character(country)) %>%
+    dplyr::arrange(country, pattern_id)
+  gold2 <- gold %>% dplyr::mutate(country = as.character(country)) %>%
+    dplyr::select(country, pattern_id) %>% dplyr::arrange(country, pattern_id)
+  ok(identical(got$pattern_id, gold2$pattern_id) &&
+     identical(got$country, gold2$country), "behavior-lock: matches current narrative_patterns.csv")
+} else {
+  cat("SKIP behavior-lock (no abs_all run present)\n")
+}
+cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
