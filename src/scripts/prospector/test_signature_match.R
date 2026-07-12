@@ -96,4 +96,21 @@ sb <- tibble(country="Z", variable="v")
 bl <- augment_breaks_with_location(synth, sb)
 ok(nrow(bl) == 1 && !is.na(bl$break_wave) && bl$break_wave %in% c(3,4), "break located at wave 3 or 4")
 
+thr <- list(FAST = 0.15, ENDS_LOW = 0.33, ENDS_HIGH = 0.66, SHAPE_QUORUM = 0.5)
+gl  <- tibble(group = "g", variable = c("a","b"))
+gc  <- tibble(country="Z", group="g", group_direction="RISING", mean_slope=0.20,
+              sd_slope=0, n_vars=2, coherence_flag="COHERENT_RISING")
+# endpoints: both members end high (0.8)
+hd  <- tidyr::expand_grid(country="Z", variable=c("a","b"), wave_num=1:3) %>%
+  mutate(mean_value = if_else(wave_num==3, 0.8, 0.3))
+acc <- tibble(country="Z", variable=c("a","b"),
+              early_slope=c(-0.1,-0.1), late_slope=c(0.3,0.3),
+              acceleration=c(0.4,0.4), direction_change=c(TRUE,TRUE))
+bl  <- tibble(country="Z", variable=c("a","b"), break_wave=c(2,2))
+gf  <- build_group_features(gc, hd, acc, bl, gl, thr)
+ok(gf$magnitude_tier == "FAST", "magnitude FAST (|0.20|>0.15)")
+ok(gf$ends_level == "HIGH", "ends_level HIGH (0.8>0.66)")
+ok(gf$shape == "REVERSED_UP", "shape REVERSED_UP (down then up)")
+ok(gf$broke_at_wave == 2, "broke_at_wave = 2 (modal)")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

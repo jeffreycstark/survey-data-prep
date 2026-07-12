@@ -19,3 +19,65 @@ augment_breaks_with_location <- function(eligible, sig_breaks) {
     }) %>%
     ungroup()
 }
+
+# Build the enriched country×group feature frame: magnitude, shape,
+# ends_level, and broke_at_wave, joined onto group_coherence.
+build_group_features <- function(group_coherence, harmonized_data, acceleration,
+                                 breaks_located, group_lookup, thr) {
+  gc <- group_coherence %>% mutate(country = as.character(country))
+
+  # magnitude
+  gc <- gc %>% mutate(magnitude_tier = if_else(abs(mean_slope) > thr$FAST, "FAST", "SLOW"))
+
+  # endpoint level: last-wave normalized value per member, averaged per group
+  last_vals <- harmonized_data %>%
+    mutate(country = as.character(country)) %>%
+    group_by(country, variable) %>%
+    slice_max(wave_num, n = 1, with_ties = FALSE) %>%
+    ungroup() %>%
+    select(country, variable, end_val = mean_value) %>%
+    inner_join(group_lookup, by = "variable") %>%
+    group_by(country, group) %>%
+    summarise(end_level = mean(end_val, na.rm = TRUE), .groups = "drop") %>%
+    mutate(ends_level = case_when(end_level > thr$ENDS_HIGH ~ "HIGH",
+                                  end_level < thr$ENDS_LOW  ~ "LOW",
+                                  TRUE                      ~ "MID"))
+
+  # shape: aggregate acceleration over group members with a quorum
+  shape_tbl <- acceleration %>%
+    mutate(country = as.character(country)) %>%
+    inner_join(group_lookup, by = "variable") %>%
+    group_by(country, group) %>%
+    summarise(
+      n = n(),
+      rev_up   = mean(direction_change & early_slope <= 0 & late_slope > 0),
+      rev_down = mean(direction_change & early_slope >= 0 & late_slope < 0),
+      accel    = mean(!direction_change & abs(late_slope) > abs(early_slope)),
+      decel    = mean(!direction_change & abs(late_slope) < abs(early_slope)),
+      .groups = "drop"
+    ) %>%
+    mutate(shape = case_when(
+      rev_up   >= thr$SHAPE_QUORUM ~ "REVERSED_UP",
+      rev_down >= thr$SHAPE_QUORUM ~ "REVERSED_DOWN",
+      accel    >= thr$SHAPE_QUORUM ~ "ACCELERATING",
+      decel    >= thr$SHAPE_QUORUM ~ "DECELERATING",
+      TRUE                         ~ "STEADY"
+    )) %>%
+    select(country, group, shape)
+
+  # broke_at_wave: modal member break wave
+  broke_tbl <- breaks_located %>%
+    mutate(country = as.character(country)) %>%
+    inner_join(group_lookup, by = "variable") %>%
+    filter(!is.na(break_wave)) %>%
+    group_by(country, group) %>%
+    summarise(broke_at_wave = as.numeric(names(sort(table(break_wave), decreasing = TRUE))[1]),
+              .groups = "drop")
+
+  gc %>%
+    left_join(last_vals  %>% select(country, group, ends_level), by = c("country","group")) %>%
+    left_join(shape_tbl,  by = c("country","group")) %>%
+    left_join(broke_tbl,  by = c("country","group")) %>%
+    mutate(ends_level = replace_na(ends_level, "MID"),
+           shape      = replace_na(shape, "STEADY"))
+}
