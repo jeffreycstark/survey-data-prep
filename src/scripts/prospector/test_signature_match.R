@@ -88,4 +88,12 @@ gold2 <- gold %>% dplyr::mutate(country = as.character(country)) %>%
 ok(identical(got$pattern_id, gold2$pattern_id) && identical(got$country, gold2$country),
    "behavior-lock: 8 original signatures reproduce frozen ABS golden")
 
+source(file.path(here_dir, "signature_features.R"))
+# synthetic: flat at 0.2 for waves 1-3, jump to 0.8 waves 4-6 -> break near wave 3/4
+synth <- tidyr::expand_grid(country="Z", variable="v", wave_num=1:6) %>%
+  mutate(mean_value = if_else(wave_num <= 3, 0.2, 0.8))
+sb <- tibble(country="Z", variable="v")
+bl <- augment_breaks_with_location(synth, sb)
+ok(nrow(bl) == 1 && !is.na(bl$break_wave) && bl$break_wave %in% c(3,4), "break located at wave 3 or 4")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
