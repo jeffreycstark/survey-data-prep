@@ -1,0 +1,40 @@
+# Signature registry for the Slope Prospector.
+# A slot value is a direction (RISING/FALLING/FLAT), a list of allowed
+# directions, or (Phase 2) a condition map {dir:, magnitude:, shape:, level:}.
+signatures:
+  output_legitimacy:
+    label: "Output Legitimacy Signature"
+    description: "Economic satisfaction rising while democratic quality assessment is flat/falling"
+    required: { economic_present: RISING, democratic_satisfaction: RISING }
+    supporting: { democracy_assessment_empirical: [FALLING, FLAT] }
+  demobilization:
+    label: "Demobilization Sequence"
+    description: "Contacting/protest collapsing while authoritarian support rises"
+    required: { political_action_contacting_protest: FALLING, authoritarian_support: RISING }
+  aspiration_gap:
+    label: "Democratic Aspiration Gap"
+    description: "Normative democratic preference stable while empirical assessment falls"
+    required: { democracy_assessment_empirical: FALLING }
+    supporting: { democracy_support_normative: [RISING, FLAT] }
+  hollow_citizenship:
+    label: "Hollow Citizenship"
+    description: "Voting stable/rising while contacting and protest fall sharply"
+    required: { political_action_contacting_protest: FALLING }
+    supporting: { political_action_voting: [RISING, FLAT] }
+  trust_collapse:
+    label: "Trust Collapse"
+    description: "Both executive and intermediary institutions losing trust together"
+    required: { institutional_trust_executive: FALLING, institutional_trust_intermediary: FALLING }
+  selective_legitimation:
+    label: "Selective Legitimation"
+    description: "Executive trust rising while courts, parties, media fall"
+    required: { institutional_trust_executive: RISING, institutional_trust_intermediary: FALLING }
+  economic_pessimism:
+    label: "Economic Pessimism Decoupling"
+    description: "Present economic conditions stable while outlook deteriorates"
+    required: { economic_outlook: FALLING }
+    supporting: { economic_present: [RISING, FLAT] }
+  corruption_normalization:
+    label: "Corruption Normalization"
+    description: "Witnessed corruption falls while perceived systemic corruption stays high"
+    required: { corruption: FLAT }
