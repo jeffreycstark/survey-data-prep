@@ -24,12 +24,12 @@ normalize_condition <- function(slot) {
 # Evaluate one condition against one feature-frame row (a 1-row tibble/list).
 # Every sub-key present in the condition AND available in the row must hold.
 eval_simple_condition <- function(cond, row) {
-  c <- normalize_condition(cond)
+  cond_n <- normalize_condition(cond)
   checks <- c(
-    if (!is.null(c$dir))       row$group_direction %in% c$dir,
-    if (!is.null(c$magnitude) && !is.null(row$magnitude_tier)) row$magnitude_tier %in% c$magnitude,
-    if (!is.null(c$shape)     && !is.null(row$shape))          row$shape          %in% c$shape,
-    if (!is.null(c$level)     && !is.null(row$ends_level))     row$ends_level     %in% c$level
+    if (!is.null(cond_n$dir))       row$group_direction %in% cond_n$dir,
+    if (!is.null(cond_n$magnitude) && !is.null(row$magnitude_tier)) row$magnitude_tier %in% cond_n$magnitude,
+    if (!is.null(cond_n$shape)     && !is.null(row$shape))          row$shape          %in% cond_n$shape,
+    if (!is.null(cond_n$level)     && !is.null(row$ends_level))     row$ends_level     %in% cond_n$level
   )
   length(checks) > 0 && all(checks)
 }
