@@ -1,0 +1,21 @@
+country,pattern_id,label,description
+1,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+2,aspiration_gap,Democratic Aspiration Gap,Normative democratic preference stable while empirical assessment falls
+2,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+3,economic_pessimism,Economic Pessimism Decoupling,Present economic conditions stable while outlook deteriorates
+3,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+4,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+5,hollow_citizenship,Hollow Citizenship,Voting stable/rising while contacting and protest fall sharply
+5,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+6,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+7,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+8,hollow_citizenship,Hollow Citizenship,Voting stable/rising while contacting and protest fall sharply
+8,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+9,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+10,hollow_citizenship,Hollow Citizenship,Voting stable/rising while contacting and protest fall sharply
+10,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high
+12,demobilization,Demobilization Sequence,Contacting/protest collapsing while authoritarian support rises
+12,hollow_citizenship,Hollow Citizenship,Voting stable/rising while contacting and protest fall sharply
+13,aspiration_gap,Democratic Aspiration Gap,Normative democratic preference stable while empirical assessment falls
+13,hollow_citizenship,Hollow Citizenship,Voting stable/rising while contacting and protest fall sharply
+13,corruption_normalization,Corruption Normalization,Witnessed corruption falls while perceived systemic corruption stays high

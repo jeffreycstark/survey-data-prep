@@ -1,0 +1,246 @@
+country,group,n_vars,mean_slope,sd_slope,n_rising,n_falling,n_flat,all_same_sign,coherence_score,rising_vars,falling_vars,coherence_flag,group_direction
+1,accountability_perceptions,5,-0.004960189389674605,0.029634621147343394,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+2,accountability_perceptions,5,0.009064677777430578,0.0844720377688453,2,1,2,FALSE,0.4,gov_courts_powerless; gov_elections_real_choice,gov_legislature_oversight,DIVERGENT,FLAT
+3,accountability_perceptions,5,-0.02355537440244784,0.049902574727483856,1,2,2,FALSE,0.4,gov_elections_real_choice,gov_courts_powerless; gov_leaders_abuse_power,DIVERGENT,FLAT
+4,accountability_perceptions,3,-0.03881374535793812,0.0582421587897837,0,2,1,FALSE,0.6666666666666666,,gov_courts_powerless; gov_leaders_abuse_power,DIVERGENT,FLAT
+5,accountability_perceptions,5,-0.020652235379094816,0.051985890380444225,0,2,3,FALSE,0.6,,gov_legislature_oversight; gov_no_accountability_between_elections,DIVERGENT,FLAT
+6,accountability_perceptions,5,-0.01347552450334601,0.04813121720858612,1,1,3,FALSE,0.6,gov_legislature_oversight,gov_leaders_abuse_power,DIVERGENT,FLAT
+7,accountability_perceptions,5,-0.03580533609610216,0.02054318213217171,0,2,3,TRUE,0.6,,gov_leaders_abuse_power; gov_no_accountability_between_elections,DIVERGENT,FLAT
+8,accountability_perceptions,5,0.018490685872526197,0.06787717795854896,2,1,2,FALSE,0.4,gov_courts_powerless; gov_elections_real_choice,gov_legislature_oversight,DIVERGENT,FLAT
+9,accountability_perceptions,5,0.022264700933092775,0.060845438339162596,1,0,4,FALSE,0.8,gov_elections_real_choice,,DIVERGENT,FLAT
+10,accountability_perceptions,5,0.004385819563052101,0.03596114132620967,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+11,accountability_perceptions,5,0.010565344347563871,0.052477220770879636,1,1,3,FALSE,0.6,gov_elections_real_choice,gov_courts_powerless,DIVERGENT,FLAT
+12,accountability_perceptions,5,-0.008217804015872817,0.01600448710055271,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+13,accountability_perceptions,5,-0.034468242243564436,0.06353415060988099,1,1,3,FALSE,0.6,gov_leaders_abuse_power,gov_no_accountability_between_elections,DIVERGENT,FLAT
+1,authoritarian_support,4,0.002136667386530824,0.02052478923294673,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+2,authoritarian_support,4,-0.031941266141669755,0.0042475515666101984,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+3,authoritarian_support,4,-0.00946833221456656,0.005944437318324801,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+4,authoritarian_support,3,-0.008903860686692149,0.012538103591702716,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+5,authoritarian_support,4,0.029361979788081766,0.024260137364119853,1,0,3,TRUE,0.75,expert_rule,,DIVERGENT,FLAT
+6,authoritarian_support,4,0.019491226032157045,0.007463604577396087,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+7,authoritarian_support,4,-0.02601818819486562,0.004994970822211799,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+8,authoritarian_support,4,-0.013944626557585346,0.010297030866586326,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+9,authoritarian_support,4,-0.003760760027936738,0.011257569774937025,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+10,authoritarian_support,4,-0.009929041551909204,0.008707712504439507,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+11,authoritarian_support,4,0.03525231158403409,0.04851735722902061,1,0,3,FALSE,0.75,military_rule,,DIVERGENT,FLAT
+12,authoritarian_support,4,0.066601155446155,0.05849709491082193,2,0,2,FALSE,0.5,expert_rule; strongman_rule,,DIVERGENT,RISING
+13,authoritarian_support,4,0.019970763554401114,0.013257175566198908,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+1,corruption,4,-0.011471854211159585,0.03197804229614877,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+2,corruption,3,0.007363105203692914,0.04895569820571919,1,0,2,FALSE,0.6666666666666666,govt_anticorrupt_effort,,DIVERGENT,FLAT
+3,corruption,4,-0.03695391985469647,0.07139463808609436,0,1,3,FALSE,0.75,,corrupt_witnessed,DIVERGENT,FLAT
+4,corruption,4,-0.02609719859335333,0.04010032438718935,0,1,3,FALSE,0.75,,corrupt_local_govt,DIVERGENT,FLAT
+5,corruption,4,0.02769675260258124,0.06442034404276133,1,1,2,FALSE,0.5,govt_anticorrupt_effort,corrupt_witnessed,DIVERGENT,FLAT
+6,corruption,4,-0.024880635225329097,0.04024911786426098,0,1,3,FALSE,0.75,,govt_anticorrupt_effort,DIVERGENT,FLAT
+7,corruption,4,-0.002466148596121494,0.053753421205695866,1,0,3,FALSE,0.75,govt_anticorrupt_effort,,DIVERGENT,FLAT
+8,corruption,4,0.041876317000268115,0.029504725892590098,2,0,2,TRUE,0.5,corrupt_local_govt; govt_anticorrupt_effort,,DIVERGENT,FLAT
+9,corruption,4,-0.012699528148408863,0.040544297420485674,0,1,3,FALSE,0.75,,corrupt_witnessed,DIVERGENT,FLAT
+10,corruption,4,0.029526882780305973,0.024338207155211185,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+11,corruption,3,0.06558543710489588,0.05632822430655088,2,0,1,TRUE,0.6666666666666666,corrupt_local_govt; govt_anticorrupt_effort,,COHERENT_RISING,RISING
+12,corruption,4,-0.0513915991336134,0.023376171741286138,0,2,2,TRUE,0.5,,corrupt_national_govt; corrupt_witnessed,COHERENT_FALLING,FALLING
+13,corruption,4,-0.006058295366082853,0.05774877258303183,1,0,3,FALSE,0.75,govt_anticorrupt_effort,,DIVERGENT,FLAT
+1,democracy_assessment_empirical,4,-0.009409438586494914,0.038259210903769166,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+2,democracy_assessment_empirical,4,-0.07579090910575872,0.14606109952687,1,1,2,FALSE,0.5,dem_country_future,dem_extent_current,DIVERGENT,FALLING
+3,democracy_assessment_empirical,4,0.0024553420240602704,0.04052929961242306,0,1,3,FALSE,0.75,,dem_country_future,DIVERGENT,FLAT
+4,democracy_assessment_empirical,4,-0.049523091756161625,0.05046228920278964,0,1,3,TRUE,0.75,,dem_country_future,DIVERGENT,FLAT
+5,democracy_assessment_empirical,4,-0.0747333490151137,0.03636675478862339,0,2,2,TRUE,0.5,,dem_country_future; democracy_satisfaction,COHERENT_FALLING,FALLING
+6,democracy_assessment_empirical,4,0.01182822243968739,0.07342072057672173,2,1,1,FALSE,0.5,dem_extent_current; democracy_satisfaction,dem_country_future,DIVERGENT,FLAT
+7,democracy_assessment_empirical,4,0.01717602276497756,0.035949908711008206,1,0,3,FALSE,0.75,democracy_satisfaction,,DIVERGENT,FLAT
+8,democracy_assessment_empirical,4,-0.10369799586281714,0.05474822379758582,0,4,0,TRUE,1,,dem_country_future; dem_country_present_govt; dem_extent_current; democracy_satisfaction,COHERENT_FALLING,FALLING
+9,democracy_assessment_empirical,4,-0.011562552576304563,0.060343777401584156,1,1,2,FALSE,0.5,dem_extent_current,dem_country_future,DIVERGENT,FLAT
+10,democracy_assessment_empirical,4,-0.013596034073756154,0.02966757717552815,0,1,3,FALSE,0.75,,dem_country_future,DIVERGENT,FLAT
+11,democracy_assessment_empirical,4,-0.03295804299686514,0.021211623732217928,0,1,3,TRUE,0.75,,dem_country_present_govt,DIVERGENT,FLAT
+12,democracy_assessment_empirical,4,-0.04602490132031089,0.1019317079625878,0,1,3,FALSE,0.75,,dem_country_future,DIVERGENT,FLAT
+13,democracy_assessment_empirical,4,-0.06936030411516883,0.04729123863352894,0,2,2,TRUE,0.5,,dem_country_future; dem_country_present_govt,COHERENT_FALLING,FALLING
+1,democracy_support_normative,3,-0.005755188492827118,0.03778598280942445,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+2,democracy_support_normative,3,0.009772062745147537,0.1090636808593107,1,1,1,FALSE,0.3333333333333333,dem_best_form,dem_always_preferable,DIVERGENT,FLAT
+3,democracy_support_normative,3,-0.04939036117405532,0.05471068581678067,0,1,2,FALSE,0.6666666666666666,,dem_always_preferable,DIVERGENT,FLAT
+4,democracy_support_normative,3,-0.04737209398966004,0.09857092875105425,1,2,0,FALSE,0.6666666666666666,dem_always_preferable,dem_best_form; democracy_suitability,DIVERGENT,FLAT
+5,democracy_support_normative,3,-0.0621892667126463,0.1013017376629869,1,2,0,FALSE,0.6666666666666666,dem_always_preferable,dem_best_form; democracy_suitability,DIVERGENT,FALLING
+6,democracy_support_normative,3,0.031899912521186444,0.06947533900884925,2,0,1,FALSE,0.6666666666666666,dem_always_preferable; dem_best_form,,DIVERGENT,FLAT
+7,democracy_support_normative,3,0.017277124768420714,0.03307713303377036,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+8,democracy_support_normative,3,-0.07248014542450082,0.10592542744708995,0,2,1,FALSE,0.6666666666666666,,dem_best_form; democracy_suitability,DIVERGENT,FALLING
+9,democracy_support_normative,3,-0.011611001636298777,0.04630413495180549,0,1,2,FALSE,0.6666666666666666,,democracy_suitability,DIVERGENT,FLAT
+10,democracy_support_normative,3,0.03945913085632736,0.03186463961685065,1,0,2,TRUE,0.6666666666666666,dem_best_form,,DIVERGENT,FLAT
+11,democracy_support_normative,3,-0.035284912012674856,0.13257563270480155,1,2,0,FALSE,0.6666666666666666,dem_always_preferable,dem_best_form; democracy_suitability,DIVERGENT,FLAT
+12,democracy_support_normative,3,-0.04665577626688495,0.02785034645646634,0,1,2,TRUE,0.6666666666666666,,dem_always_preferable,DIVERGENT,FLAT
+13,democracy_support_normative,3,-0.049903496371840515,0.07675649376529703,0,2,1,FALSE,0.6666666666666666,,dem_best_form; democracy_suitability,DIVERGENT,FLAT
+1,democratic_satisfaction,3,0.034746327721737996,0.03120783507154969,1,0,2,TRUE,0.6666666666666666,sat_president_govt,,DIVERGENT,FLAT
+2,democratic_satisfaction,3,0.0030618333541052776,0.13187735247852317,1,1,1,FALSE,0.3333333333333333,sat_president_govt,gov_sat_national,DIVERGENT,FLAT
+3,democratic_satisfaction,3,0.036807083913802136,0.008214401308387591,0,0,3,TRUE,1,,,DIVERGENT,FLAT
+5,democratic_satisfaction,3,-0.038727922652703084,0.06365979738889924,0,1,2,FALSE,0.6666666666666666,,democracy_satisfaction,DIVERGENT,FLAT
+6,democratic_satisfaction,3,0.028896208829219477,0.10385061663024675,2,1,0,FALSE,0.6666666666666666,democracy_satisfaction; gov_sat_national,sat_president_govt,DIVERGENT,FLAT
+7,democratic_satisfaction,3,0.03822873849384426,0.01417207915743096,1,0,2,TRUE,0.6666666666666666,democracy_satisfaction,,DIVERGENT,FLAT
+8,democratic_satisfaction,3,-0.08931679649013884,0.05627997314354872,0,2,1,TRUE,0.6666666666666666,,democracy_satisfaction; gov_sat_national,COHERENT_FALLING,FALLING
+9,democratic_satisfaction,3,0.0021668738572229035,0.011011450399560955,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+10,democratic_satisfaction,3,0.003111731067068489,0.02592942207287843,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+11,democratic_satisfaction,2,-0.034224689626112206,0.006445240415165952,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+12,democratic_satisfaction,3,5.931074969471734e-4,0.02974291135070518,0,0,3,FALSE,1,,,DIVERGENT,FLAT
+13,democratic_satisfaction,3,0.002569309927535161,0.11517222338703854,1,1,1,FALSE,0.3333333333333333,sat_president_govt,gov_sat_national,DIVERGENT,FLAT
+1,economic_outlook,2,-0.01789346763439341,0.015211813449510819,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+2,economic_outlook,2,-0.023748910869974105,0.02373460248378873,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+3,economic_outlook,2,-0.050464632413552334,0.015343789341657164,0,1,1,TRUE,0.5,,econ_family_outlook,COHERENT_FALLING,FALLING
+4,economic_outlook,2,0.007724532013928002,0.00838037896512604,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+5,economic_outlook,2,-0.0219950420844003,0.015797971355207472,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+6,economic_outlook,2,0.062438351582086646,0.008545972025433533,2,0,0,TRUE,1,econ_family_outlook; econ_outlook_1yr,,COHERENT_RISING,RISING
+7,economic_outlook,2,0.001525460665338844,0.0035307821710743067,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+8,economic_outlook,2,-0.05879198397133388,0.011300123154950725,0,2,0,TRUE,1,,econ_family_outlook; econ_outlook_1yr,COHERENT_FALLING,FALLING
+9,economic_outlook,2,0.008231519546359749,0.003247268175269389,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+10,economic_outlook,2,-0.017420476193294305,0.0110498269067968,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+11,economic_outlook,2,-0.0359012538678599,0.010145876318753693,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+12,economic_outlook,2,0.014438772257731727,0.02554133237086863,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+13,economic_outlook,2,-0.044965141469234284,0.004709209221000476,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+1,economic_present,4,0.020159595083102777,0.03727499000768276,1,0,3,FALSE,0.75,econ_national_now,,DIVERGENT,FLAT
+2,economic_present,4,0.03231894402893637,0.04481600346595153,1,0,3,FALSE,0.75,subjective_social_status,,DIVERGENT,FLAT
+3,economic_present,4,0.01142730285730349,0.028375643584527814,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+4,economic_present,4,-0.009423599768982799,0.004951136202942905,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+5,economic_present,4,-0.002150300431846203,0.026515031294575234,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+6,economic_present,4,0.03397150680284517,0.031667961108730554,1,0,3,FALSE,0.75,econ_national_now,,DIVERGENT,FLAT
+7,economic_present,4,0.016345834056204805,0.044960566934725915,1,0,3,FALSE,0.75,econ_national_now,,DIVERGENT,FLAT
+8,economic_present,4,-0.05642429805097324,0.045121988614022605,0,2,2,FALSE,0.5,,econ_family_now; econ_national_now,DIVERGENT,FALLING
+9,economic_present,4,0.02937269185153866,0.06403024985808853,2,0,2,FALSE,0.5,hh_income_sat; subjective_social_status,,DIVERGENT,FLAT
+10,economic_present,4,-0.015478679488564169,0.016533949534171095,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+11,economic_present,4,-0.007908112522326385,0.01720430838850481,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+12,economic_present,4,-0.0502254174456999,0.09328978318008538,0,1,3,FALSE,0.75,,hh_income_sat,DIVERGENT,FALLING
+13,economic_present,4,-0.011199031913437013,0.04560271119895936,0,1,3,FALSE,0.75,,econ_national_now,DIVERGENT,FLAT
+1,economic_retrospective,2,0.040483349248662606,0.002746841296233148,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+2,economic_retrospective,2,0.0041969059011594916,0.01315452223910696,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+3,economic_retrospective,2,-0.006254914505037583,0.006157120639381963,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+4,economic_retrospective,2,0.00796244455564616,0.01001077368976835,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+5,economic_retrospective,2,-0.04945352594304209,0.032561648162340105,0,1,1,TRUE,0.5,,econ_change_1yr,DIVERGENT,FLAT
+6,economic_retrospective,2,0.038979505830803396,0.0016941244540256595,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+7,economic_retrospective,2,0.03133058071593309,0.0016731302853268996,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+8,economic_retrospective,2,-0.06915832518476991,0.009062633402999143,0,2,0,TRUE,1,,econ_change_1yr; econ_family_change,COHERENT_FALLING,FALLING
+9,economic_retrospective,2,-0.02521150564295159,0.013139415461437653,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+10,economic_retrospective,2,-0.003403089881704733,8.680387327740928e-4,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+11,economic_retrospective,2,-0.05634664606157484,0.002502855116229103,0,2,0,TRUE,1,,econ_change_1yr; econ_family_change,COHERENT_FALLING,FALLING
+12,economic_retrospective,2,-0.002167767985286682,0.007335948843635652,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+13,economic_retrospective,2,-0.0372492629798056,0.022576369873003568,0,1,1,TRUE,0.5,,econ_family_change,DIVERGENT,FLAT
+1,government_responsiveness,2,-0.0016911996666142586,0.015997630940306342,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+2,government_responsiveness,2,0.06990213995512871,0.10220855077554589,1,0,1,FALSE,0.5,govt_responds_people,,DIVERGENT,RISING
+3,government_responsiveness,2,0.027771018126361482,0.07486200838975732,1,0,1,FALSE,0.5,govt_withholds_info,,DIVERGENT,FLAT
+4,government_responsiveness,2,0.030833148521396344,0.07961973187000844,1,0,1,FALSE,0.5,govt_responds_people,,DIVERGENT,FLAT
+5,government_responsiveness,2,0.0194178725990771,0.06907271382621594,1,0,1,FALSE,0.5,govt_responds_people,,DIVERGENT,FLAT
+6,government_responsiveness,2,-0.04092696207726739,0.08460307017272115,0,1,1,FALSE,0.5,,govt_responds_people,DIVERGENT,FLAT
+7,government_responsiveness,2,-0.011720570290703808,0.015519471614158465,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+8,government_responsiveness,2,0.004841596123044169,0.09898322621558919,1,1,0,FALSE,0.5,govt_responds_people,govt_withholds_info,DIVERGENT,FLAT
+9,government_responsiveness,2,-0.0366248060169792,0.018422082306116958,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+10,government_responsiveness,2,-0.029856118623018298,0.041115041664456065,0,1,1,TRUE,0.5,,govt_withholds_info,DIVERGENT,FLAT
+11,government_responsiveness,2,0.01953441042692383,0.02049140941513222,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+12,government_responsiveness,2,-0.014649697915258976,0.02797291117999361,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+13,government_responsiveness,2,0.018815912665782555,0.05324813490758159,1,0,1,FALSE,0.5,govt_responds_people,,DIVERGENT,FLAT
+1,institutional_trust_executive,6,0.02782698048920992,0.026724046395447582,1,0,5,FALSE,0.8333333333333334,trust_civil_service,,DIVERGENT,FLAT
+2,institutional_trust_executive,6,-0.06964500343088238,0.05281717173206947,0,4,2,FALSE,0.6666666666666666,,trust_local_government; trust_military; trust_police; trust_president,DIVERGENT,FALLING
+3,institutional_trust_executive,6,0.018295688296006783,0.02606043428479282,1,0,5,FALSE,0.8333333333333334,trust_president,,DIVERGENT,FLAT
+4,institutional_trust_executive,5,0.021544393569667086,0.02268227738311182,1,0,4,FALSE,0.8,trust_police,,DIVERGENT,FLAT
+5,institutional_trust_executive,6,0.0031839984211228887,0.02766862282159609,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+6,institutional_trust_executive,6,0.0744634231365222,0.034385091944812776,4,0,2,TRUE,0.6666666666666666,trust_local_government; trust_military; trust_police; trust_president,,COHERENT_RISING,RISING
+7,institutional_trust_executive,6,0.01451704931869387,0.01978203509134922,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+8,institutional_trust_executive,6,-0.05910062910135123,0.025050373462639684,0,4,2,TRUE,0.6666666666666666,,trust_local_government; trust_military; trust_national_government; trust_president,COHERENT_FALLING,FALLING
+9,institutional_trust_executive,6,0.051113713801590355,0.011613821069041982,2,0,4,TRUE,0.6666666666666666,trust_local_government; trust_police,,COHERENT_RISING,RISING
+10,institutional_trust_executive,6,0.015474190530550259,0.011947680321075148,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+11,institutional_trust_executive,6,-0.02261413330781258,0.010336809368156622,0,0,6,TRUE,1,,,DIVERGENT,FLAT
+12,institutional_trust_executive,6,0.008938988522819328,0.02218784449719995,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+13,institutional_trust_executive,6,-0.006842135412167941,0.03560426333492622,0,1,5,FALSE,0.8333333333333334,,trust_president,DIVERGENT,FLAT
+1,institutional_trust_intermediary,7,0.008633576856019273,0.018603256781346843,0,0,7,FALSE,1,,,DIVERGENT,FLAT
+2,institutional_trust_intermediary,6,-0.02043404943155192,0.04862494194929142,0,1,5,FALSE,0.8333333333333334,,trust_election_commission,DIVERGENT,FLAT
+3,institutional_trust_intermediary,7,-0.012575094978455555,0.03618278487911498,0,1,6,FALSE,0.8571428571428571,,trust_ngos,DIVERGENT,FLAT
+4,institutional_trust_intermediary,6,0.028646073321007985,0.02800077572087087,2,0,4,FALSE,0.6666666666666666,trust_courts; trust_ngos,,DIVERGENT,FLAT
+5,institutional_trust_intermediary,7,-0.012260659036336113,0.04321763961620884,1,2,4,FALSE,0.5714285714285714,trust_newspapers,trust_election_commission; trust_parliament,DIVERGENT,FLAT
+6,institutional_trust_intermediary,7,0.05746705190095483,0.022517858514022812,4,0,3,TRUE,0.5714285714285714,trust_courts; trust_election_commission; trust_ngos; trust_television,,COHERENT_RISING,RISING
+7,institutional_trust_intermediary,7,-0.005657232070029311,0.017622237721414722,0,0,7,FALSE,1,,,DIVERGENT,FLAT
+8,institutional_trust_intermediary,7,-0.014642720383706563,0.04091690010227778,0,1,6,FALSE,0.8571428571428571,,trust_election_commission,DIVERGENT,FLAT
+9,institutional_trust_intermediary,7,0.06437446000696982,0.02616084362600298,5,0,2,TRUE,0.7142857142857143,trust_courts; trust_election_commission; trust_newspapers; trust_ngos; trust_television,,COHERENT_RISING,RISING
+10,institutional_trust_intermediary,6,0.031375598571355995,0.029996769497485143,3,0,3,FALSE,0.5,trust_newspapers; trust_ngos; trust_television,,DIVERGENT,FLAT
+11,institutional_trust_intermediary,7,-0.010391109378326413,0.047866041951689045,1,2,4,FALSE,0.5714285714285714,trust_ngos,trust_election_commission; trust_newspapers,DIVERGENT,FLAT
+12,institutional_trust_intermediary,5,-0.018857307321959716,0.04247162119020467,0,2,3,FALSE,0.6,,trust_election_commission; trust_ngos,DIVERGENT,FLAT
+13,institutional_trust_intermediary,7,0.002810664378217446,0.028212926083158063,0,0,7,FALSE,1,,,DIVERGENT,FLAT
+1,media_and_information,4,0.01889401500900636,0.07051225321079733,1,0,3,FALSE,0.75,news_internet,,DIVERGENT,FLAT
+2,media_and_information,4,0.06315787621889828,0.047062953097953,2,0,2,TRUE,0.5,news_internet; pol_news_follow,,COHERENT_RISING,RISING
+3,media_and_information,4,0.003098980532110584,0.056737951626863625,1,0,3,FALSE,0.75,news_internet,,DIVERGENT,FLAT
+4,media_and_information,4,0.020562219226779435,0.11072832981298496,1,1,2,FALSE,0.5,news_internet,pol_news_follow,DIVERGENT,FLAT
+5,media_and_information,4,-0.031157700272837135,0.14112604822550842,1,3,0,FALSE,0.75,news_internet,pol_discuss; pol_news_follow; political_interest,DIVERGENT,FLAT
+6,media_and_information,4,0.06130454917733056,0.0768877389736705,2,0,2,TRUE,0.5,news_internet; political_interest,,COHERENT_RISING,RISING
+7,media_and_information,4,0.028974595620733318,0.05763319139733826,1,0,3,FALSE,0.75,news_internet,,DIVERGENT,FLAT
+8,media_and_information,4,-0.0054015069894757795,0.12740826026814872,1,2,1,FALSE,0.5,news_internet,pol_news_follow; political_interest,DIVERGENT,FLAT
+9,media_and_information,4,0.028941811617440433,0.08656485116670408,1,0,3,FALSE,0.75,news_internet,,DIVERGENT,FLAT
+10,media_and_information,4,0.05242357218057027,0.05867262321851169,3,0,1,FALSE,0.75,news_internet; pol_discuss; political_interest,,DIVERGENT,RISING
+11,media_and_information,4,0.010300019055010858,0.1438358890127076,1,2,1,FALSE,0.5,news_internet,pol_news_follow; political_interest,DIVERGENT,FLAT
+12,media_and_information,4,-0.019249656873102865,0.1810934440697556,1,3,0,FALSE,0.75,news_internet,pol_discuss; pol_news_follow; political_interest,DIVERGENT,FLAT
+13,media_and_information,4,0.04342561513915017,0.09563341470303444,1,0,3,FALSE,0.75,news_internet,,DIVERGENT,FLAT
+1,political_action_contacting_protest,6,-0.1565395469170643,0.049708321592297516,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+2,political_action_contacting_protest,6,-0.2956309416316701,0.14547964399496283,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+3,political_action_contacting_protest,5,-0.1609844136999722,0.03834596952362811,0,5,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+4,political_action_contacting_protest,5,-0.26388948138328083,0.15924635606436965,0,5,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+5,political_action_contacting_protest,6,-0.1351914095538121,0.03948215329188486,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+6,political_action_contacting_protest,6,-0.15624564754332276,0.04798144816691975,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+7,political_action_contacting_protest,6,-0.15005142097721758,0.0423315259549752,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+8,political_action_contacting_protest,6,-0.14939442994029167,0.03717213065184684,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+9,political_action_contacting_protest,6,-0.1647691987786546,0.0487153510887398,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+10,political_action_contacting_protest,6,-0.13299850619577197,0.05200482309345258,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+11,political_action_contacting_protest,5,-0.12953866717132512,0.0738589415020994,0,4,1,TRUE,0.8,,action_contact_elected; action_contact_influential; action_contact_media; action_petition,COHERENT_FALLING,FALLING
+12,political_action_contacting_protest,6,-0.16392375649157429,0.06388491858103416,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+13,political_action_contacting_protest,6,-0.1511624615723865,0.046305548838697,0,6,0,TRUE,1,,action_contact_civil_servant; action_contact_elected; action_contact_influential; action_contact_media; action_demonstration; action_petition,COHERENT_FALLING,FALLING
+1,political_action_voting,4,-0.11213725763843359,0.09954617906279838,0,2,2,TRUE,0.5,,attended_campaign_rally; persuaded_others_vote,COHERENT_FALLING,FALLING
+2,political_action_voting,4,-0.12795532675683477,0.14909596757323668,0,3,1,FALSE,0.75,,attended_campaign_rally; persuaded_others_vote; voting_frequency,DIVERGENT,FALLING
+3,political_action_voting,4,-0.08879213594913588,0.11725247480157992,0,2,2,FALSE,0.5,,attended_campaign_rally; persuaded_others_vote,DIVERGENT,FALLING
+4,political_action_voting,4,-0.10651225908471883,0.05022417094841511,0,4,0,TRUE,1,,attended_campaign_rally; persuaded_others_vote; voted_last_election; voting_frequency,COHERENT_FALLING,FALLING
+5,political_action_voting,4,-0.025716026957260416,0.051016179231400546,0,1,3,FALSE,0.75,,persuaded_others_vote,DIVERGENT,FLAT
+6,political_action_voting,4,-0.051794627276066804,0.10275632013284254,1,2,1,FALSE,0.5,voted_last_election,attended_campaign_rally; persuaded_others_vote,DIVERGENT,FALLING
+7,political_action_voting,4,-0.10056642827664215,0.0912476884564608,0,2,2,TRUE,0.5,,attended_campaign_rally; persuaded_others_vote,COHERENT_FALLING,FALLING
+8,political_action_voting,4,-0.0464770258386088,0.07341836941379391,0,1,3,FALSE,0.75,,persuaded_others_vote,DIVERGENT,FLAT
+9,political_action_voting,4,-0.071315431425155,0.0990537157752048,0,2,2,FALSE,0.5,,attended_campaign_rally; persuaded_others_vote,DIVERGENT,FALLING
+10,political_action_voting,4,0.018417335699060983,0.21791218528983491,2,2,0,FALSE,0.5,voted_last_election; voting_frequency,attended_campaign_rally; persuaded_others_vote,DIVERGENT,FLAT
+11,political_action_voting,4,-0.051879310225998454,0.060632494766453084,0,2,2,FALSE,0.5,,voted_last_election; voting_frequency,DIVERGENT,FALLING
+12,political_action_voting,4,0.031790814974382235,0.07158801148152845,2,0,2,FALSE,0.5,voted_last_election; voting_frequency,,DIVERGENT,FLAT
+13,political_action_voting,4,-0.024807871945461118,0.10935954093087476,2,2,0,FALSE,0.5,voted_last_election; voting_frequency,attended_campaign_rally; persuaded_others_vote,DIVERGENT,FLAT
+1,political_efficacy,4,-0.02363914371665108,0.08704794745545377,1,1,2,FALSE,0.5,efficacy_no_influence,efficacy_ability_participate,DIVERGENT,FLAT
+2,political_efficacy,4,-0.0374208481775954,0.1063062831317743,1,2,1,FALSE,0.5,democracy_efficacy,efficacy_ability_participate; efficacy_politics_complicated,DIVERGENT,FLAT
+3,political_efficacy,4,-0.02453475336855599,0.06359006214259952,0,1,3,FALSE,0.75,,efficacy_ability_participate,DIVERGENT,FLAT
+4,political_efficacy,4,-0.025682418507367476,0.027430670152623234,0,1,3,FALSE,0.75,,efficacy_ability_participate,DIVERGENT,FLAT
+5,political_efficacy,4,-0.02656222248036315,0.053781190131610104,0,1,3,FALSE,0.75,,democracy_efficacy,DIVERGENT,FLAT
+6,political_efficacy,4,-0.0034551854924289053,0.0687654240742534,1,1,2,FALSE,0.5,democracy_efficacy,efficacy_ability_participate,DIVERGENT,FLAT
+7,political_efficacy,4,-0.010776471788295177,0.027488208015114073,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+8,political_efficacy,4,-0.008938938383568676,0.06009782370193256,1,2,1,FALSE,0.5,efficacy_ability_participate,democracy_efficacy; efficacy_politics_complicated,DIVERGENT,FLAT
+9,political_efficacy,4,0.005684137837713151,0.010377578713271758,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+10,political_efficacy,4,-0.02681951154612105,0.015152149504545007,0,0,4,TRUE,1,,,DIVERGENT,FLAT
+11,political_efficacy,4,-0.011606021366571868,0.02433423311724503,0,0,4,FALSE,1,,,DIVERGENT,FLAT
+12,political_efficacy,4,-0.05708983729728373,0.03648766969124303,0,3,1,TRUE,0.75,,democracy_efficacy; efficacy_ability_participate; efficacy_politics_complicated,COHERENT_FALLING,FALLING
+13,political_efficacy,4,-0.02613949959920992,0.02691821109378092,0,1,3,FALSE,0.75,,efficacy_ability_participate,DIVERGENT,FLAT
+1,regime_comparative,2,-0.0352662425519189,9.894443382379731e-4,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+2,regime_comparative,2,-0.034896687095211064,0.01994055050790414,0,0,2,TRUE,1,,,DIVERGENT,FLAT
+3,regime_comparative,2,-0.04663664148159201,0.004847620738808216,0,1,1,TRUE,0.5,,dem_rating_china,DIVERGENT,FLAT
+5,regime_comparative,2,-0.049028118086571565,0.09487149845535865,0,1,1,FALSE,0.5,,dem_rating_usa,DIVERGENT,FLAT
+6,regime_comparative,2,-0.0442932700270655,0.008169492681551394,0,1,1,TRUE,0.5,,dem_rating_usa,DIVERGENT,FLAT
+7,regime_comparative,2,-0.06981446381785478,0.041832848006402634,0,1,1,TRUE,0.5,,dem_rating_usa,COHERENT_FALLING,FALLING
+8,regime_comparative,2,-0.10849235079383841,0.04910138093474231,0,2,0,TRUE,1,,dem_rating_china; dem_rating_usa,COHERENT_FALLING,FALLING
+9,regime_comparative,2,-0.06127897532670015,0.02568229411354179,0,1,1,TRUE,0.5,,dem_rating_usa,COHERENT_FALLING,FALLING
+10,regime_comparative,2,-0.09905075898325927,0.005493145605875419,0,2,0,TRUE,1,,dem_rating_china; dem_rating_usa,COHERENT_FALLING,FALLING
+11,regime_comparative,2,-0.03202423468440682,0.08874754161967882,0,1,1,FALSE,0.5,,dem_rating_china,DIVERGENT,FLAT
+12,regime_comparative,2,-0.07484547223431569,0.07321237803118746,0,1,1,TRUE,0.5,,dem_rating_usa,COHERENT_FALLING,FALLING
+13,regime_comparative,2,0.008444288669441333,0.016048885162920145,0,0,2,FALSE,1,,,DIVERGENT,FLAT
+1,rule_of_law,5,-0.060865384834265374,0.04056005241974309,0,2,3,TRUE,0.6,,gov_economic_equality; gov_free_to_organize,COHERENT_FALLING,FALLING
+2,rule_of_law,5,-0.0504798861656506,0.054881446847176586,0,2,3,FALSE,0.6,,gov_ethnic_equality; gov_free_to_organize,DIVERGENT,FALLING
+3,rule_of_law,5,-0.027066777550469604,0.0635520787580429,0,2,3,FALSE,0.6,,gov_economic_equality; gov_free_to_organize,DIVERGENT,FLAT
+4,rule_of_law,5,-0.016894883243558118,0.06483878581937302,0,1,4,FALSE,0.8,,gov_free_to_organize,DIVERGENT,FLAT
+5,rule_of_law,5,-0.06144785895302702,0.04612549673936755,0,4,1,FALSE,0.8,,gov_economic_equality; gov_ethnic_equality; gov_free_to_organize; rich_poor_treated_equally,DIVERGENT,FALLING
+6,rule_of_law,5,0.03133887062324441,0.06765610222283648,2,0,3,FALSE,0.6,gov_ethnic_equality; rich_poor_treated_equally,,DIVERGENT,FLAT
+7,rule_of_law,5,0.001462513487511999,0.05730024286894493,2,1,2,FALSE,0.4,gov_ethnic_equality; rich_poor_treated_equally,gov_economic_equality,DIVERGENT,FLAT
+8,rule_of_law,5,-0.036707602088176576,0.028557005026918523,0,2,3,FALSE,0.6,,gov_ethnic_equality; rich_poor_treated_equally,DIVERGENT,FLAT
+9,rule_of_law,5,0.007083530650304984,0.023881268750869315,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+10,rule_of_law,5,0.007135686573359168,0.027567010201231274,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+11,rule_of_law,5,-0.030701168934228338,0.029302637964247737,0,1,4,TRUE,0.8,,gov_free_to_organize,DIVERGENT,FLAT
+12,rule_of_law,5,-0.006906595303868271,0.07722655537732882,1,2,2,FALSE,0.4,rich_poor_treated_equally,gov_basic_necessities; gov_free_to_organize,DIVERGENT,FLAT
+13,rule_of_law,5,-0.014325663282294504,0.029473242688764254,0,0,5,FALSE,1,,,DIVERGENT,FLAT
+1,social_trust,6,-7.681847124116707e-4,0.04217019656478861,1,1,4,FALSE,0.6666666666666666,trust_govt_do_right,trust_generalized_ordinal,DIVERGENT,FLAT
+2,social_trust,6,0.046041146653888074,0.0955191663995638,3,2,1,FALSE,0.5,trust_generalized_binary; trust_neighbors; trust_relatives,trust_generalized_ordinal; trust_govt_do_right,DIVERGENT,FLAT
+3,social_trust,6,-0.014228875458530662,0.03256802981259109,0,1,5,FALSE,0.8333333333333334,,trust_generalized_ordinal,DIVERGENT,FLAT
+4,social_trust,6,0.07842986478550948,0.11109519383575009,3,1,2,FALSE,0.5,trust_acquaintances; trust_neighbors; trust_relatives,trust_govt_do_right,DIVERGENT,RISING
+5,social_trust,6,0.050695887206248735,0.09781486630035376,3,1,2,FALSE,0.5,trust_acquaintances; trust_neighbors; trust_relatives,trust_generalized_ordinal,DIVERGENT,RISING
+6,social_trust,6,0.00314398809440358,0.019074234214497852,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+7,social_trust,6,4.442215862681663e-4,0.014820705478498362,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+8,social_trust,6,-0.051949105143292554,0.054443666362516144,0,3,3,FALSE,0.5,,trust_acquaintances; trust_generalized_ordinal; trust_govt_do_right,DIVERGENT,FALLING
+9,social_trust,6,0.036130562723604084,0.05466520924617028,2,0,4,FALSE,0.6666666666666666,trust_acquaintances; trust_generalized_binary,,DIVERGENT,FLAT
+10,social_trust,6,0.0032451651580066142,0.021335546463332078,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+11,social_trust,6,-0.07434112347831065,0.030858555251405222,0,5,1,TRUE,0.8333333333333334,,trust_acquaintances; trust_generalized_binary; trust_generalized_ordinal; trust_govt_do_right; trust_neighbors,COHERENT_FALLING,FALLING
+12,social_trust,6,-0.009704005226512435,0.029675251623262327,0,0,6,FALSE,1,,,DIVERGENT,FLAT
+13,social_trust,6,0.010693783280860257,0.03357048047949936,1,0,5,FALSE,0.8333333333333334,trust_acquaintances,,DIVERGENT,FLAT

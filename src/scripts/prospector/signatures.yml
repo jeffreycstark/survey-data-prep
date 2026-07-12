@@ -42,3 +42,31 @@ signatures:
     description: "Witnessed corruption falls while perceived systemic corruption stays high"
     required: { corruption: FLAT }
     supporting: {}
+  authoritarian_drift:
+    label: "Authoritarian Drift"
+    description: "Normative democratic support falling while support for authoritarian alternatives rises"
+    required: { democracy_support_normative: FALLING, authoritarian_support: RISING }
+  diffuse_specific_decoupling:
+    label: "Diffuse-Specific Decoupling"
+    description: "Satisfaction with democratic performance falls while diffuse commitment to democracy holds"
+    required: { democratic_satisfaction: FALLING }
+    supporting: { democracy_support_normative: [RISING, FLAT] }
+  rule_of_law_erosion:
+    label: "Rule-of-Law Erosion"
+    description: "Equal-treatment / rule-of-law perceptions fall alongside weakening accountability"
+    required: { rule_of_law: FALLING }
+    supporting: { accountability_perceptions: [FALLING, FLAT] }
+  alienation_withdrawal:
+    label: "Alienation Withdrawal"
+    description: "Political efficacy falls and non-electoral participation collapses together"
+    required: { political_efficacy: FALLING, political_action_contacting_protest: FALLING }
+  output_trust_legitimation:
+    label: "Output Trust Legitimation"
+    description: "Economic conditions and executive trust rise while empirical democratic quality is flat/falling"
+    required: { economic_present: RISING, institutional_trust_executive: RISING }
+    supporting: { democracy_assessment_empirical: [FALLING, FLAT] }
+  accountable_dissatisfaction:
+    label: "Accountable Dissatisfaction"
+    description: "Satisfaction and executive trust fall while diffuse democratic commitment holds — accountability working"
+    required: { democratic_satisfaction: FALLING, institutional_trust_executive: FALLING }
+    supporting: { democracy_support_normative: [RISING, FLAT] }
