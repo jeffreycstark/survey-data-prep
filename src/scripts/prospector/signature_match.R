@@ -55,6 +55,17 @@ eval_simple_condition <- function(cond, row) {
   }, logical(1)))
 }
 
+# level: a group-level top-level clause (Phase 2). Each value must be wrapped
+# as {level: value} before evaluation — `eval_simple_condition`'s bare-string
+# handling treats an unwrapped scalar as a `dir` clause, not a `level` clause.
+.eval_level <- function(levels, features, cty) {
+  if (length(levels) == 0) return(TRUE)
+  all(vapply(names(levels), function(g) {
+    row <- .row_for(features, cty, g)
+    !is.null(row) && eval_simple_condition(list(level = levels[[g]]), row)
+  }, logical(1)))
+}
+
 # within: every named sub-variable in the group must match its direction.
 eval_within <- function(within_spec, var_slopes, cty) {
   if (is.null(within_spec) || length(within_spec) == 0) return(TRUE)
@@ -88,7 +99,7 @@ match_signatures <- function(features, sigs, var_slopes = NULL) {
       s <- sigs[[pid]]
       req <- .eval_required(s$required %||% list(), features, cty)
       sup <- .eval_supporting(s$supporting %||% list(), features, cty)
-      lvl <- .eval_required(s$level %||% list(), features, cty)      # Phase 2, treated as required
+      lvl <- .eval_level(s$level %||% list(), features, cty)         # Phase 2
       wth <- eval_within(s$within, var_slopes, cty)
       ord <- eval_ordered(s$ordered, features, cty)
       if (req && sup && lvl && wth && ord)

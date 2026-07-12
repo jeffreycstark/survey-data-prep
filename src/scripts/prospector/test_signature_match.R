@@ -5,7 +5,7 @@ pass <- 0L; fail <- 0L
 ok <- function(cond, msg) { if (isTRUE(cond)) { pass <<- pass + 1L } else { fail <<- fail + 1L; cat("FAIL:", msg, "\n") } }
 
 sigs <- load_signatures(file.path(here_dir, "signatures.yml"))
-ok(length(sigs) == 14, "14 signatures loaded")
+ok(length(sigs) == 20, "20 signatures loaded")
 ok(identical(sigs$aspiration_gap$required$democracy_assessment_empirical, "FALLING"), "aspiration_gap required dir")
 ok(setequal(unlist(sigs$output_legitimacy$supporting$democracy_assessment_empirical), c("FALLING","FLAT")), "output_legitimacy supporting vector")
 
@@ -129,5 +129,22 @@ ordered_spec <- list(list(group="political_action_contacting_protest", dir="FALL
 ok(eval_ordered(ordered_spec, fo, "S"), "ordered fires when protest breaks before authoritarian rise")
 fo2 <- fo %>% mutate(broke_at_wave = c(5,4))  # protest breaks AFTER
 ok(!eval_ordered(ordered_spec, fo2, "S"), "ordered blocked when order reversed")
+
+# ── Phase 2 acceptance tests: coup_honeymoon, accelerating_trust_collapse ──
+sigs <- load_signatures(file.path(here_dir, "signatures.yml"))  # reload with Phase-2 entries
+
+# coup honeymoon: authoritarian_support shape REVERSED_UP
+fh <- tribble(~country,~group,~group_direction,~magnitude_tier,~shape,~ends_level,~broke_at_wave,
+  "TH","authoritarian_support","FLAT","SLOW","REVERSED_UP","MID",NA_real_)
+ok("coup_honeymoon" %in% match_signatures(fh, sigs)$pattern_id, "coup_honeymoon fires on REVERSED_UP")
+
+# accelerating trust collapse
+fc <- tribble(~country,~group,~group_direction,~magnitude_tier,~shape,~ends_level,~broke_at_wave,
+  "SWZ","institutional_trust_executive","FALLING","FAST","STEADY","LOW",8,
+  "SWZ","institutional_trust_intermediary","FALLING","SLOW","STEADY","LOW",8)
+ok("accelerating_trust_collapse" %in% match_signatures(fc, sigs)$pattern_id, "accelerating_trust_collapse fires")
+# negative control: magnitude SLOW
+fc2 <- fc %>% mutate(magnitude_tier = if_else(group=="institutional_trust_executive","SLOW",magnitude_tier))
+ok(!("accelerating_trust_collapse" %in% match_signatures(fc2, sigs)$pattern_id), "blocked when exec not FAST")
 
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

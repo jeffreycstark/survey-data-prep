@@ -45,6 +45,10 @@ if (!exists("Z_THRESHOLD"))         Z_THRESHOLD         <- 2.0
 if (!exists("CI_ALPHA"))            CI_ALPHA            <- 0.05     # CI level for slopes
 if (!exists("QUAD_MIN_WAVES"))      QUAD_MIN_WAVES      <- 4        # min waves to fit quadratic
 if (!exists("FLAT_THRESHOLD"))      FLAT_THRESHOLD      <- 0.05     # |slope| below = "FLAT"
+if (!exists("FAST_THRESHOLD"))      FAST_THRESHOLD      <- 0.15     # |mean_slope| above = "FAST"
+if (!exists("ENDS_LOW"))            ENDS_LOW            <- 0.33     # normalized endpoint below = "LOW"
+if (!exists("ENDS_HIGH"))           ENDS_HIGH           <- 0.66     # normalized endpoint above = "HIGH"
+if (!exists("SHAPE_QUORUM"))        SHAPE_QUORUM        <- 0.5      # member share to assign a group shape
 
 # Normalization: "minmax" (default) or "robust" (5th–95th percentile, outlier-resistant)
 if (!exists("NORM_METHOD"))         NORM_METHOD         <- "minmax"
@@ -555,9 +559,18 @@ narrative_results <- tibble()
 if (DO_NARRATIVE && nrow(group_coherence) > 0) {
   cat("\n── Narrative pattern detection ──\n")
   sigs <- load_signatures(SIGNATURES_PATH)
-  features <- group_coherence %>%
-    mutate(country = as.character(country))   # Phase 2 enriches this frame
-  narrative_results <- match_signatures(features, sigs)
+  breaks_located <- augment_breaks_with_location(eligible_for_breaks, significant_breaks)
+  thr <- list(FAST = FAST_THRESHOLD, ENDS_LOW = ENDS_LOW, ENDS_HIGH = ENDS_HIGH,
+              SHAPE_QUORUM = SHAPE_QUORUM)
+  acc_for_feat <- if (exists("acceleration")) acceleration else
+                  tibble(country=character(), variable=character(),
+                         early_slope=numeric(), late_slope=numeric(),
+                         acceleration=numeric(), direction_change=logical())
+  features <- build_group_features(group_coherence, harmonized_data, acc_for_feat,
+                                   breaks_located, group_lookup, thr)
+  var_slopes <- slopes %>% mutate(country = as.character(country)) %>%
+                select(country, variable, direction)
+  narrative_results <- match_signatures(features, sigs, var_slopes = var_slopes)
   cat(sprintf("%d narrative pattern matches found\n", nrow(narrative_results)))
   write_csv(narrative_results, file.path(OUTPUT_DIR, "narrative_patterns.csv"))
   cat(sprintf("── Saved: %s/narrative_patterns.csv ──\n", OUTPUT_DIR))

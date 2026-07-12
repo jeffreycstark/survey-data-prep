@@ -1,6 +1,13 @@
 # Signature registry for the Slope Prospector.
 # A slot value is a direction (RISING/FALLING/FLAT), a list of allowed
 # directions, or (Phase 2) a condition map {dir:, magnitude:, shape:, level:}.
+# Enum values, matching signature_features.R's build_group_features() output:
+#   dir:       RISING | FALLING | FLAT
+#   magnitude: FAST | SLOW               (magnitude_tier)
+#   shape:     REVERSED_UP | REVERSED_DOWN | ACCELERATING | DECELERATING | STEADY
+#   level:     LOW | MID | HIGH          (ends_level; NOT "ENDS_LOW"/"ENDS_HIGH" —
+#              those names belong to the numeric threshold globals in
+#              slope_prospector.R that classify LOW/HIGH, not the value itself)
 signatures:
   output_legitimacy:
     label: "Output Legitimacy Signature"
@@ -70,3 +77,34 @@ signatures:
     description: "Satisfaction and executive trust fall while diffuse democratic commitment holds — accountability working"
     required: { democratic_satisfaction: FALLING, institutional_trust_executive: FALLING }
     supporting: { democracy_support_normative: [RISING, FLAT] }
+  coup_honeymoon:
+    label: "Coup Honeymoon"
+    description: "Support for authoritarian alternatives spikes then reverts"
+    required: { authoritarian_support: { shape: REVERSED_UP } }
+  authoritarian_ascendant:
+    label: "Authoritarian Ascendant"
+    description: "Support for authoritarian alternatives rising and now at a high level"
+    required: { authoritarian_support: { dir: RISING, level: HIGH } }
+  accelerating_trust_collapse:
+    label: "Accelerating Trust Collapse"
+    description: "Executive trust falling fast to a floor while intermediary trust also falls"
+    required:
+      institutional_trust_executive:    { dir: FALLING, magnitude: FAST }
+      institutional_trust_intermediary: FALLING
+    level: { institutional_trust_executive: LOW }
+  true_demobilization_sequence:
+    label: "True Demobilization Sequence"
+    description: "Non-electoral participation breaks downward before authoritarian support breaks upward"
+    ordered:
+      - { group: political_action_contacting_protest, dir: FALLING }
+      - { group: authoritarian_support,               dir: RISING }
+  selective_accountability:
+    label: "Selective Accountability"
+    description: "Elections seen as offering real choice while courts are seen as powerless"
+    within:
+      accountability_perceptions: { gov_elections_real_choice: RISING, gov_courts_powerless: RISING }
+  efficacy_trap:
+    label: "Efficacy Trap"
+    description: "Citizens feel more able to participate yet more convinced they have no influence"
+    within:
+      political_efficacy: { efficacy_ability_participate: RISING, efficacy_no_influence: RISING }
