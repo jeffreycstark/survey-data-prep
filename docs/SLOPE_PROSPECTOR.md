@@ -101,6 +101,8 @@ Each signature in `src/scripts/prospector/signatures.yml` has `required`/`suppor
 - a list of directions — e.g. `[FALLING, FLAT]`;
 - a condition map with any of `dir`, `magnitude` (`SLOW`/`FAST`), `shape` (`STEADY`/`REVERSED_UP`/`REVERSED_DOWN`/`ACCELERATING`/`DECELERATING`), `level` (`LOW`/`MID`/`HIGH`) — evaluated against the enriched group feature frame built by `signature_features.R` (`magnitude_tier`, `shape`, `ends_level`).
 
+`level` may appear either inline inside a condition map (`{dir: RISING, level: HIGH}`, e.g. `authoritarian_ascendant`) or as its own top-level `level:` clause on the signature, evaluated like `required` (e.g. `accelerating_trust_collapse`'s `level: { institutional_trust_executive: LOW }`) — both idioms in `signatures.yml` are intentional and equivalent for a single group.
+
 Two structural clauses sit above the per-group slots:
 
 - `within`: every named sub-variable inside a group must satisfy its own direction (evaluated against `var_slopes`, not the group frame) — e.g. `selective_accountability` requires `gov_elections_real_choice: RISING` and `gov_courts_powerless: RISING` both within `accountability_perceptions`.

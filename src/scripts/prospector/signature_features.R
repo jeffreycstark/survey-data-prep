@@ -11,6 +11,8 @@ augment_breaks_with_location <- function(eligible, sig_breaks) {
     group_modify(~ {
       ts <- .x %>% arrange(wave_num)
       wave <- tryCatch({
+        # NOTE: break_wave = NA means EITHER no break OR series too short to locate one
+        # (breakpoints() with h=3 needs >= 6 observations); downstream `ordered` treats NA as non-firing.
         bp <- strucchange::breakpoints(mean_value ~ wave_num, data = ts, h = 3)
         idx <- bp$breakpoints
         if (length(idx) == 0 || all(is.na(idx))) NA_real_ else ts$wave_num[idx[1]]
@@ -36,7 +38,7 @@ build_group_features <- function(group_coherence, harmonized_data, acceleration,
     slice_max(wave_num, n = 1, with_ties = FALSE) %>%
     ungroup() %>%
     select(country, variable, end_val = mean_value) %>%
-    inner_join(group_lookup, by = "variable") %>%
+    inner_join(group_lookup, by = "variable", relationship = "many-to-many") %>%
     group_by(country, group) %>%
     summarise(end_level = mean(end_val, na.rm = TRUE), .groups = "drop") %>%
     mutate(ends_level = case_when(end_level > thr$ENDS_HIGH ~ "HIGH",
@@ -46,10 +48,9 @@ build_group_features <- function(group_coherence, harmonized_data, acceleration,
   # shape: aggregate acceleration over group members with a quorum
   shape_tbl <- acceleration %>%
     mutate(country = as.character(country)) %>%
-    inner_join(group_lookup, by = "variable") %>%
+    inner_join(group_lookup, by = "variable", relationship = "many-to-many") %>%
     group_by(country, group) %>%
     summarise(
-      n = n(),
       rev_up   = mean(direction_change & early_slope <= 0 & late_slope > 0),
       rev_down = mean(direction_change & early_slope >= 0 & late_slope < 0),
       accel    = mean(!direction_change & abs(late_slope) > abs(early_slope)),

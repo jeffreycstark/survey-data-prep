@@ -69,6 +69,7 @@ eval_simple_condition <- function(cond, row) {
 # within: every named sub-variable in the group must match its direction.
 eval_within <- function(within_spec, var_slopes, cty) {
   if (is.null(within_spec) || length(within_spec) == 0) return(TRUE)
+  if (is.null(var_slopes)) return(FALSE)   # a within-signature cannot fire without variable-level data
   vs <- var_slopes[var_slopes$country == cty, , drop = FALSE]
   all(vapply(names(within_spec), function(grp) {
     reqs <- within_spec[[grp]]

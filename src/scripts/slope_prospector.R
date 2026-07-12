@@ -336,6 +336,8 @@ write_csv(opposite_movers, file.path(OUTPUT_DIR, "divergent_pairs.csv"))
 
 # ── 7. ACCELERATION DETECTION ────────────────────────────────────────────────
 
+acceleration <- NULL   # reset so a stale prior value can't leak across repeated interactive source()
+
 if (n_distinct(harmonized_data$wave_num) >= 4) {
 
   mid_wave <- median(unique(harmonized_data$wave_num))
@@ -562,7 +564,7 @@ if (DO_NARRATIVE && nrow(group_coherence) > 0) {
   breaks_located <- augment_breaks_with_location(eligible_for_breaks, significant_breaks)
   thr <- list(FAST = FAST_THRESHOLD, ENDS_LOW = ENDS_LOW, ENDS_HIGH = ENDS_HIGH,
               SHAPE_QUORUM = SHAPE_QUORUM)
-  acc_for_feat <- if (exists("acceleration")) acceleration else
+  acc_for_feat <- if (!is.null(acceleration)) acceleration else
                   tibble(country=character(), variable=character(),
                          early_slope=numeric(), late_slope=numeric(),
                          acceleration=numeric(), direction_change=logical())

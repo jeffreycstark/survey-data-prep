@@ -177,4 +177,28 @@ fe_vs2 <- dplyr::mutate(fe_vs, direction=c("RISING","FALLING"))
 ok(!("efficacy_trap" %in% match_signatures(fe_feats, sigs, var_slopes=fe_vs2)$pattern_id),
    "efficacy_trap blocked when one sub-variable mismatches")
 
+# eval_ordered negative controls (missing group / NA break wave / direction mismatch)
+fo_missing <- tribble(~country, ~group,                                ~group_direction, ~broke_at_wave,
+                      "OM",     "political_action_contacting_protest", "FALLING",        3)
+ok(!("true_demobilization_sequence" %in% match_signatures(fo_missing, sigs)$pattern_id),
+   "true_demobilization_sequence blocked when a sequenced group is absent")
+fo_na <- tribble(~country, ~group,                                ~group_direction, ~broke_at_wave,
+                 "ON",     "political_action_contacting_protest", "FALLING",        NA_real_,
+                 "ON",     "authoritarian_support",               "RISING",         5)
+ok(!("true_demobilization_sequence" %in% match_signatures(fo_na, sigs)$pattern_id),
+   "true_demobilization_sequence blocked when a break wave is NA")
+fo_dir <- tribble(~country, ~group,                                ~group_direction, ~broke_at_wave,
+                  "OD",     "political_action_contacting_protest", "RISING",         3,
+                  "OD",     "authoritarian_support",                "RISING",         5)
+ok(!("true_demobilization_sequence" %in% match_signatures(fo_dir, sigs)$pattern_id),
+   "true_demobilization_sequence blocked when a group's direction is wrong")
+
+# selective_accountability end-to-end firing test
+sa_feats <- tibble(country="SA", group="accountability_perceptions", group_direction="FLAT",
+                   magnitude_tier="SLOW", shape="STEADY", ends_level="MID", broke_at_wave=NA_real_)
+sa_vs <- tibble(country="SA", variable=c("gov_elections_real_choice","gov_courts_powerless"),
+                direction=c("RISING","RISING"))
+ok("selective_accountability" %in% match_signatures(sa_feats, sigs, var_slopes=sa_vs)$pattern_id,
+   "selective_accountability fires (elections real choice up while courts powerless up)")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
