@@ -11,6 +11,7 @@ signatures:
     label: "Demobilization Sequence"
     description: "Contacting/protest collapsing while authoritarian support rises"
     required: { political_action_contacting_protest: FALLING, authoritarian_support: RISING }
+    supporting: {}
   aspiration_gap:
     label: "Democratic Aspiration Gap"
     description: "Normative democratic preference stable while empirical assessment falls"
@@ -25,10 +26,12 @@ signatures:
     label: "Trust Collapse"
     description: "Both executive and intermediary institutions losing trust together"
     required: { institutional_trust_executive: FALLING, institutional_trust_intermediary: FALLING }
+    supporting: {}
   selective_legitimation:
     label: "Selective Legitimation"
     description: "Executive trust rising while courts, parties, media fall"
     required: { institutional_trust_executive: RISING, institutional_trust_intermediary: FALLING }
+    supporting: {}
   economic_pessimism:
     label: "Economic Pessimism Decoupling"
     description: "Present economic conditions stable while outlook deteriorates"
@@ -38,3 +41,4 @@ signatures:
     label: "Corruption Normalization"
     description: "Witnessed corruption falls while perceived systemic corruption stays high"
     required: { corruption: FLAT }
+    supporting: {}
