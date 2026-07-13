@@ -99,6 +99,8 @@ build_group_features <- function(group_coherence, harmonized_data, acceleration,
       summarise(convex  = mean(nonlinear & quad_term > 0, na.rm = TRUE),
                 concave = mean(nonlinear & quad_term < 0, na.rm = TRUE),
                 .groups = "drop") %>%
+      # an exact convex/concave tie at quorum resolves to CONVEX by clause order
+      # (same first-match convention as shape_tbl above)
       mutate(curvature = case_when(convex  >= thr$CURVE_QUORUM ~ "CONVEX",
                                    concave >= thr$CURVE_QUORUM ~ "CONCAVE",
                                    TRUE                        ~ "LINEAR")) %>%

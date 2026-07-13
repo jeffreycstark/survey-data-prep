@@ -1,13 +1,18 @@
 # Signature registry for the Slope Prospector.
 # A slot value is a direction (RISING/FALLING/FLAT), a list of allowed
-# directions, or (Phase 2) a condition map {dir:, magnitude:, shape:, level:}.
+# directions, or a condition map {dir:, magnitude:, shape:, level:, coherence:,
+# volatility:, curvature:}.
 # Enum values, matching signature_features.R's build_group_features() output:
-#   dir:       RISING | FALLING | FLAT
-#   magnitude: FAST | SLOW               (magnitude_tier)
-#   shape:     REVERSED_UP | REVERSED_DOWN | ACCELERATING | DECELERATING | STEADY
-#   level:     LOW | MID | HIGH          (ends_level; NOT "ENDS_LOW"/"ENDS_HIGH" —
-#              those names belong to the numeric threshold globals in
-#              slope_prospector.R that classify LOW/HIGH, not the value itself)
+#   dir:        RISING | FALLING | FLAT
+#   magnitude:  FAST | SLOW               (magnitude_tier)
+#   shape:      REVERSED_UP | REVERSED_DOWN | ACCELERATING | DECELERATING | STEADY
+#   level:      LOW | MID | HIGH          (ends_level; NOT "ENDS_LOW"/"ENDS_HIGH" —
+#               those names belong to the numeric threshold globals in
+#               slope_prospector.R that classify LOW/HIGH, not the value itself)
+#   coherence:  COHERENT | DIVERGENT      (DIVERGENT = a genuine rising+falling split)
+#   volatility: STABLE | VOLATILE         (member slopes disagree in rate; sd_slope)
+#   curvature:  LINEAR | CONVEX | CONCAVE  (CONVEX = U-shape/quad>0; CONCAVE = hump)
+# Signature-level clauses (evaluated like `required`): within:, ordered:, level:.
 signatures:
   output_legitimacy:
     label: "Output Legitimacy Signature"
