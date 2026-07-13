@@ -25,6 +25,8 @@ ok(nrow(detect_polarization(df2, min_waves=3)) == 0, "variable with < min_waves 
 
 # NA-safe: sd_value NA rows are ignored, mean series still fit
 df3 <- df %>% mutate(sd_value = if_else(variable=="v_pol" & wave_num==1, NA_real_, sd_value))
-ok(nrow(detect_polarization(df3, min_waves=3)) >= 2, "NA sd rows tolerated (v_pol may drop below min_waves)")
+out3 <- detect_polarization(df3, min_waves=3)
+ok(nrow(out3) == 3 && "v_pol" %in% out3$variable,
+   "NA sd row dropped but v_pol keeps 3 valid waves and still classifies")
 
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

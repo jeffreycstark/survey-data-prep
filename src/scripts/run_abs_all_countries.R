@@ -78,6 +78,7 @@ INPUT_PATH          <- means_csv
 OUTPUT_DIR          <- here("outputs", "prospecting", "abs_all")
 MIN_WAVES           <- 3
 Z_THRESHOLD         <- 2.0
+FLAT_THRESHOLD      <- 0.05   # shared by the prospector and polarization detection
 CONCEPT_GROUPS_PATH <- here("src", "scripts", "concept_groups.yml")
 USE_WEIGHTED_SLOPES <- TRUE
 DO_CLUSTERING       <- TRUE
