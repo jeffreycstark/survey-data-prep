@@ -60,3 +60,34 @@ detect_polarization <- function(df, out_dir = NULL, min_waves = 3, flat_threshol
   }
   out
 }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# detect_sorting — subgroup-gap SORTING along a cleavage. Complements
+# detect_polarization: instead of raw spread, it tracks the gap between two
+# subgroups (e.g. high- vs low-education) and flags variables where that gap is
+# WIDENING (sorting along the cleavage) or NARROWING (converging).
+#
+# gaps_df needs: country, wave_num, variable, gap [, n]
+#   (gap = subgroup_high_mean - subgroup_low_mean, per country x wave x variable)
+# returns one row per country x variable with gap_slope + pattern
+# (WIDENING | NARROWING | OTHER); writes sorting.csv if out_dir.
+# ─────────────────────────────────────────────────────────────────────────────
+detect_sorting <- function(gaps_df, out_dir = NULL, min_waves = 3, flat_threshold = 0.05) {
+  stopifnot(all(c("country", "wave_num", "variable", "gap") %in% names(gaps_df)))
+
+  g <- gaps_df %>% filter(!is.na(gap)) %>% mutate(abs_gap = abs(gap))
+  out <- .pol_slopes(g %>% select(country, wave_num, variable, abs_gap, any_of("n")),
+                     abs_gap, min_waves) %>%
+    rename(gap_slope = slope) %>%
+    filter(!is.na(gap_slope)) %>%
+    mutate(pattern = case_when(gap_slope >  flat_threshold ~ "WIDENING",
+                               gap_slope < -flat_threshold ~ "NARROWING",
+                               TRUE                        ~ "OTHER")) %>%
+    arrange(desc(gap_slope))
+
+  if (!is.null(out_dir)) {
+    dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+    write_csv(out, file.path(out_dir, "sorting.csv"))
+  }
+  out
+}

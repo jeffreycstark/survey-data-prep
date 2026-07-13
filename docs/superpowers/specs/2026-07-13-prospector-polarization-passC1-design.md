@@ -2,7 +2,33 @@
 
 Date: 2026-07-13
 Branch: `feat/prospector-polarization-passC1`
-Status: C1a (SD-based) implemented; C1b (subgroup gaps) next.
+Status: C1a (SD-based) and C1b (subgroup gaps) both implemented.
+
+## C1b design (implemented)
+
+`detect_sorting(gaps_df, out_dir, min_waves, flat_threshold)` in the same
+`polarization.R` module (reuses `.pol_slopes`). `gaps_df` needs `country,
+wave_num, variable, gap [, n]` where `gap = high_subgroup_mean −
+low_subgroup_mean`. It fits a slope on the min-max-normalized `|gap|` and
+classifies each country×variable: `WIDENING` (`gap_slope > flat`, sorting along
+the cleavage), `NARROWING` (`< -flat`, converging), `OTHER`. Writes `sorting.csv`.
+
+**Cleavage:** education (`education_5cat`), high = post-secondary+ (4,5) vs low =
+none/primary (1,2); secondary (3) excluded to sharpen the contrast; `education*`
+items themselves excluded (cleavage-on-itself is trivial). Configurable to
+age/partisanship later. **Runner:** factored a `compute_means(data)` helper
+(behavior-identical for `means_long`) and call it on the two subgroups, join to
+the gap, and `detect_sorting → sorting.csv`.
+
+**Validation (ABS):** 2,064 rows — 443 WIDENING, 547 NARROWING, 1,074 OTHER.
+Top widening education gaps are overwhelmingly **Hong Kong**
+(`action_petition`, `action_demonstration`, `gov_leaders_abuse_power`,
+`trust_election_commission`, `system_capable`) — the education divide widening
+on protest participation and regime evaluation, invisible to a means-only tool.
+Signature suite unchanged (69/0), narrative signatures unchanged (14 firing).
+
+---
+
 
 ## Problem
 

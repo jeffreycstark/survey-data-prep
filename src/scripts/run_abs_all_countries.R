@@ -44,22 +44,21 @@ cat(sprintf("  Variables included in analysis: %d\n", length(vars)))
 # ── 3. COMPUTE COUNTRY x WAVE MEANS ──────────────────────────────────────────
 
 cat("Computing country-wave means...\n")
-means_long <- d %>%
-  select(country, wave, all_of(vars)) %>%
-  pivot_longer(
-    cols      = all_of(vars),
-    names_to  = "variable",
-    values_to = "value"
-  ) %>%
-  group_by(country, wave, variable) %>%
-  summarise(
-    mean_value = mean(value, na.rm = TRUE),
-    sd_value   = sd(value, na.rm = TRUE),
-    n          = sum(!is.na(value)),
-    .groups    = "drop"
-  ) %>%
-  rename(wave_num = wave) %>%
-  filter(!is.nan(mean_value))
+compute_means <- function(data) {
+  data %>%
+    select(country, wave, all_of(vars)) %>%
+    pivot_longer(cols = all_of(vars), names_to = "variable", values_to = "value") %>%
+    group_by(country, wave, variable) %>%
+    summarise(
+      mean_value = mean(value, na.rm = TRUE),
+      sd_value   = sd(value, na.rm = TRUE),
+      n          = sum(!is.na(value)),
+      .groups    = "drop"
+    ) %>%
+    rename(wave_num = wave) %>%
+    filter(!is.nan(mean_value))
+}
+means_long <- compute_means(d)
 
 cat(sprintf("  Means table: %s rows (%d countries x %d variables x waves)\n",
             format(nrow(means_long), big.mark = ","),
@@ -97,5 +96,22 @@ pol <- detect_polarization(means_long, out_dir = OUTPUT_DIR,
 pol_summary <- pol %>% count(pattern)
 print(as.data.frame(pol_summary))
 cat(sprintf("── Saved: %s/polarization.csv ──\n", OUTPUT_DIR))
+
+# ── 6. SORTING (subgroup-gap) DETECTION — education cleavage ──────────────────
+cat("\n── Sorting detection (high- vs low-education gap widening) ──\n")
+if ("education_5cat" %in% names(d)) {
+  m_hi <- compute_means(d %>% filter(education_5cat %in% c(4, 5)))   # post-secondary+
+  m_lo <- compute_means(d %>% filter(education_5cat %in% c(1, 2)))   # none/primary
+  gaps <- inner_join(m_hi, m_lo, by = c("country", "wave_num", "variable"),
+                     suffix = c("_hi", "_lo")) %>%
+    mutate(gap = mean_value_hi - mean_value_lo, n = pmin(n_hi, n_lo)) %>%
+    filter(!str_detect(variable, "^education"))   # cleavage-on-itself is trivial
+  srt <- detect_sorting(gaps, out_dir = OUTPUT_DIR, min_waves = MIN_WAVES,
+                        flat_threshold = FLAT_THRESHOLD)
+  print(as.data.frame(count(srt, pattern)))
+  cat(sprintf("── Saved: %s/sorting.csv ──\n", OUTPUT_DIR))
+} else {
+  cat("(education_5cat absent — skipping sorting)\n")
+}
 
 cat("\nDone. Results in:", OUTPUT_DIR, "\n")

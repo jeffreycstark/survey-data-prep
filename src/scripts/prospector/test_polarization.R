@@ -29,4 +29,18 @@ out3 <- detect_polarization(df3, min_waves=3)
 ok(nrow(out3) == 3 && "v_pol" %in% out3$variable,
    "NA sd row dropped but v_pol keeps 3 valid waves and still classifies")
 
+# ── detect_sorting: subgroup-gap widening/narrowing ──
+gaps <- bind_rows(
+  tibble(country="Z", variable="v_widen",  wave_num=1:4, gap=c(.1,.2,.3,.4), n=100),
+  tibble(country="Z", variable="v_narrow", wave_num=1:4, gap=c(.4,.3,.2,.1), n=100),
+  tibble(country="Z", variable="v_flat",   wave_num=1:4, gap=0.2,            n=100)
+)
+srt <- detect_sorting(gaps, min_waves=3, flat_threshold=0.05)
+ok(srt$pattern[srt$variable=="v_widen"]  == "WIDENING",  "growing subgroup gap -> WIDENING")
+ok(srt$pattern[srt$variable=="v_narrow"] == "NARROWING", "shrinking subgroup gap -> NARROWING")
+ok(srt$pattern[srt$variable=="v_flat"]   == "OTHER",     "constant subgroup gap -> OTHER")
+# sorting keys on |gap|, so a negative gap widening (more negative) also WIDENS
+gaps2 <- tibble(country="Z", variable="v_neg", wave_num=1:4, gap=c(-.1,-.2,-.3,-.4), n=100)
+ok(detect_sorting(gaps2, min_waves=3)$pattern == "WIDENING", "gap growing more negative -> WIDENING (|gap| based)")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
