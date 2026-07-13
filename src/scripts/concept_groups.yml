@@ -218,3 +218,93 @@ concept_groups:
     - dem_rating_usa
     - intl_china_country_influence_valence
     - intl_usa_country_influence_valence
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # Pass A expansion (2026-07-13): coverage-verified groups over previously
+  # ungrouped ABS batteries. Only variables with >= 3 waves are included, so
+  # each group can yield a slope. See the DEFERRED block at the end for the
+  # Wave-6-only batteries that become viable once a W7 gives them time depth.
+  # ══════════════════════════════════════════════════════════════════════════
+
+  # ── ILLIBERAL VALUES ───────────────────────────────────────────────────────
+  # Endorsement of illiberal executive action (censorship, judicial deference,
+  # leader discretion). Distinct from authoritarian_support (strongman/military
+  # regime forms) — this is approval of specific illiberal *acts*. Rising here
+  # is the attitudinal footprint of democratic backsliding.
+  illiberal_values:
+    - auth_govt_censor_ideas
+    - auth_judges_defer_executive
+    - govt_should_censor_ideas
+    - upright_leader_discretion
+
+  # ── ANTI-PLURALISM ─────────────────────────────────────────────────────────
+  # Belief that diversity/organized difference threatens social harmony —
+  # Levitsky-Ziblatt's marker for the erosion of pluralist norms.
+  anti_pluralism:
+    - antiplu_diversity_chaotic
+    - antiplu_groups_disrupt_harmony
+
+  # ── SYSTEM SUPPORT ─────────────────────────────────────────────────────────
+  # The four agree/disagree system-support items (reversed in harmonization so
+  # higher = more support). NOTE: system_needs_change is deliberately EXCLUDED —
+  # it is a different, opposite-polarity item (higher = more desire for change),
+  # per the ABS system-support gotcha in CLAUDE.md.
+  system_support:
+    - system_capable
+    - system_prefer
+    - system_proud
+    - system_deserves_support
+
+  # ── TRADITIONAL AUTHORITY ──────────────────────────────────────────────────
+  # Deference to hierarchical authority (parents, teachers, elders, religious
+  # authorities, coworkers, mother-in-law). Falling here is the value-change /
+  # modernization signal.
+  traditional_authority:
+    - trad_obey_parents
+    - trad_hierarchical_obedience
+    - trad_teacher_authority
+    - trad_religious_authorities
+    - trad_defer_coworkers
+    - trad_motherinlaw_obey
+
+  # ── GENDER TRADITIONALISM ──────────────────────────────────────────────────
+  # Traditional gender norms (women in politics, son preference). Kept separate
+  # from traditional_authority so a divergence between the two surfaces.
+  gender_traditionalism:
+    - trad_women_politics
+    - trad_son_preference
+
+  # ── ECONOMIC NATIONALISM ───────────────────────────────────────────────────
+  # Cultural defense + trade protection + immigration restriction — the
+  # populist economic-nationalist / cultural-backlash battery.
+  economic_nationalism:
+    - glob_cultural_defense
+    - glob_trade_protection
+    - glob_immigration_policy
+
+  # ── SOCIAL MOBILITY ────────────────────────────────────────────────────────
+  # The past>present>future mobility ladder (self/parents/children staircase)
+  # plus generational-opportunity. Falling = the mobility staircase collapsing.
+  social_mobility:
+    - self_staircase
+    - parents_staircase
+    - children_staircase
+    - econ_generation_opportunity
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # DEFERRED — Wave-6-only batteries (single wave as of ABS W6, so no slope can
+  # be estimated yet). Add these groups when a later wave gives them >= 3 waves:
+  #   democratic_criticism : democrit_citizens_not_ready, democrit_econ_over_democracy,
+  #                          democrit_harms_values, democrit_indecisive,
+  #                          democrit_ineffective_stability, demo_crit_poor_economy
+  #   emergency_powers     : emergency_powers_{corruption,economic_crisis,health_crisis,
+  #                          security_crisis,war} (+ emergency_* variants)
+  #   covid_restrictions   : covid_restrict_{censor_media,limit_assembly,
+  #                          postpone_elections,lockdown,track_location}
+  #   redistribution_prefs : econ_state_ownership, econ_govt_reduce_inequality,
+  #                          econ_distribution_fair, govt_resp_inequality
+  #   china_orientation /  : intl_china_* / intl_usa_* (mostly 2-wave as of W6)
+  #   usa_orientation
+  #   illiberal_values (+) : auth_econ_no_elections, auth_leader_break_rules,
+  #                          auth_leader_decree, auth_order_over_democracy
+  # ══════════════════════════════════════════════════════════════════════════

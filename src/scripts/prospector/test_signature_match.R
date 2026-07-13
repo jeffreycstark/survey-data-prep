@@ -5,7 +5,7 @@ pass <- 0L; fail <- 0L
 ok <- function(cond, msg) { if (isTRUE(cond)) { pass <<- pass + 1L } else { fail <<- fail + 1L; cat("FAIL:", msg, "\n") } }
 
 sigs <- load_signatures(file.path(here_dir, "signatures.yml"))
-ok(length(sigs) == 20, "20 signatures loaded")
+ok(length(sigs) == 27, "27 signatures loaded")
 ok(identical(sigs$aspiration_gap$required$democracy_assessment_empirical, "FALLING"), "aspiration_gap required dir")
 ok(setequal(unlist(sigs$output_legitimacy$supporting$democracy_assessment_empirical), c("FALLING","FLAT")), "output_legitimacy supporting vector")
 
@@ -200,5 +200,29 @@ sa_vs <- tibble(country="SA", variable=c("gov_elections_real_choice","gov_courts
                 direction=c("RISING","RISING"))
 ok("selective_accountability" %in% match_signatures(sa_feats, sigs, var_slopes=sa_vs)$pattern_id,
    "selective_accountability fires (elections real choice up while courts powerless up)")
+
+# ── Pass A rider-signature firing + negative-control tests ──
+sigs <- load_signatures(file.path(here_dir, "signatures.yml"))   # full 27-signature registry
+ok("illiberal_drift" %in% match_signatures(tibble(country="IL", group="illiberal_values", group_direction="RISING"), sigs)$pattern_id,
+   "illiberal_drift fires (illiberal_values RISING)")
+ok("anti_pluralist_turn" %in% match_signatures(tibble(country="AP", group="anti_pluralism", group_direction="RISING"), sigs)$pattern_id,
+   "anti_pluralist_turn fires (anti_pluralism RISING)")
+ok("system_support_erosion" %in% match_signatures(tibble(country="SS", group="system_support", group_direction="FALLING"), sigs)$pattern_id,
+   "system_support_erosion fires (system_support FALLING)")
+ok("value_modernization" %in% match_signatures(tibble(country="VM", group="traditional_authority", group_direction="FALLING"), sigs)$pattern_id,
+   "value_modernization fires (traditional_authority FALLING)")
+ok("economic_nationalist_turn" %in% match_signatures(tibble(country="EN", group="economic_nationalism", group_direction="RISING"), sigs)$pattern_id,
+   "economic_nationalist_turn fires (economic_nationalism RISING)")
+ok(!("economic_nationalist_turn" %in% match_signatures(tibble(country="ENB", group="economic_nationalism", group_direction="FALLING"), sigs)$pattern_id),
+   "economic_nationalist_turn blocked when economic_nationalism not RISING")
+ok("mobility_pessimism" %in% match_signatures(tibble(country="MP", group="social_mobility", group_direction="FALLING"), sigs)$pattern_id,
+   "mobility_pessimism fires (social_mobility FALLING)")
+gf_paradox <- tribble(~country, ~group,                   ~group_direction,
+                      "PX",      "traditional_authority",  "FALLING",
+                      "PX",      "illiberal_values",        "RISING")
+ok("illiberal_modernization_paradox" %in% match_signatures(gf_paradox, sigs)$pattern_id,
+   "illiberal_modernization_paradox fires (trad_authority FALLING + illiberal_values RISING)")
+ok(!("illiberal_modernization_paradox" %in% match_signatures(tibble(country="PXB", group="traditional_authority", group_direction="FALLING"), sigs)$pattern_id),
+   "illiberal_modernization_paradox blocked when illiberal_values not RISING")
 
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

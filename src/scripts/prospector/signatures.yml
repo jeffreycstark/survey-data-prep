@@ -108,3 +108,37 @@ signatures:
     description: "Citizens feel more able to participate yet more convinced they have no influence"
     within:
       political_efficacy: { efficacy_ability_participate: RISING, efficacy_no_influence: RISING }
+
+  # ── Pass A rider signatures (2026-07-13): ride on the new concept groups ────
+  illiberal_drift:
+    label: "Illiberal Drift"
+    description: "Endorsement of illiberal executive action rises while normative democratic support holds or falls"
+    required:   { illiberal_values: RISING }
+    supporting: { democracy_support_normative: [FALLING, FLAT] }
+  anti_pluralist_turn:
+    label: "Anti-Pluralist Turn"
+    description: "Belief that diversity/organized difference threatens harmony rises alongside authoritarian support"
+    required:   { anti_pluralism: RISING }
+    supporting: { authoritarian_support: [RISING, FLAT] }
+  system_support_erosion:
+    label: "System Support Erosion"
+    description: "Diffuse support for the political system falls while satisfaction also falls"
+    required:   { system_support: FALLING }
+    supporting: { democratic_satisfaction: [FALLING, FLAT] }
+  value_modernization:
+    label: "Value Modernization"
+    description: "Deference to traditional authority falls, with gender traditionalism falling or flat"
+    required:   { traditional_authority: FALLING }
+    supporting: { gender_traditionalism: [FALLING, FLAT] }
+  economic_nationalist_turn:
+    label: "Economic Nationalist Turn"
+    description: "Cultural defense, trade protection and immigration restriction rise together"
+    required:   { economic_nationalism: RISING }
+  mobility_pessimism:
+    label: "Mobility Pessimism"
+    description: "The past-present-future mobility staircase collapses (social-mobility optimism falls)"
+    required:   { social_mobility: FALLING }
+  illiberal_modernization_paradox:
+    label: "Illiberal Modernization Paradox"
+    description: "Traditional authority weakens (modernization) yet endorsement of illiberal executive action rises"
+    required:   { traditional_authority: FALLING, illiberal_values: RISING }
