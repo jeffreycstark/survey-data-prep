@@ -225,4 +225,16 @@ ok("illiberal_modernization_paradox" %in% match_signatures(gf_paradox, sigs)$pat
 ok(!("illiberal_modernization_paradox" %in% match_signatures(tibble(country="PXB", group="traditional_authority", group_direction="FALLING"), sigs)$pattern_id),
    "illiberal_modernization_paradox blocked when illiberal_values not RISING")
 
+# Pass A negative controls for the single-condition signatures (opposite/wrong direction must not fire)
+ok(!("illiberal_drift" %in% match_signatures(tibble(country="ILB", group="illiberal_values", group_direction="FALLING"), sigs)$pattern_id),
+   "illiberal_drift blocked when illiberal_values not RISING")
+ok(!("anti_pluralist_turn" %in% match_signatures(tibble(country="APB", group="anti_pluralism", group_direction="FALLING"), sigs)$pattern_id),
+   "anti_pluralist_turn blocked when anti_pluralism not RISING")
+ok(!("system_support_erosion" %in% match_signatures(tibble(country="SSB", group="system_support", group_direction="RISING"), sigs)$pattern_id),
+   "system_support_erosion blocked when system_support not FALLING")
+ok(!("value_modernization" %in% match_signatures(tibble(country="VMB", group="traditional_authority", group_direction="RISING"), sigs)$pattern_id),
+   "value_modernization blocked when traditional_authority not FALLING")
+ok(!("mobility_pessimism" %in% match_signatures(tibble(country="MPB", group="social_mobility", group_direction="RISING"), sigs)$pattern_id),
+   "mobility_pessimism blocked when social_mobility not FALLING")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
