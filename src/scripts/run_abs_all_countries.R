@@ -54,6 +54,7 @@ means_long <- d %>%
   group_by(country, wave, variable) %>%
   summarise(
     mean_value = mean(value, na.rm = TRUE),
+    sd_value   = sd(value, na.rm = TRUE),
     n          = sum(!is.na(value)),
     .groups    = "drop"
   ) %>%
@@ -86,5 +87,14 @@ TITLE               <- "ABS All Countries (Waves 1-6)"
 
 cat(sprintf("\nRunning prospector -> %s\n\n", OUTPUT_DIR))
 source(here("src", "scripts", "slope_prospector.R"))
+
+# ── 5. POLARIZATION (dispersion) DETECTION ───────────────────────────────────
+cat("\n── Polarization detection (mean stable vs dispersion moving) ──\n")
+source(here("src", "scripts", "prospector", "polarization.R"))
+pol <- detect_polarization(means_long, out_dir = OUTPUT_DIR,
+                           min_waves = MIN_WAVES, flat_threshold = FLAT_THRESHOLD)
+pol_summary <- pol %>% count(pattern)
+print(as.data.frame(pol_summary))
+cat(sprintf("── Saved: %s/polarization.csv ──\n", OUTPUT_DIR))
 
 cat("\nDone. Results in:", OUTPUT_DIR, "\n")
