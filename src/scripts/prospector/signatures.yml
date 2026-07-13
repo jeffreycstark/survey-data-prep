@@ -142,3 +142,21 @@ signatures:
     label: "Illiberal Modernization Paradox"
     description: "Traditional authority weakens (modernization) yet endorsement of illiberal executive action rises"
     required:   { traditional_authority: FALLING, illiberal_values: RISING }
+
+  # ── Pass B primitive signatures (2026-07-13): coherence / volatility / curvature ──
+  fractured_democratic_support:
+    label: "Fractured Democratic Support"
+    description: "Normative democratic support is internally split — its items pull in opposite directions"
+    required: { democracy_support_normative: { coherence: DIVERGENT } }
+  volatile_institutional_trust:
+    label: "Volatile Institutional Trust"
+    description: "Executive-branch trust items are shifting at very different rates"
+    required: { institutional_trust_executive: { volatility: VOLATILE } }
+  democratic_recovery:
+    label: "Democratic Recovery"
+    description: "Empirical assessment of democracy is U-shaped — declined then recovered"
+    required: { democracy_assessment_empirical: { curvature: CONVEX } }
+  boom_bust_economy:
+    label: "Boom-Bust Economy"
+    description: "Present economic evaluations are hump-shaped — rose then fell"
+    required: { economic_present: { curvature: CONCAVE } }

@@ -5,7 +5,7 @@ pass <- 0L; fail <- 0L
 ok <- function(cond, msg) { if (isTRUE(cond)) { pass <<- pass + 1L } else { fail <<- fail + 1L; cat("FAIL:", msg, "\n") } }
 
 sigs <- load_signatures(file.path(here_dir, "signatures.yml"))
-ok(length(sigs) == 27, "27 signatures loaded")
+ok(length(sigs) == 31, "31 signatures loaded")
 ok(identical(sigs$aspiration_gap$required$democracy_assessment_empirical, "FALLING"), "aspiration_gap required dir")
 ok(setequal(unlist(sigs$output_legitimacy$supporting$democracy_assessment_empirical), c("FALLING","FLAT")), "output_legitimacy supporting vector")
 
@@ -96,10 +96,11 @@ sb <- tibble(country="Z", variable="v")
 bl <- augment_breaks_with_location(synth, sb)
 ok(nrow(bl) == 1 && !is.na(bl$break_wave) && bl$break_wave %in% c(3,4), "break located at wave 3 or 4")
 
-thr <- list(FAST = 0.15, ENDS_LOW = 0.33, ENDS_HIGH = 0.66, SHAPE_QUORUM = 0.5)
+thr <- list(FAST = 0.15, ENDS_LOW = 0.33, ENDS_HIGH = 0.66, SHAPE_QUORUM = 0.5,
+            VOLATILE = 0.15, CURVE_QUORUM = 0.5)
 gl  <- tibble(group = "g", variable = c("a","b"))
 gc  <- tibble(country="Z", group="g", group_direction="RISING", mean_slope=0.20,
-              sd_slope=0, n_vars=2, coherence_flag="COHERENT_RISING")
+              sd_slope=0, n_vars=2, n_rising=2, n_falling=0, coherence_flag="COHERENT_RISING")
 # endpoints: both members end high (0.8)
 hd  <- tidyr::expand_grid(country="Z", variable=c("a","b"), wave_num=1:3) %>%
   mutate(mean_value = if_else(wave_num==3, 0.8, 0.3))
@@ -236,5 +237,46 @@ ok(!("value_modernization" %in% match_signatures(tibble(country="VMB", group="tr
    "value_modernization blocked when traditional_authority not FALLING")
 ok(!("mobility_pessimism" %in% match_signatures(tibble(country="MPB", group="social_mobility", group_direction="RISING"), sigs)$pattern_id),
    "mobility_pessimism blocked when social_mobility not FALLING")
+
+# ── Pass B: coherence / volatility / curvature feature columns ──
+thrB <- list(FAST=0.15, ENDS_LOW=0.33, ENDS_HIGH=0.66, SHAPE_QUORUM=0.5, VOLATILE=0.15, CURVE_QUORUM=0.5)
+glB  <- tibble(group="gB", variable=c("v1","v2"))
+hdB  <- tidyr::expand_grid(country="Z", variable=c("v1","v2"), wave_num=1:3) %>% mutate(mean_value=0.5)
+accB <- tibble(country="Z", variable=c("v1","v2"), early_slope=c(0,0), late_slope=c(0,0),
+               acceleration=c(0,0), direction_change=c(FALSE,FALSE))
+blB  <- tibble(country=character(), variable=character(), break_wave=numeric())
+gcB  <- tibble(country="Z", group="gB", group_direction="FLAT", mean_slope=0.0,
+               sd_slope=0.30, n_rising=1, n_falling=1)
+vcB  <- tibble(country="Z", variable=c("v1","v2"), quad_term=c(0.4,0.5), nonlinear=c(TRUE,TRUE))
+gfB  <- build_group_features(gcB, hdB, accB, blB, glB, thrB, var_curvature=vcB)
+ok(gfB$coherence  == "DIVERGENT", "coherence DIVERGENT (a genuine rising+falling split)")
+ok(gfB$volatility == "VOLATILE",  "volatility VOLATILE (sd_slope 0.30 > 0.15)")
+ok(gfB$curvature  == "CONVEX",    "curvature CONVEX (both members quad_term>0 & nonlinear)")
+gcB2 <- gcB %>% mutate(sd_slope=0.05, n_falling=0)
+gfB2 <- build_group_features(gcB2, hdB, accB, blB, glB, thrB,
+                             var_curvature=vcB %>% mutate(quad_term=c(-0.4,-0.5)))
+ok(gfB2$coherence  == "COHERENT", "coherence COHERENT from COHERENT_RISING")
+ok(gfB2$volatility == "STABLE",   "volatility STABLE (sd_slope 0.05 < 0.15)")
+ok(gfB2$curvature  == "CONCAVE",  "curvature CONCAVE (both members quad_term<0)")
+# var_curvature = NULL -> LINEAR default
+ok(build_group_features(gcB, hdB, accB, blB, glB, thrB)$curvature == "LINEAR",
+   "curvature defaults to LINEAR when var_curvature is NULL")
+
+# ── Pass B primitive-signature firing + negative controls ──
+sigs <- load_signatures(file.path(here_dir, "signatures.yml"))   # full 31-signature registry
+ok("fractured_democratic_support" %in% match_signatures(tibble(country="F", group="democracy_support_normative", group_direction="FLAT", coherence="DIVERGENT"), sigs)$pattern_id,
+   "fractured_democratic_support fires (coherence DIVERGENT)")
+ok(!("fractured_democratic_support" %in% match_signatures(tibble(country="Fb", group="democracy_support_normative", group_direction="FLAT", coherence="COHERENT"), sigs)$pattern_id),
+   "fractured_democratic_support blocked when coherent")
+ok("volatile_institutional_trust" %in% match_signatures(tibble(country="V", group="institutional_trust_executive", group_direction="FLAT", volatility="VOLATILE"), sigs)$pattern_id,
+   "volatile_institutional_trust fires (VOLATILE)")
+ok(!("volatile_institutional_trust" %in% match_signatures(tibble(country="Vb", group="institutional_trust_executive", group_direction="FLAT", volatility="STABLE"), sigs)$pattern_id),
+   "volatile_institutional_trust blocked when STABLE")
+ok("democratic_recovery" %in% match_signatures(tibble(country="R", group="democracy_assessment_empirical", group_direction="FLAT", curvature="CONVEX"), sigs)$pattern_id,
+   "democratic_recovery fires (curvature CONVEX)")
+ok(!("democratic_recovery" %in% match_signatures(tibble(country="Rb", group="democracy_assessment_empirical", group_direction="FLAT", curvature="LINEAR"), sigs)$pattern_id),
+   "democratic_recovery blocked when LINEAR")
+ok("boom_bust_economy" %in% match_signatures(tibble(country="B", group="economic_present", group_direction="FLAT", curvature="CONCAVE"), sigs)$pattern_id,
+   "boom_bust_economy fires (curvature CONCAVE)")
 
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

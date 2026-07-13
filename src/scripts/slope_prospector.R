@@ -49,6 +49,8 @@ if (!exists("FAST_THRESHOLD"))      FAST_THRESHOLD      <- 0.15     # |mean_slop
 if (!exists("ENDS_LOW"))            ENDS_LOW            <- 0.33     # normalized endpoint below = "LOW"
 if (!exists("ENDS_HIGH"))           ENDS_HIGH           <- 0.66     # normalized endpoint above = "HIGH"
 if (!exists("SHAPE_QUORUM"))        SHAPE_QUORUM        <- 0.5      # member share to assign a group shape
+if (!exists("VOLATILE_THRESHOLD"))  VOLATILE_THRESHOLD  <- 0.15     # group sd_slope above = "VOLATILE"
+if (!exists("CURVE_QUORUM"))        CURVE_QUORUM        <- 0.5      # member share w/ same-sign curvature
 
 # Normalization: "minmax" (default) or "robust" (5th–95th percentile, outlier-resistant)
 if (!exists("NORM_METHOD"))         NORM_METHOD         <- "minmax"
@@ -563,13 +565,17 @@ if (DO_NARRATIVE && nrow(group_coherence) > 0) {
   sigs <- load_signatures(SIGNATURES_PATH)
   breaks_located <- augment_breaks_with_location(eligible_for_breaks, significant_breaks)
   thr <- list(FAST = FAST_THRESHOLD, ENDS_LOW = ENDS_LOW, ENDS_HIGH = ENDS_HIGH,
-              SHAPE_QUORUM = SHAPE_QUORUM)
+              SHAPE_QUORUM = SHAPE_QUORUM, VOLATILE = VOLATILE_THRESHOLD,
+              CURVE_QUORUM = CURVE_QUORUM)
   acc_for_feat <- if (!is.null(acceleration)) acceleration else
                   tibble(country=character(), variable=character(),
                          early_slope=numeric(), late_slope=numeric(),
                          acceleration=numeric(), direction_change=logical())
+  var_curvature <- slopes %>% mutate(country = as.character(country)) %>%
+                   select(country, variable, quad_term, nonlinear)
   features <- build_group_features(group_coherence, harmonized_data, acc_for_feat,
-                                   breaks_located, group_lookup, thr)
+                                   breaks_located, group_lookup, thr,
+                                   var_curvature = var_curvature)
   var_slopes <- slopes %>% mutate(country = as.character(country)) %>%
                 select(country, variable, direction)
   narrative_results <- match_signatures(features, sigs, var_slopes = var_slopes)

@@ -12,10 +12,13 @@ normalize_condition <- function(slot) {
   if (is.character(slot)) return(list(dir = slot))
   if (is.list(slot) && is.null(names(slot))) return(list(dir = unlist(slot)))
   if (is.list(slot)) {
-    if (!is.null(slot$dir))       slot$dir       <- unlist(slot$dir)
-    if (!is.null(slot$magnitude)) slot$magnitude <- unlist(slot$magnitude)
-    if (!is.null(slot$shape))     slot$shape     <- unlist(slot$shape)
-    if (!is.null(slot$level))     slot$level     <- unlist(slot$level)
+    if (!is.null(slot$dir))        slot$dir        <- unlist(slot$dir)
+    if (!is.null(slot$magnitude))  slot$magnitude  <- unlist(slot$magnitude)
+    if (!is.null(slot$shape))      slot$shape      <- unlist(slot$shape)
+    if (!is.null(slot$level))      slot$level      <- unlist(slot$level)
+    if (!is.null(slot$coherence))  slot$coherence  <- unlist(slot$coherence)
+    if (!is.null(slot$volatility)) slot$volatility <- unlist(slot$volatility)
+    if (!is.null(slot$curvature))  slot$curvature  <- unlist(slot$curvature)
     return(slot)
   }
   list(dir = as.character(slot))
@@ -29,7 +32,10 @@ eval_simple_condition <- function(cond, row) {
     if (!is.null(cond_n$dir))       row$group_direction %in% cond_n$dir,
     if (!is.null(cond_n$magnitude) && !is.null(row$magnitude_tier)) row$magnitude_tier %in% cond_n$magnitude,
     if (!is.null(cond_n$shape)     && !is.null(row$shape))          row$shape          %in% cond_n$shape,
-    if (!is.null(cond_n$level)     && !is.null(row$ends_level))     row$ends_level     %in% cond_n$level
+    if (!is.null(cond_n$level)     && !is.null(row$ends_level))     row$ends_level     %in% cond_n$level,
+    if (!is.null(cond_n$coherence)  && !is.null(row$coherence))     row$coherence      %in% cond_n$coherence,
+    if (!is.null(cond_n$volatility) && !is.null(row$volatility))    row$volatility     %in% cond_n$volatility,
+    if (!is.null(cond_n$curvature)  && !is.null(row$curvature))     row$curvature      %in% cond_n$curvature
   )
   length(checks) > 0 && all(checks)
 }
