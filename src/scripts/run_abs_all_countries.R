@@ -58,6 +58,18 @@ compute_means <- function(data) {
     rename(wave_num = wave) %>%
     filter(!is.nan(mean_value))
 }
+
+# Long response-frequency table (parallels compute_means) for Pass C2 bimodality:
+# same pivot to respondent-level `value`; drop missing; count per response code.
+compute_freqs <- function(data) {
+  data %>%
+    select(country, wave, all_of(vars)) %>%
+    pivot_longer(cols = all_of(vars), names_to = "variable", values_to = "value") %>%
+    filter(!is.na(value)) %>%
+    group_by(country, wave, variable, value) %>%
+    summarise(count = n(), .groups = "drop") %>%
+    rename(wave_num = wave)
+}
 means_long <- compute_means(d)
 
 cat(sprintf("  Means table: %s rows (%d countries x %d variables x waves)\n",
@@ -113,5 +125,15 @@ if ("education_5cat" %in% names(d)) {
 } else {
   cat("(education_5cat absent — skipping sorting)\n")
 }
+
+# ── PASS C2: bimodality / two-camp split (van der Eijk A) ──────────────────────
+cat("\n── Bimodality detection (two-camp split vs uniform spread) ──\n")
+frq <- compute_freqs(d)
+bim <- detect_bimodality(frq, out_dir = OUTPUT_DIR, min_waves = MIN_WAVES,
+                         flat_threshold = FLAT_THRESHOLD, bimodal_A_max = 0.5)
+cat(sprintf("bimodality.csv: %d POLARIZING_BIMODAL, %d CONVERGING_UNIMODAL, %d OTHER\n",
+            sum(bim$pattern == "POLARIZING_BIMODAL"),
+            sum(bim$pattern == "CONVERGING_UNIMODAL"),
+            sum(bim$pattern == "OTHER")))
 
 cat("\nDone. Results in:", OUTPUT_DIR, "\n")
