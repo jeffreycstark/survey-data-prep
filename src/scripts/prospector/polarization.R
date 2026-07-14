@@ -135,3 +135,29 @@ detect_sorting <- function(gaps_df, out_dir = NULL, min_waves = 3, flat_threshol
   }
   total / Ntot
 }
+
+# Per country x wave x variable van der Eijk A on the ordinal response frequency
+# vector. K (scale length) is fixed PER VARIABLE as the contiguous integer span of
+# observed codes, so an interior category unused in one wave keeps its position.
+.bimodality_by_wave <- function(freqs) {
+  stopifnot(all(c("country", "wave_num", "variable", "value", "count") %in% names(freqs)))
+  freqs <- freqs %>%
+    filter(!is.na(value), !is.na(count), count > 0) %>%
+    group_by(variable) %>%
+    filter(all(value == round(value))) %>%      # ordinal lattice needs integer codes
+    ungroup()
+  if (nrow(freqs) == 0)
+    return(tibble(country = character(), wave_num = numeric(), variable = character(),
+                  A = numeric(), K = integer(), n = numeric()))
+  vk <- freqs %>% group_by(variable) %>%
+    summarise(vmin = min(value), K = max(value) - min(value) + 1L, .groups = "drop")
+  freqs %>%
+    inner_join(vk, by = "variable") %>%
+    group_by(country, wave_num, variable, K, vmin) %>%
+    summarise(
+      A = { v <- numeric(first(K)); v[value - first(vmin) + 1L] <- count; .vdeijk_A(v) },
+      n = sum(count),
+      .groups = "drop"
+    ) %>%
+    select(country, wave_num, variable, A, K, n)
+}

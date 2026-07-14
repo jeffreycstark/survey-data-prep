@@ -52,4 +52,21 @@ ok(abs(.vdeijk_A(c(50, 0, 0, 50)) + 1) < 1e-9, "A=-1 split at extremes (K=4)")
 ok(.vdeijk_A(c(10, 80, 10)) > 0,               "unimodal hump -> positive A")
 ok(is.na(.vdeijk_A(c(0, 0, 0))),               "no responses -> NA")
 
+# ── Pass C2: per-wave A table ──
+frq_bw <- bind_rows(
+  tibble(country="Z", variable="v", wave_num=1, value=3,        count=100),           # centre spike -> A=1
+  tibble(country="Z", variable="v", wave_num=2, value=c(1,5),   count=c(50,50)),       # extremes    -> A=-1
+  tibble(country="Z", variable="v", wave_num=3, value=c(1,2,3), count=c(10,80,10))     # only codes 1..3 seen this wave
+)
+bw <- .bimodality_by_wave(frq_bw)
+ok(nrow(bw) == 3,                                           "one row per country x wave x variable")
+ok(all(bw$K == 5),                                          "K = observed span 1..5 across all waves (fixed per variable)")
+ok(abs(bw$A[bw$wave_num==1] - 1) < 1e-9,                    "centre spike wave -> A=1")
+ok(abs(bw$A[bw$wave_num==2] + 1) < 1e-9,                    "extremes wave -> A=-1")
+ok(bw$n[bw$wave_num==2] == 100,                             "n = total responses in the cell")
+
+# integer-code guard: a fractional-valued variable is dropped
+frq_frac <- tibble(country="Z", variable="v01", wave_num=1:3, value=c(0, 0.5, 1), count=100)
+ok(nrow(.bimodality_by_wave(frq_frac)) == 0,               "non-integer-coded variable dropped")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
