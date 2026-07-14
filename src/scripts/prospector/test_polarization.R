@@ -69,4 +69,61 @@ ok(bw$n[bw$wave_num==2] == 100,                             "n = total responses
 frq_frac <- tibble(country="Z", variable="v01", wave_num=1:3, value=c(0, 0.5, 1), count=100)
 ok(nrow(.bimodality_by_wave(frq_frac)) == 0,               "non-integer-coded variable dropped")
 
+# ── Pass C2: detect_bimodality classification ──
+frq_split <- bind_rows(   # unimodal centre -> split extremes over 4 waves
+  tibble(country="Z", variable="v_split", wave_num=1, value=3,            count=100),
+  tibble(country="Z", variable="v_split", wave_num=2, value=c(2,3,4),     count=c(20,60,20)),
+  tibble(country="Z", variable="v_split", wave_num=3, value=c(1,3,5),     count=c(30,40,30)),
+  tibble(country="Z", variable="v_split", wave_num=4, value=c(1,5),       count=c(50,50))
+)
+frq_conv <- bind_rows(    # split extremes -> unimodal centre (reverse)
+  tibble(country="Z", variable="v_conv", wave_num=1, value=c(1,5),        count=c(50,50)),
+  tibble(country="Z", variable="v_conv", wave_num=2, value=c(1,3,5),      count=c(30,40,30)),
+  tibble(country="Z", variable="v_conv", wave_num=3, value=c(2,3,4),      count=c(20,60,20)),
+  tibble(country="Z", variable="v_conv", wave_num=4, value=3,            count=100)
+)
+frq_shift <- bind_rows(   # unimodal throughout but the MODE shifts (mean moves)
+  tibble(country="Z", variable="v_shift2", wave_num=1, value=1, count=100),
+  tibble(country="Z", variable="v_shift2", wave_num=2, value=2, count=100),
+  tibble(country="Z", variable="v_shift2", wave_num=3, value=3, count=100),
+  tibble(country="Z", variable="v_shift2", wave_num=4, value=4, count=100)
+)
+frq_bin <- bind_rows(     # K=2 -> excluded
+  tibble(country="Z", variable="v_bin", wave_num=1:4, value=1, count=60),
+  tibble(country="Z", variable="v_bin", wave_num=1:4, value=2, count=40)
+)
+frq_wide <- bind_rows(    # K=20 -> excluded by max_categories (quasi-continuous)
+  tibble(country="Z", variable="v_wide", wave_num=1, value=10,          count=100),
+  tibble(country="Z", variable="v_wide", wave_num=2, value=c(5,15),     count=c(50,50)),
+  tibble(country="Z", variable="v_wide", wave_num=3, value=c(1,20),     count=c(50,50))
+)
+frq_c2 <- bind_rows(frq_split, frq_conv, frq_shift, frq_bin, frq_wide)
+bm <- detect_bimodality(frq_c2, min_waves=3, flat_threshold=0.05, bimodal_A_max=0.5, max_categories=11)
+
+ok(bm$pattern[bm$variable=="v_split"] == "POLARIZING_BIMODAL",  "unimodal->bimodal -> POLARIZING_BIMODAL")
+ok(bm$pattern[bm$variable=="v_conv"]  == "CONVERGING_UNIMODAL", "bimodal->unimodal -> CONVERGING_UNIMODAL")
+ok(bm$pattern[bm$variable=="v_shift2"] == "OTHER",             "shifting-but-unimodal -> OTHER (not a mean re-detect)")
+ok(!("v_bin" %in% bm$variable),                                "K<3 variable excluded")
+ok(!("v_wide" %in% bm$variable),                               "K>max_categories variable excluded")
+ok(all(is.na(bm$c1a_pattern)),                                 "c1a_pattern NA when no polarization.csv")
+
+# guard: with an unreachable bimodal_A_max, a rising-pol item is NOT called bimodal
+bm_g <- detect_bimodality(frq_split, min_waves=3, flat_threshold=0.05, bimodal_A_max=-2)
+ok(bm_g$pattern[bm_g$variable=="v_split"] == "OTHER",          "A_end guard blocks POLARIZING_BIMODAL")
+
+# min_waves gate
+frq_short <- bind_rows(
+  tibble(country="Z", variable="v_sh", wave_num=1, value=3,      count=100),
+  tibble(country="Z", variable="v_sh", wave_num=2, value=c(1,5), count=c(50,50))
+)
+ok(nrow(detect_bimodality(frq_short, min_waves=3)) == 0,       "variable with < min_waves dropped")
+
+# c1a_pattern join when polarization.csv is present
+td <- tempfile("c2_"); dir.create(td)
+readr::write_csv(tibble(country="Z", variable="v_split", pattern="POLARIZING"),
+                 file.path(td, "polarization.csv"))
+bm_j <- detect_bimodality(frq_split, out_dir=td, min_waves=3)
+ok(bm_j$c1a_pattern[bm_j$variable=="v_split"] == "POLARIZING", "c1a_pattern joined from polarization.csv")
+ok(file.exists(file.path(td, "bimodality.csv")),              "bimodality.csv written to out_dir")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

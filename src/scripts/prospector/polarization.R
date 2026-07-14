@@ -161,3 +161,56 @@ detect_sorting <- function(gaps_df, out_dir = NULL, min_waves = 3, flat_threshol
     ) %>%
     select(country, wave_num, variable, A, K, n)
 }
+
+# detect_bimodality — Pass C2. Flags variables whose within-country response
+# distribution is SPLITTING INTO TWO CAMPS over waves (rising -A), distinct from
+# C1a's mean-flat-SD-rising spread. Reuses .pol_slopes on the -A series.
+#   freqs needs: country, wave_num, variable, value, count
+# Writes bimodality.csv; carries c1a_pattern from polarization.csv (out_dir) when
+# present so C1a-POLARIZING ∩ C2-POLARIZING_BIMODAL = a genuine two-camp split.
+detect_bimodality <- function(freqs, out_dir = NULL, min_waves = 3,
+                              flat_threshold = 0.05, bimodal_A_max = 0.5,
+                              max_categories = 11) {
+  stopifnot(all(c("country", "wave_num", "variable", "value", "count") %in% names(freqs)))
+
+  bw <- .bimodality_by_wave(freqs %>% mutate(country = as.character(country))) %>%
+    filter(K >= 3, K <= max_categories, !is.na(A)) %>%
+    mutate(pol = -A)
+
+  slopes <- .pol_slopes(bw %>% select(country, wave_num, variable, pol, n),
+                        pol, min_waves) %>%
+    rename(pol_slope = slope) %>%
+    filter(!is.na(pol_slope))
+
+  ends <- bw %>%
+    group_by(country, variable) %>%
+    arrange(wave_num, .by_group = TRUE) %>%
+    summarise(A_start = first(A), A_end = last(A), .groups = "drop")
+
+  out <- slopes %>%
+    inner_join(ends, by = c("country", "variable")) %>%
+    mutate(pattern = case_when(
+      pol_slope >  flat_threshold & A_end < bimodal_A_max ~ "POLARIZING_BIMODAL",
+      pol_slope < -flat_threshold                         ~ "CONVERGING_UNIMODAL",
+      TRUE                                                ~ "OTHER"
+    ))
+
+  c1a_path <- if (!is.null(out_dir)) file.path(out_dir, "polarization.csv") else NULL
+  if (!is.null(c1a_path) && file.exists(c1a_path)) {
+    c1a <- readr::read_csv(c1a_path, show_col_types = FALSE) %>%
+      transmute(country = as.character(country), variable, c1a_pattern = pattern)
+    out <- out %>% left_join(c1a, by = c("country", "variable"))
+  } else {
+    out$c1a_pattern <- NA_character_
+  }
+
+  out <- out %>%
+    select(country, variable, A_start, A_end, pol_slope, pattern, c1a_pattern) %>%
+    arrange(desc(pol_slope))
+
+  if (!is.null(out_dir)) {
+    dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+    write_csv(out, file.path(out_dir, "bimodality.csv"))
+  }
+  out
+}
