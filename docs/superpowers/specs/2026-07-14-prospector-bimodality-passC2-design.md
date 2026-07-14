@@ -55,9 +55,12 @@ detect_bimodality(freqs, out_dir=, min_waves=, flat_threshold=, bimodal_A_max=) 
   is the **contiguous integer span of observed codes**, `max(value) − min(value) + 1`
   across all of that variable's waves/countries — so a never-chosen *interior*
   category still occupies its position (frequency 0) and *A* is computed on a fixed,
-  correctly-positioned length-K vector for every country×wave. (Harmonized ordinal
-  items use integer-contiguous codes `1..K`; non-ordinal items are already excluded
-  upstream.)
+  correctly-positioned length-K vector for every country×wave. **Two detector-level
+  guards** keep this well-defined: variables with any non-integer `value` (the
+  runner's `vars` set includes normalized/continuous columns such as `*_01`, which
+  have no ordinal lattice) are dropped, and variables with `K > max_categories`
+  (default 11 — quasi-continuous items like 0–100 scales, not ordered rating scales)
+  are excluded. The nominal-variable exclusion upstream is not sufficient on its own.
 - Computes *A* per country×wave×variable, then `pol = −A`, then a per
   country×variable slope of `pol` via `.pol_slopes` (needs ≥ `min_waves`).
 - Also carries `A_start` / `A_end` (first- and last-wave *A*) for the shape guard
