@@ -43,4 +43,13 @@ ok(srt$pattern[srt$variable=="v_flat"]   == "OTHER",     "constant subgroup gap 
 gaps2 <- tibble(country="Z", variable="v_neg", wave_num=1:4, gap=c(-.1,-.2,-.3,-.4), n=100)
 ok(detect_sorting(gaps2, min_waves=3)$pattern == "WIDENING", "gap growing more negative -> WIDENING (|gap| based)")
 
+# ── Pass C2: van der Eijk's A statistic ──
+ok(abs(.vdeijk_A(c(100, 0, 0))    - 1) < 1e-9, "A=+1 all mass one category (K=3)")
+ok(abs(.vdeijk_A(c(0, 100, 0))    - 1) < 1e-9, "A=+1 all mass centre category (K=3)")
+ok(abs(.vdeijk_A(c(50, 50, 50))   - 0) < 1e-9, "A=0 uniform (K=3)")
+ok(abs(.vdeijk_A(c(50, 0, 50))    + 1) < 1e-9, "A=-1 split at extremes (K=3)")
+ok(abs(.vdeijk_A(c(50, 0, 0, 50)) + 1) < 1e-9, "A=-1 split at extremes (K=4)")
+ok(.vdeijk_A(c(10, 80, 10)) > 0,               "unimodal hump -> positive A")
+ok(is.na(.vdeijk_A(c(0, 0, 0))),               "no responses -> NA")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)

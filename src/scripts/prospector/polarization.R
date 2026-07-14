@@ -91,3 +91,47 @@ detect_sorting <- function(gaps_df, out_dir = NULL, min_waves = 3, flat_threshol
   }
   out
 }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Pass C2 — bimodality / two-camp split via van der Eijk's (2001) agreement A.
+#
+# .vdeijk_A(freq): A over K ordered categories (positions 1..K). +1 = all mass in
+# one category (perfect agreement), 0 = uniform, -1 = 50/50 at the two extremes
+# (perfect bimodal polarization). The distribution is peeled into layers (subtract
+# the min occupied frequency each pass); each layer's binary presence pattern gets
+#   A_layer = U * (1 - (S - 1)/(K - 1)),   0 if S == K,
+# where S = occupied categories and U is the unimodality term counting, over all
+# triples of positions a<b<c whose OUTER categories are both occupied, a present
+# middle (tu) vs an absent middle / "dip" (tdu):
+#   U = ((K-2)*tu - (K-1)*tdu) / ((K-2)*(tu+tdu)),   U = 1 when tu == tdu == 0.
+# Layers are mass-weighted (m * S) and averaged. Verified against the +1/0/-1
+# anchors on K=3 and K=4.
+# ─────────────────────────────────────────────────────────────────────────────
+.vdeijk_A <- function(freq) {
+  freq <- as.numeric(freq)
+  K <- length(freq)
+  Ntot <- sum(freq)
+  if (is.na(Ntot) || Ntot == 0) return(NA_real_)
+
+  layer_A <- function(p) {                 # p: logical presence vector, length K
+    S <- sum(p)
+    if (S == K) return(0)
+    idx <- which(p)
+    tu <- 0L; tdu <- 0L
+    for (a in idx) for (cc in idx[idx > a + 1L]) {
+      for (b in (a + 1L):(cc - 1L)) if (p[b]) tu <- tu + 1L else tdu <- tdu + 1L
+    }
+    U <- if (tu == 0L && tdu == 0L) 1
+         else ((K - 2) * tu - (K - 1) * tdu) / ((K - 2) * (tu + tdu))
+    U * (1 - (S - 1) / (K - 1))
+  }
+
+  total <- 0; work <- freq
+  while (any(work > 0)) {
+    occ <- which(work > 0)
+    m   <- min(work[occ])
+    total <- total + layer_A(work > 0) * (m * length(occ))
+    work[occ] <- work[occ] - m
+  }
+  total / Ntot
+}
