@@ -1,5 +1,7 @@
 # Prospector Signature Extension Implementation Plan
 
+> ✅ **STATUS: COMPLETE (2026-07-13).** All of Phase 0, 1, and 2 are implemented, tested, and committed to `main`. Key commits: `745bf86` (break-location), `bbd6aa8` (feature frame), `5c9862d` (within/ordered evaluators), `8e45177` (Phase-2 signatures + wiring), `563c48d` (docs). Unit suite `src/scripts/prospector/test_signature_match.R` passes 69/0. Subsequent work (Pass A concept groups, Pass B primitives, Pass C dispersion) lives in later specs under `docs/superpowers/specs/`. The checkboxes below are ticked for historical record; nothing here remains to be done.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Extend the Slope Prospector's narrative-signature detector with a larger signature catalog and a richer matching vocabulary (level, magnitude, shape, break-timing, within-group splits), without breaking the 8 existing signatures.
@@ -42,7 +44,7 @@
 **Interfaces:**
 - Produces: `load_signatures(path) -> named list`, each element `list(label=, description=, required=<named list>, supporting=<named list>)` — structurally identical to the old `NARRATIVE_PATTERNS`.
 
-- [ ] **Step 1: Write `signatures.yml` with the 8 existing signatures**
+- [x] **Step 1: Write `signatures.yml` with the 8 existing signatures**
 
 Copy the exact directions from `slope_prospector.R:86-139`:
 
@@ -89,7 +91,7 @@ signatures:
     required: { corruption: FLAT }
 ```
 
-- [ ] **Step 2: Write the failing loader test**
+- [x] **Step 2: Write the failing loader test**
 
 Create `test_signature_match.R`:
 
@@ -106,12 +108,12 @@ ok(identical(sigs$aspiration_gap$required$democracy_assessment_empirical, "FALLI
 ok(setequal(unlist(sigs$output_legitimacy$supporting$democracy_assessment_empirical), c("FALLING","FLAT")), "output_legitimacy supporting vector")
 ```
 
-- [ ] **Step 3: Run it, verify it fails**
+- [x] **Step 3: Run it, verify it fails**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL — `could not find function "load_signatures"`.
 
-- [ ] **Step 4: Implement `load_signatures`**
+- [x] **Step 4: Implement `load_signatures`**
 
 Create `signature_match.R`:
 
@@ -125,12 +127,12 @@ load_signatures <- function(path) {
 }
 ```
 
-- [ ] **Step 5: Run test, verify PASS**
+- [x] **Step 5: Run test, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: prints no `FAIL:` lines for these three assertions.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/scripts/prospector/signatures.yml src/scripts/prospector/signature_match.R src/scripts/prospector/test_signature_match.R
@@ -150,7 +152,7 @@ git commit -m "feat(prospector): externalize signature registry to signatures.ym
   - `eval_simple_condition(cond, feat_row) -> logical(1)`.
   - `match_signatures(features, sigs, var_slopes=NULL) -> tibble(country, pattern_id, label, description)`.
 
-- [ ] **Step 1: Write failing tests for normalize + match**
+- [x] **Step 1: Write failing tests for normalize + match**
 
 Append to `test_signature_match.R`:
 
@@ -174,12 +176,12 @@ ok(!("trust_collapse" %in% m$pattern_id[m$country=="Y"]), "Y does not fire trust
 ok("selective_legitimation" %in% m$pattern_id[m$country=="Y"], "Y fires selective_legitimation")
 ```
 
-- [ ] **Step 2: Run, verify FAIL**
+- [x] **Step 2: Run, verify FAIL**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL — `could not find function "normalize_condition"`.
 
-- [ ] **Step 3: Implement normalizer + evaluator + matcher**
+- [x] **Step 3: Implement normalizer + evaluator + matcher**
 
 Append to `signature_match.R`:
 
@@ -252,12 +254,12 @@ match_signatures <- function(features, sigs, var_slopes = NULL) {
 }
 ```
 
-- [ ] **Step 4: Run test, verify PASS**
+- [x] **Step 4: Run test, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: no `FAIL:` lines.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scripts/prospector/signature_match.R src/scripts/prospector/test_signature_match.R
@@ -272,7 +274,7 @@ git commit -m "feat(prospector): condition evaluator + match_signatures (directi
 **Interfaces:**
 - Consumes: existing `outputs/prospecting/abs_all/slope_groups.csv` (has `country, group, group_direction`) and `outputs/prospecting/abs_all/narrative_patterns.csv` (the golden).
 
-- [ ] **Step 1: Write the golden-equivalence test**
+- [x] **Step 1: Write the golden-equivalence test**
 
 Append to `test_signature_match.R`:
 
@@ -296,12 +298,12 @@ if (file.exists(file.path(gold_dir, "slope_groups.csv"))) {
 cat(sprintf("\n%d passed, %d failed\n", pass, fail)); if (fail > 0) quit(status = 1)
 ```
 
-- [ ] **Step 2: Run — this passes NOW (golden was produced by the code we are about to replace)**
+- [x] **Step 2: Run — this passes NOW (golden was produced by the code we are about to replace)**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: `... passed, 0 failed`. If the behavior-lock line FAILS here, the evaluator diverges from current logic — fix `signature_match.R` before touching the monolith.
 
-- [ ] **Step 3: Commit the locked baseline**
+- [x] **Step 3: Commit the locked baseline**
 
 ```bash
 git add src/scripts/prospector/test_signature_match.R
@@ -316,17 +318,17 @@ git commit -m "test(prospector): behavior-lock signature matcher against abs_all
 **Interfaces:**
 - Consumes: `match_signatures`, `load_signatures`; the existing `group_coherence` tibble (has `country, group, group_direction`).
 
-- [ ] **Step 1: Capture a pre-change golden copy (safety net)**
+- [x] **Step 1: Capture a pre-change golden copy (safety net)**
 
 ```bash
 cp outputs/prospecting/abs_all/narrative_patterns.csv /private/tmp/np_before.csv
 ```
 
-- [ ] **Step 2: Delete the inline `NARRATIVE_PATTERNS` block**
+- [x] **Step 2: Delete the inline `NARRATIVE_PATTERNS` block**
 
 Remove `slope_prospector.R` lines 86-139 (the whole `NARRATIVE_PATTERNS <- list(...)` definition).
 
-- [ ] **Step 3: Add a source() near the other config, after the globals block (~line 48)**
+- [x] **Step 3: Add a source() near the other config, after the globals block (~line 48)**
 
 ```r
 source(file.path("src", "scripts", "prospector", "signature_features.R"))
@@ -336,7 +338,7 @@ SIGNATURES_PATH <- file.path("src", "scripts", "prospector", "signatures.yml")
 
 (`signature_features.R` is created empty-of-behavior in Phase 2; add a placeholder file now containing only a comment so the `source()` succeeds: `# feature builders — populated in Phase 2`.)
 
-- [ ] **Step 4: Replace section 10 body (lines ~605-659) with the module call**
+- [x] **Step 4: Replace section 10 body (lines ~605-659) with the module call**
 
 ```r
 # ── 10. NARRATIVE PATTERN TAGGING ──────────────────────────────────────────
@@ -353,7 +355,7 @@ if (DO_NARRATIVE && nrow(group_coherence) > 0) {
 }
 ```
 
-- [ ] **Step 5: Re-run the ABS prospector and diff**
+- [x] **Step 5: Re-run the ABS prospector and diff**
 
 ```bash
 Rscript src/scripts/run_abs_all_countries.R > /private/tmp/abs_rerun.log 2>&1
@@ -361,12 +363,12 @@ diff <(sort /private/tmp/np_before.csv) <(sort outputs/prospecting/abs_all/narra
 ```
 Expected: `IDENTICAL`. (Country codes are integers in the file; sorting both sides handles ordering.)
 
-- [ ] **Step 6: Run the unit tests again**
+- [x] **Step 6: Run the unit tests again**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: `... passed, 0 failed`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/scripts/slope_prospector.R src/scripts/prospector/signature_features.R
@@ -385,7 +387,7 @@ git commit -m "refactor(prospector): move narrative detection into prospector/ m
 
 **Interfaces:** unchanged (all use `dir` conditions on existing concept groups).
 
-- [ ] **Step 1: Write failing firing/non-firing tests**
+- [x] **Step 1: Write failing firing/non-firing tests**
 
 Append to `test_signature_match.R` (before the final summary line — move the summary/`quit` to the very end):
 
@@ -410,12 +412,12 @@ f3 <- feq("D","democratic_satisfaction","FALLING", "D","institutional_trust_exec
 ok("accountable_dissatisfaction" %in% match_signatures(f3, sigs)$pattern_id, "accountable_dissatisfaction fires")
 ```
 
-- [ ] **Step 2: Run, verify FAIL** (new pattern ids absent)
+- [x] **Step 2: Run, verify FAIL** (new pattern ids absent)
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL lines for the new signatures.
 
-- [ ] **Step 3: Append the six signatures to `signatures.yml`**
+- [x] **Step 3: Append the six signatures to `signatures.yml`**
 
 ```yaml
   authoritarian_drift:
@@ -448,12 +450,12 @@ Expected: FAIL lines for the new signatures.
     supporting: { democracy_support_normative: [RISING, FLAT] }
 ```
 
-- [ ] **Step 4: Run tests, verify PASS**
+- [x] **Step 4: Run tests, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: `... passed, 0 failed`. The behavior-lock test still passes (new signatures only ADD matches; verify the golden test was written to check the 8 original ids are a subset — if it uses `identical`, update it to assert the 8 golden ids are all present via `all(gold2$pattern_id %in% got$pattern_id)` and that no golden row is lost).
 
-- [ ] **Step 5: Re-run ABS to see the new catalog fire, sanity-check counts**
+- [x] **Step 5: Re-run ABS to see the new catalog fire, sanity-check counts**
 
 ```bash
 Rscript src/scripts/run_abs_all_countries.R > /private/tmp/abs_p1.log 2>&1
@@ -461,7 +463,7 @@ cut -d, -f2 outputs/prospecting/abs_all/narrative_patterns.csv | sort | uniq -c
 ```
 Expected: the 8 original ids plus some of the 6 new ids; no crash.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/scripts/prospector/signatures.yml src/scripts/prospector/test_signature_match.R
@@ -483,7 +485,7 @@ git commit -m "feat(prospector): add six Phase-1 theoretical signatures"
   - `eligible`: country×variable×wave rows (normalized `mean_value`, `wave_num`), ≥4 waves.
   - `sig_breaks`: the `significant_breaks` tibble (country, variable) to restrict work to real breaks.
 
-- [ ] **Step 1: Write failing break-location test**
+- [x] **Step 1: Write failing break-location test**
 
 Append to `test_signature_match.R`:
 
@@ -497,12 +499,12 @@ bl <- augment_breaks_with_location(synth, sb)
 ok(nrow(bl) == 1 && !is.na(bl$break_wave) && bl$break_wave %in% c(3,4), "break located at wave 3 or 4")
 ```
 
-- [ ] **Step 2: Run, verify FAIL**
+- [x] **Step 2: Run, verify FAIL**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL — `could not find function "augment_breaks_with_location"`.
 
-- [ ] **Step 3: Implement break-location**
+- [x] **Step 3: Implement break-location**
 
 Write `signature_features.R`:
 
@@ -530,12 +532,12 @@ augment_breaks_with_location <- function(eligible, sig_breaks) {
 }
 ```
 
-- [ ] **Step 4: Run test, verify PASS**
+- [x] **Step 4: Run test, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: no `FAIL:` lines.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scripts/prospector/signature_features.R src/scripts/prospector/test_signature_match.R
@@ -553,7 +555,7 @@ git commit -m "feat(prospector): estimate structural-break wave via strucchange:
   - `thr = list(FAST=, ENDS_LOW=, ENDS_HIGH=, SHAPE_QUORUM=)`.
   - `group_lookup`: tibble(group, variable) as built in `slope_prospector.R:436-438`.
 
-- [ ] **Step 1: Write failing feature-frame test**
+- [x] **Step 1: Write failing feature-frame test**
 
 Append to `test_signature_match.R`:
 
@@ -576,12 +578,12 @@ ok(gf$shape == "REVERSED_UP", "shape REVERSED_UP (down then up)")
 ok(gf$broke_at_wave == 2, "broke_at_wave = 2 (modal)")
 ```
 
-- [ ] **Step 2: Run, verify FAIL**
+- [x] **Step 2: Run, verify FAIL**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL — `could not find function "build_group_features"`.
 
-- [ ] **Step 3: Implement `build_group_features`**
+- [x] **Step 3: Implement `build_group_features`**
 
 Append to `signature_features.R`:
 
@@ -647,12 +649,12 @@ build_group_features <- function(group_coherence, harmonized_data, acceleration,
 }
 ```
 
-- [ ] **Step 4: Run test, verify PASS**
+- [x] **Step 4: Run test, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: no `FAIL:` lines.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scripts/prospector/signature_features.R src/scripts/prospector/test_signature_match.R
@@ -669,7 +671,7 @@ git commit -m "feat(prospector): build enriched country×group feature frame"
 - Consumes: `var_slopes` tibble `country, variable, direction` (from `slopes` in `slope_prospector.R:282-286`); feature frame with `broke_at_wave, group_direction`.
 - Produces: `eval_within(within_spec, var_slopes, cty) -> logical`; `eval_ordered(ordered_spec, features, cty) -> logical`; both wired into `match_signatures`.
 
-- [ ] **Step 1: Write failing within/ordered tests**
+- [x] **Step 1: Write failing within/ordered tests**
 
 Append to `test_signature_match.R`:
 
@@ -692,12 +694,12 @@ fo2 <- fo %>% mutate(broke_at_wave = c(5,4))  # protest breaks AFTER
 ok(!eval_ordered(ordered_spec, fo2, "S"), "ordered blocked when order reversed")
 ```
 
-- [ ] **Step 2: Run, verify FAIL**
+- [x] **Step 2: Run, verify FAIL**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: FAIL — `could not find function "eval_within"`.
 
-- [ ] **Step 3: Implement the two evaluators and wire them in**
+- [x] **Step 3: Implement the two evaluators and wire them in**
 
 Append to `signature_match.R`:
 
@@ -741,12 +743,12 @@ Then extend `match_signatures` — change its per-signature block to also evalua
 
 (`var_slopes` is already a `match_signatures` parameter; defaults to `NULL`. Guard: if a signature has a `within` clause but `var_slopes` is NULL, `eval_within` sees zero rows and returns FALSE — acceptable.)
 
-- [ ] **Step 4: Run tests, verify PASS**
+- [x] **Step 4: Run tests, verify PASS**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: no `FAIL:` lines.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scripts/prospector/signature_match.R src/scripts/prospector/test_signature_match.R
@@ -762,7 +764,7 @@ git commit -m "feat(prospector): within-group and ordered-sequence condition eva
 **Interfaces:**
 - Consumes: `build_group_features`, `augment_breaks_with_location`, plus `slopes`, `harmonized_data`, `acceleration`, `significant_breaks`, `group_lookup`, `group_coherence` (all live in `slope_prospector.R`).
 
-- [ ] **Step 1: Add the six Phase-2 signatures to `signatures.yml`**
+- [x] **Step 1: Add the six Phase-2 signatures to `signatures.yml`**
 
 ```yaml
   coup_honeymoon:
@@ -811,7 +813,7 @@ Note: `level` here maps `institutional_trust_executive` to a bare `ENDS_LOW`; `.
 ```
 and call `lvl <- .eval_level(s$level %||% list(), features, cty)`.
 
-- [ ] **Step 2: Write failing acceptance tests (Thailand coup_honeymoon, Eswatini collapse)**
+- [x] **Step 2: Write failing acceptance tests (Thailand coup_honeymoon, Eswatini collapse)**
 
 Append synthetic-but-realistic frames:
 
@@ -832,11 +834,11 @@ fc2 <- fc %>% mutate(magnitude_tier = if_else(group=="institutional_trust_execut
 ok(!("accelerating_trust_collapse" %in% match_signatures(fc2, sigs)$pattern_id), "blocked when exec not FAST")
 ```
 
-- [ ] **Step 3: Run, verify FAIL**, then apply the Step-1 `.eval_level` fix and confirm the `level`/`shape`/`magnitude` branches work.
+- [x] **Step 3: Run, verify FAIL**, then apply the Step-1 `.eval_level` fix and confirm the `level`/`shape`/`magnitude` branches work.
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 
-- [ ] **Step 4: Wire enriched features into `slope_prospector.R` section 10**
+- [x] **Step 4: Wire enriched features into `slope_prospector.R` section 10**
 
 Replace the `features <- group_coherence %>% ...` line from Task 0.4 Step 4 with:
 
@@ -857,7 +859,7 @@ Replace the `features <- group_coherence %>% ...` line from Task 0.4 Step 4 with
 
 (`group_lookup` exists only inside the `if (file.exists(CONCEPT_GROUPS_PATH))` block at line 436; section 10 already runs under `nrow(group_coherence) > 0`, which implies that block ran. If R scoping drops it, hoist `group_lookup` to a script-level variable in section 8.)
 
-- [ ] **Step 5: Add the tunable globals near line 47**
+- [x] **Step 5: Add the tunable globals near line 47**
 
 ```r
 if (!exists("FAST_THRESHOLD")) FAST_THRESHOLD <- 0.15   # |mean_slope| above = "FAST"
@@ -866,7 +868,7 @@ if (!exists("ENDS_HIGH"))      ENDS_HIGH      <- 0.66   # normalized endpoint ab
 if (!exists("SHAPE_QUORUM"))   SHAPE_QUORUM   <- 0.5    # member share to assign a group shape
 ```
 
-- [ ] **Step 6: Run the full ABS prospector; confirm new columns/patterns and no crash**
+- [x] **Step 6: Run the full ABS prospector; confirm new columns/patterns and no crash**
 
 ```bash
 Rscript src/scripts/run_abs_all_countries.R > /private/tmp/abs_p2.log 2>&1
@@ -875,12 +877,12 @@ grep -i "error" /private/tmp/abs_p2.log || echo "no errors"
 ```
 Expected: original + Phase-1 + some Phase-2 ids; Thailand (8) should fire `coup_honeymoon` (military_rule REVERSED_UP at W4). No errors.
 
-- [ ] **Step 7: Run the unit test suite once more**
+- [x] **Step 7: Run the unit test suite once more**
 
 Run: `Rscript src/scripts/prospector/test_signature_match.R`
 Expected: `... passed, 0 failed`.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/scripts/prospector/signatures.yml src/scripts/prospector/signature_match.R src/scripts/slope_prospector.R src/scripts/prospector/test_signature_match.R
@@ -892,7 +894,7 @@ git commit -m "feat(prospector): Phase-2 signatures + wire enriched feature fram
 **Files:**
 - Modify: `docs/SLOPE_PROSPECTOR.md`
 
-- [ ] **Step 1: Re-run Afro and LBS to confirm cross-survey stability**
+- [x] **Step 1: Re-run Afro and LBS to confirm cross-survey stability**
 
 ```bash
 Rscript src/scripts/run_afro_prospector.R > /private/tmp/afro_p2.log 2>&1
@@ -901,11 +903,11 @@ grep -i "error" /private/tmp/afro_p2.log /private/tmp/lbs_p2.log || echo "no err
 ```
 Expected: no errors. Afro should still fire `trust_collapse` (GMB/SDN/SWZ) and may now add `accelerating_trust_collapse` for SWZ.
 
-- [ ] **Step 2: Update the narrative-patterns table in `docs/SLOPE_PROSPECTOR.md`**
+- [x] **Step 2: Update the narrative-patterns table in `docs/SLOPE_PROSPECTOR.md`**
 
 Replace the 8-row pattern table with the full catalog (14) and add a short "Signature DSL" subsection documenting the condition keys (`dir`, `magnitude`, `shape`, `level`, `within`, `ordered`) and the tunable globals. Point readers to `src/scripts/prospector/signatures.yml` as the editable registry.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add docs/SLOPE_PROSPECTOR.md
