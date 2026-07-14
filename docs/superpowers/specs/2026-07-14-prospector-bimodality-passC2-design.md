@@ -2,7 +2,7 @@
 
 Date: 2026-07-14
 Branch: `feat/prospector-bimodality-passC2`
-Status: design approved (statistic = van der Eijk's *A*); implementing.
+Status: implemented (van der Eijk's *A*, self-contained port; ABS wired).
 
 ## Problem
 

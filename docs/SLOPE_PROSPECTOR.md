@@ -4,7 +4,7 @@ A systematic tool for identifying interesting trend patterns across harmonized s
 
 ## What it does
 
-Takes long-format country-wave means and produces **10 core outputs**, plus **2 dispersion outputs** from the Pass C add-on module (`src/scripts/prospector/polarization.R`, currently wired into the ABS runner only — see [Dispersion / polarization (Pass C)](#dispersion--polarization-pass-c)):
+Takes long-format country-wave means and produces **10 core outputs**, plus **3 dispersion outputs** from the Pass C add-on module (`src/scripts/prospector/polarization.R`, currently wired into the ABS runner only — see [Dispersion / polarization (Pass C)](#dispersion--polarization-pass-c)):
 
 | Output | Purpose |
 |--------|---------|
@@ -20,6 +20,7 @@ Takes long-format country-wave means and produces **10 core outputs**, plus **2 
 | `dashboard_*.png` | Per-country concept group trajectory plots |
 | `polarization.csv` | *(Pass C add-on)* Per country×variable: mean flat while within-wave **SD** moves — `POLARIZING` / `DEPOLARIZING` / `OTHER` |
 | `sorting.csv` | *(Pass C add-on)* Education-cleavage subgroup **gap** widening / narrowing — `WIDENING` / `NARROWING` / `OTHER` |
+| `bimodality.csv` | *(Pass C add-on)* Per country×variable: response distribution splitting into two camps over waves (van der Eijk *A*) — `POLARIZING_BIMODAL` / `CONVERGING_UNIMODAL` / `OTHER`, with `c1a_pattern` joined from `polarization.csv` |
 
 ## Running the prospector
 
@@ -162,6 +163,19 @@ Columns: `country, variable, mean_slope, sd_slope, pattern`. On ABS: 2,147 rows 
 **C1b — subgroup gaps → `sorting.csv`.** `detect_sorting(gaps_df, out_dir, min_waves, flat_threshold)` takes `country, wave_num, variable, gap [, n]` where `gap = high_subgroup_mean − low_subgroup_mean`, fits a slope on the min-max-normalized `|gap|`, and classifies `WIDENING` (`gap_slope > flat`, sorting along the cleavage), `NARROWING` (`< -flat`), or `OTHER`. Columns: `country, variable, gap_slope, pattern`. The cleavage is **education** (`education_5cat`): high = post-secondary+ (4, 5) vs. low = none/primary (1, 2); secondary (3) is dropped to sharpen the contrast, and `education*` items are excluded (cleavage-on-itself is trivial). On ABS: 2,064 rows — **443 WIDENING**, 547 NARROWING, 1,074 OTHER; the top widening education gaps are overwhelmingly Hong Kong (`action_petition`, `action_demonstration`, `gov_leaders_abuse_power`, `system_capable`).
 
 Both detectors reuse `FLAT_THRESHOLD` for `flat`. **Caveats:** Pass C is currently wired into `run_abs_all_countries.R` only (ABS is the calibration survey); other runners get it opportunistically. Like every prospector output, `POLARIZING` / `WIDENING` rows are **puzzles, not conclusions** — a within-wave SD can rise from a sampling-frame change or a scale reissue, so check the source before interpreting. Additional cleavages (age, partisanship) are a planned extension.
+
+**C2 — bimodality / two-camp split → `bimodality.csv`.** C1a's rising SD is
+ambiguous: a distribution can spread *uniformly* or split into *two camps*. C2
+resolves this with **van der Eijk's agreement *A*** (van der Eijk 2001) on the
+ordinal response distribution per country×wave×variable: *A* = +1 (all mass in one
+category), 0 (uniform), −1 (50/50 at the two extremes). `detect_bimodality` runs
+the trend of `−A` through the same slope machinery and classifies
+`POLARIZING_BIMODAL` (`−A` rising past `FLAT_THRESHOLD` **and** `A_end` below
+`bimodal_A_max`, default 0.5 — a genuine split, not merely less-agreed),
+`CONVERGING_UNIMODAL`, or `OTHER`. Requires ≥3 response categories. The output
+carries `c1a_pattern` from `polarization.csv`, so **C1a `POLARIZING` ∩ C2
+`POLARIZING_BIMODAL` = a real two-camp split**, vs. C1a `POLARIZING` ∩ C2 `OTHER`
+= uniform spread. Unweighted frequencies, ABS-only wiring — same caveats as C1a/C1b.
 
 ## Input format
 
