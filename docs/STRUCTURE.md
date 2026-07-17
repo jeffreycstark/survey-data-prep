@@ -29,7 +29,7 @@ src/
 │   │   ├── 1_harmonize_funs.R      # Shared recoding helpers
 │   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
 │   │   ├── 99_create_final_dataset.R
-│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,kinu,ipus,vdem}/
+│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,kinu,ipus,klosa,vdem}/
 │   │       # Per-survey subdirs: 0_load_waves.R + 2_harmonize_all.R + 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
@@ -38,7 +38,7 @@ src/
 │   ├── abs/                    # Production ABS specs are in harmonize_validated/, not harmonize/
 │   │   ├── harmonize/          # legacy / scratch
 │   │   └── harmonize_validated/
-│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu,ipus}/harmonize/
+│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu,ipus,klosa}/harmonize/
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -76,6 +76,9 @@ data/
 │   └── raw/{2007..2024}/                # one .sav + codebook per year (18 years)
 │       ├── ipus_{year}.sav              # primary SPSS, n≈1,200 each
 │       └── ipus_{year}_codebook.{xls,xlsx,pdf}  # 2008/2009 are PDFs
+├── klosa/                      # Korean Longitudinal Study of Aging (고령화연구패널조사)
+│   └── raw/
+│       └── w0{1..9}_e.sav               # English-labelled SPSS, one file per wave, W1-W9
 ├── v-dem/                      # Varieties of Democracy
 │   └── raw/
 │       └── v15/                # V-Dem v15 (RDS, 27,913 rows × 4,607 cols)
