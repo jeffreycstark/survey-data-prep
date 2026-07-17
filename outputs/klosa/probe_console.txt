@@ -1,0 +1,432 @@
+
+===== TREATMENT (basic pension) — G-block vs E-block per wave =====
+  w01G110      [ABSENT] (absent)
+  w01G111      [ABSENT] (absent)
+  w01G112      [ABSENT] (absent)
+  w01G113      [ABSENT] (absent)
+  w01E111      [ABSENT] (absent)
+  w01E112      [In last year, the monthly average amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer
+  w01E113      [In last year, check for the total amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer | 1= Yes | 5= No
+  w02G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | 1=Yes, I applied in 2007 | 3=Yes, I applied in 2008 | 5=No, I haven't applied
+  w02G111      [Receipt of the Basic Old-Age Pension Benefit] 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w02G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know
+  w02G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] 1=Provided to the individual | 5=Provided to the couple
+  w02E111      [ABSENT] (absent)
+  w02E112      [In last year, the monthly average amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer
+  w02E113      [In last year, check for the total amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer | 1= Yes | 5= No
+  w03G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, I applied in 2007 | 3=Yes, I applied in 2008 | 5=No, I haven't applied | 6=Yes, I applied in 2009 | 7=Yes, I applied in 2010
+  w03G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w03G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know | -8=Refuse to answer
+  w03G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] -9=Don't know | -8=Refuse to answer | 1=Provided to the individual | 5=Provided to the couple
+  w03E111      [ABSENT] (absent)
+  w03E112      [In last year, the monthly average amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer
+  w03E113      [In last year, check for the total amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer | 1= Yes | 5= No
+  w04G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=No, I haven't applied
+  w04G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w04G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know
+  w04G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] 1=Provided to the individual | 5=Provided to the couple
+  w04E111      [ABSENT] (absent)
+  w04E112      [In last year, the monthly average amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer
+  w04E113      [In last year, check for the total amount of Other welfare Benefit] -9= Don't know | -8= Refuse to answer | 1= Yes | 5= No
+  w05G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=Yes, I applied in 2013 | 8=Yes, I applied in 2014 | 9=No, I haven't applied
+  w05G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w05G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know
+  w05G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] 1=Provided to the individual | 5=Provided to the couple
+  w05E111      [In last year, check whether or not receipt of Basic Pension (Ex Basic Old-Age Pe] -9= Don't know | -8= Refuse to answer | 1= Check
+  w05E112      [In last year, the number of months of receipt of Basic Pension (Ex Basic Old-Age] -9= Don't know | -8= Refuse to answer
+  w05E113      [In last year, the monthly average amount of Basic Pension (Ex Basic Old-Age Pens] -9= Don't know | -8= Refuse to answer
+  w06G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=Yes, I applied in 2013 | 8=Yes, I applied in 2014 | 9=Yes, I applied in 2015 | 10=No, I haven't applied
+  w06G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w06G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know | -8=Refuse to answer
+  w06G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] -9=Don't know | -8=Refuse to answer | 1=Provided to the individual | 5=Provided to the couple
+  w06E111      [In last year, check whether or not receipt of Basic Pension (Ex Basic Old-Age Pe] -9= Don't know | -8= Refuse to answer | 1= Check
+  w06E112      [In last year, the number of months of receipt of Basic Pension (Ex Basic Old-Age] -9= Don't know | -8= Refuse to answer
+  w06E113      [In last year, the monthly average amount of Basic Pension (Ex Basic Old-Age Pens] -9= Don't know | -8= Refuse to answer
+  w07G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=Yes, I applied in 2013 | 8=Yes, I applied in 2014 | 9=Yes, I applied in 2015 | 10=No, I haven't applied
+  w07G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w07G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know | -8=Refuse to answer
+  w07G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] -9=Don't know | -8=Refuse to answer | 1=Provided to the individual | 5=Provided to the couple
+  w07E111      [In last year, check whether or not receipt of Basic Pension (Ex Basic Old-Age Pe] -9= Don't know | -8= Refuse to answer | 1= Check
+  w07E112      [In last year, the number of months of receipt of Basic Pension (Ex Basic Old-Age] -9= Don't know | -8= Refuse to answer
+  w07E113      [In last year, the monthly average amount of Basic Pension (Ex Basic Old-Age Pens] -9= Don't know | -8= Refuse to answer
+  w08G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=Yes, I applied in 2013 | 8=Yes, I applied in 2014 | 9=Yes, I applied in 2015 | 10=Yes, I applied in 2016 | 11=Yes, I applied in 2017 | 12=Yes, I applied in 2018 | 13=Yes, I applied in 2019 | 14=Yes, I applied in 2020 | 15=No, I haven't applied
+  w08G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w08G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 w] -9=Don't know | -8=Refuse to answer
+  w08G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] -9=Don't know | -8=Refuse to answer | 1=Provided to the individual | 5=Provided to the couple
+  w08E111      [In last year, check whether or not receipt of Basic Pension (Ex Basic Old-Age Pe] -9= Don't know | -8= Refuse to answer | 1= Check
+  w08E112      [In last year, the number of months of receipt of Basic Pension (Ex Basic Old-Age] -9= Don't know | -8= Refuse to answer
+  w08E113      [In last year, the monthly average amount of Basic Pension (Ex Basic Old-Age Pens] -9= Don't know | -8= Refuse to answer
+  w09G110      [Application for the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, I applied in 2007 | 2=Yes, I applied in 2008 | 3=Yes, I applied in 2009 | 4=Yes, I applied in 2010 | 5=Yes, I applied in 2011 | 6=Yes, I applied in 2012 | 7=Yes, I applied in 2013 | 8=Yes, I applied in 2014 | 9=Yes, I applied in 2015 | 10=Yes, I applied in 2016 | 11=Yes, I applied in 2017 | 12=Yes, I applied in 2018 | 13=Yes, I applied in 2019 | 14=Yes, I applied in 2020 | 15=Yes, I applied in 2021 | 16=Yes, I applied in 2022 | 17=No, I haven't applied
+  w09G111      [Receipt of the Basic Old-Age Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Yes, currently receiving | 3=No, but will receive upon reaching at the pension age (birth month) | 5=No, not entitled
+  w09G112      [The monthly average amount of the Basic Old-Age Pension benefit (unit : 10,000 won)] -9=Don't know | -8=Refuse to answer
+  w09G113      [If the benefit is for R-self or a couple (Basic Old-Age Pension)] -9=Don't know | -8=Refuse to answer | 1=Provided to the individual | 5=Provided to the couple
+  w09E111      [In last year, check whether or not receipt of Basic Pension (Ex Basic Old-Age Pension)] -9= Don't know | -8= Refuse to answer | 1= Check
+  w09E112      [In last year, the number of months of receipt of Basic Pension (Ex Basic Old-Age Pension)] -9= Don't know | -8= Refuse to answer
+  w09E113      [In last year, the monthly average amount of Basic Pension (Ex Basic Old-Age Pension)] -9= Don't know | -8= Refuse to answer
+
+===== REAL-DATA CHECK: is legacy G111 actually dead in W5-W9? =====
+(The design spec assumed G111 is empty/dead post-2014; verifying against actual values, not just metadata.)
+  w02 n=8688 | G111 non-NA=2269 (26%) | E111 non-NA=0 (0%)
+  w03 n=7920 | G111 non-NA=2423 (31%) | E111 non-NA=0 (0%)
+  w04 n=7486 | G111 non-NA=2788 (37%) | E111 non-NA=0 (0%)
+  w05 n=7029 | G111 non-NA=2880 (41%) | E111 non-NA=2393 (34%)
+  w06 n=7490 | G111 non-NA=2924 (39%) | E111 non-NA=2251 (30%)
+  w07 n=6940 | G111 non-NA=2965 (43%) | E111 non-NA=2637 (38%)
+  w08 n=6488 | G111 non-NA=3012 (46%) | E111 non-NA=2725 (42%)
+  w09 n=6057 | G111 non-NA=3239 (53%) | E111 non-NA=2917 (48%)
+VERDICT: G111 is NOT dead in W5-W9 — it remains substantially populated (~41-53% non-NA),
+  comparable to or exceeding E111's coverage. Both G111 (categorical 1/3/5) and E111
+  ('check'-style flag, 1=Check else NA, always paired 1:1 with non-NA E112/E113) coexist.
+  This CONTRADICTS the design-spec assumption that G111 'persists but is dead post-2014'.
+  Flagged as UNRESOLVED for Task 6 — needs a G111-vs-E111 agreement cross-tab before picking one.
+
+===== NATIONAL PENSION (confound) =====
+  w01E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w01E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w02E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w02E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w03E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w03E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w04E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w04E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w05E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w05E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w06E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w06E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w07E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w07E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w08E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w08E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+  w09E033    [In last year, whether or not received National Pension Benefit] -9=Don't know | -8=Refuse to answer | 1=Only received monthly benefits | 2=Only received lump-sum benefits | 3=Received both | 4=No
+  w09E035    [In last year, the monthly average amount of National Pension Benefit] -9= Don't know | -8= Refuse to answer
+
+===== PARTICIPATION (outcome) — W1 anchor differs from W2-W9! =====
+W1 membership battery lives at A017m01-08 (NOT A033m01-08); W1 frequency at A019_01-07 (NOT A035_01-07).
+Coding is identical (0=No/1=Yes for membership; 1-10 declining-frequency scale for A019/A035) —
+this is a pure variable-renumbering artifact of the W1->W2 questionnaire revision, same pattern as A001->A002 (age).
+
+  A033m01     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m02     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m03     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m04     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m05     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m06     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m07     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A033m08     W1[ok] 0=No | 1=Yes
+             W9[ok] 0=No | 1=Yes
+  A035_01     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_02     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_03     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_04     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_05     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_06     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+  A035_07     W1[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+             W9[ok] -9=Don't know | -8=Refuse to answer | 1=Almost every day (more than 4 times per week) | 2=Once a week | 3=2~3 times a week | 4=Once a month | 5=Twice a month (every two weeks) | 6=Once or twice a year | 7=Three or four times a year (once every three or four months) | 8=Five or six times a year (every two months) | 9=Almost never a year | 10=Almost never engaged
+
+===== ID / WEIGHT / DEMOGRAPHIC candidates (W4) =====
+# A tibble: 110 × 2
+   var          
+   <chr>        
+ 1 w04wgt_p     
+ 2 w04wgt_c     
+ 3 w04type      
+ 4 w04panel_n   
+ 5 w04A001      
+ 6 w04A002      
+ 7 w04A002y     
+ 8 w04A002m     
+ 9 w04A003      
+10 w04A004      
+11 w04A005      
+12 w04A006      
+13 w04A007      
+14 w04A008      
+15 w04A009      
+16 w04A010      
+17 w04A011      
+18 w04A012      
+19 w04A013_01   
+20 w04A013_02   
+21 w04A014_01   
+22 w04A015_01   
+23 w04A015_01y  
+24 w04A015_01m  
+25 w04A021      
+26 w04A022      
+27 w04A024      
+28 w04A025      
+29 w04A002_age  
+30 w01edu       
+31 w02edu       
+32 w03edu       
+33 w04edu       
+34 w04marital   
+35 w04region1   
+36 w04region2   
+37 w04region3   
+38 w04Ba009_01  
+39 w04Ba010_01  
+40 w04Ba016_01  
+41 w04Ba067_1_01
+42 w04Ba009_02  
+43 w04Ba010_02  
+44 w04Ba016_02  
+45 w04Ba067_1_02
+46 w04Ba009_03  
+47 w04Ba010_03  
+48 w04Ba016_03  
+49 w04Ba067_1_03
+50 w04Ba009_04  
+51 w04Ba010_04  
+52 w04Ba016_04  
+53 w04Ba067_1_04
+54 w04Ba009_05  
+55 w04Ba010_05  
+56 w04Ba016_05  
+57 w04Ba067_1_05
+58 w04Ba009_06  
+59 w04Ba010_06  
+60 w04Ba016_06  
+61 w04Ba067_1_06
+62 w04Ba009_07  
+63 w04Ba010_07  
+64 w04Ba016_07  
+65 w04Ba067_1_07
+66 w04Ba009_08  
+67 w04Ba010_08  
+68 w04Ba016_08  
+69 w04Ba067_1_08
+70 w04Ba009_09  
+71 w04Ba010_09  
+72 w04Ba016_09  
+73 w04Ba067_1_09
+74 w04Ba009_10  
+75 w04Ba010_10  
+76 w04Ba016_10  
+77 w04Ba067_1_10
+78 w04Bb169a01  
+79 w04Bb169a02  
+80 w04Bb169a03  
+   label                                                                        
+   <chr>                                                                        
+ 1 Vertical weighting_4th wave                                                  
+ 2 Horizontal weighting_4th wave                                                
+ 3 Moved out a panel household member or not                                    
+ 4 The number of panel household member(s) in household                         
+ 5 (Re-check) In the previous interview, the date when the respondent is born (…
+ 6 The date when the respondent is born (unit: yyyy+mm)                         
+ 7 The date when the respondent is born (unit: yyyy)                            
+ 8 The date when the respondent is born (unit: mm)                              
+ 9 The solar calendar/the lunar calendar                                        
+10 (Re-check) In the previous interview, educational background(a school, a deg…
+11 In the previous interview, educational background (a school)                 
+12 In the previous interview, educational background (a school)_Others specific 
+13 In the previous interview, educational background (a degree)                 
+14 In the previous interview, additional education completion                   
+15 Additional formal education (a school)                                       
+16 Additional formal education (a school)_Others specific                       
+17 (Re-check) In the previous interview, marital status                         
+18 In the previous interview, marital status                                    
+19 Since the previous interview, the change marital status or not_1st           
+20 Since the previous interview, the change marital status or not_2nd           
+21 Since the previous interview, the change marital status_1st                  
+22 Since the previous interview, the time of the change marital status_1st(unit…
+23 Since the previous interview, the time of the change marital status_1st(unit…
+24 Since the previous interview, the time of the change marital status_1st(unit…
+25 (Re-check) The spouse's educational background                               
+26 The spouse's educational background (a school)                               
+27 The spouse's educational background (a degree)                               
+28 Since the previous interview, spouse's additional formal education (a school)
+29 Respondent age(=2012-w04A002y)                                               
+30 In the 1st interview, the highest level of education (a school)              
+31 In the 2nd interview, the highest level of education (a school)              
+32 In the 3rd interview, the highest level of education (a school)              
+33 In the 4th interview, the highest level of education (a school)              
+34 In 2012, the current marital status                                          
+35 Region1: a local variable                                                    
+36 Region2: village/town                                                        
+37 Region3: Metropolitan/City/Town                                              
+38 The 1st child's education                                                    
+39 The 1st child's education_Others specific                                    
+40 The 1st child's marital status                                               
+41 (Both Live and Not live together) I gave to the 1st child_educational expens…
+42 The 2nd child's education                                                    
+43 The 2nd child's education_others specific                                    
+44 The 2nd child's marital status                                               
+45 (Both Live and Not live together) I gave to the 2nd child_educational expens…
+46 The 3rd child's education                                                    
+47 The 3rd child's education_others specific                                    
+48 The 3rd child's marital status                                               
+49 (Both Live and Not live together) I gave to the 3rd child_educational expens…
+50 The 4th child's education                                                    
+51 The 4th child's education_others specific                                    
+52 The 4th child's marital status                                               
+53 (Both Live and Not live together) I gave to the 4th child_educational expens…
+54 The 5th child's education                                                    
+55 The 5th child's education_others specific                                    
+56 The 5th child's marital status                                               
+57 (Both Live and Not live together) I gave to the 5th child_educational expens…
+58 The 6th child's education                                                    
+59 The 6th child's education_others specific                                    
+60 The 6th child's marital status                                               
+61 (Both Live and Not live together) I gave to the 6th child_educational expens…
+62 The 7th child's education                                                    
+63 The 7th child's education_others specific                                    
+64 The 7th child's marital status                                               
+65 (Both Live and Not live together) I gave to the 7th child_educational expens…
+66 The 8th child's education                                                    
+67 The 8th child's education_others specific                                    
+68 The 8th child's marital status                                               
+69 (Both Live and Not live together) I gave to the 8th child_educational expens…
+70 The 9th child's education                                                    
+71 The 9th child's education_others specific                                    
+72 The 9th child's marital status                                               
+73 (Both Live and Not live together) I gave to the 9th child_educational expens…
+74 The 10th child's education                                                   
+75 The 10th child's education_others specific                                   
+76 The 10th child's marital status                                              
+77 (Both Live and Not live together) I gave to the 10th child_educational expen…
+78 The member of unable to carry out activities of daily living(ADL)_01         
+79 The member of unable to carry out activities of daily living(ADL)_02         
+80 The member of unable to carry out activities of daily living(ADL)_03         
+# ℹ 30 more rows
+Warning message:
+There were 217 warnings in `filter()`.
+The first warning was:
+ℹ In argument: `|...`.
+Caused by warning in `grepl()`:
+! unable to translate '<Feeling and action for passing one week> I could not get <a1><b0>going<a1><b1>' to a wide string
+ℹ Run `dplyr::last_dplyr_warnings()` to see the 216 remaining warnings. 
+
+===== pid/hhid exact names + weight family, ALL WAVES =====
+  w1: pid=pid hhid=hhid weights=w01wgt_c
+  w2: pid=pid hhid=hhid weights=w02wgt_p,w02wgt_c
+  w3: pid=pid hhid=hhid weights=w03wgt_p,w03wgt_c
+  w4: pid=pid hhid=hhid weights=w04wgt_p,w04wgt_c
+  w5: pid=pid hhid=hhid weights=w05wgt_p,w05wgt_c,w05wgt_a
+  w6: pid=pid hhid=hhid weights=w06wgt_p,w06wgt_c,w06wgt_ap,w06wgt_ac
+  w7: pid=pid hhid=hhid weights=w07wgt_p,w07wgt_c,w07wgt_ap,w07wgt_ac
+  w8: pid=pid hhid=hhid weights=w08wgt_c,w08wgt_p,w08wgt_ac,w08wgt_ap
+  w9: pid=pid hhid=HHID weights=w09wgt_c,w09wgt_p,w09wgt_ac,w09wgt_ap
+
+Weight label check (horizontal=cross-sectional, vertical=longitudinal/panel, by convention):
+  w1 w01wgt_c     [Horizontal weighting_1st wave]
+  w1 w01wgt_p     [ABSENT]
+  w2 w02wgt_c     [Horizontal weighting_2nd wave]
+  w2 w02wgt_p     [Vertical weighting_2nd wave]
+  w3 w03wgt_c     [Horizontal weighting_3rd wave]
+  w3 w03wgt_p     [Vertical weighting_3rd wave]
+  w4 w04wgt_c     [Horizontal weighting_4th wave]
+  w4 w04wgt_p     [Vertical weighting_4th wave]
+  w5 w05wgt_c     [Horizontal weighting_5th wave]
+  w5 w05wgt_p     [Vertical weighting_5th wave]
+  w6 w06wgt_c     [Horizontal weighting_6th wave]
+  w6 w06wgt_p     [Vertical weighting_6th wave]
+  w7 w07wgt_c     [Horizontal weighting_7th wave]
+  w7 w07wgt_p     [Vertical weighting_7th wave]
+  w8 w08wgt_c     [Vertical weighting_8th wave]
+  w8 w08wgt_p     [Horizontal weighting_8th wave]
+  w9 w09wgt_c     [Vertical weighting_8th wave]
+  w9 w09wgt_p     [Horizontal weighting_8th wave]
+NOTE: wgt_c/wgt_p horizontal/vertical labels SWAP at W8-W9 vs W1-W7 (see task-2-report.md). UNRESOLVED.
+
+===== AGE / BIRTH anchor — W1 uses A001, W2-W9 use A002 (NOT stable as assumed) =====
+  w1 w01A001_age    [Respondent age(=2006-w01A001y)]
+  w1 w01A001y       [The date when the respondent is born (unit: yyyy)]
+  w1 w01A001m       [The date when the respondent is born (unit: mm)]
+  w2 w02A002_age    [Respondent age(=2008-w02A002y)]
+  w2 w02A002y       [The date when the respondent is born (unit: yyyy)]
+  w2 w02A002m       [The date when the respondent is born (unit: mm)]
+  w3 w03A002_age    [Respondent age(=2010-w03A002y)]
+  w3 w03A002y       [The date when the respondent is born (unit: yyyy)]
+  w3 w03A002m       [The date when the respondent is born (unit: mm)]
+  w4 w04A002_age    [Respondent age(=2012-w04A002y)]
+  w4 w04A002y       [The date when the respondent is born (unit: yyyy)]
+  w4 w04A002m       [The date when the respondent is born (unit: mm)]
+  w5 w05A002_age    [Respondent age (=2014-w05A002y)]
+  w5 w05A002y       [The date when the respondent is born (unit: yyyy)]
+  w5 w05A002m       [The date when the respondent is born (unit: mm)]
+  w6 w06A002_age    [Respondent age (=2016-w06A002y+1)]
+  w6 w06A002y       [The date when the respondent is born (unit: yyyy)]
+  w6 w06A002m       [The date when the respondent is born (unit: mm)]
+  w7 w07A002_age    [Respondent age (=2018-w06A002y)]
+  w7 w07A002y       [The date when the respondent is born (unit: yyyy)]
+  w7 w07A002m       [The date when the respondent is born (unit: mm)]
+  w8 w08A002_age    [Respondent age (=2020-w08A002y)]
+  w8 w08A002y       [The date when the respondent is born (unit: yyyy)]
+  w8 w08A002m       [The date when the respondent is born (unit: mm)]
+  w9 w09A002_age    [Respondent age (=2020-w08A002y)]
+  w9 w09A002y       [The date when the respondent is born (unit: yyyy)]
+  w9 w09A002m       [The date when the respondent is born (unit: mm)]
+
+Birth-MONTH variables (A001m / A002m) exist and are FULLY populated (spot-checked W1,W4,W9: 100% non-NA).
+Interview-date variables (mniw_y/mniw_m/mniv_d, day precision) exist in ALL 9 waves.
+This OVERTURNS the design spec's 'integer-year age only' RD-granularity limitation (see report).
+  w1 w01mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w1 w01mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w1 w01mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w2 w02mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w2 w02mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w2 w02mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w3 w03mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w3 w03mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w3 w03mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w4 w04mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w4 w04mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w4 w04mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w5 w05mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w5 w05mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w5 w05mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w6 w06mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w6 w06mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w6 w06mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w7 w07mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w7 w07mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w7 w07mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w8 w08mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w8 w08mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w8 w08mniw_d    [The main quesionnaire interview date (unit: dd)]
+  w9 w09mniw_y    [The main quesionnaire interview date (unit: yyyy)]
+  w9 w09mniw_m    [The main quesionnaire interview date (unit: mm)]
+  w9 w09mniw_d    [The main quesionnaire interview date (unit: dd)]
+
+===== HOUSEHOLD INCOME TOTAL — third relocation instance (E126->E147) =====
+  w1 w01E126    [In last year, the total amount of household income]
+  w2 w02E126    [In last year, the total amount of household income]
+  w3 w03E126    [In last year, the total amount of household income]
+  w4 w04E126    [In last year, the total amount of household income]
+  w5 w05E147    [In last year, the total amount of household income]
+  w6 w06E147    [In last year, the total amount of household income]
+  w7 w07E147    [In last year, the total amount of household income]
+  w8 w08E147    [In last year, the total amount of household income]
+  w9 w09E147    [In last year, the total amount of household income]
+
+===== MISSING-CODE UNIVERSE (scanned from W4 value-label text) =====
+There were 50 or more warnings (use warnings() to see the first 50)
+neg_codes
+  -9   -8    3 
+1514 1381    1 
+Resolved universal missing convention: -9 = Don't know, -8 = Refuse to answer (consistent across ALL 9 waves).
+-7 also appears (2 vars, W1/W6-W9) but means 'Deficit' (a substantive negative-income value), NOT missing.
+
+===== RESOLVED MISSING CONVENTION (all specs should declare this) =====
+missing_conventions.treat_as_na.codes: [-9, -8]
+  -9 = "Don't know" (consistent across all 9 waves, occasional typo variants e.g. "Don' tknow")
+  -8 = "Refuse to answer" (consistent across all 9 waves, occasional typo variants e.g. "Refuse to anwer")
+  -7 appears on exactly 2 variables (W1 D615/D713, self-employment income) but means the SUBSTANTIVE value
+  'Deficit' (negative income), NOT a missing code -- do not add -7 to the universal treat_as_na set.
+
+Wrote /Users/jeffreystark/Development/Research/survey-data-prep/outputs/klosa/variable_map.csv (39 rows).
