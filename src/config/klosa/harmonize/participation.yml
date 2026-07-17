@@ -1,0 +1,386 @@
+# KLoSA Social/Civic Participation (outcome battery)
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# KLoSA RENUMBERS THE ENTIRE BATTERY IN W1: the membership items live at
+# A017m01-08 in W1 but A033m01-08 in W2-W9; the paired frequency items live
+# at A019_01-06 in W1 but A035_01-06 in W2-W9. Confirmed by Task 2's probe
+# (outputs/klosa/variable_map.csv) that coding is IDENTICAL across the
+# renumbering in both families -- this is a pure questionnaire-revision
+# artifact, the same pattern as the A001->A002 age/birth-year shift in
+# demographics.yml. The battery IS present in W1 (the placebo wave) --
+# a naive w01A033m0N lookup would wrongly conclude it is absent.
+#
+# MEMBERSHIP items (part_*): raw 0=No / 1=Yes, identical in both the
+# A017m (W1) and A033m (W2-W9) families. Harmonized as identity (already
+# 0/1) with qc.valid_range enforcing the binary domain.
+#
+# part_civic (A017m06/A033m06, "Participating to the Political parties, the
+# NGOs, the interest groups") is the narrow civic-participation outcome --
+# the "buy a citizen" item.
+#
+# FREQUENCY items (partfreq_*): raw A019_0N (W1) / A035_0N (W2-W9), a 10-pt
+# ordinal scale that is DECLINING in frequency -- code 1 = most frequent
+# ("almost every day"), code 10 = "almost never engaged". This is the
+# opposite of an intuitive increasing-frequency scale; downstream consumers
+# must reverse (e.g. 11 - x) before treating higher values as "more
+# frequent". Harmonized as identity (raw ordinal preserved) so the reversal
+# decision is made once, downstream, not silently baked in here.
+#
+# No frequency pairs for part_none (A017m08/A033m08) -- "no group
+# memberships" has no associated frequency item, by construction.
+#
+# participation_count / participation_any are NOT built here -- they are
+# derived later (Task 9 / 99_create_final_dataset.R) from the membership
+# items in this spec.
+#
+# MISSING VALUES:
+# -9 = Don't know, -8 = Refuse to answer
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: part_religious
+    concept: participation
+    description: "Member of a religious organization/group (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m01 (A017m family); W2-W9 are w0NA033m01 (A033m family) -- pure renumbering, coding confirmed identical (0/1) in both."
+    source:
+      w1: w01A017m01
+      w2: w02A033m01
+      w3: w03A033m01
+      w4: w04A033m01
+      w5: w05A033m01
+      w6: w06A033m01
+      w7: w07A033m01
+      w8: w08A033m01
+      w9: w09A033m01
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_social_club
+    concept: participation
+    description: "Member of a friendship/social club (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m02; W2-W9 are w0NA033m02. Same W1 renumbering as part_religious."
+    source:
+      w1: w01A017m02
+      w2: w02A033m02
+      w3: w03A033m02
+      w4: w04A033m02
+      w5: w05A033m02
+      w6: w06A033m02
+      w7: w07A033m02
+      w8: w08A033m02
+      w9: w09A033m02
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_leisure
+    concept: participation
+    description: "Member of a leisure/sports/culture club (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m03; W2-W9 are w0NA033m03. Same W1 renumbering as part_religious."
+    source:
+      w1: w01A017m03
+      w2: w02A033m03
+      w3: w03A033m03
+      w4: w04A033m03
+      w5: w05A033m03
+      w6: w06A033m03
+      w7: w07A033m03
+      w8: w08A033m03
+      w9: w09A033m03
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_alumni
+    concept: participation
+    description: "Member of an alumni/school-tie association (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m04; W2-W9 are w0NA033m04. Same W1 renumbering as part_religious."
+    source:
+      w1: w01A017m04
+      w2: w02A033m04
+      w3: w03A033m04
+      w4: w04A033m04
+      w5: w05A033m04
+      w6: w06A033m04
+      w7: w07A033m04
+      w8: w08A033m04
+      w9: w09A033m04
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_volunteer
+    concept: participation
+    description: "Member of a volunteer/charity organization (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m05; W2-W9 are w0NA033m05. Same W1 renumbering as part_religious."
+    source:
+      w1: w01A017m05
+      w2: w02A033m05
+      w3: w03A033m05
+      w4: w04A033m05
+      w5: w05A033m05
+      w6: w06A033m05
+      w7: w07A033m05
+      w8: w08A033m05
+      w9: w09A033m05
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_civic
+    concept: participation
+    description: "Member of a political party, NGO, or interest group (1=yes, 0=no). The narrow civic-participation outcome."
+    type: binary
+    note: "W1 column is w01A017m06 ('Participating to the Political parties, the NGOs, the interest groups'); W2-W9 are w0NA033m06. THE 'buy a citizen' outcome. Present in W1 (the placebo wave) under a different item number -- not absent, contra a naive w01A033m06 lookup."
+    source:
+      w1: w01A017m06
+      w2: w02A033m06
+      w3: w03A033m06
+      w4: w04A033m06
+      w5: w05A033m06
+      w6: w06A033m06
+      w7: w07A033m06
+      w8: w08A033m06
+      w9: w09A033m06
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: part_none
+    concept: participation
+    description: "Belongs to none of the listed groups (1=yes, 0=no)"
+    type: binary
+    note: "W1 column is w01A017m08; W2-W9 are w0NA033m08. Same W1 renumbering as part_religious. No paired frequency item (A019_08/A035_08 do not exist -- a 'no memberships' response has no associated frequency)."
+    source:
+      w1: w01A017m08
+      w2: w02A033m08
+      w3: w03A033m08
+      w4: w04A033m08
+      w5: w05A033m08
+      w6: w06A033m08
+      w7: w07A033m08
+      w8: w08A033m08
+      w9: w09A033m08
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "No"
+        1: "Yes"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: partfreq_religious
+    concept: participation
+    description: "Frequency of participation in the religious organization/group (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_01; W2-W9 are w0NA035_01. DECLINING-frequency ordinal: 1='almost every day' (most frequent), 10='almost never engaged' (least frequent). Reverse (e.g. 11-x) before treating higher values as more frequent."
+    source:
+      w1: w01A019_01
+      w2: w02A035_01
+      w3: w03A035_01
+      w4: w04A035_01
+      w5: w05A035_01
+      w6: w06A035_01
+      w7: w07A035_01
+      w8: w08A035_01
+      w9: w09A035_01
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: partfreq_social_club
+    concept: participation
+    description: "Frequency of participation in the friendship/social club (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_02; W2-W9 are w0NA035_02. Same declining-frequency direction as partfreq_religious: 1=most frequent, 10=least frequent."
+    source:
+      w1: w01A019_02
+      w2: w02A035_02
+      w3: w03A035_02
+      w4: w04A035_02
+      w5: w05A035_02
+      w6: w06A035_02
+      w7: w07A035_02
+      w8: w08A035_02
+      w9: w09A035_02
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: partfreq_leisure
+    concept: participation
+    description: "Frequency of participation in the leisure/sports/culture club (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_03; W2-W9 are w0NA035_03. Same declining-frequency direction as partfreq_religious: 1=most frequent, 10=least frequent."
+    source:
+      w1: w01A019_03
+      w2: w02A035_03
+      w3: w03A035_03
+      w4: w04A035_03
+      w5: w05A035_03
+      w6: w06A035_03
+      w7: w07A035_03
+      w8: w08A035_03
+      w9: w09A035_03
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: partfreq_alumni
+    concept: participation
+    description: "Frequency of participation in the alumni/school-tie association (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_04; W2-W9 are w0NA035_04. Same declining-frequency direction as partfreq_religious: 1=most frequent, 10=least frequent."
+    source:
+      w1: w01A019_04
+      w2: w02A035_04
+      w3: w03A035_04
+      w4: w04A035_04
+      w5: w05A035_04
+      w6: w06A035_04
+      w7: w07A035_04
+      w8: w08A035_04
+      w9: w09A035_04
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: partfreq_volunteer
+    concept: participation
+    description: "Frequency of participation in the volunteer/charity organization (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_05; W2-W9 are w0NA035_05. Same declining-frequency direction as partfreq_religious: 1=most frequent, 10=least frequent."
+    source:
+      w1: w01A019_05
+      w2: w02A035_05
+      w3: w03A035_05
+      w4: w04A035_05
+      w5: w05A035_05
+      w6: w06A035_05
+      w7: w07A035_05
+      w8: w08A035_05
+      w9: w09A035_05
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+
+  - id: partfreq_civic
+    concept: participation
+    description: "Frequency of participation in political parties/NGOs/interest groups (raw KLoSA 10-pt declining-frequency scale)"
+    type: ordinal
+    note: "W1 column is w01A019_06; W2-W9 are w0NA035_06. Pairs with part_civic. DECLINING-frequency ordinal: 1='almost every day' (most frequent), 10='almost never engaged' (least frequent). Reverse (e.g. 11-x) before treating higher values as more frequent."
+    source:
+      w1: w01A019_06
+      w2: w02A035_06
+      w3: w03A035_06
+      w4: w04A035_06
+      w5: w05A035_06
+      w6: w06A035_06
+      w7: w07A035_06
+      w8: w08A035_06
+      w9: w09A035_06
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
