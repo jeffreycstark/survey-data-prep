@@ -1,0 +1,311 @@
+# KLoSA Demographics
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# KLoSA RENUMBERS SEVERAL ITEMS IN W1: age/birth-year use the A001 family
+# in W1 but the A002 family in W2-W9 (age = w01A001_age vs w0NA002_age;
+# birth year = w01A001y vs w0NA002y; birth month = w01A001m vs w0NA002m).
+# marital_status similarly moves from w01A006 (W1) to w0Nmarital (W2-W9).
+# Coding is confirmed IDENTICAL across the renumbering in both cases.
+#
+# EDUCATION is left on its NATIVE 4-level KLoSA ladder (Elementary/Middle/
+# High/College+) -- per project convention this is NOT cross-survey
+# education_5cat (out of scope for this task; see CLAUDE.md education gotcha).
+#
+# AGE LABEL BUG (cosmetic only): the SPSS variable LABEL text for age has
+# copy-paste errors in W6 ("=2016-w06A002y+1", extra +1), W7
+# ("=2018-w06A002y", wrong wave ref), and W9 ("=2020-w08A002y", wrong year
+# AND wave ref). Spot-checked against real data for all three waves: the
+# actual computed age VALUES equal (interview_year - birth_year) exactly
+# in 100% of rows in W6, W7, and W9 -- the bug is in the label text only,
+# not in the stored values. Safe to harmonize as identity.
+#
+# BIRTH MONTH + INTERVIEW DATE (NEW, Task 2 finding): birth-month variables
+# (w01A001m / w0NA002m) exist and are 100% populated in all 9 waves --
+# relaxes the integer-year-only RD granularity that earlier design notes
+# assumed. See identifiers.yml for the companion day-precision interview-date
+# variables (iw_year/iw_month/iw_day).
+#
+# MISSING VALUES:
+# -9 = Don't know, -8 = Refuse to answer
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: sex
+    concept: demographics
+    description: "Respondent's sex (1=male, 2=female)"
+    type: nominal
+    note: "Raw KLoSA coding is 1=Male, 5=Female; recoded here to the project-standard 1/2."
+    source:
+      w1: w01gender1
+      w2: w02gender1
+      w3: w03gender1
+      w4: w04gender1
+      w5: w05gender1
+      w6: w06gender1
+      w7: w07gender1
+      w8: w08gender1
+      w9: w09gender1
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping:
+          1: 1
+          5: 2
+    qc:
+      valid_range: [1, 2]
+
+  - id: birth_year
+    concept: demographics
+    description: "Respondent's birth year (4-digit)"
+    type: continuous
+    note: "W1 column is w01A001y (A001 family); W2-W9 are w0NA002y (A002 family) -- a genuine per-wave renumbering, not a naming inconsistency. Observed range across all waves: 1908-1963."
+    source:
+      w1: w01A001y
+      w2: w02A002y
+      w3: w03A002y
+      w4: w04A002y
+      w5: w05A002y
+      w6: w06A002y
+      w7: w07A002y
+      w8: w08A002y
+      w9: w09A002y
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1900, 1985]
+
+  - id: birth_month
+    concept: demographics
+    description: "Respondent's birth month (1-12)"
+    type: continuous
+    note: "W1 column is w01A001m (A001 family); W2-W9 are w0NA002m (A002 family), matching the same renumbering pattern as birth_year/age. Confirmed 100% populated in all 9 waves (spot-checked W1/W4/W9 by Task 2)."
+    source:
+      w1: w01A001m
+      w2: w02A002m
+      w3: w03A002m
+      w4: w04A002m
+      w5: w05A002m
+      w6: w06A002m
+      w7: w07A002m
+      w8: w08A002m
+      w9: w09A002m
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]
+
+  - id: age
+    concept: demographics
+    description: "Respondent age in years at interview (running variable for the RD; integer years only)"
+    type: continuous
+    note: "Forcing variable. Computed as interview_year - birth_year, no birthday adjustment (spot-checked exact match in W6/W7/W9, the three waves whose SPSS variable-LABEL text has copy-paste wave/year-reference bugs -- the label bug is cosmetic, the stored age values are correct). W1 column is w01A001_age; W2-W9 are w0NA002_age. Observed range across all waves: 45-107."
+    source:
+      w1: w01A001_age
+      w2: w02A002_age
+      w3: w03A002_age
+      w4: w04A002_age
+      w5: w05A002_age
+      w6: w06A002_age
+      w7: w07A002_age
+      w8: w08A002_age
+      w9: w09A002_age
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [40, 120]
+
+  - id: education
+    concept: demographics
+    description: "Highest education level, native KLoSA 4-level ladder (1=Elementary school or below, 2=Middle school, 3=High school, 4=College/University or above)"
+    type: ordinal
+    note: "NOT cross-survey education_5cat -- see CLAUDE.md education gotcha; that mapping is out of scope for this task. W1 carries one stray unlabeled value (97, n=1) outside the defined 1-4 ladder; the qc.valid_range below coerces it to NA."
+    source:
+      w1: w01edu
+      w2: w02edu
+      w3: w03edu
+      w4: w04edu
+      w5: w05edu
+      w6: w06edu
+      w7: w07edu
+      w8: w08edu
+      w9: w09edu
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Elementary school or below"
+        2: "Middle school"
+        3: "High school"
+        4: "College/University or above"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 4]
+
+  - id: marital_status
+    concept: demographics
+    description: "Current marital status (1=Married/living with partner, 2=Separated, 3=Divorced, 4=Widowed/missing (dispersed family), 5=Never married)"
+    type: nominal
+    note: "W1 column is w01A006 ('Currently marital status'); W2-W9 are w0Nmarital ('In <year>, the current marital status'). Coding confirmed identical across the renumbering."
+    source:
+      w1: w01A006
+      w2: w02marital
+      w3: w03marital
+      w4: w04marital
+      w5: w05marital
+      w6: w06marital
+      w7: w07marital
+      w8: w08marital
+      w9: w09marital
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Married/living with partner"
+        2: "Separated"
+        3: "Divorced"
+        4: "Widowed/missing (dispersed family)"
+        5: "Never married"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: region
+    concept: demographics
+    description: "Si-do (province/metropolitan city) of residence, KLoSA numeric codes (11=Seoul, 21=Busan, 22=Daegu, 23=Incheon, 24=Gwangju, 25=Daejeon, 26=Ulsan, 27=Sejong (from W5), 31=Gyeonggi, 32=Gangwon, 33=Chungbuk, 34=Chungnam, 35=Jeonbuk, 36=Jeonnam, 37=Gyeongbuk, 38=Gyeongnam)"
+    type: nominal
+    note: "Codes are non-contiguous (11, 21-27, 31-38); skip_range_check used instead of a valid_range gate. Sejong (27) only appears from W5 on, consistent with its 2012 creation as a special city -- not a code-drift bug."
+    source:
+      w1: w01region1
+      w2: w02region1
+      w3: w03region1
+      w4: w04region1
+      w5: w05region1
+      w6: w06region1
+      w7: w07region1
+      w8: w08region1
+      w9: w09region1
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urbanicity of residence (1=Metropolitan, 2=City, 3=Town)"
+    type: ordinal
+    note: "Monotonic urbanicity gradient. A second candidate column (region2, 2-level 'Village'/'Town') is a coarsening of this variable and was not used -- its English label is a likely mistranslation and region3 avoids the ambiguity (see Task 2 notes)."
+    source:
+      w1: w01region3
+      w2: w02region3
+      w3: w03region3
+      w4: w04region3
+      w5: w05region3
+      w6: w06region3
+      w7: w07region3
+      w8: w08region3
+      w9: w09region3
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Metropolitan"
+        2: "City"
+        3: "Town"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+
+  - id: hh_size
+    concept: demographics
+    description: "Number of household members"
+    type: continuous
+    source:
+      w1: w01hhsize
+      w2: w02hhsize
+      w3: w03hhsize
+      w4: w04hhsize
+      w5: w05hhsize
+      w6: w06hhsize
+      w7: w07hhsize
+      w8: w08hhsize
+      w9: w09hhsize
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 30]
+
+  - id: home_owner
+    concept: demographics
+    description: "Owns current residence (1=yes, 0=no)"
+    type: nominal
+    note: "Raw w0NF001 ('The type of currently residing home') is 1=Own home, 2=Jeonse (deposit-based rental), 3=Jeonse+monthly, 4=Monthly rental, 5=Other; recoded here to a binary own/not-own flag. A related but distinct item, w0NF004 (deed-holder identity), was not used -- see Task 2 notes."
+    source:
+      w1: w01F001
+      w2: w02F001
+      w3: w03F001
+      w4: w04F001
+      w5: w05F001
+      w6: w06F001
+      w7: w07F001
+      w8: w08F001
+      w9: w09F001
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Does not own (jeonse/monthly rental/other)"
+        1: "Owns home"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping:
+          1: 1
+          2: 0
+          3: 0
+          4: 0
+          5: 0
+    qc:
+      valid_range: [0, 1]

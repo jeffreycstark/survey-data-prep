@@ -1,0 +1,182 @@
+# KLoSA Identifiers / Administrative Variables
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# Source-name resolution is authoritative from Task 2's discovery pass
+# (outputs/klosa/variable_map.csv). Re-verified directly against the raw
+# .sav metadata + real data for this task (Task 4).
+#
+# PID:   literal column name 'pid' in every wave (NOT wave-prefixed). Stable
+#        panel linkage key confirmed by real overlap check (W1 n=10,254,
+#        W9 n=6,057, 87.7% of W9 pids also appear in W1).
+# HHID:  literal column name 'hhid' (lowercase) in W1-W8; W9 uses UPPERCASE
+#        'HHID' instead. A distinct 'HHID22' also exists in W9 ("In 2020,
+#        Household ID") -- not used, do not confuse with the wave's own hhid.
+# WEIGHT: wgt_c (cross-sectional weight), wave-prefixed literal name
+#        (w0Nwgt_c), present in every wave. UNRESOLVED CAVEAT (Task 2):
+#        the 'Horizontal weighting' / 'Vertical weighting' labels attached to
+#        wgt_c vs wgt_p appear to SWAP at W8-W9 relative to W1-W7 in the raw
+#        metadata. This does not affect which column is wgt_c (confirmed
+#        present under this name in all 9 waves, incl. as SPSS system-missing
+#        for a minority of W6-W9 rows -- not a sentinel code, genuine NA), but
+#        the label semantics should not be trusted without the official KLoSA
+#        user guide before using wgt_c for anything requiring the
+#        cross-sectional/panel distinction. Low stakes for most uses.
+# INTERVIEW DATE (NEW, Task 2 finding): day-precision interview-date
+#        variables (mniw_y/mniw_m/mniw_d) exist in ALL 9 waves under a
+#        consistent w0Nmniw_* naming pattern (no W1 renumbering, unlike the
+#        age/birth-year A001/A002 anchor shift). Confirmed 100% populated,
+#        one modal year per wave (W1=2006 ... W9=2022), enabling a finer RD
+#        running variable than integer-year age alone.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: pid
+    concept: identifiers
+    description: "KLoSA stable personal ID (constant across waves; panel linkage key)"
+    type: nominal
+    source:
+      w1: pid
+      w2: pid
+      w3: pid
+      w4: pid
+      w5: pid
+      w6: pid
+      w7: pid
+      w8: pid
+      w9: pid
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: hhid
+    concept: identifiers
+    description: "Household ID within wave"
+    type: nominal
+    note: "W1-W8 column is lowercase 'hhid'; W9 column is UPPERCASE 'HHID'. Do not confuse with W9's separate 'HHID22' column."
+    source:
+      w1: hhid
+      w2: hhid
+      w3: hhid
+      w4: hhid
+      w5: hhid
+      w6: hhid
+      w7: hhid
+      w8: hhid
+      w9: HHID
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: weight
+    concept: identifiers
+    description: "Cross-sectional sampling weight (wgt_c)"
+    type: continuous
+    note: "UNRESOLVED per Task 2: the 'Horizontal weighting'/'Vertical weighting' labels on wgt_c vs wgt_p appear to swap at W8-W9 relative to W1-W7 in the raw metadata -- low stakes, but do not trust the label semantics for the cross-sectional/panel distinction without checking the official KLoSA user guide. wgt_c itself (this column) is confirmed present and stably named in all 9 waves. W6-W9 carry a minority of genuine SPSS system-missing values (not a sentinel code)."
+    source:
+      w1: w01wgt_c
+      w2: w02wgt_c
+      w3: w03wgt_c
+      w4: w04wgt_c
+      w5: w05wgt_c
+      w6: w06wgt_c
+      w7: w07wgt_c
+      w8: w08wgt_c
+      w9: w09wgt_c
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: iw_year
+    concept: identifiers
+    description: "Interview year"
+    type: continuous
+    note: "Enables a finer RD running variable (age in months/days) than integer-year age alone. One modal calendar year per wave (W1=2006 ... W9=2022); confirmed 100% populated, no W1 renumbering (unlike the age/birth-year A001/A002 anchor shift)."
+    source:
+      w1: w01mniw_y
+      w2: w02mniw_y
+      w3: w03mniw_y
+      w4: w04mniw_y
+      w5: w05mniw_y
+      w6: w06mniw_y
+      w7: w07mniw_y
+      w8: w08mniw_y
+      w9: w09mniw_y
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [2005, 2023]
+
+  - id: iw_month
+    concept: identifiers
+    description: "Interview month"
+    type: continuous
+    note: "W6's w06mniw_m column is stored as a zero-padded CHARACTER string (SPSS format A2), unlike the numeric storage in every other wave -- discovered during this task's verification pass (Task 2's map did not flag it). Left as identity for w1-w5/w7-w9; w6 routes through r_function no_verify (as.numeric() pass-through) so the QC range check compares numbers, not lexicographic strings (a raw '09' < '1' string comparison was silently NA-ing all single-digit months before this fix). No -9/-8 sentinel values are present in this column in any wave, so no_verify's own default missing-code list is inert here."
+    source:
+      w1: w01mniw_m
+      w2: w02mniw_m
+      w3: w03mniw_m
+      w4: w04mniw_m
+      w5: w05mniw_m
+      w6: w06mniw_m
+      w7: w07mniw_m
+      w8: w08mniw_m
+      w9: w09mniw_m
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w6:
+          method: r_function
+          fn: no_verify
+    qc:
+      valid_range: [1, 12]
+
+  - id: iw_day
+    concept: identifiers
+    description: "Interview day of month"
+    type: continuous
+    note: "Same W6 character-storage quirk as iw_month (w06mniw_d is SPSS format A2, zero-padded character) -- routed through r_function no_verify for w6 only. See iw_month's note for detail."
+    source:
+      w1: w01mniw_d
+      w2: w02mniw_d
+      w3: w03mniw_d
+      w4: w04mniw_d
+      w5: w05mniw_d
+      w6: w06mniw_d
+      w7: w07mniw_d
+      w8: w08mniw_d
+      w9: w09mniw_d
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+      exceptions:
+        w6:
+          method: r_function
+          fn: no_verify
+    qc:
+      valid_range: [1, 31]
