@@ -54,8 +54,8 @@ Anchors verified by metadata peek on w04 (2012), w05 (2014), w09 (2022). Exact p
 |---|---|---|
 | `identifiers.yml` | `pid`, household id, `wave`, `year`, weights | confirm exact `pid`/weight names at load (§7) |
 | `demographics.yml` | sex, birth year, `A002_age`, education, marital status, region (시도), urban/rural, household size, home ownership | RD covariates / balance |
-| `age_running.yml` (may live in demographics) | `A002_age` (= survey year − birth year), birth year | **⚠️ integer-year age only** (no birth month located) → coarse forcing variable; a real RD limitation to flag in the audit |
-| `pension_basic.yml` (treatment) | **receipt `G111`(W2–W4) → `E111`(W5–W9)**; **amount `G112` → `E113`**; self/couple `G113`; application `G110`; months `E112` | see §6 — the module relocation is finding #1 |
+| `age_running.yml` (in demographics) | `A002_age`/`A001_age`(W1); birth year `A002y`/`A001y`; **birth month `A002m`/`A001m` (100% populated) + interview date `mniw_y/m/d` (all waves)** | ✅ Task-2: birth month + day-precision interview date exist → a fine RD running variable (age-in-months / days-to-cutoff) is constructible; the integer-year limitation is **relaxed** |
+| `pension_basic.yml` (treatment — **both blocks, G-block is the named default**) | default `basic_pension_receipt`=`G111`(W2–W9) / `_amount`=`G112` / `_couple`=`G113`; alternate `basic_pension_receipt_eblock`=`E111`(W5–W9) / `_amount_eblock`=`E113` | see §6 — corrected; ~92% G/E agreement where both present |
 | `pension_other.yml` (confounds) | National Pension receipt `E033` / amount `E035`; other public transfers (basic livelihood security, veterans) | net out the age-60/65 NP confound; keep NP distinct from Basic Pension |
 | `participation.yml` (outcome) | membership `A033m01–06` (religious / social club / leisure-culture-sports / alumni-hometown-family council / volunteer / **political-party-NGO-interest**), none `A033m08`; frequency `A035_01–07` | derive `participation_any`, `participation_count`, `participation_civic` (the political/NGO/interest item), `participation_volunteer`, `participation_religious`, per-type membership + frequency |
 | `income_assets.yml` (means test) | household total income + components (E-module), financial assets, real-estate assets | exposes the ingredients; the 소득인정액 approximation + bottom-70% cut is **paper-side** |
@@ -64,18 +64,18 @@ Anchors verified by metadata peek on w04 (2012), w05 (2014), w09 (2022). Exact p
 
 ## 6. Two design decisions that serve the paper's honesty
 
-1. **Treatment module relocation (finding #1).** Basic Pension receipt/amount moves from the **G-block** (W2–W4, "Basic Old-Age Pension") to the **E-block income module** (W5–W9, "Basic Pension (Ex Basic Old-Age Pension)"), while the legacy `G11x` block **persists post-2014 still labeled "Old-Age."** A naive constant-name pull would corrupt the treatment at the 2014 boundary. Spec maps receipt `G111→E111`, amount `G112→E113`, with a wave-by-wave assertion that legacy `G111` is dead post-2014 and `E111` absent pre-2014.
+1. **Treatment — two parallel modules, corrected by Task 2 (supersedes the original "G→E relocation" story).** The G-block (`G111` receipt, categorical 1=currently receiving/3=will receive/5=not entitled; `G112` amount; `G113` self/couple) is present and **consistent W2–W9**. The E-block income line (`E111` receipt checkbox, `E113` amount) exists **only W5–W9**. The original spec's claim that G-block is "dead post-2014" is **wrong** — G-block stays 37–51% populated (population reading) and, where both exist (W5–W9), G and E agree ~92%+ at the individual level. **Decision (Jeff):** harmonize both; the **G-block is the named default** (`basic_pension_receipt`/`_amount`/`_couple`) because it is the only measure spanning the whole diff-in-disc window, and the E-block is the documented alternate (`basic_pension_receipt_eblock`/`_amount_eblock`, W5–W9 robustness/cross-check). ⚠️ **Screener/denominator trap:** G111's NA is a *skip* (didn't apply), so `mean(receipt, na.rm=TRUE)` is a rate **conditional on application (~92%), not population** — document KIPA-style; the population reading treats skip→0. The instrument thus differs across the 2014 split (E-block has no pre-2014 counterpart) — a comparability caveat for the diff-in-disc, surfaced in the Task-10 audit.
 2. **Dose, not on/off.** Pre-2014 is not untreated — the 기초노령연금 (2008) paid a smaller benefit to a similar population. Harmonizing **amount** (not just receipt) lets the paper characterize the pre/post dose *empirically* rather than assert it. Estimand = dose effect; still identified, smaller/more honest claim.
 3. **National Pension kept separate** so the contributory, age-linked (retirement age 60→65) NP is not conflated with the means-tested Basic Pension at the 65 cutoff.
 
-## 7. Verify at implementation time (load-time checks)
+## 7. Load-time checks — RESOLVED by Task 2 (`outputs/klosa/variable_map.csv`)
 
-- Exact `pid` variable name and stability across W1–W9; household ID.
-- **Weight location** — main `w0N` file vs. `Lt0N` tracking file; harmonize cross-sectional + longitudinal weights.
-- Participation battery (`A033`/`A035`) present in **W1** (should be; confirm) and its value-scale stability across all waves.
-- Birth-month availability anywhere (would improve RD granularity); confirm none before declaring integer-year limitation.
-- Region variable coding (시도) and any cross-wave code drift (a known trap in this repo for other surveys).
-- Confirm legacy `G111` is empty/dead in W5–W9 and `E111` absent in W2–W4.
+- `pid` = literal `pid` all waves (verified panel key, 87.7% W9→W1 overlap). `hhid` = `hhid` W1–W8, **`HHID` (uppercase) W9**.
+- Weights in the main `w0N` file (not `Lt0N`): `wgt_c` all waves — but Horizontal/Vertical label semantics **swap at W8–W9** (probable labeling artifact); documented, low-stakes (RD may not weight).
+- **Missing codes: `[-9 DK, -8 Refuse]`.** (`-7` on W1 D615/D713 = substantive "Deficit", NOT missing.)
+- **W1 renumbering**: W1 uses `A001`/`A017`/`A019`/`A006` where W2–W9 use `A002`/`A033`/`A035`/`marital`. The participation battery **is** present in W1 (under `A017m`/`A019_`). Use the per-wave names in `variable_map.csv` verbatim.
+- Region (`region1`, 시도) numerically stable (Sejong=27 added W5, real not drift). `urban_rural` = `region3` (region2 has a probable "Village" mistranslation — avoided).
+- Treatment resolved: see §6 (G-block default W2–W9, E-block alternate W5–W9). Three relocation instances total (pension G/E behaviorally divergent; age A001→A002 and household income `E126`→`E147` are clean renames).
 
 ## 8. Deliverables
 
@@ -96,7 +96,8 @@ Anchors verified by metadata peek on w04 (2012), w05 (2014), w09 (2022). Exact p
 
 ## 10. Risks
 
-- **Age granularity** (integer years) may be coarse for a tight RD bandwidth — flagged, paper-side mitigation.
+- **Age granularity** — RELAXED (Task 2): birth month + day-precision interview date exist, so a fine running variable (age-in-months / days-to-cutoff) is available; integer-year age is no longer a hard limit.
+- **Treatment instrument asymmetry** — the G-block default is screener-gated (NA = didn't apply → KIPA-style conditional-vs-population denominator), and the E-block alternate has no pre-2014 counterpart, so the treatment instrument is not identical across the 2014 split. Surfaced in the Task-10 audit; a diff-in-disc comparability caveat for the paper.
 - **Treatment relocation** must be nailed exactly or the DiD-RD is corrupted at the boundary — mitigated by §6.1 assertions.
 - **Means-test approximation** from KLoSA income/assets ≠ official 소득인정액 — exposed as ingredients; paper owns the construction and its caveats.
 - **Gateway two-source provenance** if enrichment is used — tracked, kept off critical path.

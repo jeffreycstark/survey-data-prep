@@ -16,7 +16,7 @@
 - `haven::read_sav()` — the KLoSA English files use `_e` suffix; read normally (no forced `latin1`). If value labels come back mojibake, retry with `encoding = "UTF-8"`.
 - Every YAML variable MUST declare `missing.use_convention` (engine hard-errors otherwise) and a `qc.valid_range` (or `qc.skip_range_check: true` for IDs/amounts) — a missing range only warns but leaves bad data.
 - KLoSA is **standalone**: it cannot row-bind with the political-attitude surveys. Record this caveat in docs + CLAUDE.md.
-- Treatment relocation (load-bearing): Basic Pension receipt = `G111` for W1–W4, `E111` for W5–W9; amount = `G112` (W1–W4) → `E113` (W5–W9). Legacy `G11x` persists but is dead post-2014. This is a per-wave `source:` mapping, verified in Task 1.
+- Treatment (CORRECTED by Task 2 — supersedes the original "G→E relocation" story): harmonize BOTH modules, G-block is the named default. Default `basic_pension_receipt`=`G111` / `_amount`=`G112` / `_couple`=`G113`, present **W2–W9** (consistent; spans the diff-in-disc window). Alternate `basic_pension_receipt_eblock`=`E111` / `_amount_eblock`=`E113`, **W5–W9** only. They agree ~92%+ where both exist. ⚠️ G111 is screener-gated (NA=didn't apply) → KIPA-style conditional-vs-population denominator; document it. Exact per-wave names + codings come from `outputs/klosa/variable_map.csv`.
 - Commit messages: **no** `Co-Authored-By` / "Generated with" attribution (repo rule).
 - Work stays on branch `feat/klosa-harmonization`.
 
@@ -377,67 +377,95 @@ git commit -m "feat(klosa): social/civic participation outcome battery"
 
 ---
 
-### Task 6: `pension_basic.yml` (treatment, G→E mapping) + `pension_other.yml` (confound)
+### Task 6: `pension_basic.yml` (treatment — both blocks, G-block default) + `pension_other.yml` (confound)
+
+**⚠️ CORRECTED by Task 2 — the original "G→E relocation" design was wrong.** The G-block (`G111`/`G112`/`G113`) is present and consistent **W2–W9**; the E-block income line (`E111`/`E113`) exists **only W5–W9**; they agree ~92%+ where both exist. Decision (Jeff): harmonize BOTH, G-block is the **named default**. Use `outputs/klosa/variable_map.csv` for exact per-wave names + codings.
 
 **Files:**
 - Create: `src/config/klosa/harmonize/pension_basic.yml`, `src/config/klosa/harmonize/pension_other.yml`
 
 **Interfaces:**
-- Produces `basic_pension_receipt` (0/1), `basic_pension_amount` (KRW, 10k-won units), `basic_pension_couple` (0/1), `natl_pension_receipt` (0/1), `natl_pension_amount`.
+- Produces default (G-block, W2–W9): `basic_pension_receipt` (0/1), `basic_pension_amount` (10k-won), `basic_pension_couple` (0/1). Alternate (E-block, W5–W9): `basic_pension_receipt_eblock` (0/1), `basic_pension_amount_eblock` (10k-won). Confound: `natl_pension_receipt` (0/1), `natl_pension_amount`.
 
-- [ ] **Step 1: Write `pension_basic.yml`** — the receipt/amount `source:` block is the load-bearing per-wave relocation.
+- [ ] **Step 1: Write `pension_basic.yml`** — G-block default across W2–W9 (`w1: null` = pure placebo), plus the E-block alternate for W5–W9. Both documented with the screener/denominator caveat.
 
 ```yaml
 schema_version: 1
 missing_conventions:
   treat_as_na:
-    codes: [-9, -8]   # resolved in Task 2
-    description: "KLoSA missing codes"
+    codes: [-9, -8]   # confirmed by Task 2
+    description: "KLoSA missing codes: -9 DK, -8 Refuse"
 variables:
   - id: basic_pension_receipt
     concept: pension_basic
-    description: "Received Basic (Old-Age) Pension in the last year (1=yes, 0=no). Treatment/first-stage."
+    description: "Received Basic (Old-Age) Pension — G-block default (1=currently receiving, 0=not). Treatment/first-stage."
     type: binary
     note: >
-      MODULE RELOCATION at the 2014 reform: W1-W4 use the G-block (G111,
-      'Basic Old-Age Pension'); W5-W9 use the income-module E-block (E111,
-      'Basic Pension (Ex Basic Old-Age Pension)'). Legacy G111 persists but is
-      dead post-2014 — do NOT use it for W5-W9. W1 (2006) predates any pension:
-      source is null -> all-NA placebo (expected).
+      NAMED DEFAULT = G-block G111, present W2-W9 (consistent across the 2014
+      reform; the item keeps the 'Basic Old-Age Pension' label post-2014 but
+      tracks the renamed Basic Pension). G111 categories: 1=currently receiving,
+      3=will receive at pension age, 5=not entitled. ⚠️ SCREENER: G111 is asked
+      of applicants only, so its NA is a SKIP (didn't apply), NOT a refusal —
+      mean(x, na.rm=TRUE) is conditional-on-application (~92%), NOT a population
+      rate. Population reading treats skip->0 (paper-side choice; document KIPA-
+      style, cf. src/r/lookups/kipa_bribery_series.R). Cross-check: E-block
+      basic_pension_receipt_eblock agrees ~92%+ where both exist (W5-W9). W1
+      (2006) predates any pension -> null placebo.
     source:
       w1: null
       w2: w02G111
       w3: w03G111
       w4: w04G111
-      w5: w05E111
-      w6: w06E111
-      w7: w07E111
-      w8: w08E111
-      w9: w09E111
+      w5: w05G111
+      w6: w06G111
+      w7: w07G111
+      w8: w08G111
+      w9: w09G111
     missing: {use_convention: treat_as_na}
     harmonize:
-      default: {method: recode, mapping: {1: 1, 0: 0}}   # ADJUST to real yes/no coding from probe
+      default: {method: recode, mapping: {1: 1, 3: 0, 5: 0}}   # 1=receiving->1; 3,5->0; -8/-9 masked by convention -> NA (=skip)
     qc:
       valid_range: [0, 1]
-      skip_unmapped_check: true   # W1 is intentionally unmapped (placebo)
+      skip_unmapped_check: true   # W1 intentionally unmapped (placebo)
+  - id: basic_pension_receipt_eblock
+    concept: pension_basic
+    description: "Received Basic Pension — E-block income-module alternate (W5-W9), 1=received in last year, 0=blank/not received."
+    type: binary
+    note: >
+      ALTERNATE (robustness/cross-check), W5-W9 only. E111 is a checkbox: 1=Check
+      (received, paired 1:1 with non-NA E113 amount), blank=not received. Recode
+      1->1 and treat blank as 0 (blank=not-received inference; true item-
+      nonresponse is indistinguishable). Not present pre-2014 -> W1-W4 null.
+    source: {w1: null, w2: null, w3: null, w4: null, w5: w05E111, w6: w06E111, w7: w07E111, w8: w08E111, w9: w09E111}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: recode, mapping: {1: 1}}}   # blank(NA)->stays NA; paper reads NA as 0 (documented)
+    qc: {valid_range: [0, 1], skip_unmapped_check: true}
   - id: basic_pension_amount
     concept: pension_basic
-    description: "Monthly average Basic (Old-Age) Pension benefit (unit: 10,000 KRW). The dose."
+    description: "Monthly average Basic (Old-Age) Pension benefit — G-block default (unit: 10,000 KRW). The dose."
     type: continuous
-    note: "W1-W4 = G112; W5-W9 = E113. Enables the dose (not on/off) framing."
-    source: {w1: null, w2: w02G112, w3: w03G112, w4: w04G112, w5: w05E113, w6: w06E113, w7: w07E113, w8: w08E113, w9: w09E113}
+    note: "G-block default G112, W2-W9 (paired with basic_pension_receipt). Enables the dose (not on/off) framing across the whole panel."
+    source: {w1: null, w2: w02G112, w3: w03G112, w4: w04G112, w5: w05G112, w6: w06G112, w7: w07G112, w8: w08G112, w9: w09G112}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
-    qc:
-      valid_range: [0, 200]   # 10k-won units; set generous upper bound from probe
-      skip_unmapped_check: true
+    qc: {valid_range: [0, 300], skip_unmapped_check: true}   # 10k-won units; widen if probe shows higher
+  - id: basic_pension_amount_eblock
+    concept: pension_basic
+    description: "Monthly average Basic Pension — E-block income-module alternate (W5-W9), unit 10,000 KRW."
+    type: continuous
+    note: "Paired with basic_pension_receipt_eblock. W5 median ~9 (10k-won, ~90,000 KRW/mo) rising to ~25 by W9. Absent pre-2014."
+    source: {w1: null, w2: null, w3: null, w4: null, w5: w05E113, w6: w06E113, w7: w07E113, w8: w08E113, w9: w09E113}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc: {valid_range: [0, 300], skip_unmapped_check: true}
   - id: basic_pension_couple
     concept: pension_basic
-    description: "Benefit is for a couple vs. individual (1=couple, 0=self). Affects the means test."
+    description: "Benefit is for the couple vs. the individual (1=couple, 0=individual). Affects the means test. G-block only (no E-block equivalent)."
     type: binary
+    note: "G113, W2-W9. Raw: 1=Provided to the individual, 5=Provided to the couple. No E-block 'self or couple' flag exists."
     source: {w1: null, w2: w02G113, w3: w03G113, w4: w04G113, w5: w05G113, w6: w06G113, w7: w07G113, w8: w08G113, w9: w09G113}
     missing: {use_convention: treat_as_na}
-    harmonize: {default: {method: recode, mapping: {1: 1, 2: 0}}}  # ADJUST from probe
+    harmonize: {default: {method: recode, mapping: {1: 0, 5: 1}}}   # 1=individual->0, 5=couple->1
     qc: {valid_range: [0, 1], skip_unmapped_check: true}
 ```
 
@@ -452,9 +480,10 @@ variables:
     concept: pension_other
     description: "Received National Pension benefit in the last year (1=yes, 0=no). Age-60/65 contributory confound — keep distinct from Basic Pension."
     type: binary
+    note: "E033 is 4-category: 1=only monthly benefit, 2=only lump-sum, 3=received both, 4=no. Recode 'received any' = {1,2,3}->1, 4->0."
     source: {w1: w01E033, w2: w02E033, w3: w03E033, w4: w04E033, w5: w05E033, w6: w06E033, w7: w07E033, w8: w08E033, w9: w09E033}
     missing: {use_convention: treat_as_na}
-    harmonize: {default: {method: recode, mapping: {1: 1, 0: 0}}}  # ADJUST from probe
+    harmonize: {default: {method: recode, mapping: {1: 1, 2: 1, 3: 1, 4: 0}}}
     qc: {valid_range: [0, 1]}
   - id: natl_pension_amount
     concept: pension_other
