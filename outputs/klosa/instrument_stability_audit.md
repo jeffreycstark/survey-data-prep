@@ -86,7 +86,7 @@ Verdict detail: RENUMBERED -- same construct/scale, different variable number by
 | w8 | w08A033m03 | Participating to the Leisure/cultural/sports related groups (class for the elder | 0=No; 1=Yes |
 | w9 | w09A033m03 | Participating to the Leisure/cultural/sports related groups (class for the elderly etc) | 0=No; 1=Yes |
 
-W1 = w01A017m03; W2-W9 = w0NA033m03. Same 6-group-type battery (Leisure/culture/sports groups), same 0/1 membership coding, in W1 and W2-W9 -- confirmed a pure item-RENUMBER from the W1->W2 questionnaire revision (identical pattern to the A001->A002 age/birth-date shift documented in demographics.yml), not an instrument change.
+W1 = w01A017m03; W2-W9 = w0NA033m03. Same 6-group-type battery (Leisure/culture/sports groups), same 0/1 membership coding, in W1 and W2-W9 -- confirmed a pure item-RENUMBER from the W1->W2 questionnaire revision (identical pattern to the A001->A002 age/birth-date shift documented in demographics.yml), not an instrument change. STEM WORDING DRIFT: the stem label is not constant within a same-variable-number wave cohort (see per-wave label column above), even though the verdict remains RENUMBERED because the construct and response scale are unchanged.
 
 ### part_alumni (membership: Alumni associations / hometown communities / family councils) -- **RENUMBERED**
 
@@ -146,7 +146,7 @@ Verdict detail: RENUMBERED -- same construct/scale, different variable number by
 | w8 | w08A033m06 | Participating to the Political parties, NGO, interest groups | 0=No; 1=Yes |
 | w9 | w09A033m06 | Participating to the Political parties, NGO, interest groups | 0=No; 1=Yes |
 
-W1 = w01A017m06; W2-W9 = w0NA033m06. Same 6-group-type battery (Political parties / NGOs / interest groups), same 0/1 membership coding, in W1 and W2-W9 -- confirmed a pure item-RENUMBER from the W1->W2 questionnaire revision (identical pattern to the A001->A002 age/birth-date shift documented in demographics.yml), not an instrument change.
+W1 = w01A017m06; W2-W9 = w0NA033m06. Same 6-group-type battery (Political parties / NGOs / interest groups), same 0/1 membership coding, in W1 and W2-W9 -- confirmed a pure item-RENUMBER from the W1->W2 questionnaire revision (identical pattern to the A001->A002 age/birth-date shift documented in demographics.yml), not an instrument change. STEM WORDING DRIFT: the stem label is not constant within a same-variable-number wave cohort (see per-wave label column above), even though the verdict remains RENUMBERED because the construct and response scale are unchanged.
 
 ### part_other (membership: Other group) -- **RENUMBERED**
 
@@ -246,7 +246,7 @@ Verdict detail: RENUMBERED -- same construct/scale, different variable number by
 | w8 | w08A035_03 | Number of times which participates to Leisure/cultural/sports related group (cla | -9=Don't know; -8=Refuse to answer; 1=Almost every day (more than 4 times per week); 2=Once a week; 3=2~3 times a week; 4=Once a month; 5=Twice a month (every two weeks); 6=Once or twice a year; 7=Three or four times a year (once every three or four months); 8=Five or six times a year (every two months); 9=Almost never a year; 10=Almost never engaged |
 | w9 | w09A035_03 | Number of times which participates to Leisure/cultural/sports related group (class for the elderly etc) | -9=Don't know; -8=Refuse to answer; 1=Almost every day (more than 4 times per week); 2=Once a week; 3=2~3 times a week; 4=Once a month; 5=Twice a month (every two weeks); 6=Once or twice a year; 7=Three or four times a year (once every three or four months); 8=Five or six times a year (every two months); 9=Almost never a year; 10=Almost never engaged |
 
-W1 = w01A019_03; W2-W9 = w0NA035_03. Same declining-frequency 10-pt scale in both families -- pure RENUMBER, same pattern as the membership battery.
+W1 = w01A019_03; W2-W9 = w0NA035_03. Same declining-frequency 10-pt scale in both families -- pure RENUMBER, same pattern as the membership battery. STEM WORDING DRIFT: the stem label is not constant within a same-variable-number wave cohort (see per-wave label column above), even though the verdict remains RENUMBERED because the construct and response scale are unchanged.
 
 ### partfreq_alumni (frequency: Alumni associations / hometown communities / family councils) -- **RENUMBERED**
 
@@ -348,7 +348,7 @@ Verdict detail: STABLE
 | w8 | w08G111 | Receipt of the Basic Old-Age Pension Benefit | -9=Don't know; -8=Refuse to answer; 1=Yes, currently receiving; 3=No, but will receive upon reaching at the pension age (birth month); 5=No, not entitled |
 | w9 | w09G111 | Receipt of the Basic Old-Age Pension Benefit | -9=Don't know; -8=Refuse to answer; 1=Yes, currently receiving; 3=No, but will receive upon reaching at the pension age (birth month); 5=No, not entitled |
 
-Genuinely absent W1 (2006 predates the 2007 Basic Old-Age Pension law; a structural placebo, not a redesign gap). Present + STABLE W2-W9: label stays 'Receipt of the Basic Old-Age Pension Benefit' verbatim through W9 even though the underlying benefit was renamed 'Basic Pension' at the 2014 reform -- the questionnaire never updated the item's own stem text, but its 1=currently receiving/3=will receive/5=not entitled coding is byte-for-byte identical W2-W9. Screener-gated (NA where the respondent never applied -- see G110); this is the paper's default treatment source and it crosses the 2014 boundary with an UNCHANGED variable number, UNCHANGED coding, and (modulo cosmetic label drift) UNCHANGED stem. -8=Refuse is only defined in the value-label metadata from W3 on (W2 lacks it) -- a codebook-population artifact, not a scale change (the underlying -9/-8 convention is universal).
+Genuinely absent W1 (2006 predates the 2007 Basic Old-Age Pension law; a structural placebo, not a redesign gap). Present + STABLE W2-W9: label stays 'Receipt of the Basic Old-Age Pension Benefit' verbatim through W9 even though the underlying benefit was renamed 'Basic Pension' at the 2014 reform -- the questionnaire never updated the item's own stem text, but its 1=currently receiving/3=will receive/5=not entitled coding is byte-for-byte identical W2-W9. Screener-gated (NA where the respondent never applied -- see G110); this is the paper's default treatment source and it crosses the 2014 boundary with an UNCHANGED variable number, UNCHANGED coding, and (modulo cosmetic label drift) UNCHANGED stem. -8=Refuse appears inconsistently across waves in the value-label metadata (present W3, W6-W9; absent W2, W4, W5, which carry only -9=Don't know or neither code); DK/Refuse codes are excluded from the scale comparison, so this is a codebook-population artifact, not a scale change (the underlying -9/-8 convention is universal).
 
 ### basic_amount_G (G112 -- Basic Pension monthly amount, G-block DEFAULT) -- **STABLE**
 

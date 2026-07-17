@@ -32,7 +32,7 @@
 # scored as CHANGED, since it is a metadata gap, not a moved instrument.
 
 suppressMessages({
-  library(haven); library(here); library(purrr); library(dplyr); library(stringr)
+  library(haven); library(here); library(purrr); library(stringr)
 })
 
 waves <- sprintf("w%d", 1:9)
@@ -120,7 +120,7 @@ items[["basic_receipt_G"]] <- list(
   heading  = "basic_receipt_G (G111 -- Basic Pension receipt, G-block DEFAULT)",
   category = "TREATMENT -- Basic Pension receipt, G-block (named default, W2-W9)",
   suffix   = mk(NA, rep("G111", 8)),
-  notes    = "Genuinely absent W1 (2006 predates the 2007 Basic Old-Age Pension law; a structural placebo, not a redesign gap). Present + STABLE W2-W9: label stays 'Receipt of the Basic Old-Age Pension Benefit' verbatim through W9 even though the underlying benefit was renamed 'Basic Pension' at the 2014 reform -- the questionnaire never updated the item's own stem text, but its 1=currently receiving/3=will receive/5=not entitled coding is byte-for-byte identical W2-W9. Screener-gated (NA where the respondent never applied -- see G110); this is the paper's default treatment source and it crosses the 2014 boundary with an UNCHANGED variable number, UNCHANGED coding, and (modulo cosmetic label drift) UNCHANGED stem. -8=Refuse is only defined in the value-label metadata from W3 on (W2 lacks it) -- a codebook-population artifact, not a scale change (the underlying -9/-8 convention is universal)."
+  notes    = "Genuinely absent W1 (2006 predates the 2007 Basic Old-Age Pension law; a structural placebo, not a redesign gap). Present + STABLE W2-W9: label stays 'Receipt of the Basic Old-Age Pension Benefit' verbatim through W9 even though the underlying benefit was renamed 'Basic Pension' at the 2014 reform -- the questionnaire never updated the item's own stem text, but its 1=currently receiving/3=will receive/5=not entitled coding is byte-for-byte identical W2-W9. Screener-gated (NA where the respondent never applied -- see G110); this is the paper's default treatment source and it crosses the 2014 boundary with an UNCHANGED variable number, UNCHANGED coding, and (modulo cosmetic label drift) UNCHANGED stem. -8=Refuse appears inconsistently across waves in the value-label metadata (present W3, W6-W9; absent W2, W4, W5, which carry only -9=Don't know or neither code); DK/Refuse codes are excluded from the scale comparison, so this is a codebook-population artifact, not a scale change (the underlying -9/-8 convention is universal)."
 )
 items[["basic_amount_G"]] <- list(
   heading  = "basic_amount_G (G112 -- Basic Pension monthly amount, G-block DEFAULT)",
@@ -159,6 +159,71 @@ items[["srh"]] <- list(
 )
 
 # ---------------------------------------------------------------------------
+# Stem-label constancy helpers
+#
+# The documented contract for STABLE is "label AND response scale constant
+# across present waves" -- classify_item() below checks both. Two known
+# sources of harmless noise have to be normalized away first, or they turn
+# into false CHANGED verdicts:
+#
+#  (1) KLoSA's own raw .sav exports for W1-W8 hard-truncate SPSS variable
+#      labels at 80 characters; W9 (and any label under the ceiling) carries
+#      the full text. Confirmed by direct inspection -- e.g. G112, E111,
+#      E113, and several participation-battery items all show nchar==80 in
+#      W1-W8 with W9's longer label a strict continuation of the same text.
+#      Treating that truncation as a wording change would flip genuinely
+#      stable items (G112 among them) to CHANGED.
+#  (2) A handful of KLoSA stems embed the wave/year ("In 2014, ...") or a
+#      stray copy-paste formula fragment ("=2018-..."); those are stripped
+#      before comparison so an embedded-year difference alone can't flip a
+#      stable item.
+#
+# Whitespace/case differences are also normalized away. A residual material
+# difference (e.g. "the NGOs, the interest groups" -> "NGO, interest groups")
+# survives all of this and is treated as real drift.
+# ---------------------------------------------------------------------------
+
+STEM_TRUNC_LEN <- 80
+
+normalize_stem <- function(x) {
+  if (is.na(x)) return(NA_character_)
+  x <- trimws(x)
+  x <- gsub("\\s+", " ", x)
+  x <- tolower(x)
+  x <- sub("^in\\s+\\d{4},?\\s*", "", x)              # "In 2014, ..." wave/year prefix
+  x <- sub("^=\\S*\\d{4}\\S*[,:]?\\s*", "", x)         # "=2018-..." formula-fragment prefix
+  x
+}
+
+# TRUE if two raw stem labels are the same item, allowing for the W1-W8
+# 80-char truncation ceiling: if the shorter one hit that exact ceiling and
+# is a normalized prefix of the longer one, it's a truncation artifact, not
+# a real wording change.
+stems_match <- function(raw_a, raw_b) {
+  if (is.na(raw_a) || is.na(raw_b)) return(TRUE)
+  na_a <- normalize_stem(raw_a); na_b <- normalize_stem(raw_b)
+  if (identical(na_a, na_b)) return(TRUE)
+  len_a <- nchar(trimws(raw_a)); len_b <- nchar(trimws(raw_b))
+  if (len_a <= len_b) { short_n <- na_a; short_len <- len_a; long_n <- na_b
+  } else { short_n <- na_b; short_len <- len_b; long_n <- na_a }
+  short_len == STEM_TRUNC_LEN && nchar(short_n) > 0 && startsWith(long_n, short_n)
+}
+
+# Group present waves by their same-variable-number suffix cohort (e.g. all
+# of W2-W9 sharing "A033m03") and check stem constancy WITHIN each cohort.
+# A cohort of one wave is trivially stable; cross-cohort comparison (e.g. W1
+# vs W2-W9) is a RENUMBERED question, not a stem-drift question.
+stem_cohorts_stable <- function(present_waves, suf, labels) {
+  if (length(present_waves) < 2) return(TRUE)
+  cohorts <- split(present_waves, suf[present_waves])
+  all(vapply(cohorts, function(cw) {
+    if (length(cw) < 2) return(TRUE)
+    ref <- labels[[cw[1]]]
+    all(vapply(cw[-1], function(wv) stems_match(ref, labels[[wv]]), logical(1)))
+  }, logical(1)))
+}
+
+# ---------------------------------------------------------------------------
 # Classification
 # ---------------------------------------------------------------------------
 
@@ -176,11 +241,14 @@ classify_item <- function(it) {
   metadata_gap_waves <- waves[exists & core == "(none)"]
   real_mask <- exists & !(core %in% c("(none)"))
 
+  stem_note <- NULL
+
   if (length(present_waves) == 0) {
     verdict <- "ABSENT (raw variable not found in any wave)"
   } else {
     scale_stable <- length(unique(core[real_mask])) <= 1
     distinct_suffix <- unique(suf[exists])
+    stem_stable <- stem_cohorts_stable(present_waves, suf, labels)
     if (!scale_stable) {
       # find the first wave (in order) where core scale diverges from the first present wave's
       base <- core[which(real_mask)[1]]
@@ -192,14 +260,20 @@ classify_item <- function(it) {
       grp <- split(waves[exists], suf[exists])
       detail <- paste(sprintf("%s=%s", names(grp), map_chr(grp, ~ paste(range(.x), collapse = "-"))), collapse = "; ")
       verdict <- sprintf("RENUMBERED -- same construct/scale, different variable number by wave (%s)", detail)
-    } else {
+      if (!stem_stable) {
+        stem_note <- "STEM WORDING DRIFT: the stem label is not constant within a same-variable-number wave cohort (see per-wave label column above), even though the verdict remains RENUMBERED because the construct and response scale are unchanged."
+      }
+    } else if (stem_stable) {
       verdict <- "STABLE"
+    } else {
+      verdict <- sprintf("CHANGED -- stem label differs across present waves despite an unchanged variable number and response scale (present waves: %s)",
+                          paste(present_waves, collapse = ", "))
     }
   }
 
   list(src = src, labels = labels, scales = scales, exists = exists,
        present_waves = present_waves, metadata_gap_waves = metadata_gap_waves,
-       verdict = verdict)
+       stem_note = stem_note, verdict = verdict)
 }
 
 results <- map(items, classify_item)
@@ -270,7 +344,8 @@ for (id in names(items)) {
     scale_disp <- md_safe(r$scales[[wv]])
     out <- c(out, sprintf("| %s | %s | %s | %s |", wv, src_disp, label_disp, scale_disp))
   }
-  out <- c(out, "", it$notes, "")
+  notes_text <- if (is.null(r$stem_note)) it$notes else paste(it$notes, r$stem_note)
+  out <- c(out, "", notes_text, "")
 }
 
 writeLines(out, out_path)
