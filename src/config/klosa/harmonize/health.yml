@@ -1,0 +1,137 @@
+# KLoSA Health — self-rated health + ADL/IADL functional-limitation counts
+# (Task 7: controls for the paper's means-test analysis)
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# MISSING VALUES:
+# -9 = Don't know, -8 = Refuse to answer
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: srh
+    concept: health
+    description: "Self-rated health, 1=best...5=worst (higher = worse health)"
+    type: ordinal
+    note: >
+      C001 ('Respondent's (principal) subjective health'), present + stable
+      POSITION across all 9 waves. ⚠️ INSTRUMENT-STABILITY FLAG: the
+      response-category WORDING shifts at W3. W1-W2 = 1=Very good, 2=Good,
+      3=Fair, 4=Bad, 5=Very bad (no top "Excellent" category). W3-W9 =
+      1=Excellent, 2=Very good, 3=Good, 4=Fair, 5=Poor (adds "Excellent" as
+      a new top category, pushing "Very good" down to position 2). Ordinal
+      DIRECTION (1=best, 5=worst) is unchanged throughout, so identity
+      harmonization is safe for a monotonic treatment -- but W1/W2
+      respondents never had the "Excellent" option available, a genuine
+      reference-point shift the Task-10 audit will also report. Do not treat
+      the 5-point scale as fully wording-comparable across the W2->W3
+      boundary.
+    source:
+      w1: w01C001
+      w2: w02C001
+      w3: w03C001
+      w4: w04C001
+      w5: w05C001
+      w6: w06C001
+      w7: w07C001
+      w8: w08C001
+      w9: w09C001
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Best (Very good / Excellent, wording varies -- see note)"
+        2: "Good / Very good"
+        3: "Fair / Good"
+        4: "Bad / Fair"
+        5: "Worst (Very bad / Poor, wording varies -- see note)"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+
+  - id: adl_count
+    concept: health
+    description: "Count of ADL (Activities of Daily Living) items needing help, range 0-8 (higher = more functional limitation)"
+    type: ordinal
+    note: >
+      No single KLoSA ADL summary variable exists. Derived via
+      klosa_adl_count() (src/r/utils/recoding.R) from the 8-item raw
+      component battery C201-C208 (Dressing, Washing face/hair/brushing,
+      Bathing/showering, Eating, Getting in/out of bed + walking, Using the
+      toilet, Using the toilet without spilling, Grooming), present with
+      STABLE variable numbers across all 9 waves. Raw coding is non-linear:
+      1=No help needed, 3=Need help to some extent, 5=Need help in every
+      respect (NOT a plain 1/2/3 ladder). The derive function masks -9/-8 to
+      NA per item and counts items with raw value >= 3 (any degree of help
+      needed); rows where all 8 items are missing return NA rather than 0.
+    source:
+      w1: w01C201   # placeholder -- derived from w0NC201-w0NC208, see klosa_adl_count()
+      w2: w02C201
+      w3: w03C201
+      w4: w04C201
+      w5: w05C201
+      w6: w06C201
+      w7: w07C201
+      w8: w08C201
+      w9: w09C201
+    scale:
+      min: 0
+      max: 8
+      labels:
+        0: "No ADL items need help"
+        8: "All 8 ADL items need help"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: derive
+        fn: klosa_adl_count
+    qc:
+      valid_range: [0, 8]
+
+  - id: iadl_count
+    concept: health
+    description: "Count of IADL (Instrumental Activities of Daily Living) items needing help, range 0-9 (higher = more functional limitation)"
+    type: ordinal
+    note: >
+      No single KLoSA IADL summary variable exists. Derived via
+      klosa_iadl_count() (src/r/utils/recoding.R) from the 9-item raw
+      component battery C209-C217 (Household chores, Preparing meals,
+      Laundry, Near-distance going out, Going out using transportation,
+      Shopping, Managing money, Making/taking a phone call, Taking
+      medications), present with STABLE variable numbers across all 9
+      waves. Same non-linear 1/3/5 raw coding and derive treatment as
+      adl_count (see klosa_adl_count() note); count of items with value >=
+      3, all-missing rows -> NA.
+    source:
+      w1: w01C209   # placeholder -- derived from w0NC209-w0NC217, see klosa_iadl_count()
+      w2: w02C209
+      w3: w03C209
+      w4: w04C209
+      w5: w05C209
+      w6: w06C209
+      w7: w07C209
+      w8: w08C209
+      w9: w09C209
+    scale:
+      min: 0
+      max: 9
+      labels:
+        0: "No IADL items need help"
+        9: "All 9 IADL items need help"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: derive
+        fn: klosa_iadl_count
+    qc:
+      valid_range: [0, 9]

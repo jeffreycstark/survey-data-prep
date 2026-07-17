@@ -2344,3 +2344,91 @@ combine_lbs_victim_any <- function(data, wave_name = NULL, sources = NULL) {
 won_to_10k_won <- function(x, data = NULL, var_name = NULL, validate_all = NULL) {
   as.numeric(x) / 10000
 }
+
+# ==============================================================================
+# ADL / IADL BATTERY COUNTS — KLoSA (component battery, no single summary var)
+# ==============================================================================
+
+#' Build zero-padded KLoSA per-wave column names for a raw item stem.
+#'
+#' KLoSA raw column names carry a "w0N" prefix baked into the SPSS variable
+#' name itself (e.g. "w04C201"), where N is the 1-9 wave number with NO
+#' leading zero on N (i.e. prefix is "w0" + N, not "w0" + sprintf("%02d", N)).
+#' This matches src/r/data_prep_modules/klosa/0_load_waves.R's own
+#' `sprintf("w0%d_e.sav", i)` file-naming convention.
+#'
+#' @param wave_name Wave key as passed by the harmonize engine, e.g. "w4".
+#' @param stems Character vector of raw item stems, e.g. c("C201", ..., "C208").
+#' @return Character vector of prefixed column names, e.g. c("w04C201", ...).
+.klosa_wave_cols <- function(wave_name, stems) {
+  n <- suppressWarnings(as.integer(sub("^w", "", wave_name)))
+  if (is.na(n) || n < 1 || n > 9) {
+    stop(".klosa_wave_cols: unrecognized KLoSA wave_name: ", wave_name)
+  }
+  paste0(sprintf("w0%d", n), stems)
+}
+
+#' Count ADL (Activities of Daily Living) items needing help — KLoSA C201-C208.
+#'
+#' The 8-item ADL battery (dressing, washing, bathing, eating, getting in/out
+#' of bed + walking, using the toilet, using the toilet without spilling,
+#' grooming) has no single KLoSA summary variable; raw items are coded
+#' non-linearly (1=no help needed, 3=need help to some extent, 5=need help in
+#' every respect — NOT a simple 1/2/3 ladder). This derive function builds the
+#' per-wave column names from `wave_name` via `.klosa_wave_cols()`, masks the
+#' -9/-8 missing convention to NA (applied here directly since `method: derive`
+#' reads raw wave data before the engine's per-column `apply_missing()` step),
+#' and returns the count of items with value >= 3 (i.e. any help needed),
+#' range [0,8]. Rows where all 8 items are missing return NA rather than 0.
+#'
+#' @param data Raw wave data frame.
+#' @param wave_name Wave key, e.g. "w4" (required — used to build column names).
+#' @param sources Unused; present for the derive() interface (columns are
+#'   built internally from `wave_name`, following the compute_procedural_index
+#'   pattern in src/r/harmonize/harmonize.R).
+#' @return Numeric vector in [0,8] (or NA), length nrow(data).
+#' @export
+klosa_adl_count <- function(data, wave_name = NULL, sources = NULL) {
+  if (is.null(wave_name)) stop("klosa_adl_count: `wave_name` is required")
+  cols <- .klosa_wave_cols(wave_name, sprintf("C%03d", 201:208))
+  to_num <- function(col) {
+    if (inherits(col, "haven_labelled")) as.numeric(haven::zap_labels(col))
+    else suppressWarnings(as.numeric(col))
+  }
+  mask <- function(x) { x[x %in% c(-9, -8)] <- NA_real_; x }
+  M <- do.call(cbind, lapply(cols, function(cn) mask(to_num(data[[cn]]))))
+  apply(M, 1, function(r) {
+    if (all(is.na(r))) return(NA_real_)
+    sum(r >= 3, na.rm = TRUE)
+  })
+}
+
+#' Count IADL (Instrumental Activities of Daily Living) items needing help —
+#' KLoSA C209-C217.
+#'
+#' The 9-item IADL battery (household chores, preparing meals, laundry,
+#' near-distance going out, going out using transportation, shopping,
+#' managing money, making/taking a call, taking medications) follows the same
+#' non-linear 1/3/5 coding and per-wave column-naming pattern as the ADL
+#' battery (see `klosa_adl_count()`); this is the IADL counterpart returning
+#' a count of items with value >= 3, range [0,9].
+#'
+#' @param data Raw wave data frame.
+#' @param wave_name Wave key, e.g. "w4" (required — used to build column names).
+#' @param sources Unused; present for the derive() interface.
+#' @return Numeric vector in [0,9] (or NA), length nrow(data).
+#' @export
+klosa_iadl_count <- function(data, wave_name = NULL, sources = NULL) {
+  if (is.null(wave_name)) stop("klosa_iadl_count: `wave_name` is required")
+  cols <- .klosa_wave_cols(wave_name, sprintf("C%03d", 209:217))
+  to_num <- function(col) {
+    if (inherits(col, "haven_labelled")) as.numeric(haven::zap_labels(col))
+    else suppressWarnings(as.numeric(col))
+  }
+  mask <- function(x) { x[x %in% c(-9, -8)] <- NA_real_; x }
+  M <- do.call(cbind, lapply(cols, function(cn) mask(to_num(data[[cn]]))))
+  apply(M, 1, function(r) {
+    if (all(is.na(r))) return(NA_real_)
+    sum(r >= 3, na.rm = TRUE)
+  })
+}

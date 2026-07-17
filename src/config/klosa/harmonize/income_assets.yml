@@ -1,0 +1,120 @@
+# KLoSA Income & Assets — means-test ingredients (Task 7)
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# All three variables are already stored in the label's claimed unit
+# (10,000 KRW), UNLIKE the pension_basic.yml G112 case (won_to_10k_won) --
+# verified by real-data median checks below. No unit conversion needed here.
+#
+# ⚠️ assets_financial is intentionally NOT included: variable_map.csv found
+# no single raw "total financial assets" summary variable. F234 (total
+# household assets) and F058 (real-estate assets) both exist as named raw
+# items; a financial-only figure would have to be derived (F234-F058, or
+# summed from six component items) and is left for the paper side (Jeff's
+# instruction, Task 7 brief) rather than invented here.
+#
+# MISSING VALUES:
+# -9 = Don't know, -8 = Refuse to answer
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: hh_income_total
+    concept: income_assets
+    description: "Total household income last year (unit: 10,000 KRW). Ingredient for the bottom-70% means-test approximation (paper-side)."
+    type: continuous
+    note: >
+      THIRD relocation instance in this survey (after the pension G->E and
+      birth-date A001->A002 relocations documented elsewhere): W1-W4 = E126,
+      W5-W9 = E147. variable_map.csv real-data median check confirms the
+      relocation is low-risk (W4 E126 median=2,000; W5 E147 median=2,000,
+      same order of magnitude across the boundary). W6 raw data happens to
+      still carry a populated E126 column, but per the resolved mapping it
+      is not used for W6 (E147 is). UNITS VERIFIED (Task 7, this file):
+      medians run 1,200 (W1) rising to 2,500 (W9) in 10,000-KRW units, i.e.
+      ~12M-25M KRW/year -- plausible for an elderly/retiree-heavy household
+      panel (KLoSA is 45+), not literal-won-scale (which would read as a
+      four-to-five-digit median in the millions, not low thousands). No
+      won_to_10k_won conversion needed -- identity is correct.
+    source:
+      w1: w01E126
+      w2: w02E126
+      w3: w03E126
+      w4: w04E126
+      w5: w05E147
+      w6: w06E147
+      w7: w07E147
+      w8: w08E147
+      w9: w09E147
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 200000]
+
+  - id: assets_total
+    concept: income_assets
+    description: "Total household assets, all types net of debt (unit: 10,000 KRW). Ingredient for the bottom-70% means-test approximation (paper-side)."
+    type: continuous
+    note: >
+      F234 ('the total amount of household assets'), present W2-W9. ABSENT
+      in W1 (source: null) -- confirmed genuinely missing from the raw W1
+      file, not a naming variant. UNITS VERIFIED (Task 7): medians run
+      13,000 (W2) to 27,000 (W9) in 10,000-KRW units, i.e. ~130M-270M KRW --
+      squarely in the expected order of magnitude for Korean household net
+      worth (median real-estate-heavy wealth). Identity is correct.
+    source:
+      w1: null
+      w2: w02F234
+      w3: w03F234
+      w4: w04F234
+      w5: w05F234
+      w6: w06F234
+      w7: w07F234
+      w8: w08F234
+      w9: w09F234
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 2000000]
+      skip_unmapped_check: true   # W1 intentionally unmapped (var absent)
+
+  - id: assets_realestate
+    concept: income_assets
+    description: "Total real-estate assets (unit: 10,000 KRW). Ingredient for the bottom-70% means-test approximation (paper-side)."
+    type: continuous
+    note: >
+      F058 ('the total amount of real estate'), present + stable across all
+      9 waves. Much smaller non-missing n than assets_total in every wave
+      (e.g. W4 n=1,305 vs. assets_total n=7,343) -- consistent with this
+      item being asked only of households reporting real-estate holdings
+      (a genuine skip pattern, not item nonresponse to fix). UNITS VERIFIED
+      (Task 7): medians run 10,000 (W1-W4) to 20,000 (W9) in 10,000-KRW
+      units, i.e. ~100M-200M KRW, matching the guidance range for Korean
+      real-estate wealth almost exactly. Identity is correct.
+    source:
+      w1: w01F058
+      w2: w02F058
+      w3: w03F058
+      w4: w04F058
+      w5: w05F058
+      w6: w06F058
+      w7: w07F058
+      w8: w08F058
+      w9: w09F058
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 2000000]

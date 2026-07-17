@@ -1,0 +1,59 @@
+# KLoSA Work — labor-force status control (Task 7)
+# Waves: W1-W9 (2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022)
+#
+# MISSING VALUES:
+# -9 = Don't know, -8 = Refuse to answer
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-9, -8]
+    description: "KLoSA: -9=Don't know, -8=Refuse to answer"
+
+variables:
+  - id: work_status
+    concept: work
+    description: "Currently working (1=yes, 0=no)"
+    type: binary
+    note: >
+      D001 ('Currently work'), present + stable across all 9 waves -- the
+      cleanest single binary labor-force proxy. Raw coding is 1=Yes
+      (currently working), 5=No; recoded here to the project-standard 0/1.
+      Two label-similar variables were investigated and REJECTED as
+      work_status candidates (see variable_map.csv): D006 ('current
+      employment status in the job market') is a job-seeking-WILLINGNESS
+      ladder whose own category structure differs between W1 (simple Yes/No)
+      and W2-W9 (5-7-category scale) -- not a stable construct across waves.
+      D009 ('answer modification: previous interview employment status') is
+      a carry-forward recheck item referring to the PRIOR wave, is absent in
+      W5, and is not the current-wave status. A finer categorical breakdown
+      (wage employed/self-employed/unpaid family >=18h vs <18h) is available
+      via D002 conditional on D001=Yes, also present all 9 waves, but is out
+      of scope here -- D001 alone is the requested control.
+    source:
+      w1: w01D001
+      w2: w02D001
+      w3: w03D001
+      w4: w04D001
+      w5: w05D001
+      w6: w06D001
+      w7: w07D001
+      w8: w08D001
+      w9: w09D001
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Not currently working"
+        1: "Currently working"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping:
+          1: 1
+          5: 0
+    qc:
+      valid_range: [0, 1]
