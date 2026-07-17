@@ -2317,3 +2317,30 @@ combine_lbs_victim_any <- function(data, wave_name = NULL, sources = NULL) {
     NA_real_                                # unexpected code → NA
   })
 }
+
+#' Convert raw-won amounts (rounded to the nearest 10,000 KRW) to 10,000-KRW
+#' units.
+#'
+#' KLoSA's G-block pension amount (G112) carries an SPSS variable label
+#' claiming "unit: 10,000 won" but is actually STORED as the literal KRW
+#' amount (rounded to the nearest 10,000): e.g. raw values of 160000/200000/
+#' 320000 for W5 (2014), which match Korea's real 2014 Basic Pension amounts
+#' (individual max 200,000 KRW, couple max 320,000 KRW) almost exactly.
+#' Treated as identity, these values blow through any sane [0,300] range
+#' check for a "10,000-won units" scale. This helper performs the actual
+#' unit conversion the SPSS label describes: divide by 10,000. Distinct from
+#' the KLoSA age-label bug (demographics.yml), which is cosmetic-only (label
+#' text wrong, stored values already correct) -- here the stored VALUES
+#' themselves are in the wrong unit relative to their own label and need a
+#' real transformation, not just a documentation fix.
+#'
+#' @param x Raw numeric vector (missing codes already NA'd by the engine
+#'   before this function is called).
+#' @param data Unused; present for the r_function interface.
+#' @param var_name Unused; present for the r_function interface.
+#' @param validate_all Unused; present for the r_function interface.
+#' @return Numeric vector in 10,000-KRW units.
+#' @export
+won_to_10k_won <- function(x, data = NULL, var_name = NULL, validate_all = NULL) {
+  as.numeric(x) / 10000
+}

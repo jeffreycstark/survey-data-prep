@@ -962,3 +962,11 @@
   monotonic: false
   requires_data: true
   notes: "LBS derive (defined in recoding.R): combines split crime-victimization items (2017 P65ST.A/.B, 2018 P69ST.1/.2) into any-victimization 0/1. 1/2/3 (You/Relative/Both)→1, all 4=No→0, all missing→NA. Used by security_voting.yml crime_victim."
+
+- fn: won_to_10k_won
+  input_scale: null
+  output_scale: [0, 300]
+  reverses: false
+  monotonic: true
+  requires_data: false
+  notes: "KLoSA r_function (recoding.R): divides raw KRW by 10,000. Fixes a genuine unit mismatch on G112 (basic_pension_amount) -- the SPSS label claims 'unit: 10,000 won' but the stored values are the literal won amount rounded to the nearest 10,000 (e.g. W5 raw 200000/320000 = the real 2014 individual/couple Basic Pension amounts in won). Used by pension_basic.yml basic_pension_amount."
