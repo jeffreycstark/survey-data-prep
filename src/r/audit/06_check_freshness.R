@@ -62,7 +62,7 @@ source(here::here("src", "r", "utils", "spec_discovery.R"))
 # Kept in sync with run_all.R's .SUPPORTED_SURVEYS.
 .FRESHNESS_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb"
+  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa"
 )
 
 # Surveys whose pipeline lives directly in src/r/data_prep_modules/ rather
