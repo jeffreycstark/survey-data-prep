@@ -28,7 +28,7 @@ Harmonize a **focused RD variable set** from KLoSA to support Paper 9, whose des
 
 - **Source:** raw English wave releases `w0N_e.sav` (main respondent file), located in `~/Downloads/KLoSA 1-9th wave (SPSS).zip`. To be copied into `data/klosa/raw/`.
   - The main `w0N_e.sav` file carries the A- (activity), E- (income/transfers), and G- (Basic Pension) modules we need. The companion `str0N_e.sav` (~20 MB) and `Lt0N_e.sav` (~4 MB, likely tracking/weights) files are **not required** for Paper 9; characterize them at load time only if weights turn out to live there (see §7).
-  - `w05_new_e.sav` = wave-5 refresher-cohort file; fold into W5 at load if present.
+  - `w05_new_e.sav` = wave-5 refresher-cohort file (~920 respondents added 2014). **EXCLUDED, not folded in** (decision, documented in `docs/surveys/klosa.md` "Known limitations"): it uses a different first-interview variable-name family than the returning-respondent columns this harmonization is built on, and does not carry the participation battery under the standard names. The cohort is born ~1962–63 and never reaches the age-65 RD cutoff within W1–W9, so its exclusion has zero effect on Paper 9's identification; folding it in is a documented follow-up.
   - EXIT interview files (W7–W9, attrited/deceased) are **out of scope** for Paper 9.
 - **Waves:** harmonize **W1–W9** (biennial). Analysis window is **W2–W9**; **W1 (2006)** is retained as a **pure placebo** — it predates *any* pension, so no age-65 discontinuity should appear there. Note the treatment block (§5) is structurally absent in W1 (nothing to receive) — that is the point of the placebo.
   - Wave→year: W1=2006, W2=2008, W3=2010, W4=2012, **W5=2014** (first post-Basic-Pension wave; reform effective July 2014), W6=2016, W7=2018, W8=2020, W9=2022.
@@ -39,7 +39,7 @@ Harmonize a **focused RD variable set** from KLoSA to support Paper 9, whose des
 Fits the existing shared harmonization engine; **no new engine code**.
 
 - Standard 3-file module `src/r/data_prep_modules/klosa/`:
-  - `0_load_waves.R` — read `w0N_e.sav` W1–W9 → `list(w1=…, …, w9=…)`; fold in `w05_new` if present.
+  - `0_load_waves.R` — read `w0N_e.sav` W1–W9 → `list(w1=…, …, w9=…)`; `w05_new` (refresher cohort) intentionally excluded, see §3.
   - `2_harmonize_all.R` — `run_survey_harmonization("klosa", load_klosa_waves, …)`.
   - `99_create_final_dataset.R` — stack per-wave harmonized frames → long **person-wave** rows → `data/processed/klosa_harmonized.rds`.
 - YAML specs in `src/config/klosa/harmonize/*.yml` (one file per concept group, §5).

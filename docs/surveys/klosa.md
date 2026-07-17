@@ -92,7 +92,17 @@ Cross-wave instrument-stability audit at `outputs/klosa/instrument_stability_aud
 - **Treatment (Basic Pension)** — NO contamination on the G-block default; a real but bounded amount-measurement caveat (see above) plus the E-block variable-repurposing hazard.
 - **Control (`srh`)** — CHANGED at W3 (2010), not at the 2014 reform boundary; internally comparable across the diff-in-disc window itself (W4 vs. W5–W9).
 
-⚠️ **KNOWN FOLLOW-UP GAP**: the post-harmonize label-reconciliation gate (Check A, `run_post_harmonize_gate("klosa")` in `99_create_final_dataset.R`) runs report-only against KLoSA but currently **SKIPS** its findings because KLoSA has no `.SURVEY_LABEL_LOADER` entry registered in the Phase-4 auditor infrastructure. Wiring one up is a natural follow-up, not implemented as part of this harmonization. Similarly, `src/r/audit/06_check_freshness.R` (Layer 6d) does not yet list `klosa` in `.FRESHNESS_SURVEYS` — freshness checks for this survey are not yet automated.
+⚠️ **KNOWN FOLLOW-UP GAP**: the post-harmonize label-reconciliation gate (Check A, `run_post_harmonize_gate("klosa")` in `99_create_final_dataset.R`) runs report-only against KLoSA but currently **SKIPS** its findings because KLoSA has no `.SURVEY_LABEL_LOADER` entry registered in the Phase-4 auditor infrastructure. Wiring one up is a natural follow-up, not implemented as part of this harmonization.
+
+Freshness checking (Layer 6d) **is** wired up: `klosa` is registered in both `.FRESHNESS_SURVEYS` and `.SUPPORTED_SURVEYS` in `src/r/audit/06_check_freshness.R`. Run `Rscript src/r/audit/06_check_freshness.R --survey klosa` to verify — it reports **FRESH**.
+
+## Known limitations
+
+**W5 refresher cohort (`w05_new_e.sav`) is deliberately EXCLUDED, not loaded.** KLoSA added a refresher cohort of ≈920 respondents at Wave 5 (2014), released as a separate file, `data/klosa/raw/w05_new_e.sav`. `0_load_waves.R` only reads the standard `w0N_e.sav` files (W1–W9) and does not fold this file in.
+
+- **Consequence for the panel**: those ≈920 respondents are absent from the harmonized data at W5. Because most of them are re-interviewed in subsequent standard-file waves, they instead first appear from **W6 (2016)** onward in the main `w0N_e.sav` files — producing a spurious 2016 panel-entry for ~872 of them (their true first interview was W5/2014, not W6). The headline distinct-`pid` count is consequently ~920 short of KLoSA's full W5 sample.
+- **Consequence for Paper 9 (age-65 RD)**: none. The refresher cohort was born ~1962–63 (age ~51 at the 2014 interview, ~59 by 2022/W9), so it **never reaches the age-65 Basic Pension cutoff within the W1–W9 window** — zero effect on the age-65 RD/diff-in-disc design.
+- **Why not just fold it in**: `w05_new_e.sav` uses the first-interview `A001`/`A017`/`A019` variable-name family (new-respondent numbering), not the returning-respondent `A002`/`A033`/`A035` family the rest of this harmonization is built on, so it needs its own per-column remap rather than reuse of the existing YAML `source:` blocks. It is also verified to **not carry the participation battery** under the standard `A017m`/`A033m` name, so even a remapped version may lack the outcome variable for this cohort's baseline wave. Folding it in is a documented **follow-up**, not part of this harmonization.
 
 ## Verbatim dictionary
 

@@ -26,7 +26,7 @@
 
 | File | Responsibility |
 |---|---|
-| `data/klosa/raw/w0N_e.sav` (W1–W9, +`w05_new_e.sav`) | Staged raw inputs (copied from Downloads zip) |
+| `data/klosa/raw/w0N_e.sav` (W1–W9, +`w05_new_e.sav`) | Staged raw inputs (copied from Downloads zip). `w05_new_e.sav` (W5 refresher cohort) is staged but intentionally **not** loaded by `0_load_waves.R` — excluded, documented in `docs/surveys/klosa.md` "Known limitations" |
 | `src/r/data_prep_modules/klosa/00_probe_variables.R` | Discovery: read wave metadata, resolve every source var + value scale + missing codes → `outputs/klosa/variable_map.csv` |
 | `src/r/data_prep_modules/klosa/0_load_waves.R` | `load_klosa_waves()` → `list(w1=…, …, w9=…)` |
 | `src/r/data_prep_modules/klosa/2_harmonize_all.R` | Runner: `run_klosa_harmonization()`; writes `outputs/klosa/master_wN.rds` |
