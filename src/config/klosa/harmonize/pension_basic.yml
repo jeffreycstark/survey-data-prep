@@ -110,6 +110,13 @@ variables:
       cosmetic KLoSA age-label bug in demographics.yml (there the label
       text is wrong but stored values are correct; here the stored values
       themselves were in the wrong unit).
+      ⚠️ G/E-BLOCK DIVERGENCE NEAR 2014 REFORM: The G-block amount
+      (entitlement/schedule level) and the E-block amount (amount actually
+      received) DIVERGE ~2× in W5–W6 (median 20 vs 9–10, 10k-won) and only
+      converge in W7–W9 — most likely the 2014–15 National-Pension-linkage
+      deduction reducing actual payouts below the statutory maximum. Do NOT
+      treat the two amount measures as interchangeable near the 2014 reform
+      boundary (the very window an RD/diff-in-disc identifies on).
     source:
       w1: null
       w2: w02G112
@@ -134,7 +141,16 @@ variables:
     concept: pension_basic
     description: "Monthly average Basic Pension — E-block income-module alternate (W5-W9), unit 10,000 KRW."
     type: continuous
-    note: "Paired with basic_pension_receipt_eblock. W5 median ~9 (10k-won, ~90,000 KRW/mo) rising to ~25 by W9. Absent pre-2014."
+    note: >
+      Paired with basic_pension_receipt_eblock. W5 median ~9 (10k-won,
+      ~90,000 KRW/mo) rising to ~25 by W9. Absent pre-2014.
+      ⚠️ G/E-BLOCK DIVERGENCE NEAR 2014 REFORM: E-block (actual amount
+      received) and G-block (entitlement/schedule level) DIVERGE ~2× in
+      W5–W6 (median 9–10 vs 20, 10k-won) and only converge in W7–W9 — most
+      likely the 2014–15 National-Pension-linkage deduction reducing actual
+      payouts below the statutory maximum. Do NOT treat the two amount
+      measures as interchangeable near the 2014 reform boundary (the very
+      window an RD/diff-in-disc identifies on).
     source:
       w1: null
       w2: null
