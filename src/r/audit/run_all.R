@@ -624,6 +624,46 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Module 4f: Layer 4 bin-width parity (Check D) — HARD. parity_error = a
+# wave whose recode packs more source categories into a target bin than its
+# sibling waves (the ABS W5 6->4 trust seam: top-box inflated ~2.4-4.6x with
+# every direction check passing). Deterministic, zero statistical inference,
+# so errors count as fails; acknowledged seams are exempted in
+# src/config/_audit/bin_width_exemptions.yml.
+# ---------------------------------------------------------------------------
+.run_layer_4_binwidth <- function(survey, verbose = FALSE) {
+  .log_module(survey, "L4 bin-width parity (Check D)")
+  rr <- .run_external("src/r/audit/04_bin_width_parity.R",
+                      c("--survey", survey), verbose = verbose)
+  csv_path <- here::here("audit/reports", survey, "04-bin-width-parity.csv")
+  counts <- .count_csv_statuses(csv_path)
+  ok   <- .count_get(counts, "ok") + .count_get(counts, "ok_exempt")
+  err  <- .count_get(counts, "parity_error")
+  wrn  <- .count_get(counts, "warn") + .count_get(counts, "no_registry_entry")
+  skip <- .count_get(counts, "skip")
+  status <- if (err > 0L) "fail"
+            else if (wrn > 0L) "warn"
+            else if (ok == 0L && skip > 0L) "skip" else "ok"
+  first_fails <- character(0)
+  fails_df <- .top_fail_rows(csv_path, fail_statuses = "parity_error")
+  if (nrow(fails_df) > 0L) {
+    first_fails <- vapply(seq_len(nrow(fails_df)), function(i) {
+      r <- fails_df[i, ]
+      sprintf("%s/%s: bin signature %s diverges from sibling waves",
+              r$variable %||% "?", r$wave %||% "?", r$signature %||% "?")
+    }, character(1))
+  }
+  list(
+    module = "L4 binwidth",
+    status = status, exit = rr$status,
+    ok = as.integer(ok), fail = as.integer(err), skip = as.integer(skip),
+    first_fails = first_fails,
+    summary = sprintf("%d ok, %d err, %d warn", ok, err, wrn)
+  )
+}
+
+
+# ---------------------------------------------------------------------------
 # Module 5: Layer 5 cross-wave drift (G1). One of the slowest modules —
 # skipped under --quick.
 #
@@ -760,6 +800,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   results$L4_labels <- .run_layer_4_label_recon(survey, verbose)
   results$L4_battery <- .run_layer_4_battery(survey, verbose)
   results$L4_coverage <- .run_layer_4_coverage(survey, verbose)
+  results$L4_binwidth <- .run_layer_4_binwidth(survey, verbose)
   results$L5_drift  <- .run_layer_5_drift(survey, verbose, skip = quick)
   results$L6_determ <- .run_layer_6_determinism(survey, verbose)
   results$L6_input  <- .run_layer_6_input_drift(survey, verbose)
@@ -820,12 +861,12 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   # ---- Per-survey table -------------------------------------------------
   w("## Per-survey status")
   w("")
-  w("| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L5 drift | L6 determ | L6 input |")
-  w("|--------|-----------|---------------|-------------|------------|-----------|-----------|------------|-------------|----------|-----------|----------|")
+  w("| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L4 binwidth | L5 drift | L6 determ | L6 input |")
+  w("|--------|-----------|---------------|-------------|------------|-----------|-----------|------------|-------------|-------------|----------|-----------|----------|")
   for (s in surveys_attempted) {
     r <- all_results[[s]]
     if (is.null(r)) next
-    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
+    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
               s,
               .cell(r$L1),
               .cell(r$L3),
@@ -835,6 +876,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
               .cell(r$L4_labels),
               .cell(r$L4_battery),
               .cell(r$L4_coverage),
+              .cell(r$L4_binwidth),
               .cell(r$L5_drift),
               .cell(r$L6_determ),
               .cell(r$L6_input)))
