@@ -397,11 +397,9 @@ if (sys.nframe() == 0L) {
   if (length(argv) > 0) {
     args <- .parse_cli_args(argv)
     surveys <- if (args$all_surveys) {
-      setdiff(
-        list.dirs(here::here("src", "config"), recursive = FALSE,
-                  full.names = FALSE),
-        c("_anchors", "_audit")
-      )
+      dirs <- list.dirs(here::here("src", "config"), recursive = FALSE,
+                        full.names = FALSE)
+      dirs[!startsWith(dirs, "_")]  # _anchors, _audit, _schema, ...
     } else args$survey
     any_err <- FALSE
     for (s in surveys) {

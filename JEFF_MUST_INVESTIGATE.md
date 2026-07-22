@@ -1,14 +1,32 @@
 # Audit findings — open for review
 
-Last updated: 2026-05-10
+Last updated: 2026-07-22
 
 This file records audit findings that need substantive judgment from Jeff. The audit infrastructure surfaces; this file tracks what remains to investigate. Update as items get resolved.
 
 ---
 
-## 🔴 High priority — likely real bugs (none currently open)
+## 🔴 High priority — likely real bugs
 
-All previously identified high-priority bugs have been fixed. See "Resolved findings" at bottom for the audit trail.
+### NEW 2026-07-22: ABS W5 6→4pt pole-merge class — 18 W5 items with structurally wider top/bottom bins (Check D)
+- **What:** ABS W5 fielded several batteries on 6-point bipolar scales, collapsed 6→4 by merging both poles (`safe_6pt_to_4pt` / `collapse_6pt_to_4pt_reverse`: native 6,5→4; 2,1→1). W5's top bin absorbs two native categories vs one in every other wave → W5 top-box shares/means mechanically inflated ~2.4–4.6× (verified for the trust battery, every country). Direction checks pass this legitimately; found via paper 05's bug report (`paper-bank-05_thailand_trust_collapse/claudedocs/ABS-W5-trust-harmonization-artefact.md`), now caught by the new bin-width parity check (Check D, `src/r/audit/04_bin_width_parity.R`).
+- **Affected (all w5, signature `4:2|3:1|2:1|1:2`):** the 13 institutional-trust items (`trust_president/courts/national_government/political_parties/parliament/civil_service/military/police/local_government/election_commission/newspapers/ngos/television`), the 4 social-trust items (`trust_acquaintances/neighbors/relatives/strangers`), and `econ_family_income_fair`.
+- **Deliberately NOT exempted** (decision 2026-07-22): stays red in `run_all` until the seam is fixed/documented. Preferred fix per the artefact memo: expose native W5 6-pt companion columns (`*_w5_6pt`), document the seam in CLAUDE.md gotchas + docs/surveys/abs.md, fix the verbatim dictionary's W5 `response_scale` rows (they wrongly show the harmonized 4-pt scale).
+- **Downstream:** any use of ABS W5 trust *levels*, W4→W5 or W5→W6 change scores. W4↔W6 comparisons bypass the seam.
+
+---
+
+## 🟡 Medium priority (2026-07-22) — Check D sweep findings needing editorial judgment
+
+First all-survey bin-width parity sweep surfaced these beyond the W5 class above. Each is a real cross-wave binning seam; decide fix vs exempt-with-reason (`src/config/_audit/bin_width_exemptions.yml`). Already exempted as documented: afro/wvs `education_level`, lbs `crime_victim` (2024), ipus `uni_view` (2019 restructure).
+- **abs `hh_income_sat`** — w4 is a 3-pt instrument (`safe_reverse_3pt`), w5/w6 collapse 5→4 (`collapse_5pt_to_4pt_then_reverse`), w2/w3 native 4-pt. Three different binnings across waves.
+- **abs behavioral binarizations w5/w6** — `gate_contact_*`, `gate_petition`, `gate_demonstration` (`recode_contact_to_binary_5pt`, `1:3|0:2`), `community_leader_contact` (5→3 with both poles merged, w5/w6). Deliberate design, but wave-asymmetric; verify earlier waves' native categories match the chosen thresholds, then exempt with reason.
+- **abs one-wave collapses** — `corrupt_witnessed` (w3/w4 binarizations differ from each other), `corrupt_local_govt`/`corrupt_national_govt` (w6), `govt_anticorrupt_effort` (w2), `gov_elections_real_choice` (w5), `current_status_unemployed` (w3), `pol_discuss` (w1), `news_internet` (w4 vs w5/w6), `sm_express_political` (w4), `govt_withholds_info` (w5/w6), `intl_*_world_influence` (w5 10→6), `procedural_preference_index` (w5), `glob_cultural_defense`/`glob_trade_protection` (w5/w6 binary vs 4-pt earlier).
+- **ipus `urban_rural` w2008** — bottom-merge `1:2` (also the one remaining IPUS L3 error from 2026-05-12).
+- **arab-barometer `employment_status` w5/w7/w8** — 8 source categories into 3 bins vs finer elsewhere (nominal-ish; may just need exemption).
+- **afro `turnout` w5** — six non-voter categories merged to 0 vs fewer elsewhere.
+- **wvs `corrupt_national_govt` w3** — 4-pt identity vs a wider-binned modal elsewhere; check which wave is actually the odd one.
+- **abs `dem_essential_harmonized` w2/w5** — `warn` (all-width-1 cardinality drift 4/5/6-target across waves; derived-variable domain drift, not a merge).
 
 ---
 

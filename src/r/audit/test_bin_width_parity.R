@@ -138,6 +138,24 @@ TRUST13 <- c("trust_president", "trust_courts", "trust_national_government",
 err_vars <- unique(abs_df$variable[abs_df$status == "parity_error"])
 ok(all(TRUST13 %in% err_vars),
    "all 13 W5 trust-battery items flagged parity_error")
+# Pinned expectation from the triaged 2026-07-22 sweep (56 rows / 41 vars).
+# If this fails after an exemption or spec fix, update deliberately — this
+# pin exists so the visible-findings set only changes by editorial act.
+EXPECTED_ABS_ERR <- sort(c(
+  TRUST13,
+  "community_leader_contact", "corrupt_local_govt", "corrupt_national_govt",
+  "corrupt_witnessed", "current_status_unemployed", "econ_family_income_fair",
+  "gate_contact_civil_servant", "gate_contact_elected",
+  "gate_contact_influential", "gate_contact_media", "gate_demonstration",
+  "gate_petition", "glob_cultural_defense", "glob_trade_protection",
+  "gov_elections_real_choice", "govt_anticorrupt_effort",
+  "govt_withholds_info", "hh_income_sat", "intl_china_world_influence",
+  "intl_usa_world_influence", "news_internet", "pol_discuss",
+  "procedural_preference_index", "sm_express_political",
+  "trust_acquaintances", "trust_neighbors", "trust_relatives",
+  "trust_strangers"))
+ok(identical(sort(err_vars), EXPECTED_ABS_ERR),
+   "ABS parity_error set exactly matches pinned expectation (41 vars)")
 trust_err <- abs_df[abs_df$status == "parity_error" &
                     abs_df$variable %in% TRUST13, ]
 ok(all(trust_err$wave == "w5"), "trust flags are w5 rows only")

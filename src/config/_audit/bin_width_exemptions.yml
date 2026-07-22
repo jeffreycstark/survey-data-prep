@@ -22,4 +22,35 @@
 
 schema_version: 1
 
-exempt_variables: []
+exempt_variables:
+  - variable: education_level
+    survey: afro
+    reason: >
+      Documented condensation: R1/R5-R9 field the 0-3 condensed ladder
+      natively; R2-R4 field only the 0-9 detailed ladder, collapsed by
+      recode_afro_educ_detailed. Noted in the variable's spec
+      (src/config/afro/harmonize/demographics.yml) and in the CLAUDE.md
+      education gotcha; cross-survey comparisons use education_5cat from
+      src/r/utils/education.R, not this column.
+  - variable: education_level
+    survey: wvs
+    reason: >
+      Documented widening 3->6 levels on 2026-07-09; W7 fields a finer
+      native ladder collapsed via explicit recode mapping. Noted in
+      src/config/wvs/harmonize/demographics.yml. Cross-survey comparisons
+      use education_5cat.
+  - variable: crime_victim
+    survey: lbs
+    reason: >
+      Documented instrument change: 2024 P50ST.A is a native 1=Yes/2=No
+      binary, while 2015-2023 build the binary from multi-category items
+      via combine_lbs_victim_any. Noted in
+      src/config/lbs/harmonize/security_voting.yml (paper 29 work).
+  - variable: uni_view
+    survey: ipus
+    reason: >
+      Documented 2019 questionnaire restructure: codes 1+2 ("at any cost" +
+      "ASAP") deliberately collapsed to harmonized 1 for w2019-w2024,
+      treating the split as granularity within one conceptual category.
+      Decision recorded in JEFF_MUST_INVESTIGATE.md ("IPUS uni_view —
+      Frankenstein scale", RESOLVED 2026-05-12).
