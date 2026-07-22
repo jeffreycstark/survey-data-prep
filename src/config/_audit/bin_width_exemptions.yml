@@ -1,0 +1,25 @@
+# Bin-width parity exemptions
+# -----------------------------------------------------------------------------
+# The bin-width parity check (src/r/audit/04_bin_width_parity.R, Check D)
+# flags variables whose waves pack DIFFERENT numbers of source categories
+# into the same harmonized bin — the ABS W5 6->4pt trust pole-merge class,
+# which mechanically inflates the collapsing wave's top-box shares and means
+# even though every direction check passes.
+#
+# Exemption is a deliberate editorial act: a variable listed here has a
+# KNOWN, DOCUMENTED cross-wave binning seam that we accept (e.g. the seam is
+# described in the survey docs page and flagged in the verbatim dictionary
+# notes). Prefer FIXING the seam (native-scale companion columns, or a
+# uniform mapping) over exempting it. Do NOT exempt to silence a finding you
+# have not triaged.
+#
+# The 13 ABS W5 trust items are deliberately NOT exempted (decision
+# 2026-07-22): they stay visible, like the ABS label-recon backlog, until
+# the seam itself is fixed/documented.
+#
+# Form: exempt_variables, each entry {variable, reason, survey (optional —
+# omit to match the id in every survey)}.
+
+schema_version: 1
+
+exempt_variables: []

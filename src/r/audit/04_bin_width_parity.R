@@ -267,3 +267,151 @@ compute_bin_width_for_var <- function(var_spec, survey, registry,
   }
   df
 }
+
+# ---------------------------------------------------------------------------
+# Registry + exemptions loaders.
+# ---------------------------------------------------------------------------
+load_bin_width_registry <- function(
+  registry_path = here::here("src", "r", "utils", "recoding_registry.yml")
+) {
+  if (!file.exists(registry_path)) {
+    stop(sprintf("recoding registry not found at %s", registry_path),
+         call. = FALSE)
+  }
+  reg <- yaml::read_yaml(registry_path)
+  stats::setNames(reg, vapply(reg, function(e) e$fn, character(1)))
+}
+
+load_bin_width_exemptions <- function(
+  survey,
+  exemptions_path = here::here("src", "config", "_audit",
+                               "bin_width_exemptions.yml")
+) {
+  if (!file.exists(exemptions_path)) return(character(0))
+  ex <- yaml::read_yaml(exemptions_path)
+  entries <- ex$exempt_variables %||% list()
+  ids <- vapply(entries, function(e) {
+    if (!is.null(e$survey) && !identical(e$survey, survey)) NA_character_
+    else e$variable %||% NA_character_
+  }, character(1))
+  ids[!is.na(ids)]
+}
+
+# ---------------------------------------------------------------------------
+# compute_bin_width_parity(): whole survey -> judged rows.
+# ---------------------------------------------------------------------------
+compute_bin_width_parity <- function(
+  survey,
+  registry_path = here::here("src", "r", "utils", "recoding_registry.yml"),
+  exemptions_path = here::here("src", "config", "_audit",
+                               "bin_width_exemptions.yml")
+) {
+  registry <- load_bin_width_registry(registry_path)
+  exempt_ids <- load_bin_width_exemptions(survey, exemptions_path)
+  spec_files <- list_survey_specs(survey)
+  out <- list()
+  for (sf in spec_files) {
+    spec <- tryCatch(yaml::read_yaml(sf), error = function(e) NULL)
+    if (is.null(spec) || is.null(spec$variables)) next
+    for (vs in spec$variables) {
+      out[[length(out) + 1L]] <-
+        compute_bin_width_for_var(vs, survey, registry, exempt_ids)
+    }
+  }
+  if (length(out) == 0L) {
+    return(data.frame(
+      survey = character(0), variable = character(0), wave = character(0),
+      method = character(0), fn = character(0), signature = character(0),
+      n_bins = integer(0), max_width = integer(0), status = character(0),
+      message = character(0), stringsAsFactors = FALSE
+    ))
+  }
+  do.call(rbind, out)
+}
+
+# ---------------------------------------------------------------------------
+# run_bin_width_parity(): CSV + human summary. Returns df invisibly.
+# ---------------------------------------------------------------------------
+run_bin_width_parity <- function(survey, output_dir = NULL) {
+  if (is.null(output_dir)) {
+    output_dir <- here::here("audit", "reports", survey)
+  }
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  }
+  results <- compute_bin_width_parity(survey)
+  csv_path <- file.path(output_dir, "04-bin-width-parity.csv")
+  utils::write.csv(results, csv_path, row.names = FALSE)
+
+  n <- function(s) sum(results$status == s)
+  cat(sprintf("\n[bin-width parity] survey=%s\n", survey))
+  cat(sprintf(
+    "  rows=%d: ok=%d, ok_exempt=%d, parity_error=%d, warn=%d, no_registry_entry=%d, skip=%d\n",
+    nrow(results), n("ok"), n("ok_exempt"), n("parity_error"), n("warn"),
+    n("no_registry_entry"), n("skip")))
+  err <- results[results$status == "parity_error", , drop = FALSE]
+  if (nrow(err) > 0L) {
+    cat(sprintf("  %d parity_error row(s) — waves whose binning diverges:\n",
+                nrow(err)))
+    show <- utils::head(err, 20L)
+    for (i in seq_len(nrow(show))) {
+      cat(sprintf("    %-32s %-6s %s (%s)\n", show$variable[i],
+                  show$wave[i], show$signature[i], show$fn[i]))
+    }
+    if (nrow(err) > 20L) cat(sprintf("    ... and %d more\n", nrow(err) - 20L))
+  }
+  cat(sprintf("  CSV: %s\n", csv_path))
+  invisible(results)
+}
+
+# ---------------------------------------------------------------------------
+# CLI.
+# ---------------------------------------------------------------------------
+.parse_cli_args <- function(argv) {
+  out <- list(survey = NULL, all_surveys = FALSE)
+  i <- 1L
+  while (i <= length(argv)) {
+    a <- argv[i]
+    if (a == "--survey")      { out$survey <- argv[i + 1]; i <- i + 2; next }
+    if (a == "--all-surveys") { out$all_surveys <- TRUE;   i <- i + 1; next }
+    if (a %in% c("-h", "--help")) {
+      cat("Usage: Rscript src/r/audit/04_bin_width_parity.R\n",
+          "         (--survey <name> | --all-surveys)\n",
+          "\nCheck D: cross-wave bin-width parity. parity_error = a wave's\n",
+          "recode packs more source categories into a target bin than its\n",
+          "sibling waves (ABS W5 6->4 trust class). Exemptions:\n",
+          "src/config/_audit/bin_width_exemptions.yml. Exit 1 on any\n",
+          "parity_error.\n", sep = "")
+      quit(status = 0)
+    }
+    stop(sprintf("unknown argument: %s", a), call. = FALSE)
+  }
+  if (is.null(out$survey) && !out$all_surveys) {
+    stop("usage: --survey <name> OR --all-surveys (see --help)", call. = FALSE)
+  }
+  out
+}
+
+if (sys.nframe() == 0L) {
+  argv <- commandArgs(trailingOnly = TRUE)
+  if (length(argv) > 0) {
+    args <- .parse_cli_args(argv)
+    surveys <- if (args$all_surveys) {
+      setdiff(
+        list.dirs(here::here("src", "config"), recursive = FALSE,
+                  full.names = FALSE),
+        c("_anchors", "_audit")
+      )
+    } else args$survey
+    any_err <- FALSE
+    for (s in surveys) {
+      res <- tryCatch(run_bin_width_parity(s), error = function(e) {
+        cat(sprintf("[bin-width parity] %s CRASHED: %s\n",
+                    s, conditionMessage(e)))
+        NULL
+      })
+      if (!is.null(res) && any(res$status == "parity_error")) any_err <- TRUE
+    }
+    quit(status = if (any_err) 1L else 0L)
+  }
+}
