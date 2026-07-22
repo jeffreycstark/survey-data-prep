@@ -65,6 +65,13 @@ Confirms each ordinal/continuous var is registered as an anchor/loader somewhere
 ### 5b. Strict reversal — 🔴 hard, **ABS only**
 For ABS variables using a pure monotone reverser, asserts pearson(raw, harmonized) ≈ −1 (or +1 for declared identities). Fails (exit 1) on a sign mismatch. **v1 has a raw-data resolver for ABS only** — every other survey emits `skip` rows, so this protection does not exist outside ABS.
 
+### 5c. Bin-width parity (Check D) — 🔴 hard
+**Claim.** Within a variable, every wave's recode packs the SAME number of source categories into each harmonized bin; a wave whose bins are structurally wider than its siblings' is flagged `parity_error`.
+**Proof.** `test_bin_width_parity.R` (23 tests): synthetic W5-class seam, recode-mapping seam, uniform-collapse ok, midpoint-drop ok, exemption plumbing, plus the real-ABS regression fixture pinning the 41-variable finding set. The motivating live catch: **ABS W5 6→4pt trust pole-merge** — native "Trust fully"+"Trust a lot" both → 4, inflating W5 top-box ~2.4–4.6× in all 13 trust items in every country while every direction check passed (found via paper 05, 2026-07-21; the class also covers the 4 W5 social-trust items and `econ_family_income_fair`).
+**How.** Static only — YAML `recode` mappings, identity over the declared scale, or `requires_data: false` registry fns called over their declared `input_scale` domain. No raw data is read.
+**Catches.** Cross-wave bin-width divergence declared in specs/registry — the "directionally correct but not level-comparable" class no other layer sees.
+**Misses / caveats.** Collapses applied uniformly in EVERY wave (comparability preserved — deliberately not a finding); `requires_data` fns and `derive` methods (`skip` rows); raw domains wider than the registry's declared `input_scale` (would need the deferred empirical crosstab arm); fns missing from the registry surface as `no_registry_entry` (warn-class; registry↔code drift is `check_registry_complete.R`'s job). Acknowledged seams live in `src/config/_audit/bin_width_exemptions.yml` with reasons; the ABS W5 findings are deliberately NOT exempted.
+
 ### 6a. Distribution drift — 📋 reporting only
 `05_drift_check.R` computes wave-to-wave distribution shifts (TVD/KS). **It has no pass/fail concept** — every row is normal output; it exits 0 unless it crashes. Treat its findings as *puzzles to investigate*, never as a gate. (Same spirit as the Slope Prospector.)
 
@@ -100,7 +107,7 @@ The checks test themselves. Ran 2026-07-06: `test_label_reconciliation` (44), `t
 
 Read this before trusting a "clean" run.
 
-1. **A default `run_all.R` / build does not verify direction.** The gate is **report-only**; the ABS strict-reversal check is ABS-only; the label-recon check runs but its errors only *fail a run* through `run_all`'s L4_labels tally, not through the per-build gate. **ABS carries 18 label-reconciliation error rows (7 variables: `demo_political_equality`, `econ_family_income_fair_6pt`, `govt_should_censor_ideas`, `no_accountability_between_elections`, `gov_elections_real_choice`, `sat_president_govt`, `efficacy_ability_participate`) right now** — a known, deferred backlog ([`project_abs_label_recon_backlog`], `JEFF_MUST_INVESTIGATE.md`). Flip `HARMONIZE_AUDIT_GATE=block` to make them stop the pipeline; until the backlog is triaged, "clean" ≠ "ABS is directionally correct."
+1. **A default `run_all.R` / build does not verify direction.** The gate is **report-only**; the ABS strict-reversal check is ABS-only; the label-recon and bin-width-parity checks run but their errors only *fail a run* through `run_all`'s L4_labels / L4_binwidth tallies, not through the per-build gate. **ABS carries 18 label-reconciliation error rows (7 variables: `demo_political_equality`, `econ_family_income_fair_6pt`, `govt_should_censor_ideas`, `no_accountability_between_elections`, `gov_elections_real_choice`, `sat_president_govt`, `efficacy_ability_participate`) AND 56 bin-width parity_error rows (41 variables, headlined by the W5 6→4pt trust class) right now** — known, deferred backlogs ([`project_abs_label_recon_backlog`], `JEFF_MUST_INVESTIGATE.md`). Flip `HARMONIZE_AUDIT_GATE=block` to make them stop the pipeline; until the backlogs are triaged, "clean" ≠ "ABS is directionally correct and level-comparable."
 2. **Wrong-but-consistent recodes pass everything.** If a recode is wrong yet produces in-range values, coherent within its battery, and matching its (also-wrong) labels, *no* layer catches it. QA verifies internal consistency and label agreement, not ground truth against the questionnaire.
 3. **Soft checks never fail a run.** Battery coherence, anchor coverage, and drift only warn/report. A battery hint or 207 "uncovered" vars will not turn `run_all` red.
 4. **Coverage of the hard checks is uneven across surveys.** Strict reversal and source-coverage reconciliation exist for ABS (+IPUS/KINU for the latter) only. Non-ABS surveys lean on label reconciliation + invariants alone for direction.
@@ -120,8 +127,9 @@ Concrete evidence the machinery works on real bugs, not just injected ones:
 | ABS `system_deserves_support` harmonized opposite its battery-mates | label reconciliation (Check A) + battery coherence hint | `ebe4f00` (2026-06-20) |
 | ABS democracy-supply battery (4 `dem_*` items) reversed vs labels | same | `6e622f5` (2026-06-20) |
 | ABS `econ_family_income_fair_6pt` stored opposite labels | label reconciliation | **caught, still open** — in the 18-error backlog above |
+| ABS W5 trust 6→4pt pole-merge (top-box inflated ~2.4–4.6×, direction correct) | bin-width parity (Check D) | **caught, still open** — 18 W5 items (13 institutional + 4 social trust + `econ_family_income_fair`) flagged `parity_error`; left visible by decision 2026-07-22, see `JEFF_MUST_INVESTIGATE.md` |
 
-The third row is the point: the check *found* it (Phase 5, `1308831`); the report-only gate is why it's still sitting there.
+The third row is the point: the check *found* it (Phase 5, `1308831`); the report-only gate is why it's still sitting there. The fourth row closes a whole class the direction checks could never see — it was found by a downstream paper first (paper 05), and Check D now regression-pins it.
 
 ---
 
