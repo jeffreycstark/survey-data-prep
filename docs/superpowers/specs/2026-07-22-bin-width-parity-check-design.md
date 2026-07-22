@@ -63,7 +63,10 @@ Within a variable, over all non-skip waves:
   uniform 6→4 everywhere preserves cross-wave comparability).
 - Signatures differ AND at least one wave has a bin of width ≥ 2 →
   **`parity_error`** on the offending wave rows (the wave(s) whose signature
-  deviates from the modal signature; ties → all non-modal waves flagged).
+  deviates from the modal signature; when signature counts tie, the baseline
+  is the least-collapsed signature — all-width-1 preferred over width ≥ 2,
+  then the wider domain, then alphabetical — so the collapsing wave, not the
+  1:1 wave, carries the flag).
 - Signatures differ only in domain coverage with all widths 1 (e.g. a wave
   whose scale is genuinely shorter, every bin still 1:1) → `warn`
   (cardinality drift, not a width artefact; midpoint-drop recodes like
