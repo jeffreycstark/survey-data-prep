@@ -46,6 +46,7 @@ suppressPackageStartupMessages({
 source(here::here("src", "r", "audit", "04_label_reconciliation.R"))
 source(here::here("src", "r", "audit", "04_battery_coherence.R"))
 source(here::here("src", "r", "audit", "04_anchor_coverage.R"))
+source(here::here("src", "r", "audit", "04_bin_width_parity.R"))
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 
@@ -77,10 +78,13 @@ run_post_harmonize_gate <- function(
     run_quiet(function() run_battery_coherence(survey)))
   ac <- .gate_check("anchor coverage", function()
     run_quiet(function() run_anchor_coverage(survey)))
+  bw <- .gate_check("bin-width parity", function()
+    run_quiet(function() run_bin_width_parity(survey)))
 
   n_err  <- if (is.null(lr)) NA_integer_ else sum(lr$status == "error")
   n_hint <- if (is.null(bc)) NA_integer_ else sum(bc$status == "hint")
   n_unc  <- if (is.null(ac)) NA_integer_ else sum(ac$status == "uncovered")
+  n_bw   <- if (is.null(bw)) NA_integer_ else sum(bw$status == "parity_error")
 
   # High-confidence overlap: label-recon error AND neg-corr battery hint.
   high_conf <- character(0)
@@ -91,11 +95,12 @@ run_post_harmonize_gate <- function(
     high_conf <- intersect(err_vars, hint_vars)
   }
 
-  cat(sprintf("\n[gate] %s: label-recon errors=%s | battery hints=%s | uncovered=%s\n",
+  cat(sprintf("\n[gate] %s: label-recon errors=%s | battery hints=%s | uncovered=%s | bin-width errors=%s\n",
               survey,
               ifelse(is.na(n_err), "check-crashed", n_err),
               ifelse(is.na(n_hint), "check-crashed", n_hint),
-              ifelse(is.na(n_unc), "check-crashed", n_unc)))
+              ifelse(is.na(n_unc), "check-crashed", n_unc),
+              ifelse(is.na(n_bw), "check-crashed", n_bw)))
   if (length(high_conf) > 0) {
     cat(sprintf("[gate] HIGH-CONFIDENCE direction bugs (error + neg-corr hint): %s\n",
                 paste(high_conf, collapse = ", ")))
@@ -117,11 +122,27 @@ run_post_harmonize_gate <- function(
     cat(sprintf("[gate] clean: no label-reconciliation errors for '%s'\n", survey))
   }
 
+  if (!is.na(n_bw) && n_bw > 0) {
+    bw_vars <- unique(bw$variable[bw$status == "parity_error"])
+    cat(sprintf("[gate] waves with divergent bin widths (levels not cross-wave comparable): %s\n",
+                paste(bw_vars, collapse = ", ")))
+    cat(sprintf("[gate] details: audit/reports/%s/04-bin-width-parity.csv\n",
+                survey))
+    if (blocking) {
+      stop(sprintf(
+        "[gate] BLOCKING: %d bin-width parity error(s) in '%s' — fix the mapping or exempt in bin_width_exemptions.yml",
+        n_bw, survey), call. = FALSE)
+    } else {
+      cat("[gate] report-only: not failing the pipeline (set HARMONIZE_AUDIT_GATE=block to enforce)\n")
+    }
+  }
+
   invisible(list(
     survey = survey, blocking = blocking,
     n_errors = n_err, n_hints = n_hint, n_uncovered = n_unc,
+    n_binwidth = n_bw,
     high_confidence = high_conf,
-    label_recon = lr, battery = bc, coverage = ac
+    label_recon = lr, battery = bc, coverage = ac, binwidth = bw
   ))
 }
 
@@ -161,9 +182,10 @@ if (sys.nframe() == 0L) {
       error = function(e) { cat(conditionMessage(e), "\n"); NULL }
     )
     blocking <- args$block || identical(Sys.getenv("HARMONIZE_AUDIT_GATE"), "block")
-    # Blocking mode fails CLOSED: a crashed label-recon check (n_errors NA)
+    # Blocking mode fails CLOSED: a crashed check (n_errors / n_binwidth NA)
     # means "could not verify", which is not the same as "verified clean".
-    failed <- is.null(res) || is.na(res$n_errors) || res$n_errors > 0
+    failed <- is.null(res) || is.na(res$n_errors) || res$n_errors > 0 ||
+              is.na(res$n_binwidth) || res$n_binwidth > 0
     quit(status = if (blocking && failed) 1L else 0L)
   }
 }
