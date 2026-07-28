@@ -42,8 +42,7 @@ suppressPackageStartupMessages({
 })
 
 DES_VERSION <- "v5.0"
-DES_PATH <- here("data", "electoral_systems", "raw",
-                 "bormann_golder_des_v50", "es_data-v5_0.csv")
+DES_PATH <- here("data", "des", "raw", "v5_0", "es_data-v5_0.csv")
 
 # ── 1. DES spine ────────────────────────────────────────────────────────────
 des <- read.csv(DES_PATH, stringsAsFactors = FALSE)
