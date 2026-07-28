@@ -56,7 +56,9 @@ cat(sprintf("    within 99-101 : %5d (%.1f%%)\n", sum(s > 99 & s < 101), 100*mea
 cat(sprintf("    below 100     : %5d (%.1f%%)  <- MPDS omits uncoded mass from peruncod\n",
             sum(s != 0 & s <= 99), 100*mean(s != 0 & s <= 99)))
 cat(sprintf("    exactly 0     : %5d (%.1f%%)  <- uncoded manifestos\n", sum(s == 0), 100*mean(s == 0)))
-cat("    => multinomial N for BLM is n_coded, NOT total. See docs/surveys/marpor.md\n")
+cat("    => multinomial N for BLM is n_accounted (= total * per_sum / 100), NOT total.\n")
+cat("       n_coded is correct ONLY with parents-only cells; it ships that way as the\n")
+cat("       rile_se_coded sensitivity column. See docs/surveys/marpor.md.\n")
 
 ## 2 — quasi-sentence total
 cat("\n[2] quasi-sentence total (column name in this release: `total`)\n")
@@ -73,12 +75,61 @@ print(as.data.frame(head(miss, 8)), digits = 3, row.names = FALSE)
 cat(sprintf("    overall absseat missing: %.2f%% | totseats: %.2f%%\n",
             100*mean(is.na(cmp$absseat)), 100*mean(is.na(cmp$totseats))))
 
+## 4 — Deliverable B integrity
+#
+# These checks postdate the SE file. They are here so a re-run validates what
+# 2_bootstrap_manifesto_se.R actually produced rather than assuming it.
+cat("\n[4] Deliverable B — marpor_manifesto_se.rds\n")
+se_path <- here("data", "processed", "marpor_manifesto_se.rds")
+if (!file.exists(se_path)) {
+  cat("    ⚠️ NOT BUILT. Run 2_bootstrap_manifesto_se.R (~10 min).\n")
+} else {
+  se <- readRDS(se_path)
+  cat(sprintf("    rows: %d | expected (blm_usable & total>0): %d\n",
+              nrow(se), sum(cmp$blm_usable & !is.na(cmp$total) & cmp$total > 0)))
+  cat(sprintf("    key unique (party x edate): %s\n",
+              !any(duplicated(se[, c("party", "edate")]))))
+  cat(sprintf("    seed: %s | reps: %s\n",
+              attr(se, "blm_seed"), attr(se, "blm_nreps")))
+
+  # The bootstrap's own point estimate must reproduce MPDS's published rile.
+  # It does not everywhere — see docs/surveys/marpor.md. Surfaced, not hidden.
+  nbad <- sum(se$rile_parity_flag, na.rm = TRUE)
+  cbad <- sort(unique(se$countryname[se$rile_parity_flag]))
+  cat(sprintf("    rile parity breaches: %d (%.2f%%) | countries: %s | max gap %.3f\n",
+              nbad, 100*mean(se$rile_parity_flag), paste(cbad, collapse = ", "),
+              max(se$rile_parity_gap, na.rm = TRUE)))
+
+  ok_ratio <- function(n, d) { k <- is.finite(n) & is.finite(d) & d > 0; median(n[k]/d[k]) }
+  cat(sprintf("    rile_se median %.3f | vs manifestoR default %.4f | vs CODED %.4f\n",
+              median(se$rile_se, na.rm = TRUE),
+              ok_ratio(se$rile_se, se$rile_se_mrdefault),
+              ok_ratio(se$rile_se, se$rile_se_coded)))
+  cat(sprintf("    degenerate (SE = 0, no RILE mass): %d | logit_rile_se non-finite: %d\n",
+              sum(se$rile_se == 0, na.rm = TRUE), sum(!is.finite(se$logit_rile_se))))
+
+  if (nrow(se) != sum(cmp$blm_usable & !is.na(cmp$total) & cmp$total > 0)) {
+    cat("    ⚠️ ROW COUNT MISMATCH — the SE file is stale relative to Deliverable A.\n")
+  }
+}
+
 # ─────────────────────────────────────────────────────────────────────────────
 cat("\n\n══ TASK 0 — rule-change coverage table ══\n")
 
+# ⚠️ `mag_eff` on a rule-change row is the magnitude of the FIRST election under
+# the NEW rule (t = 0), i.e. POST-change. An earlier version of this line read
+#     select(prev_mag = mag_eff, ..., mag_eff)
+# which dplyr dedupes to a single column, shipping the post-change value in the
+# CSV under the name `prev_mag`. That is not a cosmetic mislabel — a paper-side
+# consumer differencing against `prev_mag` would difference a value against
+# itself. Verified: `prev_mag` matched `mag_eff` to 4e-13 across all 134 rows.
+# The pre-change magnitude is recovered from the treatment itself, since
+# delta_log_mag_eff = log(post) - log(pre).
 changes <- es %>% filter(rule_change) %>%
   select(country = country_cmp, election_date, year, system_family,
-         prev_mag = mag_eff, delta_log_mag_eff, mag_eff)
+         mag_eff_post = mag_eff, delta_log_mag_eff) %>%
+  mutate(mag_eff_pre = mag_eff_post / exp(delta_log_mag_eff)) %>%
+  relocate(mag_eff_pre, .before = mag_eff_post)
 
 cov <- changes %>%
   rowwise() %>%
@@ -117,11 +168,27 @@ cat(sprintf("       %d have delta_log_mag_eff == NA\n", n_na))
 cat(sprintf("     Under the brief's CONTINUOUS treatment coding, the effective N is %d, not %d.\n",
             n_nonzero, n_usable))
 
-cat("\n  Usable changes with a measurable continuous treatment:\n")
-u <- cov %>% filter(usable) %>%
-  select(country, year, n_pre, n_post, delta_log_mag_eff) %>%
+# The header used to promise "measurable continuous treatment" while the filter
+# was `usable` alone, so it printed all 49 rows — including the 13 zeros and the
+# NA that the warning two lines above had just excluded. Counting the printed
+# list gave 49 and contradicted the stated effective N of 35.
+cat(sprintf("\n  The %d usable changes that MOVE effective magnitude (the paper's actual N):\n",
+            n_nonzero))
+u <- cov %>%
+  filter(usable, !is.na(delta_log_mag_eff), delta_log_mag_eff != 0) %>%
+  select(country, year, n_pre, n_post, mag_eff_pre, mag_eff_post, delta_log_mag_eff) %>%
   arrange(country, year)
 print(as.data.frame(u), digits = 3, row.names = FALSE)
+
+cat(sprintf("\n  EXCLUDED from the continuous specification (%d):\n", n_zero + n_na))
+x <- cov %>%
+  filter(usable, is.na(delta_log_mag_eff) | delta_log_mag_eff == 0) %>%
+  transmute(country, year, n_pre, n_post,
+            reason = ifelse(is.na(delta_log_mag_eff),
+                            "magnitude unavailable (NA)",
+                            "rule changed, magnitude did not")) %>%
+  arrange(country, year)
+print(as.data.frame(x), row.names = FALSE)
 
 ## France verdict — called out separately, per the brief
 cat("\n  ── France 1986/1988 reversal (brief asks for this explicitly) ──\n")
