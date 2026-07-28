@@ -30,9 +30,14 @@ category definitions), stored at
 >
 > The repo's blanket `*.pdf` ignore rule was silently excluding this file even
 > though the policy note at the foot of `.gitignore` states codebooks are
-> tracked. A narrow `!data/*/raw/**/*.pdf` exception was added so the codebook
-> actually survives a fresh clone — this also recovers the DES codebook and
-> change log under `data/des/raw/v5_0/`.
+> tracked. Narrow `!data/marpor/raw/**/*.pdf` and `!data/des/raw/**/*.pdf`
+> exceptions were added so the codebook survives a fresh clone — this also
+> recovers the DES codebook and change log under `data/des/raw/v5_0/`.
+>
+> Deliberately **not** the blanket `!data/*/raw/**/*.pdf`: that pulls in 261
+> files / 535 MB of questionnaires and methods reports across every survey.
+> Tracking those may well be right — the policy note implies it — but that is a
+> repo-size decision for Jeff, not a side effect of a MARPOR commit.
 
 ---
 
@@ -89,7 +94,7 @@ use the parent set only — `marpor_parent_categories()` returns it.
 | `eyear` | election year, from `edate` |
 | `seatshare` | `absseat / totseats` |
 | `per_sum` | 56 parents + `peruncod`; the parity diagnostic |
-| `n_coded` | **the correct multinomial N** — see below |
+| `n_coded` | `total × Σparents / 100`; the BLM N **for parents-only cells** — see check 1 |
 | `blm_usable` | `total` present and > 0 and `per_sum` > 0 |
 
 ---
