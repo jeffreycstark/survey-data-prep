@@ -277,7 +277,22 @@ magnitude contributes no identifying variation. Of the 49:
   Turkey 1965 and 1969)
 - **1** has `delta_log_mag_eff == NA` — Romania 2008
 
-**35** is the design-relevant N and the number the paper should state.
+**35** is the count *this repo* can justify from the source data alone.
+
+> ⚠️ **The paper should report 27, not 35.** Paper 25's own gate
+> (`analysis/00_feasibility_gate.R`) applies two further screens that depend on
+> the design rather than the data, and both are correct:
+>
+> 1. **≥3 RILE-bearing parties per election.** The outcome is a weighted mean
+>    and SD of RILE, so manifestos with no RILE score contribute nothing. An
+>    election with fewer than three scored parties cannot support a dispersion
+>    estimate however many parties MPDS lists.
+> 2. **`|Δ log eff. magnitude| < 0.05`** rather than exactly 0 — catching
+>    near-zero moves that are relabelling noise. This excludes 16 where the
+>    exact-zero rule here excludes 13.
+>
+> Net: 27. That is the paper's number; 35 is the upstream ceiling before
+> design-specific screening. Do not cite 35 in the manuscript.
 
 ### The reversals survive
 
@@ -383,6 +398,53 @@ Mexico as a treatment case, decide explicitly which level to pair the SE with.**
 The build asserts structurally rather than on a hard maximum: it halts if more
 than 1.5% of rows breach tolerance, or if the discrepancy stops being confined
 to a single country.
+
+### Shared coders do NOT break the independence assumption
+
+Paper 25's TASK 1 raised this as an open question: the measurement-error
+correction treats BLM standard errors as independent across parties within an
+election, but manifestos in one election often share a coder — so if SEs are
+correlated within election, the correction would **under**-correct.
+
+Answered by `96_coder_clustering_check.R`. **The premise is true; the worry is
+not.**
+
+Coder sharing is real and pervasive:
+
+| | |
+|---|---|
+| Elections with ≥2 manifestos | 864 |
+| …where **all** manifestos share **one** coder | **676 (78.2%)** |
+| Median coders per election | 1.0 (median 6 manifestos) |
+
+And raw clustering of `rile_se` looks alarming — ICC **0.510** by election,
+**0.360** by coder. But the BLM SE is mechanically ~1/√(quasi-sentences), and
+manifesto length is itself correlated within an election (same campaign, same
+era, same document conventions). Length alone explains **60%** of SE variation
+(log–log R² = 0.596). Removing it:
+
+| Grouping | raw ICC | residual ICC |
+|---|---|---|
+| Election | 0.510 | **0.096** |
+| **Coder** | 0.360 | **0.009** |
+
+**Coder identity contributes ~1% of residual variance — effectively nothing.**
+The raw correlation was almost entirely a length artefact. Restricting to the
+elections the paper actually uses (≥3 RILE-bearing parties, 799 elections /
+5,036 manifestos) barely moves it: 0.106 by election, 0.009 by coder.
+
+**Verdict: the correction does not materially under-correct on this account.**
+Residual within-election correlation of ~0.10 is modest and is not attributable
+to coders; clustering standard errors at election level would cover it if the
+paper wants belt-and-braces.
+
+> ⚠️ **Scope of this test.** It measures clustering in the *magnitude* of the
+> SEs — which is the assumption as TASK 1 stated it. It does **not** test
+> whether a coder biases all manifestos in an election in the *same direction*.
+> That is a different, systematic error component which the BLM bootstrap does
+> not capture at all (it models only sampling error from the multinomial draw),
+> and it cannot be estimated from these quantities. If that is the real worry it
+> needs a coder-overlap or double-coding design, not this diagnostic.
 
 ### One degenerate row
 
