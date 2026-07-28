@@ -2,10 +2,15 @@
 
 Deliverable 2.3 (source 1 of 2) for paper-bank 24, papers/24-unsc/DATA-REQUEST.md.
 
-The UN's own list (un.org/securitycouncil) is served behind CloudFront and
-returns 403 to automated clients, so it cannot be used as the machine-readable
-primary. This parser takes Wikipedia as source 1; source 2 and the 15
-hand-checked country-terms are handled separately.
+This parser takes Wikipedia as source 1; source 2 and the 15 hand-checked
+country-terms are handled separately.
+
+CORRECTION: an earlier version of this docstring claimed the UN's own list at
+un.org/securitycouncil was unusable because it returned a CloudFront 403. That
+was wrong — the 403 was caused by the default curl User-Agent alone. With
+ordinary browser headers the page returns 200 and serves the authoritative
+roster as "Country  1970-1971, 2004-2005, ...". Reconciling against it is
+therefore possible and still outstanding, not blocked.
 
 Table structure
 ---------------

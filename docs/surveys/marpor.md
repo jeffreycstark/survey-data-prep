@@ -232,10 +232,21 @@ the choice can be reported as a robustness check rather than defended in prose.
 | `rile_se_mrdefault` | `total` | 56 parents + `peruncod` | manifestoR default |
 | `rile_se_coded` | `n_coded` | 56 parents only | sensitivity |
 
-They differ by **<2% at the median** — the choice is not load-bearing for the
-paper's result. Median ratio of primary to each of the other two is 1.0000,
-because the schemes coincide *exactly* on rows where `peruncod = 0` and the
-categories sum to 100.
+Median ratio of primary to each of the other two is 1.0000, because the schemes
+coincide *exactly* on rows where `peruncod = 0` and the categories sum to 100 —
+81.6% of the table.
+
+⚠️ **Do not read that as "the correction doesn't matter."** The whole-table
+median is 1.0000 only because most rows are unaffected by construction. On the
+**870 rows (16.8%) the correction actually touches** — those where `per_sum ≤ 99`,
+i.e. where MPDS omits uncoded mass from `peruncod` — the primary SE runs
+**+4.3% above the manifestoR default** at the median. `rile_se_coded` agrees with
+primary on those rows (ratio 1.0000), which is expected: both remove the same
+unaccounted mass, differing only in whether `peruncod` stays as a resample cell.
+
+So the scheme choice is not load-bearing *overall*, but it is not negligible on
+the affected subset, and it moves in the conservative direction — larger SEs,
+making the paper's dispersion result harder to obtain rather than easier.
 
 Distribution of `rile_se`: median **4.12**, IQR 2.40–6.52, max 35.64.
 

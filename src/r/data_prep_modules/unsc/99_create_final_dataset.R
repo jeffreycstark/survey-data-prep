@@ -9,17 +9,22 @@
 #
 # Source chain
 # ------------
-# The UN's own list (un.org/securitycouncil) sits behind CloudFront and returns
-# 403 to any automated client, so it cannot serve as the machine-readable
-# primary. Source 1 is the Wikipedia table, archived under data/unsc/raw/ with
-# its revision id and parsed by
+# Source 1 is the Wikipedia table, archived under data/unsc/raw/ with its
+# revision id and parsed by
 #   src/python/unsc_membership/parse_wikipedia_unsc.py
 #
-# ⚠️ SOURCE 2 IS STILL OUTSTANDING. The request asks for two independent sources
-#    reconciled, plus 15 hand-checked country-terms recorded in the docs page.
-#    Neither is done yet. What IS done is the structural check below, which is
-#    strong evidence the parse is right but is NOT a substitute for the
-#    second source.
+# ⚠️ CORRECTION (supersedes an earlier note in this file): the UN's own list at
+#    un.org/securitycouncil is NOT unreachable. An initial fetch returned a
+#    CloudFront 403, which was attributed to bot-blocking; in fact it was only
+#    the default curl User-Agent. With ordinary browser headers the page returns
+#    200 and serves the authoritative roster in a clean
+#    "Country  1970-1971, 2004-2005, ..." format.
+#
+# ⚠️ SOURCE 2 IS STILL OUTSTANDING, but is no longer blocked. The request asks
+#    for two independent sources reconciled, plus 15 hand-checked country-terms
+#    recorded in the docs page. Neither is done yet. What IS done is the
+#    structural check below, which is strong evidence the parse is right but is
+#    NOT a substitute for reconciling against the UN's own list.
 #
 # ─────────────────────────────────────────────────────────────────────────────
 # STRUCTURAL VALIDATION: 10 seats per year
