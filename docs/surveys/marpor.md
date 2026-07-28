@@ -116,11 +116,20 @@ attributable to MPDS publishing percentages rounded to 1–3 decimals (76% of ro
 within 0.01 of an integer, 87% within 0.05).
 
 **⚠️ The finding that matters for Deliverable B**: in those 873 rows MPDS leaves
-uncoded quasi-sentences out of `peruncod`, so **`total` overstates the coded
-base**. The multinomial N for the BLM bootstrap is therefore `n_coded`
-(= `total × Σparents / 100`), **not** `total`. Using `total` would understate
-per-manifesto uncertainty by treating uncoded sentences as if they had been
-coded. `n_coded` is precomputed in the shipped table.
+uncoded quasi-sentences out of `peruncod`, so **`total` overstates the base the
+category cells actually account for**. Drawing `total` sentences therefore
+understates per-manifesto uncertainty.
+
+The multinomial N is **`n_accounted`** (= `total × per_sum / 100`), **not**
+`total`. It is computed in `2_bootstrap_manifesto_se.R`.
+
+> **Superseded:** an earlier revision of this page named `n_coded`
+> (= `total × Σparents / 100`) as the N. That is wrong when paired with
+> manifestoR's default resample cells, which include `peruncod`: `n_coded` has
+> already removed the uncoded mass, so leaving `peruncod` in as a cell discounts
+> it twice and inflates the SE. `n_coded` remains correct only with
+> parents-only cells, and ships in that pairing as the `rile_se_coded`
+> sensitivity column. See "Deliverable B" below.
 
 The 99 zero-sum rows are all-NA across parents and have NA `total` — genuinely
 uncoded manifestos, and exactly the rows excluded by `blm_usable`.
@@ -187,6 +196,90 @@ threatening the design.
 
 ---
 
+## Deliverable B — `marpor_manifesto_se.rds` ✅
+
+Per-manifesto Benoit–Laver–Mikhaylov (2009) bootstrap standard errors, keyed
+`party` × `edate`. **5,179 rows** (the 106 manifestos with no usable
+quasi-sentence total are excluded).
+
+### Parameters the paper must report
+
+| Parameter | Value |
+|---|---|
+| Replications | **1,000** |
+| Seed | **20260728** |
+| Seeding scheme | **per row**, `seed + row index` |
+| Release | MPDS2025a (corpus 2025-1) |
+| Engine | `manifestoR::mp_bootstrap()` 1.6.3 |
+
+Each manifesto is seeded independently, so output is identical regardless of how
+many cores `mclapply` uses and adding or removing a scheme does not perturb the
+others. Do not replace this with a single top-level `set.seed()`.
+
+### The three N/cell schemes
+
+The multinomial N must match the cells it is spread across. All three ship, so
+the choice can be reported as a robustness check rather than defended in prose.
+
+| Column | N | Cells | Role |
+|---|---|---|---|
+| `rile_se` | `n_accounted` | 56 parents + `peruncod` | **primary** |
+| `rile_se_mrdefault` | `total` | 56 parents + `peruncod` | manifestoR default |
+| `rile_se_coded` | `n_coded` | 56 parents only | sensitivity |
+
+They differ by **<2% at the median** — the choice is not load-bearing for the
+paper's result. Median ratio of primary to each of the other two is 1.0000,
+because the schemes coincide *exactly* on rows where `peruncod = 0` and the
+categories sum to 100.
+
+Distribution of `rile_se`: median **4.12**, IQR 2.40–6.52, max 35.64.
+
+### ⚠️ MPDS's published `rile` does not always match its own `per*` values
+
+`rile_boot` is `manifestoR::rile()` recomputed from the published category
+vector. It reproduces the shipped `rile` to ≤0.001 for **99.2%** of rows — but
+not all:
+
+- **41 rows (0.79%) differ by more than 0.05**, max gap **8.36 rile points**
+- **all 41 are Mexico**, all from the **1998/2002 coding rounds** (elections
+  1952–2000, worst in the 1990s)
+- Mexico manifestos coded later reconcile: every 2010s row, 21 of 24 in the 2000s
+
+This is a source-side inconsistency in an early Mexico coding round, not a fault
+in the resample cells — the discrepancy does not track `per_sum`, and no
+category reassignment reproduces it. Both levels ship (`rile` = MPDS published,
+`rile_boot` = recomputed) with `rile_parity_gap` and `rile_parity_flag`.
+
+**`rile_se` is the SD of the recomputed rile.** For flagged rows it describes
+the dispersion of `rile_boot`, not of the shipped `rile`. **If the paper uses
+Mexico as a treatment case, decide explicitly which level to pair the SE with.**
+
+The build asserts structurally rather than on a hard maximum: it halts if more
+than 1.5% of rows breach tolerance, or if the discrepancy stops being confined
+to a single country.
+
+### One degenerate row
+
+Australia 1951 (Country Party) puts all 42 coded quasi-sentences in `per703`,
+which is outside the RILE index. Every resample returns `rile = 0`, so
+`rile_se = 0` under all three schemes. Correct, not a failure; excluded from the
+summary ratios only.
+
+### Franzmann–Kaiser SEs — not shipped
+
+The request asked for them "if cheap". They are not. FK needs country
+party-system base values estimated across the whole sample, so called on a
+single manifesto — inside or outside `mp_bootstrap` — it returns `NaN`. A joint
+bootstrap of the entire table would be a *different estimand*: each manifesto's
+SE would absorb other manifestos' resampling. FK point estimates on the full
+table remain computable (2,977 of 5,179 non-`NaN`); only the SEs are out.
+
+**Shipped instead**: `logit_rile_se` (Lowe et al. 2011). It is row-wise, so it
+bootstraps under the identical procedure at no extra design cost, and gives the
+paper a working robustness scale. Median `logit_rile_se` = 0.185, no
+non-finite values. This is a **substitute, not the requested quantity** — flagged
+for the paper rather than swapped in silently.
+
 ---
 
 ## Deliverable C — `electoral_systems.rds` ✅
@@ -233,9 +326,15 @@ hand-coding the treatment cases only.
 
 ## Outstanding
 
-Nothing blocking. Two known limitations, both documented above and neither
-fixable from the shipped sources: **legal threshold** (absent from DES v5.0) and
-**Franzmann–Kaiser standard errors** (not well defined per-manifesto).
+Nothing blocking. Three items for the paper to decide or source elsewhere, all
+documented above and none fixable from the shipped sources:
+
+1. **Legal threshold** — absent from DES v5.0; not imputed.
+2. **Franzmann–Kaiser standard errors** — not well defined per-manifesto;
+   `logit_rile_se` ships as a substitute.
+3. **The 41 Mexico rile-parity rows** — MPDS's published `rile` disagrees with
+   its own `per*` values. Only matters if Mexico is used as a treatment case,
+   and then only for which rile level the SE is paired with.
 
 ## Pipeline
 
