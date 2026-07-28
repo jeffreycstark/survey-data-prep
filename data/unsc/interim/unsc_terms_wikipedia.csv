@@ -1,0 +1,333 @@
+country_name_raw,term_start_year,term_end_year,n_years,split_term,regional_group,arab_seat,col_index
+Argentina,1948,1949,2,0,African,0,0
+Canada,1948,1949,2,0,African,0,1
+Ukrainian Soviet Socialist Republic,1948,1949,2,0,Asia-Pacific,0,2
+Republic of Cuba,1949,1950,2,0,African,0,0
+Kingdom of Egypt,1949,1950,2,0,Asia-Pacific,0,1
+Norway,1949,1950,2,0,GRULAC,0,2
+Ecuador,1960,1961,2,0,African,0,0
+Ceylon,1960,1961,2,0,African,0,1
+Polish People's Republic,1960,1961,2,0,Asia-Pacific,0,2
+History of Bolivia,1964,1965,2,0,African,0,0
+Ivory Coast,1964,1965,2,0,African,0,1
+Czechoslovak Socialist Republic,1964,1965,2,0,Asia-Pacific,0,2
+Uruguay,1965,1966,2,0,African,0,0
+Malaysia,1965,1966,2,0,Asia-Pacific,0,1
+Jordan,1965,1966,2,0,GRULAC,0,2
+Netherlands,1965,1966,2,0,WEOG,0,3
+History of Uganda,1966,1967,2,0,African,0,0
+Mali,1966,1967,2,0,African,0,1
+Military dictatorship in Nigeria,1966,1967,2,0,Asia-Pacific,0,2
+Japan,1966,1967,2,0,Eastern European,0,3
+Jordan,1966,1967,2,0,GRULAC,1,4
+Argentina,1966,1967,2,0,,0,5
+Uruguay,1966,1967,2,0,,0,6
+Netherlands,1966,1967,2,0,,0,7
+New Zealand,1966,1967,2,0,,0,8
+Bulgaria,1966,1967,2,0,,0,9
+Ethiopian Empire,1967,1968,2,0,African,0,0
+India,1967,1968,2,0,Asia-Pacific,0,1
+Military dictatorship in Brazil,1967,1968,2,0,GRULAC,0,2
+Canada,1967,1968,2,0,WEOG,0,3
+Denmark,1967,1968,2,0,WEOG,0,4
+Senegal,1968,1969,2,0,African,0,0
+Algeria,1968,1969,2,0,African,1,1
+Pakistan,1968,1969,2,0,Asia-Pacific,0,2
+Dictatorship of Alfredo Stroessner,1968,1969,2,0,Eastern European,0,3
+Hungarian People's Republic,1968,1969,2,0,GRULAC,0,4
+Zambia,1969,1970,2,0,African,0,0
+Kingdom of Nepal,1969,1970,2,0,Asia-Pacific,0,1
+Colombia,1969,1970,2,0,GRULAC,0,2
+Finland,1969,1970,2,0,WEOG,0,3
+Spanish State,1969,1970,2,0,WEOG,0,4
+Sierra Leone,1970,1971,2,0,African,0,0
+Burundi,1970,1971,2,0,African,0,1
+Syria,1970,1971,2,0,Asia-Pacific,1,2
+Nicaragua,1970,1971,2,0,Eastern European,0,3
+Polish People's Republic,1970,1971,2,0,GRULAC,0,4
+Somali Democratic Republic,1971,1972,2,0,African,0,0
+Japan,1971,1972,2,0,Asia-Pacific,0,1
+Argentina,1971,1972,2,0,GRULAC,0,2
+Belgium,1971,1972,2,0,WEOG,0,3
+Italy,1971,1972,2,0,WEOG,0,4
+Guinea,1972,1973,2,0,African,0,0
+Sudan,1972,1973,2,0,African,1,1
+India,1972,1973,2,0,Asia-Pacific,0,2
+Panama,1972,1973,2,0,Eastern European,0,3
+Socialist Federal Republic of Yugoslavia,1972,1973,2,0,GRULAC,0,4
+Kenya,1973,1974,2,0,African,0,0
+Indonesia,1973,1974,2,0,Asia-Pacific,0,1
+Revolutionary Government of the Armed Forces of Peru,1973,1974,2,0,GRULAC,0,2
+Australia,1973,1974,2,0,WEOG,0,3
+Austria,1973,1974,2,0,WEOG,0,4
+Mauritania,1974,1975,2,0,African,0,0
+Cameroon,1974,1975,2,0,African,0,1
+Ba'athist Iraq,1974,1975,2,0,Asia-Pacific,1,2
+Costa Rica,1974,1975,2,0,Eastern European,0,3
+Byelorussian Soviet Socialist Republic,1974,1975,2,0,GRULAC,0,4
+Tanzania,1975,1976,2,0,African,0,0
+Japan,1975,1976,2,0,Asia-Pacific,0,1
+Guyana,1975,1976,2,0,GRULAC,0,2
+Italy,1975,1976,2,0,WEOG,0,3
+Sweden,1975,1976,2,0,WEOG,0,4
+Benin,1976,1977,2,0,African,0,0
+Libya,1976,1977,2,0,African,1,1
+Pakistan,1976,1977,2,0,Asia-Pacific,0,2
+Panama,1976,1977,2,0,Eastern European,0,3
+Socialist Republic of Romania,1976,1977,2,0,GRULAC,0,4
+Mauritius,1977,1978,2,0,African,0,0
+India,1977,1978,2,0,Asia-Pacific,0,1
+Venezuela,1977,1978,2,0,GRULAC,0,2
+Canada,1977,1978,2,0,WEOG,0,3
+West Germany,1977,1978,2,0,WEOG,0,4
+Second Nigerian Republic,1978,1979,2,0,African,0,0
+Gabon,1978,1979,2,0,African,0,1
+Kuwait,1978,1979,2,0,Asia-Pacific,1,2
+History of Bolivia,1978,1979,2,0,Eastern European,0,3
+Czechoslovakia,1978,1979,2,0,GRULAC,0,4
+Zambia,1979,1980,2,0,African,0,0
+Bangladesh,1979,1980,2,0,Asia-Pacific,0,1
+Jamaica,1979,1980,2,0,GRULAC,0,2
+Norway,1979,1980,2,0,WEOG,0,3
+Portugal,1979,1980,2,0,WEOG,0,4
+Niger,1980,1981,2,0,African,0,0
+Tunisia,1980,1981,2,0,African,1,1
+History of the Philippines,1980,1981,2,0,Asia-Pacific,0,2
+Mexico,1980,1981,2,0,Eastern European,0,3
+East Germany,1980,1981,2,0,GRULAC,0,4
+History of Uganda,1981,1982,2,0,African,0,0
+Japan,1981,1982,2,0,Asia-Pacific,0,1
+Panama,1981,1982,2,0,GRULAC,0,2
+Ireland,1981,1982,2,0,WEOG,0,3
+Spain,1981,1982,2,0,WEOG,0,4
+Togo,1982,1983,2,0,African,0,0
+Zaire,1982,1983,2,0,African,0,1
+Jordan,1982,1983,2,0,Asia-Pacific,1,2
+Guyana,1982,1983,2,0,Eastern European,0,3
+Poland,1982,1983,2,0,GRULAC,0,4
+Zimbabwe,1983,1984,2,0,African,0,0
+Pakistan,1983,1984,2,0,Asia-Pacific,0,1
+Nicaragua,1983,1984,2,0,GRULAC,0,2
+Malta,1983,1984,2,0,WEOG,0,3
+Netherlands,1983,1984,2,0,WEOG,0,4
+Burkina Faso,1984,1985,2,0,African,0,0
+Egypt,1984,1985,2,0,African,1,1
+India,1984,1985,2,0,Asia-Pacific,0,2
+History of Peru,1984,1985,2,0,Eastern European,0,3
+Ukrainian Soviet Socialist Republic,1984,1985,2,0,GRULAC,0,4
+Democratic Republic of Madagascar,1985,1986,2,0,African,0,0
+Thailand,1985,1986,2,0,Asia-Pacific,0,1
+Trinidad and Tobago,1985,1986,2,0,GRULAC,0,2
+Australia,1985,1986,2,0,WEOG,0,3
+Denmark,1985,1986,2,0,WEOG,0,4
+Ghana,1986,1987,2,0,African,0,0
+People's Republic of the Congo,1986,1987,2,0,African,0,1
+United Arab Emirates,1986,1987,2,0,Asia-Pacific,1,2
+Republic of Venezuela,1986,1987,2,0,Eastern European,0,3
+People's Republic of Bulgaria,1986,1987,2,0,GRULAC,0,4
+Zambia,1987,1988,2,0,African,0,0
+Japan,1987,1988,2,0,Asia-Pacific,0,1
+Argentina,1987,1988,2,0,GRULAC,0,2
+West Germany,1987,1988,2,0,WEOG,0,3
+Italy,1987,1988,2,0,WEOG,0,4
+Senegal,1988,1989,2,0,African,0,0
+Algeria,1988,1989,2,0,African,1,1
+Kingdom of Nepal,1988,1989,2,0,Asia-Pacific,0,2
+Brazil,1988,1989,2,0,Eastern European,0,3
+Socialist Federal Republic of Yugoslavia,1988,1989,2,0,GRULAC,0,4
+Ethiopia,1989,1990,2,0,African,0,0
+Malaysia,1989,1990,2,0,Asia-Pacific,0,1
+Colombia,1989,1990,2,0,GRULAC,0,2
+Canada,1989,1990,2,0,WEOG,0,3
+Finland,1989,1990,2,0,WEOG,0,4
+Ivory Coast,1990,1991,2,0,African,0,0
+Zaire,1990,1991,2,0,African,0,1
+Yemen,1990,1991,2,0,Asia-Pacific,1,2
+Cuba,1990,1991,2,0,Eastern European,0,3
+Romania,1990,1991,2,0,GRULAC,0,4
+Zimbabwe,1991,1992,2,0,African,0,0
+India,1991,1992,2,0,Asia-Pacific,0,1
+Ecuador,1991,1992,2,0,GRULAC,0,2
+Austria,1991,1992,2,0,WEOG,0,3
+Belgium,1991,1992,2,0,WEOG,0,4
+Cape Verde,1992,1993,2,0,African,0,0
+Morocco,1992,1993,2,0,African,1,1
+Japan,1992,1993,2,0,Asia-Pacific,0,2
+Venezuela,1992,1993,2,0,Eastern European,0,3
+Hungary,1992,1993,2,0,GRULAC,0,4
+Djibouti,1993,1994,2,0,African,0,0
+Pakistan,1993,1994,2,0,Asia-Pacific,0,1
+Brazil,1993,1994,2,0,GRULAC,0,2
+New Zealand,1993,1994,2,0,WEOG,0,3
+Spain,1993,1994,2,0,WEOG,0,4
+Military dictatorship in Nigeria,1994,1995,2,0,African,0,0
+Rwanda,1994,1995,2,0,African,0,1
+Oman,1994,1995,2,0,Asia-Pacific,1,2
+Argentina,1994,1995,2,0,Eastern European,0,3
+Czech Republic,1994,1995,2,0,GRULAC,0,4
+Botswana,1995,1996,2,0,African,0,0
+Indonesia,1995,1996,2,0,Asia-Pacific,0,1
+Honduras,1995,1996,2,0,GRULAC,0,2
+Germany,1995,1996,2,0,WEOG,0,3
+Italy,1995,1996,2,0,WEOG,0,4
+Guinea-Bissau,1996,1997,2,0,African,0,0
+Egypt,1996,1997,2,0,African,1,1
+South Korea,1996,1997,2,0,Asia-Pacific,0,2
+Chile,1996,1997,2,0,Eastern European,0,3
+Poland,1996,1997,2,0,GRULAC,0,4
+Kenya,1997,1998,2,0,African,0,0
+Japan,1997,1998,2,0,Asia-Pacific,0,1
+Costa Rica,1997,1998,2,0,GRULAC,0,2
+Portugal,1997,1998,2,0,WEOG,0,3
+Sweden,1997,1998,2,0,WEOG,0,4
+The Gambia,1998,1999,2,0,African,0,0
+Gabon,1998,1999,2,0,African,0,1
+Bahrain,1998,1999,2,0,Asia-Pacific,1,2
+Brazil,1998,1999,2,0,Eastern European,0,3
+Slovenia,1998,1999,2,0,GRULAC,0,4
+Namibia,1999,2000,2,0,African,0,0
+Malaysia,1999,2000,2,0,Asia-Pacific,0,1
+Argentina,1999,2000,2,0,GRULAC,0,2
+Canada,1999,2000,2,0,WEOG,0,3
+Netherlands,1999,2000,2,0,WEOG,0,4
+Mali,2000,2001,2,0,African,0,0
+Tunisia,2000,2001,2,0,African,1,1
+Bangladesh,2000,2001,2,0,Asia-Pacific,0,2
+Jamaica,2000,2001,2,0,Eastern European,0,3
+Ukraine,2000,2001,2,0,GRULAC,0,4
+Mauritius,2001,2002,2,0,African,0,0
+Singapore,2001,2002,2,0,Asia-Pacific,0,1
+Colombia,2001,2002,2,0,GRULAC,0,2
+Ireland,2001,2002,2,0,WEOG,0,3
+Norway,2001,2002,2,0,WEOG,0,4
+Guinea,2002,2003,2,0,African,0,0
+Cameroon,2002,2003,2,0,African,0,1
+Syria,2002,2003,2,0,Asia-Pacific,1,2
+Mexico,2002,2003,2,0,Eastern European,0,3
+Bulgaria,2002,2003,2,0,GRULAC,0,4
+Angola,2003,2004,2,0,African,0,0
+Pakistan,2003,2004,2,0,Asia-Pacific,0,1
+Chile,2003,2004,2,0,GRULAC,0,2
+Germany,2003,2004,2,0,WEOG,0,3
+Spain,2003,2004,2,0,WEOG,0,4
+Benin,2004,2005,2,0,African,0,0
+Algeria,2004,2005,2,0,African,1,1
+Philippines,2004,2005,2,0,Asia-Pacific,0,2
+Brazil,2004,2005,2,0,Eastern European,0,3
+Romania,2004,2005,2,0,GRULAC,0,4
+Tanzania,2005,2006,2,0,African,0,0
+Japan,2005,2006,2,0,Asia-Pacific,0,1
+Argentina,2005,2006,2,0,GRULAC,0,2
+Denmark,2005,2006,2,0,WEOG,0,3
+Greece,2005,2006,2,0,WEOG,0,4
+Ghana,2006,2007,2,0,African,0,0
+Republic of the Congo,2006,2007,2,0,African,0,1
+Qatar,2006,2007,2,0,Asia-Pacific,1,2
+Peru,2006,2007,2,0,Eastern European,0,3
+Slovakia,2006,2007,2,0,GRULAC,0,4
+South Africa,2007,2008,2,0,African,0,0
+Indonesia,2007,2008,2,0,Asia-Pacific,0,1
+Panama,2007,2008,2,0,GRULAC,0,2
+Belgium,2007,2008,2,0,WEOG,0,3
+Italy,2007,2008,2,0,WEOG,0,4
+Burkina Faso,2008,2009,2,0,African,0,0
+Libya,2008,2009,2,0,African,1,1
+Vietnam,2008,2009,2,0,Asia-Pacific,0,2
+Costa Rica,2008,2009,2,0,Eastern European,0,3
+Croatia,2008,2009,2,0,GRULAC,0,4
+Uganda,2009,2010,2,0,African,0,0
+Japan,2009,2010,2,0,Asia-Pacific,0,1
+Mexico,2009,2010,2,0,GRULAC,0,2
+Austria,2009,2010,2,0,WEOG,0,3
+Turkey,2009,2010,2,0,WEOG,0,4
+Nigeria,2010,2011,2,0,African,0,0
+Gabon,2010,2011,2,0,African,0,1
+Lebanon,2010,2011,2,0,Asia-Pacific,1,2
+Brazil,2010,2011,2,0,Eastern European,0,3
+Bosnia and Herzegovina,2010,2011,2,0,GRULAC,0,4
+South Africa,2011,2012,2,0,African,0,0
+India,2011,2012,2,0,Asia-Pacific,0,1
+Colombia,2011,2012,2,0,GRULAC,0,2
+Germany,2011,2012,2,0,WEOG,0,3
+Portugal,2011,2012,2,0,WEOG,0,4
+Togo,2012,2013,2,0,African,0,0
+Morocco,2012,2013,2,0,African,1,1
+Pakistan,2012,2013,2,0,Asia-Pacific,0,2
+Guatemala,2012,2013,2,0,Eastern European,0,3
+Azerbaijan,2012,2013,2,0,GRULAC,0,4
+Rwanda,2013,2014,2,0,African,0,0
+South Korea,2013,2014,2,0,Asia-Pacific,0,1
+Argentina,2013,2014,2,0,GRULAC,0,2
+Australia,2013,2014,2,0,WEOG,0,3
+Luxembourg,2013,2014,2,0,WEOG,0,4
+Nigeria,2014,2015,2,0,African,0,0
+Chad,2014,2015,2,0,African,0,1
+Jordan,2014,2015,2,0,Asia-Pacific,1,2
+Chile,2014,2015,2,0,Eastern European,0,3
+Lithuania,2014,2015,2,0,GRULAC,0,4
+Angola,2015,2016,2,0,African,0,0
+Malaysia,2015,2016,2,0,Asia-Pacific,0,1
+Venezuela,2015,2016,2,0,GRULAC,0,2
+New Zealand,2015,2016,2,0,WEOG,0,3
+Spain,2015,2016,2,0,WEOG,0,4
+Senegal,2016,2017,2,0,African,0,0
+Egypt,2016,2017,2,0,African,1,1
+Japan,2016,2017,2,0,Asia-Pacific,0,2
+Uruguay,2016,2017,2,0,Eastern European,0,3
+Ukraine,2016,2017,2,0,GRULAC,0,4
+Ethiopia,2017,2018,2,0,African,0,0
+Kazakhstan,2017,2018,2,0,Asia-Pacific,0,1
+Bolivia,2017,2018,2,0,GRULAC,0,2
+Italy,2017,2017,1,1,WEOG,0,3
+Sweden,2017,2018,2,0,WEOG,0,4
+Ivory Coast,2018,2019,2,0,African,0,0
+Equatorial Guinea,2018,2019,2,0,African,0,1
+Kuwait,2018,2019,2,0,Asia-Pacific,1,2
+Peru,2018,2019,2,0,Eastern European,0,3
+Netherlands,2018,2018,1,1,GRULAC,0,4
+Poland,2018,2019,2,0,,0,5
+South Africa,2019,2020,2,0,African,0,0
+Indonesia,2019,2020,2,0,Asia-Pacific,0,1
+Dominican Republic,2019,2020,2,0,GRULAC,0,2
+Belgium,2019,2020,2,0,WEOG,0,3
+Germany,2019,2020,2,0,WEOG,0,4
+Niger,2020,2021,2,0,African,0,0
+Tunisia,2020,2021,2,0,African,1,1
+Vietnam,2020,2021,2,0,Asia-Pacific,0,2
+Saint Vincent and the Grenadines,2020,2021,2,0,Eastern European,0,3
+Estonia,2020,2021,2,0,GRULAC,0,4
+Kenya,2021,2022,2,0,African,0,0
+India,2021,2022,2,0,Asia-Pacific,0,1
+Mexico,2021,2022,2,0,GRULAC,0,2
+Ireland,2021,2022,2,0,WEOG,0,3
+Norway,2021,2022,2,0,WEOG,0,4
+Ghana,2022,2023,2,0,African,0,0
+Gabon,2022,2023,2,0,African,0,1
+United Arab Emirates,2022,2023,2,0,Asia-Pacific,1,2
+Brazil,2022,2023,2,0,Eastern European,0,3
+Albania,2022,2023,2,0,GRULAC,0,4
+Mozambique,2023,2024,2,0,African,0,0
+Japan,2023,2024,2,0,Asia-Pacific,0,1
+Ecuador,2023,2024,2,0,GRULAC,0,2
+Malta,2023,2024,2,0,WEOG,0,3
+Switzerland,2023,2024,2,0,WEOG,0,4
+Sierra Leone,2024,2025,2,0,African,0,0
+Algeria,2024,2025,2,0,African,1,1
+South Korea,2024,2025,2,0,Asia-Pacific,0,2
+Guyana,2024,2025,2,0,Eastern European,0,3
+Slovenia,2024,2025,2,0,GRULAC,0,4
+Somalia,2025,2026,2,0,African,0,0
+Pakistan,2025,2026,2,0,Asia-Pacific,0,1
+Panama,2025,2026,2,0,GRULAC,0,2
+Denmark,2025,2026,2,0,WEOG,0,3
+Greece,2025,2026,2,0,WEOG,0,4
+Liberia,2026,2027,2,0,African,0,0
+Democratic Republic of the Congo,2026,2027,2,0,African,0,1
+Bahrain,2026,2027,2,0,Asia-Pacific,1,2
+Colombia,2026,2027,2,0,Eastern European,0,3
+Latvia,2026,2027,2,0,GRULAC,0,4
+Zimbabwe,2027,2028,2,0,African,0,0
+Kyrgyzstan,2027,2028,2,0,Asia-Pacific,0,1
+Trinidad and Tobago,2027,2028,2,0,GRULAC,0,2
+Austria,2027,2028,2,0,WEOG,0,3
+Portugal,2027,2028,2,0,WEOG,0,4

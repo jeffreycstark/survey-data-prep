@@ -1,0 +1,971 @@
+{{Short description|None}}
+{{Use dmy dates|date=November 2021}}
+
+Membership of the [[United Nations Security Council]] is held by the five [[Permanent members of the United Nations Security Council|permanent members]] and ten elected, non-permanent members.
+
+Being elected requires a two-thirds majority vote from the [[United Nations General Assembly]]. Elected members hold their place on the council for a two-year term, with five seats contested in even years and five seats contested in odd years. An outgoing member cannot be immediately re-elected.
+
+Elections usually begin in June for a term starting January 1. Because of the two-thirds majority requirement, it is possible for two evenly matched candidates to deadlock with approximately half the vote each, sometimes needing weeks of negotiations to resolve.
+
+Non-permanent seats are distributed geographically, with a certain number of seats allocated to each of the five [[United Nations Regional Groups]].
+
+== Current membership ==
+;[[Permanent members of the United Nations Security Council|Permanent members]]
+{|class="sortable wikitable"
+|-
+!Country
+!Regional Group
+!Member since
+|-
+|{{flagwrap|China}}
+|[[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]]
+|{{Date|1971-10-25}}, [[United Nations General Assembly Resolution 2758 (XXVI)|replaced]] the [[Republic of China]]
+|-
+|{{flagwrap|France}}
+|[[Western European and Others Group]]
+|{{Date|1945-10-24}}
+|-
+|{{flagwrap|Russia}}
+|[[Eastern European Group]]
+|{{Date|1991-12-26}}, [[Dissolution of the Soviet Union|replaced]] the [[Soviet Union]]
+|-
+|{{flagwrap|United Kingdom}}
+|[[Western European and Others Group]]
+|{{Date|1945-10-24}}
+|-
+|{{flagwrap|United States}}
+|[[Western European and Others Group]]
+|{{Date|1945-10-24}}
+|}
+
+;Non-permanent members
+{|class="sortable wikitable"
+|-
+!Country
+!Regional Group
+!Term began
+!Term ends
+|-
+|{{flagwrap|Bahrain}}
+|[[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]] (Arab)
+|2026
+|2027
+|-
+|{{flagwrap|Colombia}}
+|[[Latin American and Caribbean Group|Latin American and Caribbean Group (GRULAC)]]
+|2026
+|2027
+|-
+|{{flagwrap|Democratic Republic of the Congo}}
+|[[African Group]]
+|2026
+|2027
+|-
+|{{flagwrap|Denmark}}
+|[[Western European and Others Group|Western European and Others Group (WEOG)]]
+|2025
+|2026
+|-
+|{{flagwrap|Greece}}
+|[[Western European and Others Group|Western European and Others Group (WEOG)]]
+|2025
+|2026
+|-
+|{{flagwrap|Latvia}}
+|[[Eastern European Group|Eastern European Group (EEG)]]
+|2026
+|2027
+|-
+|{{flagwrap|Liberia}}
+|[[African Group]]
+|2026
+|2027
+|-
+|{{flagwrap|Pakistan}}
+|[[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]]
+|2025
+|2026
+|-
+|{{flagwrap|Panama}}
+|[[Latin American and Caribbean Group|Latin American and Caribbean Group (GRULAC)]]
+|2025
+|2026
+|-
+|{{flagwrap|Somalia}}
+|[[African Group]]
+|2025
+|2026
+|-
+|}
+
+== Regional Groups ==
+[[File:UN regional groups.svg|thumb|300px| {{Legend|#0000ff|African Group}}
+{{Legend|#339900|Asia-Pacific Group}}
+{{Legend|#cc0000|Eastern European Group}}
+{{Legend|#cc3399|Latin American and Caribbean Group (GRULAC)}}
+{{Legend|#cc9900|Western European and Others Group}}
+{{Legend|#000000|UN member not in any voting group}}
+{{Legend|#00ff00|Observer states}}
+{{Legend|#c0c0c0|Non-UN state or territory}}]]
+
+The ten non-permanent seats have the following distribution:
+* [[African Group]]: 3 members
+* [[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]]: 2 members
+* [[Eastern European Group]]: 1 member
+* [[Latin American and Caribbean Group|Latin American and Caribbean Group (GRULAC)]]: 2 members
+* [[Western European and Others Group|Western European and Others Group (WEOG)]]: 2 members
+
+In addition, one of the five African/Asian seats is an [[Arab country]], alternating between the two groups. This rule was added in 1967 for it to be applied beginning with 1968.
+
+;Electoral timetable
+{| class="wikitable"
+|-
+! Term beginning in years that are: !! style="text-align:center;"|Odd!! style="text-align:center;"|Even
+|-
+|[[African Group]]||one member||two members *
+|-
+|[[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]]||one member||one member *
+|-
+|[[Eastern European Group]]||none ||one member
+|-
+|[[Latin American and Caribbean Group|Latin American and Caribbean Group (GRULAC)]] ||one member||one member
+|-
+|[[Western European and Others Group]] ||two members||none
+|}
+<nowiki>*</nowiki> The representative of Arab nations alternates between these two spaces.
+
+The odd/even distribution was effectively decided by the [[January 1946 United Nations Security Council election|January 1946]] and [[1965 United Nations Security Council election|1965]] elections (the first ever election, and the first election after the expansion of seats). For each of the six and four members in the newly created seats, the UN General Assembly voted to grant either a 1-year or 2-year term.
+
+== Previous Security Council composition ==
+From 1946 to 1965, the Security Council had six non-permanent members. Due to a lack of African and Asian member states, the seats had the following distribution:
+* Latin America: 2 members
+* [[Commonwealth of Nations]]: 1 member
+* Eastern Europe: 1 member
+* Middle East: 1 member
+* Western Europe: 1 member
+
+As [[decolonization]] increased the number of Asian and African member states without a group, they began to contest other seats: [[Ivory Coast]] substituted a member of the Commonwealth in 1964–1965, the Eastern European seat regularly included Asian countries from 1956, [[Liberia]] took the place of a Western European country in 1961, and [[Mali]] successfully contested the Middle Eastern seat in December 1964 (the Security Council would be expanded before Mali's term began).
+
+An [[Amendments to the United Nations Charter|amendment to the UN Charter]] ratified in 1965 increased the number of non-permanent seats to 10, and the Regional Groups were formally applied to the seats. The amendment effectively created three African seats and one Asian seat, if treating the Commonwealth seat as a WEOG seat and the Middle Eastern seat as an Asian seat. (In practice, the Commonwealth seat was by then treated as a ''de facto'' African seat.)<ref name="thegreenpapers"/>
+
+== Membership by year ==
+=== Permanent ===
+{| class="wikitable" style="text-align: center; font-size:92%"
+!width=50|Year !!Chinese seat !!French seat !!Soviet/Russian seat !!British seat !!American seat
+|-
+|style="background: #f0f0f0"|'''[[Charter of the United Nations|1945]]''' || rowspan="2" |{{Flag deco|Republic of China (1912–49)}} [[Republic of China (1912–49)|Republic of China]] ||{{Flag deco|France}} [[Provisional Government of the French Republic|Prov. Gov. of France]]|| rowspan="5" |{{flagwrap|Union of Soviet Socialist Republics}} || rowspan="6" |{{flagwrap|United Kingdom}} || rowspan="6" |{{flagwrap|United States}}
+|-
+|style="background: #f0f0f0"|'''[[French Constitution of 27 October 1946|1946]]''' || rowspan="2" |{{flagdeco|France|1830}} [[French Fourth Republic]]
+|-
+|style="background: #f0f0f0"|'''[[Retreat of the government of the Republic of China to Taiwan|1949]]''' ||rowspan="2"|{{Flag deco|Taiwan}} [[Taiwan|Republic of China (Taiwan)]]
+|-
+|style="background: #f0f0f0"|'''[[Constitution of France|1958]]''' ||rowspan="3"|{{Flag deco|France}} [[French Fifth Republic]]
+|-
+|style="background: #f0f0f0"|'''[[United Nations General Assembly Resolution 2758 (XXVI)|1971]]''' ||rowspan="2"|{{flagwrap|China}}
+|-
+|style="background: #f0f0f0"|'''[[Dissolution of the Soviet Union|1991]]–present''' ||{{flagwrap|Russia}}
+|}
+
+=== Non-permanent (1946–1965) ===
+{| class="wikitable" style="width:100%; font-size:92%;text-align:center;"
+|-
+! Year
+! colspan="2" | [[Latin America|Latin American seats]]
+! [[Commonwealth of Nations|Commonwealth seat]]
+! [[Eastern Europe]]an <br /> & [[Asia|Asian seat]]{{efn|Asian countries successfully contested the Eastern European seat from 1956 onwards.}}
+! [[Middle East|Middle Eastern seat]]
+! [[Western Europe|Western European seat]]
+|-
+! [[January 1946 United Nations Security Council election|1946]]
+| width="16%" rowspan="2" | {{Flag country|Fourth Brazilian Republic|1946}} || width="16%" |{{flagwrap|Mexico|1934}} || width="16%" rowspan="2" | {{flagwrap|Australia}} || width="16%" rowspan="2" | {{Flag country|Polish People's Republic}} || width="16%"|{{Flag country|Kingdom of Egypt}} || width="16%"| {{flagwrap|Netherlands}}
+|-
+! [[November 1946 United Nations Security Council election|1947]]
+| rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{Flag deco|Syrian Republic}} [[First Syrian Republic|Syria]] || rowspan="2" | {{flagwrap|Belgium}}
+|-
+! [[1947 United Nations Security Council election|1948]]
+| rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Canada|1921}} || rowspan="2" | {{flagwrap|Ukrainian Soviet Socialist Republic|1937}}
+|-
+! [[1948 United Nations Security Council election|1949]]
+| rowspan="2" | {{Flag country|Republic of Cuba|1902}} || rowspan="2" | {{Flag country|Kingdom of Egypt}} || rowspan="2" | {{flagwrap|Norway}}
+|-
+! 1950
+| rowspan="2" | {{flagwrap|Ecuador|1900}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{Flag country|Federal People's Republic of Yugoslavia}}
+|-
+! 1951
+| rowspan="2" | {{Flag country|Fourth Brazilian Republic|1946}} || rowspan="2" | {{flagwrap|Turkey}} || rowspan="2" | {{flagwrap|Netherlands}}
+|-
+! 1952
+| rowspan="2" | {{Flag deco|Chile}} [[Presidential Republic (1925–1973)|Chile]] || rowspan="2" | {{Flag country|Dominion of Pakistan}} || rowspan="2" | {{Flag country|Kingdom of Greece}}
+|-
+! 1953
+| rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Lebanon}} || rowspan="2" | {{flagwrap|Denmark}}
+|-
+! 1954
+| rowspan="2" | {{Flag country|Fourth Brazilian Republic|1946}} || rowspan="2" | {{flagwrap|New Zealand}} || rowspan="2" | {{flagwrap|Turkey}}
+|-
+! 1955
+| rowspan="2" | {{Flag deco|Peru}} [[History of Peru (1956–1968)|Peru]] || rowspan="2" | {{Flag country|Pahlavi Iran|1933}} || rowspan="2" | {{flagwrap|Belgium}}
+|-
+! 1956
+| rowspan="2" | {{Flag country|Republic of Cuba|1902}} || rowspan="2" | {{flagwrap|Australia}} || {{Flag country|Federal People's Republic of Yugoslavia}}
+|-
+! 1957
+| rowspan="2" | {{flagwrap|Colombia}} || {{Flag deco|Philippines|1936}} [[History of the Philippines (1946–1965)|Philippines]] || rowspan="2" | {{Flag country|Iraqi Republic (1958–1968)|1958}} || rowspan="2" | {{flagwrap|Sweden}}
+|-
+! 1958
+| rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{flagwrap|Canada|1957}} || rowspan="2" | {{flagwrap|Japan|1947}}
+|-
+! 1959
+| rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Tunisia|1959}}{{Efn|name=arableague}} || rowspan="2" | {{flagwrap|Italy}}
+|-
+! [[1959 United Nations Security Council election|1960]]
+| rowspan="2" | {{flagwrap|Ecuador|1900}} || rowspan="2" | {{flagwrap|Ceylon|1951}} || {{Flag country|Polish People's Republic}}
+|-
+! 1961
+| rowspan="2" | {{Flag deco|Chile}} [[Presidential Republic (1925–1973)|Chile]] || {{flagwrap|Turkey}} || rowspan="2" | {{flagwrap|United Arab Republic}} || {{flagwrap|Liberia}}{{Efn|Liberia took the place of the Western European country in 1961}}
+|-
+! 1962
+| rowspan="2" | {{Flag country|Republic of Venezuela}} || rowspan="2" | {{flagwrap|Ghana}} || {{Flag country|Romanian People's Republic}} || {{flagwrap|Ireland}}
+|-
+! 1963
+| rowspan="2" | {{Flag deco|Brazil|1960}} [[Military dictatorship in Brazil|Brazil]] || {{Flag deco|Philippines|1936}} [[History of the Philippines (1946–1965)|Philippines]] || rowspan="2" | {{flagwrap|Morocco}}{{Efn|name=arableague|Tunisia and Morocco were treated as Middle Eastern countries due to being members of the [[Arab League]].<ref name="equitable">{{Cite report|author1=Agam, Hasmy|author2=Sam Daws|author3=Terence O'Brien|author4=Ramesh Takur|date=26 March 1999|title=What is Equitable Geographic Representation in the Twenty-First Century|url=http://archive.unu.edu/unupress/equitable.pdf|publisher=United Nations University|access-date=5 March 2019}}</ref>}} || rowspan="2" | {{flagwrap|Norway}}
+|-
+! [[1963 United Nations Security Council election|1964]]
+| rowspan="2" | {{Flag deco|Bolivia}} [[History of Bolivia (1964–1982)|Bolivia]] || rowspan="2" | {{flagwrap|Ivory Coast}}{{Efn|Ivory Coast took the place of a member of the Commonwealth in 1964–1965.}} || {{Flag country|Czechoslovak Socialist Republic}}
+|-
+! [[1964 United Nations Security Council election|1965]]
+| {{flagwrap|Uruguay}} || {{flagwrap|Malaysia}} || {{flagwrap|Jordan}} || {{flagwrap|Netherlands}}
+|}
+{{notelist}}
+
+=== Non-permanent (1966–present) ===
+The [[African Union]] uses an internal rotation system to distribute seats based on [[Regions of the African Union|its subregions]]:<ref>{{Cite book|last=Endeley|first=Isaac|date=2009|title=Bloc Politics at the United Nations: The African Group|publisher=University Press of America|isbn=978-0761845584}}</ref><ref>{{Cite thesis|last=Endeley|first=Isaac|date=1998|title=Le Groupe africain à l'ONU dans l'après-guerre froide|url=https://www.collectionscanada.gc.ca/obj/s4/f2/dsk3/ftp05/NQ65306.pdf|degree=PhD|publisher=Université de Montréal|access-date=2024-03-30|language=French}}</ref>
+* 1 odd-year seat alternates between Eastern Africa and Southern Africa (only Eastern Africa prior to the creation of the Southern Africa subregion in 1979)
+* 1 even-year seat is allocated to Western Africa
+* 1 even-year seat alternates between Northern Africa (the [[Arab world|Arab nation]] seat) and Central Africa (with one exception at the beginning in 1966)
+
+Aside from the [[Asia-Pacific Group]] also allocating an Arab nation seat every four years (in even years not divisible by 4), other regional groups do not have their own subregional rotation systems.<ref name="equitable"/><ref name="report2009">{{Cite web|url=https://www.securitycouncilreport.org/research-reports/lookup-c-glkwlemtisg-b-5488243.php|title=Special Research Report No. 1: UN Security Council Elections 2009}}</ref> The Arab nation seat is starred below.
+
+The Western European and Others Group in part contains three [[caucus]]ing subgroups ([[Benelux]], the [[Nordic countries]], and [[CANZ (United Nations)|CANZ]]), whose candidates informally coordinate with each other.<ref>{{Cite web|url=https://www.securitycouncilreport.org/research-reports/lookup-c-glkwlemtisg-b-2013021.php|title=Special Research Report No. 4: Security Council Elections 2006}}</ref><ref name="report2009"/> While this has not resulted in a stable rotation system, it effectively guarantees that both seats will never be occupied by a single subgroup at the same time.<ref name="thegreenpapers">[http://www.thegreenpapers.com/ww/UNSecurityCouncil.phtml The United Nations Security Council], The Green Papers Worldwide</ref>
+
+<div style="overflow-x:auto;">
+{| class="wikitable" style="font-size:92%;text-align:center;"
+! rowspan="2" | Year
+! colspan="3" | [[African Group]]
+! colspan="2" rowspan="2" | [[Group of Asia and the Pacific Small Island Developing States|Asia-Pacific Group]]
+! colspan="2" rowspan="2" | [[Latin American and Caribbean Group|Latin American and Caribbean Group (GRULAC)]]
+! colspan="2" rowspan="2" | [[Western European and Others Group]]
+! rowspan="2" | [[Eastern European Group]]
+|-
+! Eastern/Southern || Western || Northern/Central
+|-
+! [[1965 United Nations Security Council election|1966]]
+| width="10%" | {{Flag deco|Uganda}} [[History of Uganda (1963–1971)|Uganda]] || rowspan="2" width="10%" | {{flagwrap|Mali}} || rowspan="2" width="10%" | {{Flag deco|Nigeria}} [[Military dictatorship in Nigeria|Nigeria]]{{Efn|Part of Western Africa, not Central Africa}} || rowspan="2" width="10%" | {{flagwrap|Japan|1947}} || width="10%" | {{flagwrap|Jordan}}* || rowspan="2" width="10%" |{{flagwrap|Argentina|1861}} || width="10%" | {{flagwrap|Uruguay}} || width="10%" | {{flagwrap|Netherlands}} || width="10%" | {{flagwrap|New Zealand}} || rowspan="2" width="10%" | {{Flag country|Bulgaria|1968}}
+|-
+! [[1966 United Nations Security Council election|1967]]
+| rowspan="2" | {{Flag country|Ethiopian Empire}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{Flag deco|Brazil|1968}} [[Military dictatorship in Brazil|Brazil]] || rowspan="2" | {{flagwrap|Canada}} || rowspan="2" | {{flagcountry|Denmark}}
+|-
+! [[1967 United Nations Security Council election|1968]]
+| rowspan="2" | {{flagwrap|Senegal}} || rowspan="2" |{{flagwrap|Algeria}}* || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{Flag deco|Paraguay|1954}} [[Dictatorship of Alfredo Stroessner|Paraguay]] || rowspan="2" | {{Flag country|Hungarian People's Republic}}
+|-
+! [[1968 United Nations Security Council election|1969]]
+| rowspan="2" | {{flagwrap|Zambia|1964}} || rowspan="2" | {{Flag country|Kingdom of Nepal}} || rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Finland}} || rowspan="2" | {{Flag country|Spanish State}}
+|-
+! [[1969 United Nations Security Council election|1970]]
+| rowspan="2" | {{flagwrap|Sierra Leone}} || rowspan="2" | {{flagwrap|Burundi|1967}} || rowspan="2" | {{flagwrap|Syria|1963}}* || rowspan="2" |{{flagwrap|Nicaragua}} || rowspan="2" | {{Flag country|Polish People's Republic}}
+|-
+! [[1970 United Nations Security Council election|1971]]
+| rowspan="2" | {{Flag country|Somali Democratic Republic}} || rowspan="2" | {{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Belgium}} || rowspan="2" | {{flagwrap|Italy}}
+|-
+! [[1971 United Nations Security Council election|1972]]
+| rowspan="2" | {{flagwrap|Guinea}} || rowspan="2" | {{flagwrap|Sudan}}* || rowspan="2" |{{flagwrap|India}} || rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{Flag country|Socialist Federal Republic of Yugoslavia}}
+|-
+! [[1972 United Nations Security Council election|1973]]
+| rowspan="2" | {{flagwrap|Kenya}} || rowspan="2" | {{flagwrap|Indonesia}} || rowspan="2" | {{Flag deco|Peru}} [[Revolutionary Government of the Armed Forces of Peru|Peru]] || rowspan="2" | {{flagwrap|Australia}} || rowspan="2" | {{flagwrap|Austria}}
+|-
+! [[1973 United Nations Security Council election|1974]]
+| rowspan="2" | {{flagwrap|Mauritania|1959}} || rowspan="2" | {{flagwrap|Cameroon}} || rowspan="2" | {{Flag country|Ba'athist Iraq|1963}}* || rowspan="2" |{{flagwrap|Costa Rica}} || rowspan="2" | {{flagwrap|Byelorussian Soviet Socialist Republic}}
+|-
+! [[1974 United Nations Security Council election|1975]]
+| rowspan="2" | {{flagwrap|Tanzania}} || rowspan="2" | {{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Guyana}} || rowspan="2" | {{flagwrap|Italy}} || rowspan="2" | {{flagwrap|Sweden}}
+|-
+! [[1975 United Nations Security Council election|1976]]
+| rowspan="2" | {{flagwrap|Benin|1975}} || rowspan="2" | {{flagwrap|Libya|1972}}* || rowspan="2" |{{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{Flag country|Socialist Republic of Romania}}
+|-
+! [[1976 United Nations Security Council election|1977]]
+| rowspan="2" | {{Flag country|Mauritius (1968–1992)}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{flagwrap|Venezuela}} || rowspan="2" | {{flagwrap|Canada}} || rowspan="2" | {{flagwrap|West Germany}}
+|-
+! [[1977 United Nations Security Council election|1978]]
+| rowspan="2" | {{Flag deco|Nigeria}} [[Second Nigerian Republic|Nigeria]] || rowspan="2" | {{flagwrap|Gabon}} || rowspan="2" | {{flagwrap|Kuwait}}* || rowspan="2" |{{Flag deco|Bolivia}} [[History of Bolivia (1964–1982)|Bolivia]] || rowspan="2" | {{flagwrap|Czechoslovakia}}
+|-
+! [[1978 United Nations Security Council election|1979]]
+| rowspan="2" | {{flagwrap|Zambia|1964}} || rowspan="2" | {{flagwrap|Bangladesh}} || rowspan="2" | {{flagwrap|Jamaica}} || rowspan="2" | {{flagwrap|Norway}} || rowspan="2" | {{flagwrap|Portugal}}
+|-
+! [[1979 United Nations Security Council election|1980]]
+| rowspan="2" | {{flagwrap|Niger}} || rowspan="2" | {{flagwrap|Tunisia|1959}}* || rowspan="2" |{{Flag deco|Philippines|1936}} [[History of the Philippines (1965–1986)|Philippines]] || rowspan="2" | {{flagwrap|Mexico}} || rowspan="2" | {{flagwrap|East Germany}}
+|-
+! [[1980 United Nations Security Council election|1981]]
+| rowspan="2" | {{Flag deco|Uganda}} [[History of Uganda (1979–1986)|Uganda]] || rowspan="2" | {{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{flagwrap|Ireland}} || rowspan="2" | {{flagwrap|Spain}}
+|-
+! [[1981 United Nations Security Council election|1982]]
+| rowspan="2" | {{flagwrap|Togo}} || rowspan="2" | {{flagwrap|Zaire}} || rowspan="2" | {{flagwrap|Jordan}}* || rowspan="2" |{{flagwrap|Guyana}} || rowspan="2" | {{flagwrap|Poland}}
+|-
+! [[1982 United Nations Security Council election|1983]]
+| rowspan="2" | {{flagwrap|Zimbabwe}} || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Nicaragua}} || rowspan="2" | {{flagwrap|Malta}} || rowspan="2" | {{flagwrap|Netherlands}}
+|-
+! [[1983 United Nations Security Council election|1984]]
+| rowspan="2" | {{flagwrap|Burkina Faso}}{{Efn|At the time of election, and until {{Date|1984-08-02}}, the country was known as ''[[Republic of Upper Volta|Upper Volta]]''.}} || rowspan="2" | {{flagwrap|Egypt}}* || rowspan="2" |{{flagwrap|India}} || rowspan="2" | {{Flag deco|Peru}} [[History of Peru (1980–2000)|Peru]] || rowspan="2" | {{flagwrap|Ukrainian Soviet Socialist Republic}}
+|-
+! [[1984 United Nations Security Council election|1985]]
+| rowspan="2" | {{Flag deco|Madagascar}} [[Democratic Republic of Madagascar|Madagascar]] || rowspan="2" | {{flagwrap|Thailand}} || rowspan="2" | {{flagwrap|Trinidad and Tobago}} || rowspan="2" | {{flagwrap|Australia}} || rowspan="2" | {{flagwrap|Denmark}}
+|-
+! [[1985 United Nations Security Council election|1986]]
+| rowspan="2" | {{flagwrap|Ghana}} || rowspan="2" | {{Flag country|People's Republic of the Congo}} || rowspan="2" | {{flagwrap|United Arab Emirates}}* || rowspan="2" |{{Flag country|Republic of Venezuela}} || rowspan="2" | {{Flag country|People's Republic of Bulgaria}}
+|-
+! [[1986 United Nations Security Council election|1987]]
+| rowspan="2" | {{flagwrap|Zambia|1964}} || rowspan="2" | {{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|West Germany}} || rowspan="2" | {{flagwrap|Italy}}
+|-
+! [[1987 United Nations Security Council election|1988]]
+| rowspan="2" | {{flagwrap|Senegal}} || rowspan="2" |{{flagwrap|Algeria}}* || rowspan="2" | {{Flag country|Kingdom of Nepal}} || rowspan="2" | {{flagwrap|Brazil|1968}} || rowspan="2" | {{Flag country|Socialist Federal Republic of Yugoslavia}}
+|-
+! [[1988 United Nations Security Council election|1989]]
+| rowspan="2" | {{flagwrap|Ethiopia}} || rowspan="2" | {{flagwrap|Malaysia}} || rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Canada}} || rowspan="2" | {{flagwrap|Finland}}
+|-
+! [[1989 United Nations Security Council election|1990]]
+| rowspan="2" | {{flagwrap|Ivory Coast}} || rowspan="2" | {{flagwrap|Zaire}} || rowspan="2" | {{flagwrap|Yemen}}*{{Efn|The election was secured by [[South Yemen|Democratic Yemen]], and in {{Date|1990-05-22}}, during its membership of the Security Council, it unified with [[Yemen Arab Republic|Yemen]] (i.e., North Yemen) to form the single country of [[Yemen]].}}|| rowspan="2" |{{flagwrap|Cuba}} || rowspan="2" | {{flagwrap|Romania}}
+|-
+! [[1990 United Nations Security Council election|1991]]
+| rowspan="2" | {{flagwrap|Zimbabwe}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{flagwrap|Ecuador|1900}} || rowspan="2" | {{flagwrap|Austria}} || rowspan="2" | {{flagwrap|Belgium}}
+|-
+! [[1991 United Nations Security Council election|1992]]
+| rowspan="2" | {{flagwrap|Cape Verde}} || rowspan="2" | {{flagwrap|Morocco}}* || rowspan="2" |{{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Venezuela}} || rowspan="2" | {{flagwrap|Hungary}}
+|-
+! [[1992 United Nations Security Council election|1993]]
+| rowspan="2" | {{flagwrap|Djibouti}} || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Brazil}} || rowspan="2" | {{flagwrap|New Zealand}} || rowspan="2" | {{flagwrap|Spain}}
+|-
+! [[1993 United Nations Security Council election|1994]]
+| rowspan="2" | {{Flag deco|Nigeria}} [[Military dictatorship in Nigeria|Nigeria]] || rowspan="2" | {{flagwrap|Rwanda|1962}} || rowspan="2" | {{flagwrap|Oman}}* || rowspan="2" |{{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Czech Republic}}
+|-
+! [[1994 United Nations Security Council election|1995]]
+| rowspan="2" | {{flagwrap|Botswana}} || rowspan="2" | {{flagwrap|Indonesia}} || rowspan="2" | {{flagwrap|Honduras|1949}} || rowspan="2" | {{flagwrap|Germany}} || rowspan="2" | {{flagwrap|Italy}}
+|-
+! [[1995 United Nations Security Council election|1996]]
+| rowspan="2" | {{flagwrap|Guinea-Bissau}} || rowspan="2" |{{flagwrap|Egypt}}* || rowspan="2" | {{Flag deco|South Korea|1997}} [[South Korea]] || rowspan="2" | {{flagwrap|Chile}} || rowspan="2" | {{flagwrap|Poland}}
+|-
+! [[1996 United Nations Security Council election|1997]]
+| rowspan="2" | {{flagwrap|Kenya}} || rowspan="2" | {{flagwrap|Japan|1947}} || rowspan="2" | {{flagwrap|Costa Rica}} || rowspan="2" | {{flagwrap|Portugal}} || rowspan="2" | {{flagwrap|Sweden}}
+|-
+! [[1997 United Nations Security Council election|1998]]
+| rowspan="2" | {{flagwrap|The Gambia}} || rowspan="2" | {{flagwrap|Gabon}} || rowspan="2" | {{flagwrap|Bahrain|1972}}* || rowspan="2" |{{flagwrap|Brazil}} || rowspan="2" | {{flagwrap|Slovenia}}
+|-
+! [[1998 United Nations Security Council election|1999]]
+| rowspan="2" | {{flagwrap|Namibia}} || rowspan="2" | {{flagwrap|Malaysia}} || rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Canada}} || rowspan="2" | {{flagwrap|Netherlands}}
+|-
+! [[1999 United Nations Security Council election|2000]]
+| rowspan="2" | {{flagwrap|Mali}} || rowspan="2" | {{flagwrap|Tunisia}}* || rowspan="2" |{{flagwrap|Bangladesh}} || rowspan="2" | {{flagwrap|Jamaica}} || rowspan="2" | {{flagwrap|Ukraine}}
+|-
+! [[2000 United Nations Security Council election|2001]]
+| rowspan="2" | {{flagwrap|Mauritius}} || rowspan="2" | {{flagwrap|Singapore}} || rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Ireland}} || rowspan="2" | {{flagwrap|Norway}}
+|-
+! [[2001 United Nations Security Council election|2002]]
+| rowspan="2" | {{flagwrap|Guinea}} || rowspan="2" | {{flagwrap|Cameroon}} || rowspan="2" | {{flagwrap|Syria|1980}}* || rowspan="2" |{{flagwrap|Mexico}} || rowspan="2" | {{flagwrap|Bulgaria}}
+|-
+! [[2002 United Nations Security Council election|2003]]
+| rowspan="2" | {{flagwrap|Angola}} || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Chile}} || rowspan="2" | {{flagwrap|Germany}} || rowspan="2" | {{flagwrap|Spain}}
+|-
+! [[2003 United Nations Security Council election|2004]]
+| rowspan="2" | {{flagwrap|Benin}} || rowspan="2" |{{flagwrap|Algeria}}* || rowspan="2" | {{flagwrap|Philippines}} || rowspan="2" | {{flagwrap|Brazil}} || rowspan="2" | {{flagwrap|Romania}}
+|-
+! [[2004 United Nations Security Council election|2005]]
+| rowspan="2" | {{flagwrap|Tanzania}} || rowspan="2" | {{flagwrap|Japan}} || rowspan="2" | {{flagwrap|Argentina|1861}} || rowspan="2" | {{flagwrap|Denmark}} || rowspan="2" | {{flagwrap|Greece}}
+|-
+! [[2005 United Nations Security Council election|2006]]
+| rowspan="2" | {{flagwrap|Ghana}} || rowspan="2" | {{Flag country|Republic of the Congo}} || rowspan="2" | {{flagwrap|Qatar}}* || rowspan="2" |{{flagwrap|Peru}} || rowspan="2" | {{flagwrap|Slovakia}}
+|-
+! [[2006 United Nations Security Council election|2007]]
+| rowspan="2" | {{flagwrap|South Africa}} || rowspan="2" | {{flagwrap|Indonesia}} || rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{flagwrap|Belgium}} || rowspan="2" | {{flagwrap|Italy}}
+|-
+! [[2007 United Nations Security Council election|2008]]
+| rowspan="2" | {{flagwrap|Burkina Faso}} || rowspan="2" | {{flagwrap|Libya|1977}}* || rowspan="2" |{{flagwrap|Vietnam}} || rowspan="2" | {{flagwrap|Costa Rica}} || rowspan="2" | {{flagwrap|Croatia}}
+|-
+! [[2008 United Nations Security Council election|2009]]
+| rowspan="2" | {{flagwrap|Uganda}} || rowspan="2" | {{flagwrap|Japan}} || rowspan="2" | {{flagwrap|Mexico}} || rowspan="2" | {{flagwrap|Austria}} || rowspan="2" | {{flagwrap|Turkey}}
+|-
+! [[2009 United Nations Security Council election|2010]]
+| rowspan="2" | {{flagwrap|Nigeria}} || rowspan="2" | {{flagwrap|Gabon}}|| rowspan="2" | {{flagwrap|Lebanon}}* || rowspan="2" |{{flagwrap|Brazil}} || rowspan="2" | {{flagwrap|Bosnia and Herzegovina}}
+|-
+! [[2010 United Nations Security Council election|2011]]
+| rowspan="2" | {{flagwrap|South Africa}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Germany}} || rowspan="2" | {{flagwrap|Portugal}}
+|-
+! [[2011 United Nations Security Council election|2012]]
+| rowspan="2" | {{flagwrap|Togo}} || rowspan="2" |{{flagwrap|Morocco}}* || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Guatemala}} || rowspan="2" | {{flagwrap|Azerbaijan}}
+|-
+! [[2012 United Nations Security Council election|2013]]
+| rowspan="2" | {{flagwrap|Rwanda}} || rowspan="2" | {{flagwrap|South Korea}} || rowspan="2" | {{flagwrap|Argentina}} || rowspan="2" | {{flagwrap|Australia}} || rowspan="2" | {{flagwrap|Luxembourg}}
+|-
+! [[2013 United Nations Security Council election|2014]]
+| rowspan="2" | {{flagwrap|Nigeria}} || rowspan="2" | {{flagwrap|Chad}} || rowspan="2" | {{flagwrap|Jordan}}* || rowspan="2" |{{flagwrap|Chile}} || rowspan="2" | {{flagwrap|Lithuania}}
+|-
+! [[2014 United Nations Security Council election|2015]]
+| rowspan="2" | {{flagwrap|Angola}} || rowspan="2" | {{flagwrap|Malaysia}} || rowspan="2" | {{flagwrap|Venezuela}} || rowspan="2" | {{flagwrap|New Zealand}} || rowspan="2" | {{flagwrap|Spain}}
+|-
+! [[2015 United Nations Security Council election|2016]]
+| rowspan="2" | {{flagwrap|Senegal}} || rowspan="2" |{{flagwrap|Egypt}}* || rowspan="2" | {{flagwrap|Japan}} || rowspan="2" | {{flagwrap|Uruguay}} || rowspan="2" | {{flagwrap|Ukraine}}
+|-
+! [[2016 United Nations Security Council election|2017]]
+| rowspan="2" | {{flagwrap|Ethiopia}} || rowspan="2"| {{flagwrap|Kazakhstan}} || rowspan="2"| {{flagwrap|Bolivia}} || rowspan="1" | {{flagwrap|Italy}} || rowspan="2"| {{flagwrap|Sweden}}
+|-
+! [[2017 United Nations Security Council election|2018]]
+| rowspan="2" | {{flagwrap|Ivory Coast}} || rowspan="2" | {{flagwrap|Equatorial Guinea}} || rowspan="2" | {{flagwrap|Kuwait}}* || rowspan="2" |{{flagwrap|Peru}} || rowspan="1" | {{flagwrap|Netherlands}}<ref name="Split">{{Cite web|title=Italy, Netherlands ask to share Security Council seat|url=http://www.aljazeera.com/news/2016/06/bolivia-ethiopia-sweden-win-seats-security-council-160628161225583.html|publisher=[[Al Jazeera English|Al Jazeera]]|date=28 June 2016|access-date={{Date|2017-01-01}}}}</ref> || rowspan="2" | {{flagwrap|Poland}}
+|-
+! [[2018 United Nations Security Council election|2019]]
+| rowspan="2" | {{flagwrap|South Africa}} || rowspan="2" | {{flagwrap|Indonesia}} || rowspan="2" | {{flagwrap|Dominican Republic}} || rowspan="2" | {{flagwrap|Belgium}} || rowspan="2" | {{flagwrap|Germany}}
+|-
+! [[2019 United Nations Security Council election|2020]]
+| rowspan="2" | {{flagwrap|Niger}} || rowspan="2" | {{flagwrap|Tunisia}}* || rowspan="2" | {{flagwrap|Vietnam}} || rowspan="2" | {{flagwrap|Saint Vincent and the Grenadines}} || rowspan="2" | {{flagwrap|Estonia}}
+|-
+! [[2020 United Nations Security Council election|2021]]
+| rowspan="2" | {{flagwrap|Kenya}} || rowspan="2" | {{flagwrap|India}} || rowspan="2" | {{flagwrap|Mexico}} || rowspan="2" | {{flagwrap|Ireland}} || rowspan="2" | {{flagwrap|Norway}}
+|-
+! [[2021 United Nations Security Council election|2022]]
+| rowspan="2" | {{flagwrap|Ghana}} || rowspan="2" | {{flagwrap|Gabon}} || rowspan="2" | {{flagwrap|United Arab Emirates}}* || rowspan="2" | {{flagwrap|Brazil}} || rowspan="2" | {{flagwrap|Albania}}
+|-
+! [[2022 United Nations Security Council election|2023]]
+| rowspan="2" | {{flagwrap|Mozambique}} || rowspan="2" | {{flagwrap|Japan}} || rowspan="2" | {{flagwrap|Ecuador}} || rowspan="2" | {{flagwrap|Malta}} || rowspan="2" | {{flagwrap|Switzerland}}
+|-
+! [[2023 United Nations Security Council election|2024]]
+| rowspan="2" | {{flagwrap|Sierra Leone}} || rowspan="2" | {{flagwrap|Algeria}}* || rowspan="2" | {{flagwrap|South Korea}} || rowspan="2" | {{flagwrap|Guyana}} || rowspan="2" | {{flagwrap|Slovenia}}
+|-
+! [[2024 United Nations Security Council election|2025]]
+| rowspan="2" | {{flagwrap|Somalia}} || rowspan="2" | {{flagwrap|Pakistan}} || rowspan="2" | {{flagwrap|Panama}} || rowspan="2" | {{flagwrap|Denmark}} || rowspan="2" |{{flagwrap|Greece}}
+|-
+! [[2025 United Nations Security Council election|2026]]
+| rowspan="2"| {{flagwrap|Liberia}} || rowspan="2" | {{flagwrap|Democratic Republic of the Congo}} || rowspan="2" | {{flagwrap|Bahrain}}* || rowspan="2"| {{flagwrap|Colombia}} || rowspan="2" | {{flagwrap|Latvia}}
+|-
+! [[2026 United Nations Security Council election|2027]]
+| {{flagwrap|Zimbabwe}} || {{flagwrap|Kyrgyzstan}} || {{flagwrap|Trinidad and Tobago}} || {{flagwrap|Austria}} || {{flagwrap|Portugal}}
+|}
+</div>
+{{notelist}}
+
+== List by number of years as Security Council member ==<!-- This section is linked from [[Japan]] -->
+This list contains the 139 United Nations member states so far elected to the United Nations Security Council, including the five permanent members, all listed by number of years each country has so far spent on the UNSC. Of all the members, 6 have so far ceased to exist, leaving the list with 133 modern nations. These, combined with the 60 modern nations that have never been elected to the UNSC to date (see [[#Non-members|Non-members, below]]), make up the [[Member states of the United Nations|193 current members of the UN]].
+
+''Years on the Security Council, {{As of|2026|lc=y}}, including current year where relevant'' :
+
+{{Legend|#ffb6c1|''Indicates permanent member''}}
+{{Legend|#cdf|''Indicates current elected member (2026)''}}
+{{Legend|#fafad2|''Indicates former United Nations member''}}
+
+{| class="wikitable sortable" style="width:100%;" cellpadding="5"
+|-
+!Years{{efn|Table shows years completed or in progress. Each term on the Council consist of 2 years. Any odd number of years are countries currently serving the first year of a term, countries with terms between 1956 and 1967, when the order of the council changed, or the three countries (Mexico, Egypt and the Netherlands) who had the first terms in 1946 and changed in 1947.}} 
+!Country
+!First Year
+!Most Recent Year
+!Regional Group
+!Notes
+|-style="background:#ffb6c1;"
+|81||{{flagwrap|France}}||1945||2026||WEOG||Permanent member
+|-style="background:#ffb6c1;"
+|81||{{flagwrap|United Kingdom}}||1945||2026||WEOG||Permanent member
+|-style="background:#ffb6c1;"
+|81||{{flagwrap|United States}}||1945||2026||WEOG||Permanent member
+|-style="background:#ffb6c1;"
+|55||{{flagwrap|China}}||1971||2026||Asia-Pacific||Permanent member
+|-style="background:#fafad2;"
+|46||{{flagwrap|Union of Soviet Socialist Republics}}||1945||1991||E. European||Former permanent member, replaced by the [[Russian Federation]]
+|-style="background:#ffb6c1;"
+|35||{{flagwrap|Russia}}||1991||2026||E. European||Permanent member
+|-style="background:#fafad2;"
+|26||{{flagwrap|Republic of China}}||1945||1971||None||Former permanent member, replaced by the [[People's Republic of China]]
+|-
+|24||{{flagwrap|Japan}}||1958||2024||Asia-Pacific||
+|-
+|22||{{flagwrap|Brazil}}||1946||2023||GRULAC||
+|-
+|18||{{flagwrap|Argentina}}||1948||2014||GRULAC||
+|-
+|16||{{flagwrap|India}}||1950||2022||Asia-Pacific||
+|-style="background:#cdf;"
+|16||{{flagwrap|Pakistan}}||1952||2026||Asia-Pacific||
+|-style="background:#cdf;"
+|15||{{flagwrap|Colombia}}||1947||2026||GRULAC||
+|-
+|13||{{flagwrap|Italy}}||1959||2017||WEOG||
+|-
+|12||{{flagwrap|Belgium}}||1947||2020||WEOG||
+|-
+|12||{{flagwrap|Canada}}||1948||2000||WEOG||
+|-
+|12||{{flagwrap|Germany}}||1977||2020||WEOG||Includes 4 years when the Federal Republic of Germany consisted only of [[West Germany]] (but does ''not'' include [[East Germany]]'s 2 years, listed separately below).
+|-style="background:#cdf;"
+|12||{{flagwrap|Panama}}||1958||2026||GRULAC||
+|-
+|11||{{flagwrap|Poland}}||1946||2019||E. European||
+|- 
+|10||{{flagwrap|Australia}}||1946||2014||WEOG||
+|-style="background:#cdf;"
+|10||{{flagwrap|Denmark}}||1953||2026||WEOG||
+|-
+|10||{{flagwrap|Chile}}||1952||2015||GRULAC||
+|-
+|10||{{flagwrap|Netherlands}}||1946||2018||WEOG||
+|-
+|10||{{flagwrap|Nigeria}}||1966||2015||African||
+|-
+|10||{{flagwrap|Norway}}||1949||2022||WEOG||
+|-
+|10||{{flagwrap|Peru}}||1955||2019||GRULAC||
+|-
+|10||{{flagwrap|Spain}}||1969||2016||WEOG||
+|-
+|10||{{flagwrap|Venezuela}}||1962||2016||GRULAC||
+|-
+|9||{{flagwrap|Egypt}}||1946||2017||African (Arab)||Excludes 2 years with the seat held in the name of the [[United Arab Republic]], of which for more than 15 months UAR served as the name of modern-day Egypt
+|-
+|9||{{flagwrap|Mexico}}||1946||2022||GRULAC||
+|-
+|8||{{flagwrap|Algeria}}||1968||2025||African (Arab)||
+|-
+|8||{{flagwrap|Ecuador}}||1950||2024||GRULAC||
+|-
+|8||{{flagwrap|Gabon}}||1978||2023||African||
+|-
+|8||{{flagwrap|Ghana}}||1962||2023||African||
+|-
+|8||{{flagwrap|Indonesia}}||1973||2020||Asia-Pacific||
+|-
+|8||{{flagwrap|Sweden}}||1957||2018||WEOG||
+|-
+|8||{{flagwrap|Ukraine}}||1948||2017||E. European||Includes 4 years of membership under the name of the [[Ukrainian Soviet Socialist Republic]]; the Ukrainian SSR held its own seat in the [[United Nations General Assembly|General Assembly]] while being part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-
+|8||{{flagwrap|Tunisia}}||1959||2021||African (Arab)||
+|-
+|7||{{flagwrap|Ireland}}||1962||2022||WEOG||
+|-
+|7||{{flagwrap|Malaysia}}||1965||2016||Asia-Pacific||
+|-
+|7||{{flagwrap|New Zealand}}||1954||2016||WEOG||
+|-
+|7||{{flagwrap|Romania}}||1962||2005||E. European||
+|-
+|7||{{flagwrap|Turkey}}||1951||2010||WEOG||
+|-style="background:#fafad2;"
+|7||{{Flag country|Socialist Federal Republic of Yugoslavia}}||1950||1989||E. European||Predecessor of [[Bosnia and Herzegovina]], [[Croatia]], [[Montenegro]], [[North Macedonia]], [[Serbia]], and [[Slovenia]]
+|-
+|6||{{flagwrap|Austria}}||1973||2010||WEOG||
+|-
+|6||{{flagwrap|Bolivia}}||1964||2018||GRULAC||
+|-
+|6||{{flagwrap|Bulgaria}}||1966||2003||E. European||
+|-
+|6||{{flagwrap|Costa Rica}}||1974||2009||GRULAC||
+|-
+|6||{{flagwrap|Ivory Coast}}||1964||2019||African||
+|-
+|6||{{flagwrap|Cuba}}||1949||1991||GRULAC||
+|-
+|6||{{flagwrap|Ethiopia}}||1967||2018||African||
+|-style="background:#cdf;"
+|6||{{flagwrap|Greece}}||1952||2026||WEOG||
+|-
+|6||{{flagwrap|Guyana}}||1975||2025||GRULAC||
+|-
+|6||{{flagwrap|Jordan}}||1965||2015||Asia-Pacific (Arab)||
+|-
+|6||{{flagwrap|Kenya}}||1973||2022||African||
+|- 
+|6||{{flagwrap|South Korea}}||1996||2025||Asia-Pacific||
+|- 
+|6||{{flagwrap|Morocco}}||1963||2013||African (Arab)||
+|-
+|6||{{flagwrap|Philippines}}||1957||2005||Asia-Pacific||
+|-
+|6||{{flagwrap|Portugal}}||1979||2012||WEOG||
+|-
+|6||{{flagwrap|Senegal}}||1968||2017||African||
+|-
+|6||{{flagwrap|South Africa}}||2007||2020||African||
+|-
+|6||{{flagwrap|Syria}}||1947||2003||Asia-Pacific (Arab)||Excludes one year (1961) during which the [[United Arab Republic]] was a member, for the greater part of which Syria was a member of that union
+|-
+|6||{{flagwrap|Zambia}}||1969||1988||African||
+|-style="background:#cdf;"
+|5||{{flagwrap|Democratic Republic of the Congo}}||1982||2026||African||Previously known as [[Zaire]] during its 4 years of Security Council membership
+|-
+|5||{{flagwrap|Uganda}}||1966||2010||African||
+|-
+|4||{{flagwrap|Angola}}||2003||2016||African||
+|-
+|4||{{flagwrap|Bangladesh}}||1979||2001||Asia-Pacific||
+|-
+|4||{{flagwrap|Benin}}||1976||2005||African||
+|-
+|4||{{flagwrap|Burkina Faso}}||1984||2009||African||For the first 7 months of membership of the Security Council in 1984 was known as ''[[Republic of Upper Volta|Upper Volta]]''.
+|-
+|4||{{flagwrap|Cameroon}}||1974||2003||African||
+|-
+|4||{{flagwrap|Congo}}||1986||2007||African||
+|-
+|4||{{flagwrap|Finland}}||1969||1990||WEOG||
+|-
+|4||{{flagwrap|Guinea}}||1972||2003||African||
+|-
+|4||{{flagwrap|Hungary}}||1968||1993||E. European||
+|-
+|4||{{flagwrap|Iraq}}||1957||1975||Asia-Pacific (Arab)||
+|-
+|4||{{flagwrap|Jamaica}}||1979||2001||GRULAC||
+|-
+|4||{{flagwrap|Kuwait}}||1978||2019||Asia-Pacific (Arab)||
+|-
+|4||{{flagwrap|Lebanon}}||1953||2011||Asia-Pacific (Arab)||
+|-
+|4||{{flagwrap|Libya}}||1976||2009||African (Arab)||
+|-
+|4||{{flagwrap|Mali}}||1966||2001||African||
+|-
+|4||{{flagwrap|Malta}}||1983||2024||WEOG||
+|-
+|4||{{flagwrap|Mauritius}}||1977||2002||African||
+|-
+|4||{{flagwrap|Nepal}}||1969||1989||Asia-Pacific||
+|-
+|4||{{flagwrap|Nicaragua}}||1970||1984||GRULAC||
+|-
+|4||{{flagwrap|Niger}}||1980||2021||African||
+|- 
+|4||{{flagwrap|Rwanda}}||1994||2014||African||
+|-
+|4||{{flagwrap|Sierra Leone}}||1970||2025||African||
+|-
+|4||{{flagwrap|Slovenia}}||1998||2025||E. European||Was part of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership
+|-style="background:#cdf;"
+|4||{{flagwrap|Somalia}}||1971||2026||African||
+|-
+|4||{{flagwrap|Tanzania}}||1975||2006||African||
+|- 
+|4||{{flagwrap|Togo}}||1982||2013||African||
+|-
+|4||{{flagwrap|United Arab Emirates}}||1986||2023||Asia-Pacific (Arab)||
+|-
+|4||{{flagwrap|Uruguay}}||1965||2017||GRULAC||
+|-
+|4||{{flagwrap|Vietnam}}||2008||2021||Asia-Pacific||
+|-
+|4||{{flagwrap|Zimbabwe}}||1983||1992||African||
+|-style="background:#cdf;"
+|3||{{flagwrap|Bahrain}}||1998||2026||Asia-Pacific (Arab)||
+|-style="background:#fafad2;"
+|3||{{flagwrap|Czechoslovakia}}||1964||1979||E. European||Predecessor of the [[Czech Republic]] and [[Slovakia]]
+|-
+|2||{{flagwrap|Albania}}||2022||2023||E. European||
+|-
+|2||{{flagwrap|Azerbaijan}}||2012||2013||E. European||Was part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-
+|2||{{flagwrap|Bosnia and Herzegovina}}||2010||2011||E. European||Was part of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership
+|-
+|2||{{flagwrap|Botswana}}||1995||1996||African||
+|-
+|2||{{flagwrap|Burundi}}||1970||1971||African||
+|-
+|2||{{flagwrap|Byelorussian Soviet Socialist Republic}}||1974||1975||E. European||Now known as [[Belarus]]; the Byelorussian Soviet Socialist Republic held its own seat in the [[United Nations General Assembly|General Assembly]] while being part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-
+|2||{{flagwrap|Cape Verde}}||1992||1993||African||
+|-
+|2||{{flagwrap|Ceylon}}||1960||1961||Asia-Pacific||Now known as [[Sri Lanka]]
+|-
+|2||{{flagwrap|Chad}}||2014||2015||African||
+|-
+|2||{{flagwrap|Croatia}}||2008||2009||E. European||Was part of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership
+|-
+|2||{{flagwrap|Czech Republic}}||1994||1995||E. European||Was part of [[Czechoslovak Socialist Republic|Czechoslovakia]] during its 3 years of Security Council membership
+|-
+|2||{{flagwrap|Djibouti}}||1993||1994||African||
+|-
+|2||{{flagwrap|Dominican Republic}}||2019||2020||GRULAC||
+|-style="background:#fafad2;"
+|2||{{flagwrap|East Germany}}||1980||1981||E. European||Now subsumed into [[Germany]], which has 8 years of Security Council membership since it has included the former territory of East Germany
+|-
+|2||{{flagwrap|Estonia}}||2020||2021||E. European||Was part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-
+|2||{{flagwrap|Equatorial Guinea}}||2018||2019||African||
+|-
+|2||{{flagwrap|Gambia}}||1998||1999||African||
+|-
+|2||{{flagwrap|Guatemala}}||2012||2013||GRULAC||
+|-
+|2||{{flagwrap|Guinea-Bissau}}||1996||1997||African||
+|-
+|2||{{flagwrap|Honduras|1949}}||1995||1996||GRULAC||
+|-
+|2||{{flagwrap|Iran|1933}}||1955||1956||Asia-Pacific||
+|-
+|2||{{flagwrap|Kazakhstan}}||2017||2018||Asia-Pacific||Was part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-style="background:#cdf;"
+|2||{{flagwrap|Liberia}}||1961||2026||African||
+|-
+|2||{{flagwrap|Lithuania}}||2014||2015||E. European||Was part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|- 
+|2||{{flagwrap|Luxembourg}}||2013||2014||WEOG||
+|-
+|2||{{Flag deco|Madagascar}} [[Democratic Republic of Madagascar|Madagascar]]||1985||1986||African||
+|-
+|2||{{flagwrap|Mauritania|1959}}||1974||1975||African||
+|-
+|2||{{flagwrap|Mozambique}}||2023||2024||African||
+|-
+|2||{{flagwrap|Namibia}}||1999||2000||African||
+|-
+|2||{{flagwrap|Oman}}||1994||1995||Asia-Pacific (Arab)||
+|-
+|2||{{Flag deco|Paraguay|1954}} [[Dictatorship of Alfredo Stroessner|Paraguay]]||1968||1969||GRULAC||
+|-
+|2||{{flagwrap|Qatar}}||2006||2007||Asia-Pacific (Arab)||
+|-
+|2||{{flagwrap|Saint Vincent and the Grenadines}}||2020||2021||GRULAC||Smallest nation to have held a place on the Security Council<ref>[https://news.un.org/en/story/2019/06/1040071 St. Vincent and the Grenadines breaks a record, as smallest ever Security Council seat holder], UN News</ref>
+|-
+|2||{{flagwrap|Singapore}}||2001||2002||Asia-Pacific||Was part of [[Malaysia]] for 8 months in 1965 during its membership of the Security Council
+|-
+|2||{{flagwrap|Slovakia}}||2006||2007||E. European||Was part of [[Czechoslovak Socialist Republic|Czechoslovakia]] during its 3 years of Security Council membership
+|-
+|2||{{flagwrap|Sudan}}||1972||1973||African (Arab)||
+|-
+|2||{{flagwrap|Switzerland}}||2023||2024||WEOG||
+|-
+|2||{{flagwrap|Thailand}}||1985||1986||Asia-Pacific||
+|-
+|2||{{flagwrap|Trinidad and Tobago}}||1985||1986||GRULAC||
+|- style="background:#fafad2;"
+|2||{{flagwrap|United Arab Republic}}||1961||1962||Middle East||Union of [[Syria]] and [[Egypt]]
+|- style="background:#fafad2;"
+|1||{{Flag deco|South Yemen}} [[South Yemen|Democratic Yemen]]||1990||1990||Asian (Arab)||Held the Security Council seat for the first five months of membership, then unified with [[Yemen Arab Republic|Yemen]] (i.e., North Yemen) and passed the seat to [[Yemen]].
+|-style="background:#cdf;"
+|1||{{flagwrap|Latvia}}||2026||2026||E. European||Was part of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership
+|-
+|1||{{flagwrap|Yemen}}||1990||1991||Asia-Pacific (Arab)||Inherited the seat from [[South Yemen|Democratic Yemen]]; served the remaining of the term, for one year and seven months.
+|}
+{{notelist}}
+
+== Future membership ==
+{{Main|2026 United Nations Security Council election}}
+
+{| class="wikitable" style="text-align:center; width:100%;"
+|-
+! scope="col" width=15% | Year
+! scope="col" width=17% | Africa
+! scope="col" width=17% | Asia-Pacific
+! scope="col" width=17% | Eastern Europe
+! scope="col" width=17% | Latin America & Caribbean
+! scope="col" width=17% | Western Europe & Others
+|-
+|colspan=6|The following countries have made known their applications for future United Nations Security Council membership:
+|-
+! scope="row" | [[2027 United Nations Security Council election|2028–29]]
+|{{flagwrap|Libya}}<br />{{flagwrap|Morocco}}<br />{{flagwrap|Nigeria}}<ref name="auto">{{Cite web | url=https://africanlii.org/akn/aa-au/doc/decision/2024-02-15/1264/eng@2024-02-15/source | title=Decision on African candidatures within the international system | website=africanlii.org}}</ref>
+|{{flagwrap|India}}<ref>{{Cite web |title=India Declares Candidature For UN Security Council Membership For 2028–29 Term |url=https://www.ndtv.com/india-news/india-declares-candidature-for-un-security-council-membership-for-2028-29-term-3611007 |date=15 December 2022 |access-date=15 December 2022 |publisher=[[NDTV]]}}</ref><br />{{flagwrap|Tajikistan}}<ref>{{Cite web |title=OIC Candidacies |date=27 June 2023 |access-date=1 June 2023 |publisher=Organization of Islamic Cooperation |url=https://www.oic-oci.org/page/?p_id=178&p_ref=59&lan=en}}</ref>
+|{{flagwrap|Slovakia}}
+|?
+| –
+|-
+! scope="row" | 2029–30
+|?
+|{{flagwrap|Iran}}<br />{{flagwrap|Uzbekistan}}<ref>{{cite web |title=RESOLUTION NO.6/42-ORG ON CANDIDACIES SUBMITTED BY OIC MEMBER STATES FOR POSTS IN INTERNATIONAL ORGANIZATIONS |date=28 May 2015 |access-date=23 September 2016 |publisher=[[Organization of Islamic Cooperation]] |url=http://www.oic-oci.org/oicv3/page/?p_id=178&p_ref=59&lan=en}}</ref><br />{{flagwrap|Indonesia}}<ref>{{Cite web|title=Indonesia Kembali Ajukan Diri Jadi Anggota Tidak Tetap DK PBB|date=29 September 2024|access-date=11 February 2025|publisher=[[CNN Indonesia]]|url=https://www.cnnindonesia.com/internasional/20240929214403-134-1149732/indonesia-kembali-ajukan-diri-jadi-anggota-tidak-tetap-dk-pbb|language=id}}</ref>
+|–
+|?
+|{{flagwrap|Australia}}<ref>{{Cite web|title=General Debate Statement by The Hon Julie Bishop MP Minister of Foreign Affairs of Australia|date=29 September 2015|access-date=1 November 2015|publisher=[[United Nations]]|url=https://gadebate.un.org/sites/default/files/gastatements/70/70_AU_en.pdf|archive-date=5 March 2016|archive-url=https://web.archive.org/web/20160305005858/http://gadebate.un.org/sites/default/files/gastatements/70/70_AU_en.pdf|url-status=dead}}</ref><br />{{flagwrap|Finland}}<ref name="Swiss report">{{Cite web|title=Switzerland's candidature for a non-permanent seat on the United Nations Security Council for the 2023–2024 term|date=5 June 2015|accessdate=1 November 2015|publisher=[[Swiss Federal Council]]|url=http://www.news.admin.ch/NSBSubscriber/message/attachments/39662.pdf|archive-date=21 June 2020|archive-url=https://web.archive.org/web/20200621130148/http://www.news.admin.ch/NSBSubscriber/message/attachments/39662.pdf|url-status=dead}}</ref>
+|-
+! scope="row" | 2030–31
+|?
+|?
+|{{flagwrap|Croatia}}<ref>{{cite web|url=http://un.mfa.hr/?mh=154&mv=859 |title=MVP RH |publisher=Un.mfa.hr }}</ref>
+|?
+| –
+|-
+! scope="row" | 2031–32
+|?
+|?
+| – 
+|{{flagwrap|Guatemala}}<ref>{{Cite web|title=India, Guatemala to support each other for UNSC membership|date=8 May 2018|access-date=19 July 2022|publisher=Thestatesman.com|url=https://www.thestatesman.com/india/india-guatemala-to-support-each-other-for-unsc-membership-1502632844.html}}</ref>
+| ? 
+|-
+! scope="row" | 2032–33
+|{{flagwrap|Mauritania}}<ref name="auto"/> 
+|{{flagwrap|Japan}}
+|{{flagwrap|Armenia}}<ref>{{Cite web|title=Uruguay and Armenia support each other at UN Security Council|date=8 December 2014|access-date=28 March 2015|publisher=News.am|url=http://news.am/eng/news/243061.html}}</ref>
+|?
+| –
+|-
+! scope="row" | 2037–38
+|?
+|?
+|–
+|?
+|{{flagwrap|Belgium}}<ref>{{Cite web|title=Belgium candidate for a new UN Security Council mandate|access-date=3 February 2021|url=https://twitter.com/BelgiumMFA/status/1356994463722311680}}</ref>
+|-
+|}
+
+== UN members that have never been Security Council members==
+This is a list of the 60 member nations that have never been members of the Security Council.<ref>{{Cite web|title=Countries Never Elected Members|url=https://www.un.org/securitycouncil/content/countries-never-elected-members-security-council|publisher=United Nations|access-date=1 January 2020}}</ref> The three [[United Nations member states#Former members|former UN members]]  that were not elected to the Security Council during their membership are [[Tanganyika (1961–1964)|Tanganyika]], [[Zanzibar]], and [[Serbia and Montenegro]].
+
+[[File:Security Council Non-Members.svg|600px|thumb|center|Member states of the United Nations that have never been members of the United Nations Security Council {{As of|2026|lc=y}}]]{{legend|lightgreen|''Indicates future scheduled member (2027)''}}
+{| class="wikitable sortable" style="width:100%;" cellspacing="0"
+|-
+!UN Member state!!Regional Group!!Security Council membership as part of another entity
+|-
+|{{Flag country|Islamic Republic of Afghanistan}}||Asia-Pacific||
+|-
+|{{flagwrap|Andorra}}||WEOG||
+|-
+|{{flagwrap|Antigua and Barbuda}}||GRULAC||Was a [[Crown Colony of Antigua|crown colony]], then an [[Associated State of Antigua|associated state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 36 years of Security Council membership until {{Date|1981-11-01}}
+|-
+|{{flagwrap|Armenia}}||E. European||Was a [[Armenian Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 45 years of Security Council membership until [[1991 Armenian independence referendum|{{Date|1991-09-23}}]]
+|-
+|{{flagwrap|Bahamas}}||GRULAC||Was a [[crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 27 years of Security Council membership until {{Date|1973-07-10}}
+|-
+|{{flagwrap|Barbados}}||GRULAC||Was a [[crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 21 years of Security Council membership until [[Barbados Independence Act 1966|{{Date|1966-11-30}}]]
+|-
+|{{flagwrap|Belize}}||GRULAC||Was a [[British Honduras|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 35 years of Security Council membership until [[Belize Act 1981|{{Date|1981-09-21}}]]
+|-
+|{{flagwrap|Bhutan}}||Asia-Pacific||Was a [[protectorate|protected state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 1 year of Security Council membership until 1947
+|-
+|{{flagwrap|Brunei}}||Asia-Pacific||Was a [[protectorate]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 38 years of Security Council membership until [[National Day (Brunei)|{{Date|1984-01-01}}]]
+|-
+|{{flagwrap|Cambodia}}||Asia-Pacific||Was a [[French protectorate of Cambodia|protectorate]] of [[French Fourth Republic|France]] during its 8 years of Security Council membership until [[Independence Day of Cambodia|{{Date|1953-11-09}}]]
+|-
+|{{flagwrap|Central African Republic}}||African||Was a [[Ubangi-Shari|colony]] of [[France]] during its 14 years of Security Council membership until {{Date|1960-08-13}}
+|-
+|{{flagwrap|Comoros}}||African||Was an [[Territory of the Comoros|overseas territory]] of [[France]] during its 29 years of Security Council membership until [[1974 Comorian independence referendum|{{Date|1975-07-06}}]]
+|-
+|{{flagwrap|Cyprus}}||Asia-Pacific||Was a [[British Cyprus|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 14 years of Security Council membership until [[Treaty of Guarantee (1960)|{{Date|1960-08-16}}]]
+|-
+|{{flagwrap|Dominica}}||GRULAC||Was a [[crown colony]], then an [[West Indies Associated States|associated state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 33 years of Security Council membership until {{Date|1978-11-03}}
+|-
+|{{flagwrap|East Timor}}||Asia-Pacific||Was a [[East Timor (province)|province]] of [[Indonesia]] (''[[de facto]]'') during its 2 years of Security Council membership and an [[Portuguese Timor|overseas province]] of [[Portugal]] (''[[de jure]]'') during its 4 years of Security Council membership until [[United Nations Security Council Resolution 1272|{{Date|1999-10-25}}]]
+|-
+|{{flagwrap|El Salvador}}||GRULAC||
+|-
+|{{flagwrap|Eritrea}}||African||Was under [[military administration]] of the [[United Kingdom of Great Britain and Northern Ireland]] until {{Date|1952-09-15}}, then an [[Federation of Ethiopia and Eritrea|autonomous region]] and then a [[Eritrea Province|province]] of [[Transitional Government of Ethiopia|Ethiopia]] during its 10 years of Security Council membership until [[Independence Day (Eritrea)|{{Date|1993-05-24}}]]
+|-
+|{{flagwrap|Eswatini}}||African||Was a [[protectorate]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 22 years of Security Council membership until {{Date|1968-09-06}}
+|-
+|{{flagwrap|Fiji}}||Asia-Pacific||Was a [[Colony of Fiji|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 24 years of Security Council membership until [[Instruments of Independence|{{Date|1970-10-10}}]]
+|-
+|{{flagwrap|Georgia}}||E. European||Was a [[Georgian Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 45 years of Security Council membership until [[1991 Georgian independence referendum|{{Date|1991-04-09}}]]
+|-
+|{{flagwrap|Grenada}}||GRULAC||Was a [[crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 28 years of Security Council membership until [[Independence Day (Grenada)|{{Date|1974-02-07}}]]
+|-
+|{{flagwrap|Haiti}}||GRULAC||
+|-
+|{{flagwrap|Iceland}}||WEOG||
+|-
+|{{flagwrap|Israel}}||None / WEOG{{Efn|Not a member of any regional group until joining the WEOG in 2000.<ref>{{Cite news |url=https://select.nytimes.com/gst/abstract.html?res=F30F17F93C5A0C708CDDAB0994D1494D81|title=Membership in Key Group Within U.N. Eludes Israel|last=Crossette|first=Barbara |date=3 December 1999|work=[[The New York Times]]|access-date=17 April 2011}}</ref>}}||Part of a [[Mandatory Palestine|League of Nations mandate]] under administration of the [[United Kingdom of Great Britain and Northern Ireland]] during its 2 years of Security Council membership until [[Israeli Declaration of Independence|{{Date|1948-05-14}}]]
+|-
+|{{flagwrap|Kiribati}}||None / Asia-Pacific{{Efn|For over 20 years after joining the UN in 1999, Kiribati was not a member of any regional group before finally joining Asia-Pacific.}} ||Was a [[Gilbert and Ellice Islands|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 33 years of Security Council membership until {{Date|1979-07-12}}
+|-style="background:lightgreen;"
+|{{flagwrap|Kyrgyzstan}}||Asia-Pacific||Was a [[Kirghiz Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership until [[Independence Day (Kyrgyzstan)|{{Date|1991-08-31}}]]
+|-
+|{{flagwrap|Laos}}||Asia-Pacific||Was a [[French protectorate of Laos|protectorate]] of [[French Fourth Republic|France]] during its 7 years of Security Council membership until {{Date|1953-10-22}}
+|-
+|{{flagwrap|Lesotho}}||African||Was a [[Basutoland|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 20 years of Security Council until {{Date|1966-10-04}}
+|-
+|{{flagwrap|Liechtenstein}}||WEOG||
+|-
+|{{flagwrap|Malawi}}||African||Was a [[Nyasaland|protectorate]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 18 years of Security Council membership until {{Date|1964-07-06}}
+|-
+|{{flagwrap|Maldives}}||Asia-Pacific||Was a [[Sultanate of the Maldive Islands|protected state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 19 years of Security Council membership until [[Independence of the Maldives|{{Date|1965-07-26}}]]
+|-
+|{{flagwrap|Marshall Islands}}||Asia-Pacific||Was a [[Districts of the Trust Territory of the Pacific Islands|district]] of the [[Trust Territory of the Pacific Islands]] under the administration of the [[United States of America]] during its 40 years of Security Council membership until [[Compact of Free Association|{{Date|1986-10-21}}]]
+|-
+|{{flagwrap|Federated States of Micronesia}}||Asia-Pacific||Was a [[Districts of the Trust Territory of the Pacific Islands|district]] of the [[Trust Territory of the Pacific Islands]] under the administration of the [[United States of America]] during its 41 years of Security Council membership until [[Compact of Free Association|{{Date|1986-11-03}}]]
+|-
+|{{flagwrap|Moldova}}||E. European||Was a [[Moldavian Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 45 years of Security Council membership until [[Moldovan Declaration of Independence|{{Date|1991-08-27}}]]
+|-
+|{{flagwrap|Monaco}}||WEOG||
+|-
+|{{flagwrap|Mongolia}}||Asia-Pacific||Was a [[Outer Mongolia|Region]] of the [[Republic of China]] during its 4 months of Security Council membership until {{Date|1946-01-05}}
+|-
+|{{flagwrap|Montenegro}}||E. European||Was a [[Socialist Republic of Montenegro|republic]] of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership until [[1992 Constitution of the Federal Republic of Yugoslavia|{{Date|1992-04-27}}]]{{Efn|Montenegro was also a [[Republic of Montenegro (1992–2006)|constituent state]] of the [[Serbia and Montenegro|Federal Republic of Yugoslavia]] and of [[Serbia and Montenegro]] from {{Date|1992-04-27}} until [[2006 Montenegrin independence referendum|{{Date|2006-06-03}}]], but these entities were not members of the Security Council.}}
+|-
+|{{flagwrap|Myanmar}}||Asia-Pacific||Was a [[British rule in Burma|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 2 years of Security Council membership until [[Independence Day (Myanmar)|{{Date|1948-01-04}}]]
+|-
+|{{flagwrap|Nauru}}||Asia-Pacific||Was a [[United Nations trust territories|United Nations trust territory]] administered by the [[United Kingdom of Great Britain and Northern Ireland]] during its 22 years of Security Council membership, [[Australia]] during its 4 years of Security Council membership, and [[New Zealand]] during its 3 years of Security Council membership until 31 January 1968
+|-
+|{{flagwrap|North Korea}}||Asia-Pacific||Was under [[Soviet Civil Administration|military occupation]] of the [[Union of Soviet Socialist Republics]] during its 2 years of Security Council membership until [[Day of the Foundation of the Republic|{{Date|1948-09-09}}]]
+|-
+|{{flagwrap|North Macedonia}}||E. European||Was a [[Socialist Republic of Macedonia|republic]] of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership until [[1991 Macedonian independence referendum|{{Date|1991-09-08}}]]
+|-
+|{{flagwrap|Palau}}||Asia-Pacific||Was a [[Districts of the Trust Territory of the Pacific Islands|district]] of the [[Trust Territory of the Pacific Islands]] under the administration of the [[United States of America]] during its 48 years of Security Council membership until [[Compact of Free Association|{{Date|1994-10-01}}]]
+|-
+|{{flagwrap|Papua New Guinea}}||Asia-Pacific||Was an [[States and territories of Australia|external territory]] of [[Australia]] in the case of the [[Territory of Papua]] and a [[League of Nations mandate]] (later a [[United Nations trust territories|United Nations trust territory]] during its union with [[Territory of Papua|Papua]]) in the case of the [[Territory of New Guinea]] during its 2 years of Security Council membership until [[Papua and New Guinea Act 1949|{{Date|1949-07-01}}]], then the unified [[Territory of Papua and New Guinea]] in [[Australia]] during its 4 years of Security Council membership until [[Papua New Guinea Independence Act 1975|{{Date|1975-09-16}}]]
+|-
+|{{flagwrap|Saint Kitts and Nevis}}||GRULAC||Was a [[Saint Christopher-Nevis-Anguilla|crown colony]], then an [[West Indies Associated States|associated state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 37 years of Security Council membership until {{Date|1983-09-19}}
+|-
+|{{flagwrap|Saint Lucia}}||GRULAC||Was a [[crown colony]], then an [[West Indies Associated States|associated state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 33 years of Security Council membership until {{Date|1979-02-22}}
+|-
+|{{flagwrap|Samoa}}||Asia-Pacific||Was a [[Territory of Western Samoa|League of Nations mandate]], then a [[Territory of Western Samoa|United Nations trust territory]], under the administration of [[New Zealand]] during its 2 years of Security Council membership until {{Date|1962-01-01}}
+|-
+|{{flagwrap|San Marino}}||WEOG||
+|-
+|{{flagwrap|São Tomé and Príncipe}}||African||
+|-
+|{{flagwrap|Saudi Arabia}}||Asia-Pacific||Saudi Arabia was elected in the [[2013 United Nations Security Council election|2013 election]], but declined the seat.<ref>United Nations, General Assembly, ''Letter dated 12 November 2013 from the Permanent Representative of Saudi Arabia to the United Nations addressed to the Secretary-General'', A/68/599 (14 November 2013), available from [https://www.un.org/ga/search/view_doc.asp?symbol=A/68/599 undocs.org/A/68/599]</ref>
+|-
+|{{flagwrap|Serbia}}||E. European||Was a [[Socialist Republic of Serbia|republic]] of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership until [[1992 Constitution of the Federal Republic of Yugoslavia|{{Date|1992-04-27}}]]{{Efn|Serbia was also a [[Republic of Serbia (1992–2006)|constituent state]] of the [[Serbia and Montenegro|Federal Republic of Yugoslavia]] and of [[Serbia and Montenegro]] from {{Date|1992-04-27}} until {{Date|2006-06-05}}, but these entities were not members of the Security Council.}}
+|-
+|{{flagwrap|Seychelles}}||African||Was a [[crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 30 years of Security Council membership until {{Date|1976-07-29}}
+|-
+|{{flagwrap|Solomon Islands}}||Asia-Pacific||Was a [[British Solomon Islands|protectorate]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 32 years of Security Council membership until {{Date|1978-07-07}}
+|-
+|{{flagwrap|South Sudan}}||African||Was a [[Anglo-Egyptian Sudan|condominium]] of the [[United Kingdom of Great Britain and Northern Ireland]] and [[Republic of Egypt (1953–1958)|Egypt]] during its 10 years and 3 years of Security Council membership until {{Date|1956-01-01}}, then part of [[Republic of Sudan (1985–2019)|Sudan]] during its 2 years of Security Council membership until [[2011 South Sudanese independence referendum|{{Date|2011-07-09}}]]
+|-
+|{{flagwrap|Suriname}}||GRULAC||Was a [[Surinam (Dutch colony)|colony]], then a [[Suriname (Kingdom of the Netherlands)|constituent country]] of the [[Kingdom of the Netherlands]] during its 5 years of Security Council membership until {{Date|1975-11-25}}
+|-
+|{{flagwrap|Tajikistan}}||Asia-Pacific||Was a [[Tajik Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 45 years of Security Council membership until [[Independence Day (Tajikistan)|{{Date|1991-09-09}}]]
+|-
+|{{flagwrap|Tonga}}||Asia-Pacific||Was a [[Kingdom of Tonga (1900–1970)|protected state]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 24 years of Security Council membership until {{Date|1970-06-04}}
+|-
+|{{flagwrap|Turkmenistan}}||Asia-Pacific||Was a [[Turkmen Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 46 years of Security Council membership until [[Independence Day (Turkmenistan)|{{Date|1991-10-27}}]]
+|-
+|{{flagwrap|Tuvalu}}||Asia-Pacific||Was a [[Gilbert and Ellice Islands|crown colony]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 32 years of Security Council membership until {{Date|1978-10-01}}
+|-
+|{{flagwrap|Uzbekistan}}||Asia-Pacific||Was a [[Uzbek Soviet Socialist Republic|union republic]] of the [[Union of Soviet Socialist Republics]] during its 45 years of Security Council membership until [[Independence Day (Uzbekistan)|{{Date|1991-08-31}}]]
+|-
+|{{flagwrap|Vanuatu}}||Asia-Pacific||Was a [[New Hebrides|condominium]] under joint sovereignty of the [[United Kingdom of Great Britain and Northern Ireland]] and [[France]] during its 34 years of Security Council membership until {{Date|1980-07-30}}
+|}
+{{notelist}}
+
+===Former UN members that were never UNSC members===
+{| class="wikitable sortable" style="width:100%;" cellspacing="0"
+|-
+!Former UN Member state!!UN membership!!Security Council membership as part of another entity
+|- 
+|{{flagwrap|Serbia and Montenegro}}||1992 to 2006||Was part of [[Socialist Federal Republic of Yugoslavia|Yugoslavia]] during its 7 years of Security Council membership until [[1992 Constitution of the Federal Republic of Yugoslavia|{{Date|1992-04-27}}]]
+|- 
+|{{Flag country|Tanganyika (1961–1964)}}||1961 to 1964||Was a [[Tanganyika Territory|League of Nations mandate]] under the administration of the [[United Kingdom of Great Britain and Northern Ireland]] during its 1 year of Security Council membership until {{Date|1946-12-11}}, then a [[United Nations trust territories|United Nations trust territory]] under the administration of the [[United Kingdom of Great Britain and Northern Ireland]] until {{Date|1961-12-09}}, then independent until federation with [[People's Republic of Zanzibar|Zanzibar]] to form the [[United Republic of Tanzania]] on {{Date|1964-04-26}}
+|- 
+|{{Flag deco|People's Republic of Zanzibar}} [[People's Republic of Zanzibar|Zanzibar]]||1963 to 1964||Was a [[Sultanate of Zanzibar|protectorate]] of the [[United Kingdom of Great Britain and Northern Ireland]] during its 18 years of Security Council membership until {{Date|1963-12-10}}, then independent until federation with [[Tanganyika (1961–1964)|Tanganyika]] to form the [[United Republic of Tanzania]] on {{Date|1964-04-26}}
+|}
+
+== See also ==
+{{Portal|Politics}}
+* [[United Nations Regional Groups]]
+* [[Member states of the United Nations]]
+* [[List of members of the United Nations Economic and Social Council]]
+* [[List of members of the United Nations Commission on Human Rights]]
+
+== References ==
+{{Ref list}}
+
+{{Clear}}
+{{United Nations Security Council elections}}
+{{UN Security Council}}
+{{United Nations}}
+
+{{DEFAULTSORT:Members of the United Security Council}}
+[[Category:United Nations Security Council|*Members]]
+[[Category:United Nations Security Council elections|*]]
+[[Category:Countries by international organization|United Nations Security Council]]
+[[Category:Lists of countries|members of the United Nations Security Council]]
+[[Category:United Nations-related lists|Security Council]]
