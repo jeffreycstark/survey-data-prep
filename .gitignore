@@ -171,6 +171,7 @@ data/kgss/
 data/external/
 # V-Dem raw data (large RDS files, refreshable from V-Dem website)
 data/v-dem/raw/**/*.rds
+data/marpor/raw/**/*.rds
 
 # ── Pipeline outputs (generated, not source data) ─────────────────────────────
 # Per-wave and final harmonized datasets
