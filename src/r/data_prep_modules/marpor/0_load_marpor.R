@@ -18,25 +18,55 @@
 #
 # Credential
 # ----------
-# Requires a free MARPOR API key. It is stored in the macOS Keychain under
-# service "marpor_api_key" and exported as MARPOR_API_KEY by ~/.secrets
-# (which ~/.zshrc sources). marpor_apikey() below resolves it through a
-# fallback chain so the module works both in an interactive shell and under a
-# non-interactive `Rscript` call, which does NOT source ~/.zshrc:
+# Requires a free MARPOR API key. THE KEY IS NEVER PRINTED, NEVER WRITTEN INTO
+# THE REPO, AND NEVER COMMITTED. Every path below keeps it out of process
+# arguments and out of R's history.
 #
-#   1. Sys.getenv("MARPOR_API_KEY")           — interactive shells
-#   2. macOS Keychain via `security`           — non-interactive Rscript
-#   3. .secrets/manifesto_apikey.txt (gitignored, optional local override)
+# Canonical location: ~/.manifesto_api_key (mode 600, outside the repo), read by
+# manifestoR's own `mp_setapikey(key.file = ...)`. That is the documented
+# interface and is preferred because manifestoR reads the file itself — the key
+# never has to transit an R variable we control.
 #
-# The key is never written to the repo and never printed.
+# Fallbacks exist because a non-interactive `Rscript` call does NOT source
+# ~/.zshrc, so it never sees the exported env var:
+#
+#   1. ~/.manifesto_api_key            via mp_setapikey(key.file=)  ← preferred
+#   2. Sys.getenv("MARPOR_API_KEY")    — interactive shells
+#   3. macOS Keychain via `security`   — non-interactive Rscript
+#   4. .secrets/manifesto_apikey.txt   — gitignored local override
 
 library(here)
 
 MARPOR_RELEASE        <- "MPDS2025a"
 MARPOR_CORPUS_VERSION <- "2025-1"
 
-#' Resolve the MARPOR API key without ever printing it
+MARPOR_KEY_FILE <- path.expand("~/.manifesto_api_key")
+
+#' Install the MARPOR API key into manifestoR, without ever printing it.
+#'
+#' Prefers mp_setapikey(key.file=) so manifestoR reads the file itself. Returns
+#' the source used (for logging) — NEVER the key.
+marpor_set_apikey <- function() {
+
+  if (file.exists(MARPOR_KEY_FILE)) {
+    manifestoR::mp_setapikey(key.file = MARPOR_KEY_FILE)
+    return("~/.manifesto_api_key (key.file)")
+  }
+
+  manifestoR::mp_setapikey(key = marpor_apikey())
+  "fallback chain (env / Keychain / .secrets)"
+}
+
+#' Resolve the MARPOR API key without ever printing it.
+#'
+#' Fallback only — prefer marpor_set_apikey(), which uses manifestoR's key.file
+#' interface and avoids materialising the key in an R variable at all.
 marpor_apikey <- function() {
+
+  if (file.exists(MARPOR_KEY_FILE)) {
+    k <- trimws(readLines(MARPOR_KEY_FILE, warn = FALSE))[1]
+    if (nzchar(k)) return(k)
+  }
 
   k <- Sys.getenv("MARPOR_API_KEY")
   if (nzchar(k)) return(k)
@@ -62,6 +92,7 @@ marpor_apikey <- function() {
   }
 
   stop("MARPOR API key not found. Expected one of:\n",
+       "  - ~/.manifesto_api_key (preferred; mode 600)\n",
        "  - env var MARPOR_API_KEY (set by ~/.secrets)\n",
        "  - macOS Keychain service 'marpor_api_key'\n",
        "  - .secrets/manifesto_apikey.txt\n",
@@ -89,7 +120,7 @@ load_marpor_raw <- function(release = MARPOR_RELEASE,
       stop("manifestoR is not installed. install.packages('manifestoR')")
     }
     cat("\n── Downloading MARPOR", release, "──\n")
-    manifestoR::mp_setapikey(key = marpor_apikey())
+    cat("  key source:", marpor_set_apikey(), "\n")
     manifestoR::mp_use_corpus_version(corpus_version)
     d <- manifestoR::mp_maindataset(version = release)
     saveRDS(d, path)
