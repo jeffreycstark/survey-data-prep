@@ -202,6 +202,19 @@ outputs/prospecting/**/*.rds
 # PDF outputs
 *.pdf
 !outputs/figures/*.pdf
+# Source codebooks/handbooks shipped with a raw release. The blanket *.pdf rule
+# above was silently excluding these, even though the policy note at the foot of
+# this file says codebooks are tracked. The MARPOR data request specifically
+# requires the CMP coding handbook be stored alongside the release.
+#
+# ⚠️ Deliberately NARROW — scoped to the two non-survey sources added for
+# paper 25, not a blanket `!data/*/raw/**/*.pdf`. That broader rule would pull in
+# 261 files / 535 MB of questionnaires and methods reports across every survey.
+# Tracking those may well be right (the policy note implies it), but it is a
+# separate decision with real repo-size consequences — not a side effect of a
+# MARPOR commit.
+!data/marpor/raw/**/*.pdf
+!data/des/raw/**/*.pdf
 
 # R session artifacts
 .Rapp.history

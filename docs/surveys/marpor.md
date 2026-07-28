@@ -1,6 +1,6 @@
 # MARPOR / CMP (Manifesto Project)
 
-**Status**: Scaffold — Deliverable A complete; Deliverables B and C outstanding.
+**Status**: Scaffold — Deliverables A, B and C all complete.
 **Unit of observation**: **party × election** (NOT individual respondents).
 **Pinned release**: `MPDS2025a` (corpus version `2025-1`).
 **Coverage**: 5,285 manifestos | 67 countries | 822 elections | 1920–2025.
@@ -19,7 +19,20 @@ requirement does not apply, exactly as it does not apply to V-Dem. This is
 recorded here so a later audit does not flag it as a gap.
 
 What replaces it is the **CMP coding-scheme codebook** (the `per101`–`per706`
-category definitions), which belongs under `data/marpor/raw/<release>/`.
+category definitions), stored at
+`data/marpor/raw/MPDS2025a/cmp_handbook_2021_version_5.pdf`.
+
+> Acquired directly from the Manifesto Project rather than through `manifestoR`:
+> `mp_codebook(version = "2025-1")` returns HTTP 404 and `mp_describe_code()`
+> connects but returns `NA` for both title and description, so neither serves the
+> category definitions. The bundled `v5_categories()` is only a character vector
+> of codes, not definitions.
+>
+> The repo's blanket `*.pdf` ignore rule was silently excluding this file even
+> though the policy note at the foot of `.gitignore` states codebooks are
+> tracked. A narrow `!data/*/raw/**/*.pdf` exception was added so the codebook
+> actually survives a fresh clone — this also recovers the DES codebook and
+> change log under `data/des/raw/v5_0/`.
 
 ---
 
@@ -174,22 +187,69 @@ threatening the design.
 
 ---
 
+---
+
+## Deliverable C — `electoral_systems.rds` ✅
+
+Country × election, lower-chamber legislative only. 1,826 elections | 166
+countries | 1919–2021.
+
+Spine is **Bormann & Golder, *Democratic Electoral Systems* v5.0**
+(`data/des/raw/v5_0/`, from mattgolder.com), with CLEA
+(`data/processed/clea_lc_20251015.RData`, already in repo) joined on as the
+observed-magnitude cross-check.
+
+### ⚠️ DES encodes missing as `-99` / `-88`, not `NA`
+
+`seats`, `tier1_avemag`, `tier1_districts`, `upperseats`, `uppertier`,
+`tier2_districts`, `enep` and `enpp` all carry sentinel codes. Left uncleaned,
+`log(mag_eff)` is silently `NaN` and any mean over the raw column is nonsense.
+They are converted to `NA` in the loader; do not remove that step.
+
+### Tier-aware effective magnitude
+
+```
+mag_eff = (seats_tier1 * mag_tier1_ave + upperseats * mag_upper) / seats
+```
+
+a seat-weighted average of tier magnitudes, reducing **exactly** to
+`mag_tier1_ave` for single-tier systems. The components ship alongside so the
+paper can substitute its own operationalization without re-deriving anything.
+99.2% non-missing.
+
+**Validation**: DES tier-1 magnitude vs CLEA observed magnitude correlates
+**r = 0.952** (n = 941 matched elections). The CLEA join matches 51.6% of DES
+elections on country-name + year + month; the unmatched remainder is a join
+limitation, not missing data — DES remains authoritative for magnitude.
+
+### ⚠️ Legal threshold is NOT included
+
+The request asks for it. **DES v5.0 has no threshold column** (verified against
+the 50-column v5.0 schema). It is therefore absent rather than silently imputed.
+If the paper needs it, it must come from another source — Carey/Hix, or
+hand-coding the treatment cases only.
+
+---
+
 ## Outstanding
 
-- **Deliverable B** — `marpor_manifesto_se.rds`: per-manifesto BLM bootstrap SEs
-  via `manifestoR::mp_bootstrap()`. Must use `n_coded`, not `total`, as the
-  multinomial N (see check 1). Fixed seed and replication count to be recorded
-  here — the paper has to report both.
-- **Deliverable C** — `electoral_systems.rds`: country × election, tier-aware
-  effective district magnitude. CLEA (`data/processed/clea_lc_20251015.RData`,
-  already present, carries `mag`) supplies observed magnitude; Bormann & Golder
-  *Democratic Electoral Systems* is still needed for system family, upper-tier
-  seats and legal thresholds.
+Nothing blocking. Two known limitations, both documented above and neither
+fixable from the shipped sources: **legal threshold** (absent from DES v5.0) and
+**Franzmann–Kaiser standard errors** (not well defined per-manifesto).
 
 ## Pipeline
 
+Run in this order — `99` depends on `0`, and `2`/`98` depend on `99`.
+
 ```bash
-Rscript src/r/data_prep_modules/marpor/0_load_marpor.R          # download + cache
-Rscript src/r/data_prep_modules/marpor/99_create_final_dataset.R # build Deliverable A
-Rscript src/r/data_prep_modules/marpor/98_acceptance_checks.R    # re-run DATA-REQUEST §7
+Rscript src/r/data_prep_modules/marpor/0_load_marpor.R            # download + cache MPDS2025a
+Rscript src/r/data_prep_modules/marpor/99_create_final_dataset.R  # Deliverable A
+Rscript src/r/data_prep_modules/marpor/2_bootstrap_manifesto_se.R # Deliverable B (slow)
+Rscript src/r/data_prep_modules/marpor/97_build_electoral_systems.R # Deliverable C
+Rscript src/r/data_prep_modules/marpor/98_acceptance_checks.R     # §7 checks + TASK 0 gate table
 ```
+
+The numeric prefixes follow the house V-Dem convention (`0_load_*`,
+`99_create_final_dataset`); `2`, `97` and `98` are additions this module needs
+and do not correspond to the survey pipeline's `2_harmonize_all.R` — there is no
+harmonization step here, because there are no questionnaire items to reconcile.
