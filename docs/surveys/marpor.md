@@ -188,7 +188,13 @@ North Macedonia 5.4% — all usable for a seat-weighted primary outcome.
 Only 9 of 67 countries exceed 50% `absseat` missingness, and those same 9 are
 100% missing on `pervote` too, so they are excluded by any weighting scheme.
 
-### 4–5. Election coverage around priority reform cases — **GATE PASSES**
+### 4–5. Election coverage around priority reform cases — **preliminary, superseded**
+
+> ⚠️ **This table is a hand-curated first pass and is NOT the gate result.** The
+> authoritative answer is the DES-driven sweep in "TASK 0 gate" below, which
+> reads every rule change in the data rather than a chosen fifteen. Two rows
+> here are wrong once treatment is coded continuously — see the corrections
+> under the table.
 
 Criterion: ≥3 CMP-covered pre-reform and ≥2 post-reform elections, reform
 election itself covered.
@@ -223,6 +229,85 @@ post-reform election coded so far; Bulgaria 1991 and Ukraine 1998 are
 founding-era transitions with no pre-reform CMP history. This is the
 post-communist coverage gap the brief anticipated, and it costs 2 cases without
 threatening the design.
+
+#### ⚠️ Two corrections to the table above
+
+**Israel 1996 and 2003 are not usable for this design at all.** Both are marked
+"usable" above on election-count grounds, but the direct election of the Prime
+Minister and its repeal changed **executive** selection, not the legislature.
+Israel elects its Knesset from a single 120-seat national district throughout;
+`mag_eff` is a flat 120 across 1992, 1996, 1999, 2003 and 2006, and DES does not
+flag any of them as a legislative rule change. Under continuous treatment coding
+they contribute exactly zero identifying variation.
+
+**Romania 2008 has no measurable treatment.** It clears the election-count
+criterion (5 pre / 2 post) but effective magnitude is `NA` on **both** sides, so
+Δ log magnitude cannot be formed. It is the single NA in the sweep below.
+
+Net: of the 12 rows called "usable" above, **9** actually carry a continuous
+treatment. This is why the count-based gate and the design-relevant N differ,
+and why the sweep below is the number to report.
+
+---
+
+## TASK 0 gate — the authoritative result
+
+Produced by `98_acceptance_checks.R`; full table at
+`outputs/marpor/task0_rule_change_coverage.csv`.
+
+| Stage | N |
+|---|---|
+| DES rule changes, all countries | 134 |
+| …in CMP-covered countries | 104 |
+| …usable (≥3 CMP pre, ≥2 post) | **49** |
+| …with non-zero Δ log effective magnitude | **35** |
+
+**VERDICT: PASS.** The brief's threshold is ≥8 usable changes (5–7 → proceed but
+report the position null as underpowered; <5 → stop). It clears on either count.
+
+### Report 35, not 49
+
+The gate counts *changes*; the paper codes treatment **continuously**, as Δ log
+effective magnitude. A rule change that restructures the system without moving
+magnitude contributes no identifying variation. Of the 49:
+
+- **13** have `delta_log_mag_eff == 0` — rule changed, magnitude did not
+  (Albania 2005, Georgia 2016, Greece 2012 and both 2015 elections, Israel 1973,
+  Lithuania 2004, Moldova 2014, Poland 2005, Slovakia 2012, Slovenia 2008,
+  Turkey 1965 and 1969)
+- **1** has `delta_log_mag_eff == NA` — Romania 2008
+
+**35** is the design-relevant N and the number the paper should state.
+
+### The reversals survive
+
+The within-case reversals — the reason an absorbing-treatment estimator was
+rejected — are intact and exactly symmetric:
+
+| Case | pre → post magnitude | Δ log |
+|---|---|---|
+| **France 1986** (→ PR) | 1.00 → 5.79 | **+1.756** |
+| **France 1988** (→ 2-round maj.) | 5.79 → 1.00 | **−1.756** |
+| Italy 1994 (PR→MMM) | 19.69 → 2.22 | −2.182 |
+| Italy 2006 | 2.22 → 23.73 | +2.369 |
+| Ukraine 2006 (full PR) | 113.0 → 450.0 | +1.382 |
+| Ukraine 2012 (back to mixed) | 450.0 → 113.0 | −1.382 |
+| New Zealand 1996 (FPTP→MMP) | 1.00 → 25.75 | +3.248 |
+| Japan 1996 (SNTV→MMM) | 3.96 → 7.87 | +0.687 |
+
+That France, Italy and Ukraine each reverse to the same magnitude they came from
+is a genuine validation of the tier-aware `mag_eff` construction, not a
+coincidence — the pre and post values are computed independently per election.
+
+### ⚠️ `prev_mag` is gone from the CSV
+
+Through commit `251764e` the coverage CSV carried a column named `prev_mag` that
+actually held the **post**-change magnitude (`select(prev_mag = mag_eff, …,
+mag_eff)` dedupes to one column in dplyr). Anything differencing against it was
+differencing a value against itself. It is replaced by `mag_eff_pre` and
+`mag_eff_post`, with the pre value recovered as
+`mag_eff_post / exp(delta_log_mag_eff)`. **Update any paper-side code that read
+`prev_mag`.**
 
 ---
 
