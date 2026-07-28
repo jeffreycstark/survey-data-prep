@@ -87,6 +87,31 @@ Subcategories break their parent down further, so **summing parents AND
 subcategories double-counts**. Parity checks and multinomial reconstruction must
 use the parent set only — `marpor_parent_categories()` returns it.
 
+### ⚠️ `corpusversion` ships the literal string "NA", not a real NA
+
+MPDS delivers `corpusversion` as a **character** column in which absent values
+are the four-character string `"NA"` — 3,128 of 5,285 rows in MPDS2025a (59%).
+`is.na()` returns **FALSE** for every one of them, so a filter, `group_by()` or
+join on this column silently acquires a bogus `"NA"` level, and
+`sum(is.na(corpusversion))` reports 0 when in truth most of the column is empty.
+
+This matters because §2 of the data request names `corpusversion` as the
+provenance stamp the paper cites its exact release from.
+
+`99_create_final_dataset.R` converts it to a real `NA`. The fix is **narrowly
+scoped to this one column on purpose** — a party abbreviation of `"NA"` would be
+perfectly legitimate (none currently is), so a blanket sweep across character
+columns could destroy real data in a future release.
+
+The 2,157 populated rows all read `2025-1`: these are the manifestos present in
+the **corpus**. Main-dataset-only manifestos have no corpus version, which is
+what the blank means — it is not missingness to be imputed. The pinned release
+is recorded independently in `0_load_marpor.R` (`MARPOR_RELEASE`,
+`MARPOR_CORPUS_VERSION`), so provenance does not depend on this column.
+
+Checked and clean in the same pass: `datasetversion` (all `2025a`),
+`partyabbrev`, `parfam`. `testresult` uses proper real `NA`s (1,838).
+
 ### Derived columns added here
 
 | Column | Meaning |

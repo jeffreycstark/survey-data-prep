@@ -42,6 +42,23 @@ keep <- keep[keep %in% names(d)]
 
 out <- d[, keep] %>%
   mutate(
+    # ⚠️ MPDS ships `corpusversion` as a CHARACTER column in which absent values
+    # are the literal string "NA", not R's NA — 3,128 of 5,285 rows in MPDS2025a.
+    # `is.na()` therefore returns FALSE for every one of them, and any filter,
+    # group_by or join on this column silently acquires a bogus "NA" level.
+    # §2 of the data request names corpusversion as the provenance stamp the
+    # paper cites its release from, so this has to be a real NA.
+    #
+    # Narrowly scoped to this column on purpose: a party abbreviation of "NA"
+    # would be legitimate (none currently is), so a blanket sweep over character
+    # columns could destroy real data in a future release.
+    #
+    # The populated 2,157 rows are "2025-1" — the manifestos present in the
+    # CORPUS. Main-dataset-only manifestos have no corpus version, which is what
+    # the blank means. The pinned release is recorded in 0_load_marpor.R
+    # (MARPOR_RELEASE / MARPOR_CORPUS_VERSION) regardless.
+    corpusversion = ifelse(as.character(corpusversion) == "NA",
+                           NA_character_, as.character(corpusversion)),
     eyear     = as.integer(substr(as.character(edate), 1, 4)),
     seatshare = ifelse(!is.na(absseat) & !is.na(totseats) & totseats > 0,
                        absseat / totseats, NA_real_),
