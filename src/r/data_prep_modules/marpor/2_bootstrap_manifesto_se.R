@@ -218,10 +218,22 @@ cat(sprintf("\n  rows: %s\n", format(nrow(out), big.mark = ",")))
 cat(sprintf("  rile_se        median %.3f | IQR %.3f–%.3f | max %.3f\n",
             median(out$rile_se), quantile(out$rile_se, .25),
             quantile(out$rile_se, .75), max(out$rile_se)))
+# Scheme ratios are reported over rows with a NON-DEGENERATE denominator.
+# A manifesto whose entire coded mass sits in categories outside the RILE index
+# has rile = 0 in every resample, so its SE is exactly 0 under every scheme and
+# the ratio is 0/0. MPDS2025a has one such row (Australia 1951, Country Party:
+# per703 = 100). That is a correct result, not a failure — it is excluded from
+# these summary ratios only, and ships with rile_se = 0 as it should.
+ratio_vs <- function(num, den) {
+  keep <- is.finite(num) & is.finite(den) & den > 0
+  median(num[keep] / den[keep])
+}
+n_degen <- sum(out$rile_se == 0, na.rm = TRUE)
 cat(sprintf("  vs manifestoR default : median ratio %.4f\n",
-            median(out$rile_se / out$rile_se_mrdefault)))
+            ratio_vs(out$rile_se, out$rile_se_mrdefault)))
 cat(sprintf("  vs CODED sensitivity  : median ratio %.4f\n",
-            median(out$rile_se / out$rile_se_coded)))
+            ratio_vs(out$rile_se, out$rile_se_coded)))
+cat(sprintf("  degenerate (SE = 0, no RILE mass): %d\n", n_degen))
 cat(sprintf("  logit_rile_se  median %.4f | non-finite %d\n",
             median(out$logit_rile_se[is.finite(out$logit_rile_se)]),
             sum(!is.finite(out$logit_rile_se))))
