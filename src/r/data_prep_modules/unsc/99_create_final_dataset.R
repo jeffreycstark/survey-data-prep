@@ -163,3 +163,24 @@ cat(sprintf("  seat-count invariant (10/yr, %d-2025): %s\n", WINDOW_START,
 cat("\n  splits:\n")
 print(as.data.frame(terms_out %>% filter(split_term == 1) %>%
                     select(country_name, term_start_year, term_end_year)), row.names = FALSE)
+
+# ── Freshness manifest ──────────────────────────────────────────────────────
+# specs = character(): not a survey, no YAML harmonize specs.
+# engine includes the PYTHON parser as well as this script: the term table is
+# produced by parse_wikipedia_unsc.py, so a change there changes this output.
+source(here("src", "r", "utils", "provenance.R"))
+write_manifest(
+  survey  = "unsc",
+  inputs  = Filter(file.exists, c(
+    here("data", "unsc", "raw", "wikipedia_unsc_members.wikitext"),
+    here("data", "unsc", "interim", "unsc_terms_wikipedia.csv"))),
+  specs   = character(),
+  outputs = Filter(file.exists, c(
+    here("data", "processed", "unsc_membership_terms.rds"),
+    here("data", "processed", "unsc_membership_terms.parquet"),
+    here("data", "processed", "unsc_membership_cy.rds"),
+    here("data", "processed", "unsc_membership_cy.parquet"))),
+  engine  = c("src/r/data_prep_modules/unsc/99_create_final_dataset.R",
+              "src/python/unsc_membership/parse_wikipedia_unsc.py")
+)
+cat("\n  -> manifest:", here("outputs", "unsc", "manifest.json"), "\n")

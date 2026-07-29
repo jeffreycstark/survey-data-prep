@@ -173,9 +173,16 @@ library(here)
 
 # Engine-version map. Always keys by the engine path (relative to repo
 # root) so the manifest is portable across machines.
-.collect_engine_versions <- function() {
+#
+# `engine_files` defaults to the shared harmonize engine, which is correct for
+# every YAML-spec survey. NON-SURVEY modules (V-Dem, MARPOR, UNGA, UNSC,
+# OECD-DAC) never call harmonize_all() and have no specs, so recording those
+# four hashes would mark them STALE every time recoding.R changes — a false
+# positive on a file they do not read. Those modules pass their OWN scripts
+# instead, which is what actually determines their output.
+.collect_engine_versions <- function(engine_files = .PROVENANCE_ENGINE_FILES) {
   out <- list()
-  for (rel in .PROVENANCE_ENGINE_FILES) {
+  for (rel in engine_files) {
     abs <- here::here(rel)
     h <- .hash_file(abs)
     if (is.null(h$error)) {
@@ -267,7 +274,8 @@ write_manifest <- function(survey,
                            inputs = character(),
                            specs = character(),
                            outputs = character(),
-                           output_path = NULL) {
+                           output_path = NULL,
+                           engine = NULL) {
 
   if (missing(survey) || is.null(survey) || !nzchar(survey)) {
     stop("write_manifest(): `survey` must be a non-empty string", call. = FALSE)
@@ -302,7 +310,8 @@ write_manifest <- function(survey,
     inputs          = input_entries,
     specs           = spec_entries,
     outputs         = output_entries,
-    engine_versions = .collect_engine_versions()
+    engine_versions = .collect_engine_versions(
+      if (is.null(engine)) .PROVENANCE_ENGINE_FILES else as.character(engine))
   )
 
   # Ensure parent dir exists, then write.

@@ -68,15 +68,24 @@ r <- run(c("abs", "marpor"), "abs", "abs",
          list(list(module = "marpor", reason = "", still_required = NULL)))
 ok(any(grepl("without a reason", r$hard)), "reasonless exemption -> HARD finding")
 
-# 5. LIST DRIFT — a survey dropped from the freshness list only. This is the
-#    silent-skip path: still audited elsewhere, but never staleness-checked.
+# 5. THE DANGEROUS DIRECTION — a survey audited by run_all but dropped from the
+#    freshness list. It looks covered while its data can silently rot.
 r <- run(c("abs", "wvs"), c("abs", "wvs"), "abs", list())
-ok(any(grepl("DRIFTED", r$hard)), "one-sided list edit -> HARD finding")
-ok(any(grepl("wvs", r$hard)), "drift finding names the dropped survey")
+ok(any(grepl("MISSING from .FRESHNESS_SURVEYS", r$hard)),
+   "audited survey absent from freshness list -> HARD finding")
+ok(any(grepl("wvs", r$hard)), "finding names the un-pre-flighted survey")
 
-# 6. Drift is detected in the other direction too.
-r <- run(c("abs", "wvs"), "abs", c("abs", "wvs"), list())
-ok(any(grepl("DRIFTED", r$hard)), "reverse-direction drift -> HARD finding")
+# 6. The other direction is LEGITIMATE, not drift: freshness covers more than
+#    the survey checks, because non-survey modules can still go stale. Allowed
+#    only when the extra entry is a registered exemption.
+r <- run(c("abs", "vdem"), "abs", c("abs", "vdem"),
+         list(list(module = "vdem", reason = "not a survey", still_required = "freshness")))
+ok(length(r$hard) == 0, "freshness-only entry that IS exempted -> no finding")
+
+# 6b. ...but an unexplained freshness-only entry is a typo or stale config.
+r <- run("abs", "abs", c("abs", "typo-survey"), list())
+ok(any(grepl("no run_all registration and no", r$hard)),
+   "unexplained freshness-only entry -> HARD finding")
 
 # 7. still_required: freshness, but module absent from the freshness list.
 r <- run(c("abs", "vdem"), "abs", "abs",

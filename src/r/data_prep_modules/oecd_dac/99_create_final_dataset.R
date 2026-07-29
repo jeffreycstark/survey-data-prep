@@ -158,3 +158,27 @@ cat(sprintf("  bilateral donor × recipient × year rows: %s\n",
 cat(sprintf("  const base year: %s | oda_usd_const non-missing: %.1f%%\n",
             EXPECTED_BASE, 100 * mean(!is.na(out$oda_usd_const))))
 cat("  ->", here("data", "processed", "dac_aid_bilateral.rds"), "\n")
+
+# ── Freshness manifest ──────────────────────────────────────────────────────
+# specs = character(): OECD DAC is a donor x recipient x year macro panel, not a
+# survey — no YAML harmonize specs, no waves, no questionnaire.
+# engine = this module's own script, NOT the shared harmonize engine: nothing
+# here calls harmonize_all() or recoding.R, so recording those would mark this
+# module STALE on every unrelated recoding.R edit.
+#
+# Every CSV under both raw pull directories is hashed, so a re-pull that changes
+# any slice (or adds a year range) is caught rather than silently absorbed.
+source(here("src", "r", "utils", "provenance.R"))
+write_manifest(
+  survey  = "oecd_dac",
+  inputs  = sort(c(list.files(DIR_2A, pattern = "\\.csv$", full.names = TRUE),
+                   if (dir.exists(DIR_3A))
+                     list.files(DIR_3A, pattern = "\\.csv$", full.names = TRUE)
+                   else character())),
+  specs   = character(),
+  outputs = Filter(file.exists, c(
+    here("data", "processed", "dac_aid_bilateral.rds"),
+    here("data", "processed", "dac_aid_bilateral.parquet"))),
+  engine  = "src/r/data_prep_modules/oecd_dac/99_create_final_dataset.R"
+)
+cat("  -> manifest:", here("outputs", "oecd_dac", "manifest.json"), "\n")

@@ -1,0 +1,55 @@
+{
+  "run_id": "20260729101937-3f2a",
+  "timestamp_utc": "2026-07-29T03:19:37Z",
+  "git_commit": "b0b7f8c",
+  "git_dirty": true,
+  "schema_version": 1,
+  "inputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/marpor/raw/MPDS2025a/mpds2025a_raw.rds",
+      "sha256": "f4cf455c514d64af34537562b0e75a17f7b69d205f641708b4e1f40358dffece",
+      "n_rows": 5285
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/des/raw/v5_0/es_data-v5_0.csv",
+      "sha256": "8b34b71a6ae39cb792137afdaff46e592f018190e841f59ebf351d892451cb21"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/clea_lc_20251015.RData",
+      "sha256": "a63e075a41379bb8e1cb41664f9260b166d90fb5339c83a11d7f5f4382e96b87"
+    }
+  ],
+  "specs": [],
+  "outputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/marpor_party_election.rds",
+      "sha256": "fe871a2727703ca2f324e0a694a007b2ef417235a1750ac19f3c81e862e1eb9b",
+      "n_rows": 5285,
+      "n_cols": 119
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/marpor_party_election.parquet",
+      "sha256": "cc70afc2261fcd2eabec220670d5e46ddb2169fead4a32e63f2306dc36387c59",
+      "n_rows": 5285,
+      "n_cols": 119
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/marpor_manifesto_se.rds",
+      "sha256": "2978daee536405d9ac66ac914fa3e924390371359eb0fa9d003d0d0f5dab2756",
+      "n_rows": 5179,
+      "n_cols": 21
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/electoral_systems.rds",
+      "sha256": "79b27e4546c43fde5e78b609ba5e09587962d36a5deadc65c902b52e38c05b17",
+      "n_rows": 1826,
+      "n_cols": 37
+    }
+  ],
+  "engine_versions": {
+    "src/r/data_prep_modules/marpor/0_load_marpor.R": "63f0bc77daa17d98687c5d5ddf97aa7f5f334a1aada7bed47c0077f8b049056d",
+    "src/r/data_prep_modules/marpor/99_create_final_dataset.R": "ae8c2f52a9fe4ef1ee4aa43001301abf5142c94347764f9096e9331129ba957e",
+    "src/r/data_prep_modules/marpor/2_bootstrap_manifesto_se.R": "9f20e1597c32e8b1d33e4f0f2def1cdbe7503866347f8d1bfc2a6a3fcf1b8c13",
+    "src/r/data_prep_modules/marpor/97_build_electoral_systems.R": "09e7d8cb7cb589788b8b315bd38c53903e59991898143ac1e5b42e49e35353bd"
+  }
+}

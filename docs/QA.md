@@ -115,7 +115,11 @@ This was worse than a missing check. Layer 6d is the documented pre-flight — *
 
 **Blind spot.** It verifies a module is *registered*, not that the checks it runs are *adequate*. A module can be registered and still be shallowly audited. It also cannot judge whether an exemption's reason is honest — exemptions are per-check (`exempt_from` / `still_required`) precisely so a module that can't be label-reconciled still can't quietly escape staleness checking.
 
-**Live soft findings.** All four exempted modules declare `freshness` as `still_required` but are absent from `.FRESHNESS_SURVEYS`, so their 8 artifacts are **not** staleness-checked. Reported rather than silently closed; the fix is a manifest per module.
+**Resolved 2026-07-29.** The four (then five, once `oecd_dac` appeared) exempt modules now emit manifests and are in `.FRESHNESS_SURVEYS`; all report FRESH. Layer 10 is clean.
+
+Closing that required fixing the invariant itself. Layer 10 originally asserted `.SUPPORTED_SURVEYS` **==** `.FRESHNESS_SURVEYS`; the correct rule is **⊆**. Freshness legitimately covers *more* than the survey checks, because staleness is the one failure every generated artifact is exposed to, while a non-survey module has no specs to reconcile. The dangerous direction is asymmetric and stays hard: a survey that is audited but absent from the pre-flight looks covered while its data silently rots. A freshness-only entry is allowed only when it is a registered exemption.
+
+It also required an extension to `write_manifest()`. Engine files were hardcoded to the four harmonize-engine paths; a non-survey module records **its own scripts** instead via the new `engine =` argument, since nothing in those modules calls `harmonize_all()` or `recoding.R` and recording them would mark all five STALE on every unrelated `recoding.R` edit. Default is unchanged, so every existing survey manifest is untouched.
 
 ---
 

@@ -137,3 +137,28 @@ cat(sprintf("  %s rows | %d roll-calls | %d–%d\n", format(nrow(votes), big.mar
             n_distinct(votes$rcid), min(votes$year, na.rm=TRUE), max(votes$year, na.rm=TRUE)))
 cat(sprintf("  important votes: %s\n", format(sum(votes$important_vote == 1, na.rm=TRUE), big.mark=",")))
 print(table(votes$vote, useNA = "ifany"))
+
+# ── Freshness manifest ──────────────────────────────────────────────────────
+# specs = character(): not a survey, no YAML harmonize specs.
+# engine = this module's own script, NOT the shared harmonize engine — nothing
+# here calls harmonize_all() or recoding.R, so recording those would mark this
+# module STALE on every unrelated recoding.R edit.
+#
+# ⚠️ The two raw inputs are DIFFERENT DEPOSIT VERSIONS (ideal points v38,
+# roll-calls v33 — see the header). Hashing both means a re-pull of either
+# vintage is caught.
+source(here("src", "r", "utils", "provenance.R"))
+write_manifest(
+  survey  = "unga",
+  inputs  = Filter(file.exists, c(
+    here("data", "unga", "raw", "dvn_lejuqz_v38", "Idealpointestimates1946-2025.tab"),
+    here("data", "unga", "raw", "dvn_lejuqz_v33_votes", "UNVotes-1.RData"))),
+  specs   = character(),
+  outputs = Filter(file.exists, c(
+    here("data", "processed", "unga_idealpoints.rds"),
+    here("data", "processed", "unga_idealpoints.parquet"),
+    here("data", "processed", "unga_votes.rds"),
+    here("data", "processed", "unga_votes.parquet"))),
+  engine  = "src/r/data_prep_modules/unga/99_create_final_dataset.R"
+)
+cat("\n  -> manifest:", here("outputs", "unga", "manifest.json"), "\n")

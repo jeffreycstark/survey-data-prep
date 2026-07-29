@@ -1,0 +1,33 @@
+{
+  "run_id": "20260729102046-4454",
+  "timestamp_utc": "2026-07-29T03:20:46Z",
+  "git_commit": "b0b7f8c",
+  "git_dirty": true,
+  "schema_version": 1,
+  "inputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/v-dem/raw/v15/V-Dem-CY-Full+Others-v15.rds",
+      "sha256": "be14224359e5f1a1428d5e5ecda4241fa57fc2c195222975c7113a590e7d81d5",
+      "n_rows": 27913
+    }
+  ],
+  "specs": [],
+  "outputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/vdem_core.rds",
+      "sha256": "3a37abd86ee3fb8255f7b81f7a8a69905259ed26e9a4eb6c095e9e49d2d0e825",
+      "n_rows": 27913,
+      "n_cols": 16
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/vdem_core.parquet",
+      "sha256": "8ef30a7f30b6fdf7b8896c559126e8561bdbe93c436e66863a4361eb3019f84d",
+      "n_rows": 27913,
+      "n_cols": 16
+    }
+  ],
+  "engine_versions": {
+    "src/r/data_prep_modules/vdem/0_load_vdem.R": "e4213ca19f921cfc7a27925e9b2132f31bc5353b0b5fdee036ace216a7988052",
+    "src/r/data_prep_modules/vdem/99_create_final_dataset.R": "35cabf5678f39e02c72843ca2bfe32f4541b53ae31e5067709ef313f4282fb03"
+  }
+}

@@ -114,3 +114,22 @@ cat(sprintf("\n✅ vdem_core saved: %s rows, %d columns\n",
             format(nrow(vdem_core), big.mark = ","),
             ncol(vdem_core)))
 cat(strrep("=", 70), "\n\n")
+
+# ── Freshness manifest ──────────────────────────────────────────────────────
+# specs = character(): V-Dem is a country-year panel, not a survey — no YAML
+# harmonize specs, no waves, no questionnaire.
+# engine = this module's own scripts, NOT the shared harmonize engine: nothing
+# here calls harmonize_all() or recoding.R, so recording those four hashes would
+# mark V-Dem STALE on every unrelated recoding.R edit.
+source(here("src", "r", "utils", "provenance.R"))
+write_manifest(
+  survey  = "vdem",
+  inputs  = Filter(file.exists,
+                   here("data", "v-dem", "raw", "v15",
+                        "V-Dem-CY-Full+Others-v15.rds")),
+  specs   = character(),
+  outputs = Filter(file.exists, c(rds_path, parquet_path)),
+  engine  = c("src/r/data_prep_modules/vdem/0_load_vdem.R",
+              "src/r/data_prep_modules/vdem/99_create_final_dataset.R")
+)
+cat("  -> manifest:", here("outputs", "vdem", "manifest.json"), "\n")

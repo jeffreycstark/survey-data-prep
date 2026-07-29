@@ -94,3 +94,41 @@ cat(sprintf("  BLM-usable rows: %s (%.1f%%)\n",
             100 * mean(out$blm_usable)))
 cat("  ->", here("data", "processed", "marpor_party_election.rds"), "\n")
 cat("  ->", here("data", "processed", "marpor_party_election.parquet"), "\n")
+
+# ── Freshness manifest ──────────────────────────────────────────────────────
+# Records SHA-256 of every input, output and engine file so
+# src/r/audit/06_check_freshness.R can answer "would a re-run change this?".
+#
+# specs = character(): MARPOR is not a survey and has no YAML harmonize specs.
+# engine = this module's OWN scripts, NOT the shared harmonize engine — nothing
+# here calls harmonize_all() or recoding.R, so recording those would mark this
+# module STALE on every unrelated recoding.R edit.
+#
+# ⚠️ Outputs are recorded only if they exist. This module builds three artifacts
+# across three scripts (99 -> party_election, 2 -> manifesto_se,
+# 97 -> electoral_systems), so run the full pipeline before relying on the
+# manifest; re-running 99 last refreshes it to cover all three.
+source(here("src", "r", "utils", "provenance.R"))
+
+.marpor_outputs <- c(
+  here("data", "processed", "marpor_party_election.rds"),
+  here("data", "processed", "marpor_party_election.parquet"),
+  here("data", "processed", "marpor_manifesto_se.rds"),
+  here("data", "processed", "electoral_systems.rds")
+)
+
+write_manifest(
+  survey  = "marpor",
+  inputs  = Filter(file.exists, c(
+    here("data", "marpor", "raw", MARPOR_RELEASE,
+         paste0(tolower(MARPOR_RELEASE), "_raw.rds")),
+    here("data", "des", "raw", "v5_0", "es_data-v5_0.csv"),
+    here("data", "processed", "clea_lc_20251015.RData"))),
+  specs   = character(),
+  outputs = Filter(file.exists, .marpor_outputs),
+  engine  = c("src/r/data_prep_modules/marpor/0_load_marpor.R",
+              "src/r/data_prep_modules/marpor/99_create_final_dataset.R",
+              "src/r/data_prep_modules/marpor/2_bootstrap_manifesto_se.R",
+              "src/r/data_prep_modules/marpor/97_build_electoral_systems.R")
+)
+cat("  -> manifest:", here("outputs", "marpor", "manifest.json"), "\n")

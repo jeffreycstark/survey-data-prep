@@ -1,0 +1,87 @@
+{
+  "run_id": "20260729102126-bf1b",
+  "timestamp_utc": "2026-07-29T03:21:26Z",
+  "git_commit": "b0b7f8c",
+  "git_dirty": true,
+  "schema_version": 1,
+  "inputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/cl_area_org.csv",
+      "sha256": "3780e514d8580eac0f978097390b8457dceda7bb7b56307633231c83161134c9"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_1960_1969.csv",
+      "sha256": "a8faf11d6205f00431fb60884aef50abe345c27e69e4206a8a717a79d66d502c"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_1970_1979.csv",
+      "sha256": "237550c80700e8cea2a30691209bc18c9e97f3b8ed6bc7145bcbd437522c6461"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_1980_1984.csv",
+      "sha256": "b349b3e08028e6f7d28af33a40543cc54102512472b66ea8657d8fdc64d45cd2"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_1985_1989.csv",
+      "sha256": "222a250e66f7a0c8dbf7554d24c30195f1fb5c5eac69d0bb547d277159279c9b"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_1990_1999.csv",
+      "sha256": "f97b1e508fcca871c4825ba3b3a6084561d614ac4834a96df3f776ae2b593417"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_2000_2009.csv",
+      "sha256": "f2eac673a2957c8c34de04631a352e3e65085496c1d64cc89584054eff2d7acc"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_2010_2019.csv",
+      "sha256": "6d1c06a92dbdb414662903f3bcad264bba1ac4b3e61b429cbfacd227d3000237"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac2a-2026-07-29/dac2a_2020_2024.csv",
+      "sha256": "751e02084bb1e7170600f3667296cdae9eea4bc9425f57530b0d92723b61b3a6"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_1970_1979.csv",
+      "sha256": "35bc72e255ad4421ef4c61ed3307cc25579c0e47c916a03de7c3ac4f9552f101"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_1980_1989.csv",
+      "sha256": "967ff662b119d4d61c57afb393d6e5cc55c0251c75e8b081eeb9750b00266864"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_1990_1999.csv",
+      "sha256": "6c622166d0849639f2d91928e765dec78c2c3c0e39eab8262d053790cbc96c3d"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_2000_2009.csv",
+      "sha256": "640f69cc6b7ecb92fa67fb22ccff9670b8d194706664667dcd5491e0ea9b2ed0"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_2010_2019.csv",
+      "sha256": "833f5e7b87c00fbb3951b18545ea923ed3a102626094640635f16edc4cf9c49c"
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/oecd-dac/raw/dac3a-2026-07-29/dac3a_2020_2024.csv",
+      "sha256": "7aa1eb8226c194f913e438b021a1fa4277997fe13f66862ab38d3d085f7c3115"
+    }
+  ],
+  "specs": [],
+  "outputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/dac_aid_bilateral.rds",
+      "sha256": "b29ac7f39c08f93b6e290cdec16f98dc3856d832703685ec95e9d8a8287cd60d",
+      "n_rows": 944968,
+      "n_cols": 14
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/dac_aid_bilateral.parquet",
+      "sha256": "48a2c5d2cc315bf21c9bc445a8b7aa14b3239662f0131aa38985f25b5a3a47bb",
+      "n_rows": 944968,
+      "n_cols": 14
+    }
+  ],
+  "engine_versions": {
+    "src/r/data_prep_modules/oecd_dac/99_create_final_dataset.R": "ee9e8ac0e0a95e7ef7143f31b34db105c2b034c3cf5b9e377886311c14f1422f"
+  }
+}

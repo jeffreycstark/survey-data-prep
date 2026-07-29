@@ -99,17 +99,30 @@ check_module_coverage <- function(module_dir      = MODULE_DIR,
                 soft = soft, config_error = TRUE))
 
   # ── 1. list drift (hard) ──────────────────────────────────────────────────
-  if (!identical(registered, freshness)) {
-    only_ra <- setdiff(registered, freshness)
-    only_fr <- setdiff(freshness, registered)
+  # The invariant is SUBSET, not equality: .SUPPORTED_SURVEYS ⊆ .FRESHNESS_SURVEYS.
+  #
+  # Equality was the original rule and it was wrong. Freshness legitimately
+  # covers more than the survey checks do — staleness is the one failure every
+  # generated artifact is exposed to, including the non-survey macro panels that
+  # have no YAML specs and so cannot be label-reconciled or gated. Those belong
+  # in the freshness list and NOT in .SUPPORTED_SURVEYS, which would make
+  # run_all attempt survey checks that cannot apply.
+  #
+  # The dangerous direction is the asymmetric one: a survey that IS audited but
+  # is absent from the pre-flight looks covered while its data can silently rot.
+  missing_fresh <- setdiff(registered, freshness)
+  if (length(missing_fresh)) {
     hard <- c(hard, sprintf(
-      paste0("audit source lists have DRIFTED — .SUPPORTED_SURVEYS vs .FRESHNESS_SURVEYS.",
-             " Only in run_all: %s. Only in freshness: %s.",
-             " A survey missing from the freshness list is skipped by the pre-flight",
-             " while still appearing audited elsewhere."),
-      if (length(only_ra)) paste(only_ra, collapse = ", ") else "(none)",
-      if (length(only_fr)) paste(only_fr, collapse = ", ") else "(none)"))
+      paste0("survey(s) in .SUPPORTED_SURVEYS but MISSING from .FRESHNESS_SURVEYS: %s.",
+             " They are audited but never staleness-checked — the pre-flight skips",
+             " them while every other layer reports them as covered."),
+      paste(missing_fresh, collapse = ", ")))
   }
+
+  # Freshness-only entries are legitimate ONLY if registered as exempt modules.
+  # An unexplained extra is a typo or a stale entry, and would make --all report
+  # SKIP for a survey nobody owns.
+  freshness_only <- setdiff(freshness, registered)
 
   # ── 2. module registration (hard) ─────────────────────────────────────────
   if (is.null(modules)) modules <- list_modules(module_dir)
@@ -118,6 +131,15 @@ check_module_coverage <- function(module_dir      = MODULE_DIR,
   if (file.exists(exemptions_path)) ex <- yaml::read_yaml(exemptions_path)
   exempt <- vapply(ex$exempt_modules %||% list(),
                    function(e) as.character(e$module), character(1))
+
+  unexplained <- setdiff(freshness_only, exempt)
+  if (length(unexplained)) {
+    hard <- c(hard, sprintf(
+      paste0("entr(y/ies) in .FRESHNESS_SURVEYS with no run_all registration and no",
+             " exemption: %s. Either a typo or a stale entry — --all would report",
+             " SKIP for something nobody owns."),
+      paste(unexplained, collapse = ", ")))
+  }
 
   unregistered <- setdiff(modules, c(registered, exempt))
   if (length(unregistered)) {

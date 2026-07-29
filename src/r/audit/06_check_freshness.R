@@ -59,10 +59,21 @@ suppressPackageStartupMessages({
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
-# Kept in sync with run_all.R's .SUPPORTED_SURVEYS.
+# MUST be a SUPERSET of run_all.R's .SUPPORTED_SURVEYS — enforced by
+# src/r/audit/07_module_coverage.R, not by hand.
+#
+# Freshness legitimately covers MORE than the survey checks do. Staleness is the
+# one failure every generated artifact is exposed to, including the non-survey
+# macro panels that have no YAML specs and therefore cannot be label-reconciled,
+# battery-checked or gated. Those modules appear here but NOT in
+# .SUPPORTED_SURVEYS, and are registered in
+# src/config/_audit/module_coverage_exemptions.yml.
 .FRESHNESS_SURVEYS <- c(
+  # YAML-spec surveys (mirror .SUPPORTED_SURVEYS)
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa"
+  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa",
+  # Non-survey modules: freshness-only (see exemptions YAML)
+  "vdem", "marpor", "unga", "unsc", "oecd_dac"
 )
 
 # Surveys whose pipeline lives directly in src/r/data_prep_modules/ rather
