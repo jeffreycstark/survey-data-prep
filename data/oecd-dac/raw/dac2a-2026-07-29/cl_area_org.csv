@@ -1,0 +1,661 @@
+code,name,parent,entity_type
+AUS,Australia,,country
+AUT,Austria,,country
+BEL,Belgium,,country
+CAN,Canada,,country
+CHL,Chile,,country
+COL,Colombia,,country
+CRI,Costa Rica,,country
+CZE,Czechia,,country
+DNK,Denmark,,country
+EST,Estonia,,country
+FIN,Finland,,country
+FRA,France,,country
+DEU,Germany,,country
+GRC,Greece,,country
+HUN,Hungary,,country
+ISL,Iceland,,country
+IRL,Ireland,,country
+ISR,Israel,,country
+ITA,Italy,,country
+JPN,Japan,,country
+KOR,Korea,,country
+LVA,Latvia,,country
+LTU,Lithuania,,country
+LUX,Luxembourg,,country
+MEX,Mexico,,country
+NLD,Netherlands,,country
+NZL,New Zealand,,country
+NOR,Norway,,country
+POL,Poland,,country
+PRT,Portugal,,country
+SVK,Slovak Republic,,country
+SVN,Slovenia,,country
+ESP,Spain,,country
+SWE,Sweden,,country
+CHE,Switzerland,,country
+TUR,Türkiye,,country
+GBR,United Kingdom,,country
+USA,United States,,country
+G4E,Major four European countries,,aggregate
+E4M,Major four euro area countries,,aggregate
+G7,G7,,aggregate
+G20,G20,,aggregate
+G20XEU,G20 excl. European Union,,aggregate
+G20OECD,G20 OECD countries,,aggregate
+G20XOECD,G20 non-OECD economies,,aggregate
+G20_A,G20 advanced economies,,aggregate
+G20_E,G20 emerging economies,,aggregate
+EA,Euro area,,aggregate
+EA00,Euro area (evolving composition),,aggregate
+EA11,Euro area (11 countries),,aggregate
+EA12,Euro area (12 countries),,aggregate
+EA13,Euro area (13 countries),,aggregate
+EA15,Euro area (15 countries),,aggregate
+EA16,Euro area (16 countries),,aggregate
+EA17,Euro area (17 countries),,aggregate
+EA18,Euro area (18 countries),,aggregate
+EA19,Euro area (19 countries),,aggregate
+EA20,Euro area (20 countries),,aggregate
+EA_X,Euro area unspecified,,aggregate
+EA00_X,Euro area (evolving composition) unspecified,,aggregate
+EU,European Union,,aggregate
+EU00,European Union (evolving composition),,aggregate
+EU15,European Union (15 countries),,aggregate
+EU25,European Union (25 countries),,aggregate
+EU25_REP,European Union (25 countries) average country,,aggregate
+EU27,European Union (27 countries),,aggregate
+EU28,European Union (28 countries),,aggregate
+EU27_2020,European Union (27 countries from 01/02/2020),,aggregate
+EU28XEU15,European Union 28 excluding European Union 15 countries,,aggregate
+EU_X,European Union unspecified,,aggregate
+EU00_X,European Union (evolving composition) unspecified,,aggregate
+EUOECD,European Union countries in OECD,,aggregate
+EU13OECD,European Union (13 countries) in OECD,,aggregate
+EU14OECD,European Union (14 countries) in OECD,,aggregate
+EU19OECD,European Union (19 countries) in OECD,,aggregate
+EU20OECD,European Union (20 countries) in OECD,,aggregate
+EU21OECD,European Union (21 countries) in OECD,,aggregate
+EU22OECD,European Union (22 countries) in OECD,,aggregate
+EU22OECD_2020,European Union (22 countries) in OECD (from 01/02/2020),,aggregate
+EU23OECD,European Union (23 countries) in OECD,,aggregate
+OECD,OECD,,aggregate
+OECD00,OECD (evolving composition),,aggregate
+OECD26,OECD (26 countries),,aggregate
+OECD30,OECD (30 countries),,aggregate
+OECD31,OECD (31 countries),,aggregate
+OECD34,OECD (34 countries),,aggregate
+OECD35,OECD (35 countries),,aggregate
+OECD36,OECD (36 countries),,aggregate
+OECD37,OECD (37 countries),,aggregate
+OECD38,OECD (38 countries),,aggregate
+OECDXEA,OECD excluding the euro area,,aggregate
+OECDXUSAJPNEA17,"OECD countries except USA, JPN and euro area",,aggregate
+OECDA,OECD America,,aggregate
+OECDS,OECD Asia,,aggregate
+OECDSO,OECD Asia Oceania,,aggregate
+OECDE,OECD Europe,,aggregate
+OECDXG7,OECD smaller countries,,aggregate
+OECD_X,OECD unspecified,,aggregate
+OECD00_X,OECD (evolving composition) unspecified,,aggregate
+OECD_REP,OECD average country,,aggregate
+WXOECD,Non-OECD economies,,aggregate
+WXOECDXCHN,Non-OECD economies excluding China,,aggregate
+AXOECD,Non-OECD America,,aggregate
+A2XOECD,Non-OECD Northern America,,aggregate
+A5XOECD,Non-OECD Central America and Caribbean,,aggregate
+A7XOECD,Non-OECD South America,,aggregate
+AXOECD_O,Other non-OECD America,,aggregate
+SXOECD,Non-OECD Asia,,aggregate
+S3_OXOECD,Non-OECD other Western Asia / Near and Middle East countries,,aggregate
+S_OXOECD,Non-OECD other Asia,,aggregate
+EXOECD,Non-OECD Europe,,aggregate
+OXOECD,Non-OECD Oceania,,aggregate
+AFG,Afghanistan,WXOECD,country
+ALA,Åland,WXOECD,country
+ALB,Albania,WXOECD,country
+DZA,Algeria,WXOECD,country
+ASM,American Samoa,WXOECD,country
+AGO,Angola,WXOECD,country
+AND,Andorra,WXOECD,country
+ATA,Antarctica,WXOECD,country
+AIA,Anguilla,WXOECD,country
+ATG,Antigua and Barbuda,WXOECD,country
+ARG,Argentina,WXOECD,country
+ARM,Armenia,WXOECD,country
+ABW,Aruba,WXOECD,country
+AZE,Azerbaijan,WXOECD,country
+BHS,Bahamas,WXOECD,country
+BHR,Bahrain,WXOECD,country
+GGY,Bailiwick of Guernsey,WXOECD,country
+BGD,Bangladesh,WXOECD,country
+BRB,Barbados,WXOECD,country
+BLR,Belarus,WXOECD,country
+BLZ,Belize,WXOECD,country
+BEN,Benin,WXOECD,country
+BMU,Bermuda,WXOECD,country
+BTN,Bhutan,WXOECD,country
+BOL,Bolivia,WXOECD,country
+BES,"Bonaire, Saba, Saint Eustatius",WXOECD,country
+BIH,Bosnia and Herzegovina,WXOECD,country
+BWA,Botswana,WXOECD,country
+BVT,Bouvet Island,WXOECD,country
+BRA,Brazil,WXOECD,country
+IOT,British Indian Ocean Territory,WXOECD,country
+VGB,British Virgin Islands,WXOECD,country
+BRN,Brunei Darussalam,WXOECD,country
+BGR,Bulgaria,WXOECD,country
+BFA,Burkina Faso,WXOECD,country
+BDI,Burundi,WXOECD,country
+CPV,Cabo Verde,WXOECD,country
+KHM,Cambodia,WXOECD,country
+CMR,Cameroon,WXOECD,country
+CYM,Cayman Islands,WXOECD,country
+CAF,Central African Republic,WXOECD,country
+TCD,Chad,WXOECD,country
+CHN,China (People’s Republic of),WXOECD,country
+CXR,Christmas Island,WXOECD,country
+CPT,Clipperton Island,WXOECD,country
+COM,Comoros,WXOECD,country
+CCK,Cocos (Keeling) Islands,WXOECD,country
+COG,Congo,WXOECD,country
+COK,Cook Islands,WXOECD,country
+CIV,Côte d’Ivoire,WXOECD,country
+HRV,Croatia,WXOECD,country
+CUB,Cuba,WXOECD,country
+CUW,Curaçao,WXOECD,country
+CYP,Cyprus,WXOECD,country
+PRK,Democratic People’s Republic of Korea,WXOECD,country
+COD,Democratic Republic of the Congo,WXOECD,country
+DJI,Djibouti,WXOECD,country
+DMA,Dominica,WXOECD,country
+DOM,Dominican Republic,WXOECD,country
+ECU,Ecuador,WXOECD,country
+EGY,Egypt,WXOECD,country
+SLV,El Salvador,WXOECD,country
+GNQ,Equatorial Guinea,WXOECD,country
+ERI,Eritrea,WXOECD,country
+SWZ,Eswatini,WXOECD,country
+ETH,Ethiopia,WXOECD,country
+FLK,Falkland Islands (Malvinas),WXOECD,country
+FRO,Faroe Islands,WXOECD,country
+FJI,Fiji,WXOECD,country
+GUF,French Guiana,WXOECD,country
+PYF,French Polynesia,WXOECD,country
+ATF,French Southern and Antarctic Lands,WXOECD,country
+GAB,Gabon,WXOECD,country
+GMB,Gambia,WXOECD,country
+GEO,Georgia,WXOECD,country
+GHA,Ghana,WXOECD,country
+GIB,Gibraltar,WXOECD,country
+GRL,Greenland,WXOECD,country
+GRD,Grenada,WXOECD,country
+GLP,Guadeloupe,WXOECD,country
+GUM,Guam,WXOECD,country
+GTM,Guatemala,WXOECD,country
+GIN,Guinea,WXOECD,country
+GNB,Guinea-Bissau,WXOECD,country
+GUY,Guyana,WXOECD,country
+HTI,Haiti,WXOECD,country
+HMD,Heard Island and McDonald Islands,WXOECD,country
+VAT,Holy See,WXOECD,country
+HND,Honduras,WXOECD,country
+HKG,Hong Kong (China),WXOECD,country
+IND,India,WXOECD,country
+IDN,Indonesia,WXOECD,country
+IRN,Iran,WXOECD,country
+IRQ,Iraq,WXOECD,country
+IMN,Isle of Man,WXOECD,country
+JAM,Jamaica,WXOECD,country
+JEY,Jersey,WXOECD,country
+JOR,Jordan,WXOECD,country
+KAZ,Kazakhstan,WXOECD,country
+KEN,Kenya,WXOECD,country
+KIR,Kiribati,WXOECD,country
+XKV,Kosovo,WXOECD,country
+KWT,Kuwait,WXOECD,country
+KGZ,Kyrgyzstan,WXOECD,country
+LAO,Lao People’s Democratic Republic,WXOECD,country
+LBN,Lebanon,WXOECD,country
+LSO,Lesotho,WXOECD,country
+LBR,Liberia,WXOECD,country
+LBY,Libya,WXOECD,country
+LIE,Liechtenstein,WXOECD,country
+MAC,Macau (China),WXOECD,country
+MDG,Madagascar,WXOECD,country
+MWI,Malawi,WXOECD,country
+MYS,Malaysia,WXOECD,country
+MDV,Maldives,WXOECD,country
+MLI,Mali,WXOECD,country
+MLT,Malta,WXOECD,country
+MHL,Marshall Islands,WXOECD,country
+MTQ,Martinique,WXOECD,country
+MRT,Mauritania,WXOECD,country
+MUS,Mauritius,WXOECD,country
+MYT,Mayotte,WXOECD,country
+FSM,Micronesia,WXOECD,country
+MDA,Moldova,WXOECD,country
+MCO,Monaco,WXOECD,country
+MNG,Mongolia,WXOECD,country
+MNE,Montenegro,WXOECD,country
+MSR,Montserrat,WXOECD,country
+MAR,Morocco,WXOECD,country
+MOZ,Mozambique,WXOECD,country
+MMR,Myanmar,WXOECD,country
+NAM,Namibia,WXOECD,country
+NRU,Nauru,WXOECD,country
+NPL,Nepal,WXOECD,country
+NCL,New Caledonia,WXOECD,country
+NIC,Nicaragua,WXOECD,country
+NER,Niger,WXOECD,country
+NGA,Nigeria,WXOECD,country
+NIU,Niue,WXOECD,country
+NFK,Norfolk Island,WXOECD,country
+MKD,North Macedonia,WXOECD,country
+MNP,Northern Mariana Islands,WXOECD,country
+OMN,Oman,WXOECD,country
+PAK,Pakistan,WXOECD,country
+PLW,Palau,WXOECD,country
+PSE,Palestinian Authority or West Bank and Gaza Strip,WXOECD,country
+PAN,Panama,WXOECD,country
+PNG,Papua New Guinea,WXOECD,country
+PRY,Paraguay,WXOECD,country
+PER,Peru,WXOECD,country
+PHL,Philippines,WXOECD,country
+PCN,Pitcairn,WXOECD,country
+PRI,Puerto Rico,WXOECD,country
+QAT,Qatar,WXOECD,country
+REU,Réunion,WXOECD,country
+ROU,Romania,WXOECD,country
+RUS,Russia,WXOECD,country
+RWA,Rwanda,WXOECD,country
+BLM,Saint Barthélemy,WXOECD,country
+SHN,Saint Helena,WXOECD,country
+KNA,Saint Kitts and Nevis,WXOECD,country
+MAF,Saint Martin,WXOECD,country
+LCA,Saint Lucia,WXOECD,country
+SPM,Saint Pierre and Miquelon,WXOECD,country
+VCT,Saint Vincent and the Grenadines,WXOECD,country
+WSM,Samoa,WXOECD,country
+SMR,San Marino,WXOECD,country
+STP,Sao Tome and Principe,WXOECD,country
+SAU,Saudi Arabia,WXOECD,country
+SEN,Senegal,WXOECD,country
+SRB,Serbia,WXOECD,country
+SYC,Seychelles,WXOECD,country
+SLE,Sierra Leone,WXOECD,country
+SGP,Singapore,WXOECD,country
+SXM,Sint Maarten,WXOECD,country
+SLB,Solomon Islands,WXOECD,country
+SOM,Somalia,WXOECD,country
+ZAF,South Africa,WXOECD,country
+SGS,South Georgia and the South Sandwich Islands,WXOECD,country
+SSD,South Sudan,WXOECD,country
+LKA,Sri Lanka,WXOECD,country
+SDN,Sudan,WXOECD,country
+SUR,Suriname,WXOECD,country
+SJM,Svalbard and Jan Mayen,WXOECD,country
+SYR,Syrian Arab Republic,WXOECD,country
+TWN,Chinese Taipei,WXOECD,country
+TJK,Tajikistan,WXOECD,country
+TZA,Tanzania,WXOECD,country
+THA,Thailand,WXOECD,country
+TLS,Timor-Leste,WXOECD,country
+TGO,Togo,WXOECD,country
+TKL,Tokelau,WXOECD,country
+TON,Tonga,WXOECD,country
+TTO,Trinidad and Tobago,WXOECD,country
+TUN,Tunisia,WXOECD,country
+TKM,Turkmenistan,WXOECD,country
+TCA,Turks and Caicos Islands,WXOECD,country
+TUV,Tuvalu,WXOECD,country
+UGA,Uganda,WXOECD,country
+UKR,Ukraine,WXOECD,country
+ARE,United Arab Emirates,WXOECD,country
+UMI,United States Minor Outlying Islands,WXOECD,country
+VIR,United States Virgin Islands,WXOECD,country
+URY,Uruguay,WXOECD,country
+UZB,Uzbekistan,WXOECD,country
+VUT,Vanuatu,WXOECD,country
+VEN,Venezuela,WXOECD,country
+VNM,Viet Nam,WXOECD,country
+WLF,Wallis and Futuna,WXOECD,country
+ESH,Western Sahara,WXOECD,country
+YEM,Yemen,WXOECD,country
+ZMB,Zambia,WXOECD,country
+ZWE,Zimbabwe,WXOECD,country
+WXEU15,Extra-European Union (15 countries),,aggregate
+WXEU25,Extra-European Union (25 countries),,aggregate
+WXEU27,Extra-European Union (27 countries),,aggregate
+WXEU28,Extra-European Union (28 countries),,aggregate
+WXEU27_2020,Extra-European Union (27 countries from 01/02/2020),,aggregate
+YAR_F,Former Arab Republic of Yemen,,aggregate
+BEL_LUX,Belgo-Luxembourg Economic Union,,aggregate
+CSK_F,Former Czechoslovakia,,aggregate
+DDR_F,Former Democratic Republic of Germany,,aggregate
+VDR_F,Former Democratic Republic of Viet Nam,,aggregate
+YMD_F,Former Democratic Yemen,,aggregate
+ETH_F,Former Ethiopia,,aggregate
+DEU_F,Former Federal Republic of Germany,,aggregate
+ANT_F,Former Netherlands Antilles,,aggregate
+ANT_F_ABW,Former Netherlands Antilles and Aruba,,aggregate
+PCI_F,Former Pacific Islands (Trust Territory),,aggregate
+PCZ_F,Former Panama Canal Zone,,aggregate
+RNY_F,Former Rhodesia Nyas,,aggregate
+SCG_F,Former Serbia and Montenegro,,aggregate
+TZA_F,Former Tanganyika,,aggregate
+SUN_F,Former USSR,,aggregate
+YUG_F,Former Yugoslavia,,aggregate
+SFRY_X,States ex-Yugoslavia unspecified,,aggregate
+ACP,ACP,,country
+AES,Advanced economies,,country
+APEC,APEC,,aggregate
+ASEAN,ASEAN,,aggregate
+CEEC,CEEC,,aggregate
+CIS,CIS,,country
+DAE,Dynamic Asian economies,,country
+EMES,Emerging market economies,,aggregate
+EEA,EEA,,country
+GULF,Gulf Arabian countries,,aggregate
+DAE_IND_IDN,Main industrialised Asia,,aggregate
+A5M,Major five Asia economies,,aggregate
+MERCOSUR,MERCOSUR,,aggregate
+NAFTA,NAFTA,,aggregate
+OPEC,OPEC,,aggregate
+OIL_O,Other major oil producers,,aggregate
+OIL_SAU_O,Other oil producers,,aggregate
+SAARC,SAARC,,aggregate
+SDR,SDR,,country
+EAC,East African Community,,country
+DAC,DAC countries,,aggregate
+DACEU,DAC EU countries,,aggregate
+WXDAC,Non-DAC countries,,aggregate
+ODA,ODA recipient countries,,country
+ODAA,ODA recipient countries - America,,aggregate
+ODAF,ODA recipient countries - Africa,,aggregate
+ODAE,ODA recipient countries - Europe,,aggregate
+ODAO,ODA recipient countries - Oceania,,aggregate
+ODAS,ODA recipients countries - Asia,,aggregate
+LDC,Least developed countries,,country
+LLDC,Land locked developing countries,,aggregate
+SIDS,Small island developing states,,aggregate
+DPGC,Developing countries,,aggregate
+DPGC_X,Developing countries unspecified,,aggregate
+DPDC,Developed countries,,aggregate
+MADCT,More advanced developed countries and territories,,aggregate
+MADCT_X,More advanced developed countries and territories unspecified,,aggregate
+HICS,High income countries,,aggregate
+UMIC,Upper-middle income countries,,aggregate
+LMIC,Lower-middle income countries,,aggregate
+OLIC,Other low income countries,,aggregate
+INC_X,Countries unallocated by income,,aggregate
+HICSWB,High income countries (World Bank),,aggregate
+UMICWB,Upper-middle income countries (World Bank),,aggregate
+LMICWB,Lower-middle income countries (World Bank),,aggregate
+OLICWB,Low income countries (World Bank),,aggregate
+INCWB_X,Countries not classified by the World Bank,,aggregate
+HIPC,Heavily-indebted poor countries,,aggregate
+FSCAC,Contexts in high and extreme fragility,,aggregate
+WBA,World aviation bunkers,,country
+WBM,World maritime bunkers,,country
+WB,World maritime and aviation bunkers,,aggregate
+FZ,Free zones,,aggregate
+FZ_D,Divided zones,,aggregate
+HIGH_SEAS,High seas,,aggregate
+IEA,IEA Total,,country
+IEAA,IEA Americas,,aggregate
+IEAOS,IEA Asia Oceania,,aggregate
+IEAXMEX,IEA Total (excl. Mexico),,aggregate
+IEAE,IEA Europe,,aggregate
+IEA_ACC,IEA and Accession/Association countries,,aggregate
+ANNEX1,Annex I of the United Nations Framework Convention on Climate Change Parties,,aggregate
+WXANNEX1,"Non-Annex I of the United Nations Framework Convention on Climate 
+Change Parties",,aggregate
+ANNEX2,Annex II of the United Nations Framework Convention on Climate Change Parties,,aggregate
+ANNEX2A2,Annex II of the United Nations Framework Convention on Climate Change North America Parties,,aggregate
+ANNEX2E,Annex II of the United Nations Framework Convention on Climate Change Europe Parties,,aggregate
+ANNEX2OS,Annex II of the United Nations Framework Convention on Climate Change Asia Oceania Parties,,aggregate
+IPAC,International Programme for Action on Climate Parties,,aggregate
+OECD_KEY_PART,OECD Key Partners,,aggregate
+AU,African Union,,aggregate
+INDUS,Indus Basin,,aggregate
+MKNG,Mekong Delta,,aggregate
+A,America,,aggregate
+A2,Northern America,,aggregate
+A2_X,Northern America unspecified,,aggregate
+A3,Central America,,aggregate
+A2_A3_X,Northern and Central America unspecified,,aggregate
+A3_X,Central America unspecified,,aggregate
+A4,Caribbean,,aggregate
+A4_X,Caribbean unspecified,,aggregate
+A5,Central America and the Caribbean,,aggregate
+A5_X,Central America and the Caribbean unspecified,,aggregate
+A5_A7,South and Central America,,aggregate
+A7,South America,,aggregate
+A7_X,South America unspecified,,aggregate
+A8,Latin America,,aggregate
+A8_M,Main Latin American countries,,aggregate
+A9,Latin America and the Caribbean,,aggregate
+A9_X,Latin America and the Caribbean unspecified,,aggregate
+A_X,America unspecified,,aggregate
+A_O,Other America,,aggregate
+E,Europe,,aggregate
+E2,Eastern Europe,,aggregate
+E3,Northern Europe,,aggregate
+E4,Southern Europe,,aggregate
+E5,Western Europe,,aggregate
+E_X,Europe unspecified,,aggregate
+E_O,Other Europe,,aggregate
+F,Africa,,aggregate
+F3,Eastern Africa,,aggregate
+F3_X,Eastern Africa unspecified,,aggregate
+F4,Northern Africa,,aggregate
+F4_X,Northern Africa unspecified,,aggregate
+F5,Middle Africa,,aggregate
+F5_X,Middle Africa unspecified,,aggregate
+F6,Sub-Saharan Africa,,aggregate
+F6_X,Sub-Saharan Africa unspecified,,aggregate
+F7,Southern Africa,,aggregate
+F7_X,Southern Africa unspecified,,aggregate
+F8,Western Africa,,aggregate
+F8_X,Western Africa unspecified,,aggregate
+F97,Middle East,,aggregate
+F97_X,Middle East unspecified,,aggregate
+F98,Middle East and North Africa,,aggregate
+F_X,Africa unspecified,,aggregate
+F_O,Other Africa,,aggregate
+O,Oceania,,aggregate
+O6,Australia and New Zealand,,aggregate
+O7,Melanesia,,aggregate
+O7_X,Melanesia unspecified,,aggregate
+O8,Micronesia,,aggregate
+O8_X,Micronesia unspecified,,aggregate
+O9,Polynesia,,aggregate
+O9_X,Polynesia unspecified,,aggregate
+O_X,Oceania unspecified,,aggregate
+O_O,Other Oceania,,aggregate
+S,Asia,,aggregate
+S2,Eastern Asia,,aggregate
+S2_S8,Eastern and South-eastern Asia,,aggregate
+S3,Western Asia / Near and Middle East countries,,aggregate
+S3_O,Other Western Asia / Near and Middle East countries,,aggregate
+S3_X,Western Asia unspecified,,aggregate
+S4,Central Asia,,aggregate
+S4_X,Central Asia unspecified,,aggregate
+S4_S7,Southern and Central Asia,,aggregate
+S4_S7_X,Southern and Central Asia unspecified,,aggregate
+S7,Southern Asia,,aggregate
+S7_X,Southern Asia unspecified,,aggregate
+S8,South-eastern Asia,,aggregate
+S97,Far East Asia,,aggregate
+S97_X,Far East Asia unspecified,,aggregate
+S_X,Asia unspecified,,aggregate
+S_O,Other Asia,,aggregate
+W_O,Other countries,,aggregate
+W_O_X,Other countries unspecified,,aggregate
+WXTIVA,Non-target TiVA countries,,aggregate
+W,World,,aggregate
+W_CF,World confidential,,aggregate
+W_IO,World and international organisations,,aggregate
+W_X,World unspecified,,aggregate
+IO,International organisations,,aggregate
+D,Domestic (home or reference area),,aggregate
+WXD,Rest of the world,,country
+ALLD,Official donors,,aggregate
+ALLM,Multilaterals organisations,,aggregate
+ALLR,All recipients,,aggregate
+ALLMR,All multilateral recipients,,aggregate
+4EU001,EU Institutions,ALLM,multilateral
+4EU002,European Commission [EC],ALLMR,multilateral
+4EU003,European Development Fund [EDF],ALLMR,multilateral
+4EU004,European Investment Bank [EIB],ALLMR,multilateral
+4EU999,Other EU institutions,ALLMR,multilateral
+5IMF0,International Monetary Fund,ALLM,multilateral
+5IMF01,International Monetary Fund [IMF],5IMF0,multilateral
+5IMF02,IMF Concessional Trust Funds,5IMF0,multilateral
+5IMF03,IMF Resilience and Sustainability Trust,5IMF0,multilateral
+5RDB0,Regional Development Banks,ALLM,multilateral
+5AFDB0,African Development Bank,5RDB0,multilateral
+5AFDB001,African Development Bank [AfDB],5AFDB0,multilateral
+5AFDB002,African Development Fund [AfDF],5AFDB0,multilateral
+5ASDB0,Asian Development Bank,5RDB0,multilateral
+5ASDB01,Asian Development Bank [AsDB],5ASDB0,multilateral
+5ASDB02,AsDB Special Funds,5ASDB0,multilateral
+5IDB0,Inter-American Development Bank,5RDB0,multilateral
+5IDB001,Inter-American Development Bank [IDB],5IDB0,multilateral
+5IDB002,IDB Special Oper. Fund,5IDB0,multilateral
+5IDB003,IDB Invest,5IDB0,multilateral
+9OTH002,Arab Bank for Economic Development in Africa [BADEA],5RDB0,multilateral
+5RDB001,Asian Infrastructure Investment Bank [AIIB],5RDB0,multilateral
+5RDB002,Black Sea Trade &amp; Development Bank [BSTDB],5RDB0,multilateral
+5RDB003,Central American Bank for Economic Integration [CABEI],5RDB0,multilateral
+5RDB004,Caribbean Development Bank [CarDB],5RDB0,multilateral
+5RDB005,Council of Europe Development Bank [CEB],5RDB0,multilateral
+5RDB006,Development Bank of Latin America [CAF],5RDB0,multilateral
+5RDB007,European Bank for Reconstruction and Development [EBRD],5RDB0,multilateral
+5RDB008,International Investment Bank [IIB],5RDB0,multilateral
+5RDB009,Islamic Development Bank [IsDB],5RDB0,multilateral
+5RDB010,New Development Bank [NDB],5RDB0,multilateral
+5RDB011,North American Development Bank [NADB],5RDB0,multilateral
+5RDB999,Other Regional Banks,5RDB0,multilateral
+1UN0,United Nations,ALLM,multilateral
+1UN001,Central Emergency Response Fund [CERF],1UN0,multilateral
+1UN002,COVID-19 Response and Recovery Multi-Partner Trust Fund [UN COVID-19 MPTF],1UN0,multilateral
+1UN003,Food and Agriculture Organisation [FAO],1UN0,multilateral
+1UN004,IFAD,1UN0,multilateral
+1UN005,International Atomic Energy Agency [IAEA],1UN0,multilateral
+1UN006,International Labour Organisation [ILO],1UN0,multilateral
+1UN007,Joint Sustainable Development Goals Fund [Joint SDG Fund],1UN0,multilateral
+1UN008,UN Capital Development Fund [UNCDF],1UN0,multilateral
+1UN030,UN Development Coordination Office,1UN0,multilateral
+1UN031,UN Economic and Social Commission for Western Asia,1UN0,multilateral
+1UN009,UN Fund For Congo,ALLMR,multilateral
+1UN010,UN Institute for Disarmament Research [UNIDIR],1UN0,multilateral
+1UN032,UN Office on Drugs and Crime,1UN0,multilateral
+1UN011,UN Peacebuilding Fund [UNPBF],1UN0,multilateral
+1UN012,UN Women,1UN0,multilateral
+1UN013,UNAIDS,1UN0,multilateral
+1UN014,UNDP,1UN0,multilateral
+1UN015,UNECE,1UN0,multilateral
+1UN016,UNEP,1UN0,multilateral
+1UN017,UNFPA,1UN0,multilateral
+1UN018,UNHCR,1UN0,multilateral
+1UN019,UNICEF,1UN0,multilateral
+1UN020,United Nations Conference on Trade and Development [UNCTAD],1UN0,multilateral
+1UN021,United Nations Industrial Development Organization [UNIDO],1UN0,multilateral
+1UN022,UNRWA,1UN0,multilateral
+1UN023,UNTA,1UN0,multilateral
+1UN024,WFP,1UN0,multilateral
+1UN025,WHO-Strategic Preparedness and Response Plan [SPRP],1UN0,multilateral
+1UN026,World Health Organisation [WHO],1UN0,multilateral
+1UN027,World Tourism Organisation [UNWTO],1UN0,multilateral
+1UN028,World Trade Organisation,1UN0,multilateral
+1UN029,WTO - International Trade Centre [ITC],1UN0,multilateral
+1UN999,Other UN,ALLMR,multilateral
+5WBG0,World Bank Group,ALLM,multilateral
+5WB0,World Bank,5WBG0,multilateral
+5WB001,International Bank for Reconstruction and Development [IBRD],5WB0,multilateral
+5WB002,International Development Association [IDA],5WB0,multilateral
+5WB003,IDA-MDRI,5WB0,multilateral
+5WB004,Multilateral Investment Guarantee Agency [MIGA],5WB0,multilateral
+5WBG002,International Finance Corporation [IFC],5WBG0,multilateral
+5WBG003,Other World Bank (AMCs),5WBG0,multilateral
+9OTH0,Other multilateral organisations,ALLM,multilateral
+9OTH001,Adaptation Fund,9OTH0,multilateral
+9OTH003,Arab Fund (AFESD),9OTH0,multilateral
+9OTH004,Asian Forest Cooperation Organisation [AFoCO],9OTH0,multilateral
+9OTH005,Center of Excellence in Finance [CEF],9OTH0,multilateral
+9OTH024,CGIAR,9OTH0,multilateral
+9OTH006,Climate Investment Funds [CIF],9OTH0,multilateral
+9OTH007,Credit Guarantee and Investment Facility,9OTH0,multilateral
+9OTH008,Eurasian Fund for Stabilization and Development [EFSD],9OTH0,multilateral
+9OTH009,Global Alliance for Vaccines and Immunization [GAVI],9OTH0,multilateral
+9OTH010,Global Energy Efficiency and Renewable Energy Fund,9OTH0,multilateral
+9OTH011,Global Environment Facility [GEF],9OTH0,multilateral
+9OTH012,Global Fund,9OTH0,multilateral
+9OTH013,Global Green Growth Institute [GGGI],9OTH0,multilateral
+9OTH014,Global Partnership for Education [GPE],9OTH0,multilateral
+9OTH015,Green Climate Fund [GCF],9OTH0,multilateral
+9OTH016,International Centre for Genetic Engineering and Biotechnology [ICGEB],9OTH0,multilateral
+9OTH017,International Commission on Missing Persons [ICMP],9OTH0,multilateral
+9OTH018,Montreal Protocol,9OTH0,multilateral
+9OTH019,Nordic Development Fund [NDF],9OTH0,multilateral
+9OTH020,OPEC Fund for International Development [OPEC Fund],9OTH0,multilateral
+9OTH021,OSCE,9OTH0,multilateral
+9OTH022,Private Infrastructure Development Group,9OTH0,multilateral
+9OTH023,World Organisation for Animal Health [WOAH],9OTH0,multilateral
+9OTH998,Other Multilateral,ALLMR,multilateral
+9OTH999,Other Multilaterals,9OTH0,multilateral
+9PRIV0,Private Donors,,multilateral
+9PRIV1637,Arcadia,9PRIV0,multilateral
+9PRIV1625,Arcus Foundation,9PRIV0,multilateral
+9PRIV1646,Bezos Earth Fund,9PRIV0,multilateral
+9PRIV1640,Bloomberg Family Foundation,9PRIV0,multilateral
+9PRIV1620,Carnegie Corporation of New York,9PRIV0,multilateral
+9PRIV1645,CHANEL Foundation,9PRIV0,multilateral
+9PRIV1614,Charity Projects Ltd (Comic Relief),9PRIV0,multilateral
+9PRIV1615,Children's Investment Fund Foundation,9PRIV0,multilateral
+9PRIV1632,Citi Foundation,9PRIV0,multilateral
+9PRIV1617,Conrad N. Hilton Foundation,9PRIV0,multilateral
+9PRIV1618,David and Lucile Packard Foundation,9PRIV0,multilateral
+9PRIV1644,Fondation Botnar,9PRIV0,multilateral
+9PRIV1627,Ford Foundation,9PRIV0,multilateral
+9PRIV1601,Gates Foundation,9PRIV0,multilateral
+9PRIV1616,Gatsby Charitable Foundation,9PRIV0,multilateral
+9PRIV1650,Good Ventures Foundation,9PRIV0,multilateral
+9PRIV1626,Gordon and Betty Moore Foundation,9PRIV0,multilateral
+9PRIV1612,H&amp;M Foundation,9PRIV0,multilateral
+9PRIV1642,Howard G. Buffett Foundation,9PRIV0,multilateral
+9PRIV1608,IKEA Foundation,9PRIV0,multilateral
+9PRIV1636,Jacobs Foundation,9PRIV0,multilateral
+9PRIV1619,John D. and Catherine T. MacArthur Foundation,9PRIV0,multilateral
+9PRIV1639,La Caixa Banking Foundation,9PRIV0,multilateral
+9PRIV1613,Laudes Foundation,9PRIV0,multilateral
+9PRIV1633,LEGO Foundation,9PRIV0,multilateral
+9PRIV1648,Leona M. and Harry B. Helmsley Charitable Trust,9PRIV0,multilateral
+9PRIV1638,Margaret A. Cargill Foundation,9PRIV0,multilateral
+9PRIV1606,Mastercard Foundation,9PRIV0,multilateral
+9PRIV1610,MAVA Foundation,9PRIV0,multilateral
+9PRIV1631,McKnight Foundation,9PRIV0,multilateral
+9PRIV1605,MetLife Foundation,9PRIV0,multilateral
+9PRIV1621,Michael &amp; Susan Dell Foundation,9PRIV0,multilateral
+9PRIV1649,Novo Nordisk Foundation,9PRIV0,multilateral
+9PRIV1611,Oak Foundation,9PRIV0,multilateral
+9PRIV1622,"Omidyar Network Fund, Inc.",9PRIV0,multilateral
+9PRIV1643,Open Society Foundations,9PRIV0,multilateral
+9PRIV1623,Rockefeller Foundation,9PRIV0,multilateral
+9PRIV1641,Susan T. Buffett Foundation,9PRIV0,multilateral
+9PRIV1629,UBS Optimus Foundation,9PRIV0,multilateral
+9PRIV1609,Van Leer Foundation,9PRIV0,multilateral
+9PRIV1628,Wellcome Trust,9PRIV0,multilateral
+9PRIV1624,William and Flora Hewlett Foundation,9PRIV0,multilateral
+9PRIV1630,World Diabetes Foundation,9PRIV0,multilateral
+9PLG0,Postcode Lottery Group,9PRIV0,multilateral
+9PLG0_NL,Dutch Postcode Lottery,9PLG0,multilateral
+9PLG0_DE,German Postcode Lottery,9PLG0,multilateral
+9PLG0_NO,Norwegian Postcode Lottery,9PLG0,multilateral
+9PLG0_GB,People's Postcode Lottery,9PLG0,multilateral
+9PLG0_SE,Swedish Postcode Lottery,9PLG0,multilateral
+DAC_EC,DAC Members,,aggregate
+DACEU_EC,DAC EU countries and EU Institutions,,aggregate
+_Z,Not applicable,,aggregate

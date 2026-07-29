@@ -172,6 +172,12 @@ data/external/
 # V-Dem raw data (large RDS files, refreshable from V-Dem website)
 data/v-dem/raw/**/*.rds
 data/marpor/raw/**/*.rds
+# OECD DAC bulk extracts (141 MB across DAC2A + DAC3A, refreshable from the SDMX
+# endpoint recorded in each folder's RETRIEVED.txt). The provenance files —
+# RETRIEVED.txt and the cl_area_org.csv codelist — ARE tracked, so a fresh clone
+# can reproduce the download exactly without carrying the payload.
+data/oecd-dac/raw/**/dac2a_*.csv
+data/oecd-dac/raw/**/dac3a_*.csv
 
 # ── Pipeline outputs (generated, not source data) ─────────────────────────────
 # Per-wave and final harmonized datasets

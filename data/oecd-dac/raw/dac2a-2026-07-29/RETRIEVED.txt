@@ -1,0 +1,9 @@
+2026-07-29
+Source : OECD SDMX, https://sdmx.oecd.org/public/rest/data/OECD.DCD.FSD,DSD_DAC2@DF_DAC2A,1.0/
+Key    : ..206+305.USD.Q+V   (all donors . all recipients . MEASURE . USD . price base)
+         MEASURE 206 = ODA disbursements (net), 305 = ODA commitments
+         PRICE_BASE Q = constant (BASE_PER 2022), V = current
+Coverage: 1960-2022. 2023 and 2024 return HTTP 404 -- not yet published in DAC2A.
+NOTE   : the endpoint 403s on default curl/python User-Agents; a browser UA is required.
+         curl also truncates large responses SILENTLY at HTTP 200 -- chunks must be
+         validated for ragged rows and year completeness after download.

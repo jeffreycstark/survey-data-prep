@@ -166,5 +166,51 @@ cat(sprintf("     +10 complete: %3d   (ideal-point outcome: %3d, delta %+d)\n",
             sum(v10$complete), n10, sum(v10$complete) - n10))
 cat("     If both outcomes are co-primary, the binding N is the smaller figure.\n")
 
-cat("\n[3] aid coverage overlap    — BLOCKED, deliverable 2.4 not built\n")
-cat("[4] crosswalk unmatched rows — BLOCKED, §3 crosswalk not built\n\n")
+## criterion 3 — aid coverage overlap -----------------------------------------
+# "Does the aid series cover the same country-year windows, and from what year
+#  does it become dense rather than patchy?"
+#
+# Density is measured on BILATERAL donor -> BILATERAL recipient flows only.
+# Aggregate rows (ALLD, DAC, G7, …) are sums of other rows and would inflate any
+# count several times over.
+aid_path <- here("data", "processed", "dac_aid_bilateral.rds")
+if (!file.exists(aid_path)) {
+  cat("\n[3] aid coverage overlap — BLOCKED, deliverable 2.4 not built\n")
+} else {
+  aid <- readRDS(aid_path) %>%
+    filter(donor_type == "bilateral", recipient_type == "bilateral",
+           flow_type == "disbursement")
+
+  cat(sprintf("\n[3] aid coverage (DAC2a bilateral disbursements, %d–%d)\n",
+              min(aid$year), max(aid$year)))
+
+  # recipients receiving from >=1 donor in a year = "covered"
+  dens <- aid %>%
+    filter(!is.na(oda_usd_current)) %>%
+    group_by(year) %>%
+    summarise(recipients = n_distinct(recipient_iso3),
+              donors     = n_distinct(donor_iso3), .groups = "drop")
+  first_dense <- dens %>% filter(recipients >= 100) %>% slice_min(year, n = 1) %>% pull(year)
+  cat(sprintf("    recipients covered: %d (%d) -> %d (%d)\n",
+              dens$recipients[1], dens$year[1],
+              dens$recipients[nrow(dens)], dens$year[nrow(dens)]))
+  cat(sprintf("    becomes DENSE (>=100 recipients/yr) from: %s\n",
+              ifelse(length(first_dense), as.character(first_dense), "never")))
+
+  # overlap with the events the gate actually rests on
+  aid_cy <- aid %>% filter(!is.na(oda_usd_current)) %>% distinct(recipient_iso3, year)
+  ov <- tm %>%
+    filter(term_end_year + 5 <= min(end_year, max(aid$year))) %>%
+    rowwise() %>%
+    mutate(n_aid = sum(aid_cy$recipient_iso3 == country_text_id &
+                       aid_cy$year >  term_end_year &
+                       aid_cy$year <= term_end_year + 5)) %>%
+    ungroup()
+  cat(sprintf("    exits with a COMPLETE +5 AID window : %d of %d\n",
+              sum(ov$n_aid == 5), nrow(ov)))
+  cat(sprintf("    exits with NO post-exit aid at all  : %d\n", sum(ov$n_aid == 0)))
+  cat("    (states with zero aid rows are typically DONORS, not recipients —\n")
+  cat("     a UNSC member that never received ODA is a real category, not a gap.)\n")
+}
+
+cat("\n[4] crosswalk unmatched rows — BLOCKED, §3 crosswalk not built\n\n")
