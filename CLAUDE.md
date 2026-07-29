@@ -23,10 +23,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Global Corruption Barometer (GCB) | Scaffold | 22 vars, 1 edition (Asia 2020), 19,416 resp, 17 countries; region-extensible | [docs/surveys/gcb.md](docs/surveys/gcb.md) |
 | V-Dem v15 | Scaffold | Country-year panel, 202 countries, 1789–2024 | [docs/surveys/vdem.md](docs/surveys/vdem.md) |
 | MARPOR / CMP (MPDS2025a) | Scaffold | **party × election** panel (NOT individual respondents), 5,285 manifestos, 67 countries, 822 elections, 1920–2025 | [docs/surveys/marpor.md](docs/surveys/marpor.md) |
+| UNGA voting (Bailey–Strezhnev–Voeten) | Scaffold | **country × year** ideal points (11,610 rows, 198 states, 1946–2025) + **country × roll-call** votes (1,283,746 rows, 6,551 roll-calls, 1946–2022). NOT respondents. | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |
+| UNSC non-permanent membership | Scaffold | **country × term** (296 terms) + country-year (590 rows), 1970–2028, P5 excluded. NOT respondents. **Second source not yet reconciled.** | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |
 
 ⚠️ KIPA Corruption is **NOT a general-population survey** — corporate employees + self-employed with gov-business contact. Cannot row-bind with KGSS/KAMOS/KIPA-social.
 
-⚠️ **MARPOR and V-Dem are not surveys.** Their unit of observation is party × election and country × year respectively — there are no respondents, no questionnaire and no waves. They therefore have **no verbatim question dictionary** and **no YAML harmonize spec**, and neither absence is a gap. Do not row-bind them with the respondent-level surveys above.
+⚠️ **MARPOR, V-Dem, UNGA and UNSC are not surveys.** Their units of observation are party × election, country × year, country × roll-call and country × term — there are no respondents, no questionnaire and no waves. They therefore have **no verbatim question dictionary** and **no YAML harmonize spec**, and neither absence is a gap. Do not row-bind them with the respondent-level surveys above.
+
+⚠️ **The two UNGA files come from different versions of one Dataverse deposit** (ideal points v38.0, votes v33.0), so their coverage ends in different years — 2025 and 2022. That is version skew, not a property of the data.
 
 ---
 
