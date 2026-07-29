@@ -144,20 +144,82 @@ crosswalk still has to reconcile OECD DAC codes and is outstanding.
 
 ---
 
+## Deliverable 2.4 — `dac_aid_bilateral.{rds,parquet}` ✅
+
+**944,968 rows | 1960–2024 | donor × recipient × year.** Built by
+`src/r/data_prep_modules/oecd_dac/99_create_final_dataset.R`.
+
+| | |
+|---|---|
+| Bilateral donors | 50 |
+| Multilateral | 125 |
+| Aggregates | 9 |
+| Disbursements | 525,762 |
+| Commitments | 419,206 |
+| Bilateral→bilateral rows | 258,917 |
+
+Decisions of 2026-07-29: Table 2a primary with CRS alongside; multilaterals
+retained and flagged but excluded from weighting; base year as the release ships.
+
+### ⚠️ `donor_type == "aggregate"` rows are SUMS of other rows
+
+`ALLD` (all official donors), `DAC`, `G7`, `DACEU`… Filter to
+`donor_type == "bilateral"` before summing anything, or totals are
+double-counted several times over.
+
+### ⚠️ DAC2A is disbursements only — commitments come from DAC3A
+
+MEASURE 305 is declared in the DAC2A codelist but returns `NoResultsFound` for
+every query. Commitments are therefore pulled from **DAC3A** ("Aid (ODA)
+commitments to countries and regions"), same donor × recipient × year
+granularity, starting **1970** — exactly the paper's universe. Better than
+sourcing commitments from CRS, which is activity-level. CRS is still wanted for
+sector detail and is **not yet pulled**.
+
+### ⚠️ The two tables use DIFFERENT constant-price base years
+
+**DAC2A is based 2022; DAC3A is based 2024.** `oda_usd_const` is therefore **not
+comparable across `source_table`**, and differencing a commitment against a
+disbursement in constant terms is wrong without re-basing. `const_base_year`
+ships per row so this cannot happen silently. `oda_usd_current` **is** comparable
+across both.
+
+### ⚠️ Acquisition hazard — silent truncation
+
+The SDMX endpoint returns **HTTP 200 on truncated responses**, and curl writes
+the partial body without error. Three of eight DAC2A chunks were silently short
+on the first pull: one had lost **57%** of its rows, and the 1980s came back as
+12 rows. The loader now **fails on any year gap**. The endpoint also 403s on
+default curl/python User-Agents and needs a browser UA — the same trap already
+documented for un.org.
+
+Raw extracts (141 MB) are gitignored; `RETRIEVED.txt` and `cl_area_org.csv` are
+tracked so the pull is reproducible.
+
+### Gate criterion 3 — aid coverage **PASS**
+
+Bilateral aid is **dense from 1961** (≥100 recipients/year), so the paper's
+entire 1970+ universe is covered. **This vindicates the Table 2a choice**: CRS
+disbursements would have been empty until ~2002.
+
+- **158 of 241** exits have a complete +5 post-exit aid window
+- **78** exits have no post-exit aid at all — these are UNSC members that are
+  **donors**, not recipients. A real category, not a coverage gap.
+
+158 is the binding N for anything aid-conditional, and still clears the ≥100 bar.
+
+---
+
 ## Outstanding
 
-1. **Deliverable 2.4 — bilateral aid.** Not built. Blocked on a decision that is
-   Jeff's, not this repo's: **DAC Table 2a vs CRS** (§2.4 / §5). CRS disbursements
-   are only reliably populated from ~2002 while the paper's universe opens in
-   1970, so building from CRS would empty most of the panel for reasons that have
-   nothing to do with the design. Table 2a runs from 1960 at the right
-   granularity. The request explicitly says to flag this rather than switch
-   tables silently.
-2. **§3 country-code crosswalk** — `data/lookups/country_code_crosswalk.csv` not
+1. **§3 country-code crosswalk** — `data/lookups/country_code_crosswalk.csv` not
    built. Needs COW ↔ ISO3 ↔ DAC ↔ V-Dem with year-validity ranges, and hand
    patches for the succession cases (USSR→RUS, YUG, CSK, DDR/DEU, YEM, SDN/SSD).
+   Gate criterion 4 depends on it.
+2. **CRS pull** for sector detail (`source_table = "crs"`), per the "both" decision.
 3. **UNSC second source + 15 hand-checked terms** (see above).
-4. **Gate criterion 3** (aid coverage overlap) — blocked on item 1.
+4. **Refresh the votes extract to deposit v38.0** — would close the 2022/2025
+   coverage skew and recover ~32 events for the second outcome.
 
 ## Pipeline
 

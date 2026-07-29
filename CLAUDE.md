@@ -25,6 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | MARPOR / CMP (MPDS2025a) | Scaffold | **party × election** panel (NOT individual respondents), 5,285 manifestos, 67 countries, 822 elections, 1920–2025 | [docs/surveys/marpor.md](docs/surveys/marpor.md) |
 | UNGA voting (Bailey–Strezhnev–Voeten) | Scaffold | **country × year** ideal points (11,610 rows, 198 states, 1946–2025) + **country × roll-call** votes (1,283,746 rows, 6,551 roll-calls, 1946–2022). NOT respondents. | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |
 | UNSC non-permanent membership | Scaffold | **country × term** (296 terms) + country-year (590 rows), 1970–2028, P5 excluded. NOT respondents. **Second source not yet reconciled.** | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |
+| OECD DAC bilateral aid (DAC2A + DAC3A) | Scaffold | **donor × recipient × year**, 944,968 rows, 1960–2024, 50 bilateral donors. NOT respondents. ⚠️ `donor_type == "aggregate"` rows are SUMS; ⚠️ the two tables use different constant-price base years (2022 / 2024) | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |
 
 ⚠️ KIPA Corruption is **NOT a general-population survey** — corporate employees + self-employed with gov-business contact. Cannot row-bind with KGSS/KAMOS/KIPA-social.
 
