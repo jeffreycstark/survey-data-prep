@@ -238,6 +238,14 @@ source(here::here("src", "r", "utils", "spec_discovery.R"))
   } else {
     file.path("src/r/data_prep_modules", survey)
   }
+  # Non-survey modules (vdem, marpor, unga, unsc, oecd_dac) have NO
+  # 2_harmonize_all.R — there are no questionnaire items to harmonize, so the
+  # pipeline is a single 99_create_final_dataset.R. Emitting the survey-shaped
+  # two-step command for them prints a fix that cannot run.
+  harmonize <- file.path(dir, "2_harmonize_all.R")
+  if (!file.exists(here::here(harmonize))) {
+    return(sprintf("Rscript %s/99_create_final_dataset.R", dir))
+  }
   sprintf("Rscript %s/2_harmonize_all.R && Rscript %s/99_create_final_dataset.R",
           dir, dir)
 }
