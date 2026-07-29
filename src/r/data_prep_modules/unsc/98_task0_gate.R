@@ -213,4 +213,42 @@ if (!file.exists(aid_path)) {
   cat("     a UNSC member that never received ODA is a real category, not a gap.)\n")
 }
 
-cat("\n[4] crosswalk unmatched rows — BLOCKED, §3 crosswalk not built\n\n")
+## criterion 4 — crosswalk coverage ------------------------------------------
+# The moderator is V-Dem v2x_polyarchy (tercile split). An exit event whose
+# post-exit window has no V-Dem rows drops out of the heterogeneity analysis
+# entirely — so what matters is not the raw unmatched count but how many EVENTS
+# lose their moderator.
+xw_path <- here("data", "lookups", "country_code_crosswalk.csv")
+if (!file.exists(xw_path)) {
+  cat("\n[4] crosswalk — BLOCKED, §3 crosswalk not built\n\n")
+} else {
+  xw <- readr::read_csv(xw_path, col_types = readr::cols())
+  vd <- readRDS(here("data", "processed", "vdem_core.rds"))
+  vd_cy <- vd %>% distinct(vdem_text_id = country_text_id, year)
+
+  alias <- xw %>% distinct(country_text_id, vdem_text_id)
+
+  ev <- tm %>%
+    filter(term_end_year + 5 <= end_year) %>%
+    left_join(alias, by = "country_text_id") %>%
+    rowwise() %>%
+    mutate(n_vdem = ifelse(is.na(vdem_text_id), 0L,
+                    sum(vd_cy$vdem_text_id == vdem_text_id &
+                        vd_cy$year >  term_end_year &
+                        vd_cy$year <= term_end_year + 5))) %>%
+    ungroup()
+
+  cat(sprintf("\n[4] crosswalk / moderator coverage (V-Dem, +5 window)\n"))
+  cat(sprintf("    exits with a COMPLETE +5 V-Dem window : %d of %d\n",
+              sum(ev$n_vdem == 5), nrow(ev)))
+  cat(sprintf("    exits with NO V-Dem coverage at all   : %d\n", sum(ev$n_vdem == 0)))
+  lost <- ev %>% filter(n_vdem == 0) %>% distinct(country_name, country_text_id)
+  if (nrow(lost)) {
+    cat("    states losing the moderator entirely:\n")
+    print(as.data.frame(lost), row.names = FALSE)
+  }
+  cat(sprintf("    ISO3 with no V-Dem counterpart at all : %d (see coverage report)\n",
+              sum(is.na(xw$vdem_text_id))))
+  cat("    NB: YUG->SRB, CSK->CZE and YAR->YEM are resolved by COW in the\n")
+  cat("        crosswalk. Joining V-Dem on ISO3 ALONE would silently drop them.\n\n")
+}
