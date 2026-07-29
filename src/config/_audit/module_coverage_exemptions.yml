@@ -1,0 +1,97 @@
+# Module-coverage exemptions
+# -----------------------------------------------------------------------------
+# The module-coverage meta-check (src/r/audit/07_module_coverage.R) requires that
+# every pipeline module in src/r/data_prep_modules/ either (a) appears in
+# run_all.R's .SUPPORTED_SURVEYS, or (b) is explicitly exempted here.
+#
+# WHY THIS EXISTS
+# ---------------
+# The audit system enumerates its targets from TWO hardcoded vectors —
+# run_all.R's .SUPPORTED_SURVEYS and 06_check_freshness.R's .FRESHNESS_SURVEYS —
+# that were kept in step only by a comment saying "kept in sync". Nothing
+# compared either list to what is actually on disk. A module added after those
+# lists were written therefore received ZERO audit coverage, silently: no
+# warning, no error, no mention in any report.
+#
+# That failure mode is worse than a missing check, because 06_check_freshness.R
+# is the documented pre-flight ("run this before consuming data", docs/QA.md
+# §6d). It printed a clean bill of health while never having looked at the
+# module at all — a false all-clear.
+#
+# Found 2026-07-29: 4 of 15 modules were unregistered — marpor, unga, unsc
+# (added 2026-07-28) and vdem, which had been invisible to the audit system
+# since it was scaffolded. Between them they ship 8 live artifacts to
+# data/processed/.
+#
+# EXEMPTION IS A DELIBERATE EDITORIAL ACT
+# ---------------------------------------
+# Listing a module here asserts that the SURVEY-oriented checks genuinely cannot
+# apply to it — not that running them is inconvenient. Prefer registering a
+# module over exempting it. Exemptions are per-check, never blanket: a module
+# that cannot be label-reconciled can still go stale, and staleness is the one
+# failure every generated artifact is exposed to.
+#
+# `exempt_from`     — checks that cannot meaningfully run, each with a reason.
+# `still_required`  — checks that DO apply and must not be skipped. A module
+#                     that does not satisfy these is reported (soft) so the gap
+#                     stays visible rather than being closed by assertion.
+
+schema_version: 1
+
+exempt_modules:
+
+  - module: vdem
+    unit: country x year
+    reason: >
+      Not a survey. No respondents, no waves, no questionnaire items, and no
+      YAML harmonize specs in src/config/. The survey checks all key off spec
+      metadata or value labels that do not exist here.
+    exempt_from: [labels, battery, coverage, binwidth, drift, gate]
+    still_required: [freshness]
+
+  - module: marpor
+    unit: party x election
+    reason: >
+      Not a survey (MARPOR/CMP manifesto coding). No respondents and no
+      questionnaire; the analogue of a codebook is the CMP coding scheme, stored
+      as a handbook PDF rather than as value labels. Carries its own acceptance
+      checks instead — src/r/data_prep_modules/marpor/98_acceptance_checks.R,
+      which validates the per* category block, the quasi-sentence total, seat
+      missingness, and the TASK 0 coverage gate.
+    exempt_from: [labels, battery, coverage, binwidth, drift, gate]
+    still_required: [freshness]
+
+  - module: unga
+    unit: country x year (ideal points); country x roll-call (votes)
+    reason: >
+      Not a survey. Bailey-Strezhnev-Voeten ideal points and UNGA roll-call
+      records; no questionnaire items and no harmonize specs. Its live integrity
+      risk is source-vintage skew (ideal points v38 run to 2025, roll-calls v33
+      only to 2022), which is a provenance concern the survey checks do not model.
+    exempt_from: [labels, battery, coverage, binwidth, drift, gate]
+    still_required: [freshness]
+
+  - module: oecd_dac
+    unit: donor x recipient x year
+    reason: >
+      Not a survey. OECD DAC Table 2a bilateral ODA disbursements; no
+      respondents, no questionnaire, no harmonize specs. Its live integrity
+      risks are source-side and not modelled by the survey checks: MEASURE 305
+      ("ODA, commitments") is declared in the DAC2A codelist but returns no
+      results, so flow_type is disbursements-only, and the constant-price series
+      carries OECD's own base year rather than one chosen here.
+      DETECTED BY THIS CHECK on 2026-07-29 — the module appeared on disk with no
+      audit registration and Layer 7 went hard on it, which is precisely the
+      silent-coverage-gap failure the layer was written to make impossible.
+    exempt_from: [labels, battery, coverage, binwidth, drift, gate]
+    still_required: [freshness]
+
+  - module: unsc
+    unit: country x term / country x year
+    reason: >
+      Not a survey. Constructed UN Security Council non-permanent membership.
+      Its correctness condition is a structural invariant — exactly 10
+      non-permanent seats in every year from 1970 — asserted inside
+      99_create_final_dataset.R, not a label or scale property.
+    exempt_from: [labels, battery, coverage, binwidth, drift, gate]
+    still_required: [freshness]

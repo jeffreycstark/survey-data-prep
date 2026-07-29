@@ -149,7 +149,12 @@ marpor_subcategories <- function(d) {
   grep("^per[0-9]{3}_", names(d), value = TRUE)
 }
 
-if (!interactive() && identical(environment(), globalenv())) {
+# sys.nframe() == 0L is true ONLY when run directly via Rscript, false under
+# source(). The older `!interactive() && identical(environment(), globalenv())`
+# form fires on source() too, because a sourced file's top level IS globalenv()
+# — so every script that sourced this loader silently triggered a second data
+# read and printed a duplicate banner. Same guard as src/r/audit/*.R.
+if (sys.nframe() == 0L) {
   d <- load_marpor_raw()
   cat("\nparent categories:", length(marpor_parent_categories(d)),
       "| subcategories:", length(marpor_subcategories(d)), "\n")

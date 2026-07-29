@@ -27,6 +27,7 @@ Legend — **Enforcement:** 🔴 hard (nonzero exit / stops pipeline) · 🟡 so
 | 7 | Coverage reconciliation | spec `source:` claims vs codebook reality | 🔴² | ✓ | `src/r/audit/02_*coverage*.R` |
 | 8 | Post-harmonize gate | runs 3+8 direction checks after each build | ⚪ | ✓ | `src/r/audit/99_post_harmonize_gate.R` |
 | 9 | Unit tests | the checks' own regression suite | 🔴 | ✓ | `src/r/**/test_*.R` |
+| 10 | **Module coverage** | is each pipeline module audited **at all**? | 🔴 | ✓ | `src/r/audit/07_module_coverage.R` |
 | — | Orchestrator | runs 1–7 for every survey, tallies pass/fail | 🔴 | ✓ | `src/r/audit/run_all.R` |
 
 ¹ writes `error` rows to a CSV; `run_all` maps `error`→fail. ² exit 1 on ≤80% coverage or any confirmable `over`-claim; `02_source_coverage_reconcile` is ABS/IPUS/KINU only.
@@ -100,6 +101,21 @@ Runs after every `99_create_final_dataset.R`: label reconciliation (hard) + batt
 
 ### 9. Unit tests — 🔴
 The checks test themselves. Ran 2026-07-06: `test_label_reconciliation` (44), `test_phase2_checks` (17), `test_phase3_checks` (17), `test_phase5_gate` (7), `test_validation_completeness` (pass), `test_harmonize` (6), `test_codebook` (22) — **0 failures**. These include the fault-injection regressions cited above, which is why layers 3/4/8 are trustworthy. (`test_identity_functions.R` registered 0 testthat cases — worth a look; not a failure, but not contributing coverage.)
+
+### 10. Module coverage — 🔴
+**Claim.** Every module in `src/r/data_prep_modules/` is either audited or *explicitly, reasoned* exempted — so no module is silently unwatched.
+
+**Why it exists.** Every other layer answers "is this survey's data right?". None asked the prior question: *is this module being audited at all?* The system enumerated its targets from two hardcoded vectors — `run_all.R`'s `.SUPPORTED_SURVEYS` and `06_check_freshness.R`'s `.FRESHNESS_SURVEYS` — synchronised only by a comment reading "kept in sync". Nothing compared either to what was on disk.
+
+**What it found on introduction (2026-07-29).** 4 of 15 modules had **zero** audit coverage: `marpor`, `unga`, `unsc` (added 2026-07-28) and **`vdem`, invisible since it was scaffolded**. Between them they ship 8 live artifacts to `data/processed/`.
+
+This was worse than a missing check. Layer 6d is the documented pre-flight — *"run this before consuming data"* — and it returned a clean bill of health while never having looked at those modules. **A false all-clear, not a gap.** That is the failure mode this layer exists to make impossible.
+
+**Proof.** `test_module_coverage.R`, 14 fault-injection cases, 0 failures: unregistered module → hard; reasonless exemption → hard; one-sided list edit (either direction) → hard; residual-coverage gap → soft; stale exemption → soft; unparseable source → config error, never a silent pass.
+
+**Blind spot.** It verifies a module is *registered*, not that the checks it runs are *adequate*. A module can be registered and still be shallowly audited. It also cannot judge whether an exemption's reason is honest — exemptions are per-check (`exempt_from` / `still_required`) precisely so a module that can't be label-reconciled still can't quietly escape staleness checking.
+
+**Live soft findings.** All four exempted modules declare `freshness` as `still_required` but are absent from `.FRESHNESS_SURVEYS`, so their 8 artifacts are **not** staleness-checked. Reported rather than silently closed; the fix is a manifest per module.
 
 ---
 
