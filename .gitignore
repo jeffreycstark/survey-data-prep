@@ -253,3 +253,14 @@ outputs/kinu/
 outputs/kipa-corruption/
 outputs/klosa/
 outputs/prospecting/
+
+# Non-survey module build receipts. Same rule as every survey above: a
+# manifest.json records ABSOLUTE machine-specific paths
+# (/Users/<user>/.../data/...), so it is a LOCAL pre-flight artifact, not shared
+# state. Committing one guarantees cross-machine conflicts and a permanently
+# "stale" reading on anyone else's clone.
+outputs/marpor/
+outputs/unga/
+outputs/unsc/
+outputs/vdem/
+outputs/oecd_dac/
