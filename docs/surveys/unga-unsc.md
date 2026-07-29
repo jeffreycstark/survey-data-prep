@@ -135,12 +135,48 @@ Both still clear the gate. But **if the two outcomes are co-primary the binding 
 is the smaller figure**, and the headline should not be 227. See the version-skew
 note above — this gap is closable.
 
-### Criterion 4, partially answered
+### Criterion 4 — crosswalk **PASS**
 
-Every UNSC term's `country_text_id` resolves in the ideal-point file — **zero
-unmatched**. This is what licenses reading 253/227 as real rather than as
-crosswalk attrition, which is the failure mode §3 warns about. The **full**
-crosswalk still has to reconcile OECD DAC codes and is outstanding.
+Two parts, both clean.
+
+**UNSC → UNGA**: every UNSC term's `country_text_id` resolves in the ideal-point
+file — **zero unmatched**. This is what licenses reading 253/227 as real rather
+than as crosswalk attrition.
+
+**UNSC → V-Dem (the moderator)**: **249 of 256** exits have a complete +5 V-Dem
+window. Exactly **one** loses the moderator entirely — the **Byelorussian SSR**,
+a UNGA member from 1945 whose UNSC term predates V-Dem's coverage of independent
+Belarus. Ukraine has the same 1945–91 gap, but its UNSC exits fall inside V-Dem
+coverage.
+
+Built by `src/r/data_prep_modules/lookups/99_country_code_crosswalk.R` →
+`data/lookups/country_code_crosswalk.csv` (446 rows, 246 ISO3) plus
+`country_code_coverage_report.csv`.
+
+#### ⚠️ The silent-NA trap is real, and it hits UNSC members
+
+V-Dem has **no row for YUG, CSK or VCT**. YUG and CSK are not obscure — both held
+non-permanent seats with exit events inside the window. **Joining V-Dem on ISO3
+alone silently NAs the regime moderator for those events**, and the truncated
+window then looks like an artefact rather than the join failure it is.
+
+Resolved by joining on COW where ISO3 disagrees:
+
+| Source ISO3 | V-Dem ISO3 | Shared COW |
+|---|---|---|
+| `CSK` Czechoslovakia | `CZE` | 315 |
+| `YUG` SFR Yugoslavia | `SRB` | 345 |
+| `YAR` North Yemen | `YEM` | 678 |
+
+**COW is not unique either** — 345 covers both YUG and SRB, 315 both CSK and CZE,
+678 both YAR and YEM. Neither key is safe alone; the pair plus a year range is
+what disambiguates, which is why the crosswalk carries `valid_from`/`valid_to`.
+
+21 ISO3 remain unresolved, and these are **genuine V-Dem coverage gaps, not
+naming mismatches** — Andorra, Antigua, Bahamas, Belize, Brunei, Dominica,
+Micronesia, Grenada, Kiribati, St Kitts, St Lucia, Liechtenstein, Monaco,
+Marshall Is, Nauru, Palau, San Marino, Tonga, Tuvalu, St Vincent, Samoa. V-Dem
+does not cover most microstates. None of them has ever held a UNSC seat.
 
 ---
 
@@ -210,15 +246,27 @@ disbursements would have been empty until ~2002.
 
 ---
 
+## TASK 0 — all four criteria answered, gate PASSES
+
+| Criterion | Result |
+|---|---|
+| 1 ideal-point coverage | ends **2025**, 198 states, SE on 100% |
+| 2 post-exit windows | **253** complete +5, **227** complete +10 (need 100 / 60) |
+| 3 aid coverage | dense from **1961**; **158** of 241 exits with a complete +5 aid window |
+| 4 crosswalk | **249** of 256 exits with a complete +5 V-Dem window; 1 loss (BLR) |
+
+Binding N depends on what the specification conditions on: **227** for the
+ideal-point outcome at +10, **195** if the agreement-rate outcome is co-primary,
+**158** for anything aid-conditional.
+
 ## Outstanding
 
-1. **§3 country-code crosswalk** — `data/lookups/country_code_crosswalk.csv` not
-   built. Needs COW ↔ ISO3 ↔ DAC ↔ V-Dem with year-validity ranges, and hand
-   patches for the succession cases (USSR→RUS, YUG, CSK, DDR/DEU, YEM, SDN/SSD).
-   Gate criterion 4 depends on it.
-2. **CRS pull** for sector detail (`source_table = "crs"`), per the "both" decision.
-3. **UNSC second source + 15 hand-checked terms** (see above).
-4. **Refresh the votes extract to deposit v38.0** — would close the 2022/2025
+1. **CRS pull** for sector detail (`source_table = "crs"`), per the "both" decision.
+   Not blocking — DAC3A already supplies commitments.
+2. **UNSC second source + 15 hand-checked terms.** The roster is still ONE
+   source where the request requires two reconciled. This is the only remaining
+   *requirement* rather than an enhancement.
+3. **Refresh the votes extract to deposit v38.0** — would close the 2022/2025
    coverage skew and recover ~32 events for the second outcome.
 
 ## Pipeline
