@@ -17,18 +17,21 @@
 # post-exit aid change.
 #
 # Decision was to build BOTH, 2a primary and CRS alongside, so sensitivity to
-# the choice is testable via `source_table`. This script builds the 2a side;
-# CRS is a separate pull and is NOT yet done.
+# the choice is testable via `source_table`. CRS is a separate pull for SECTOR
+# detail and is NOT yet done.
 #
 # ⚠️ TABLE 2a IS DISBURSEMENTS ONLY. The request asks for `flow_type` to carry
 # disbursement AND commitment. MEASURE 305 ("ODA, commitments") exists in the
 # DAC2A codelist but returns NoResultsFound for every query — the measure is
-# declared, not populated. It is queried below anyway so that a future release
-# populating it is picked up automatically rather than silently ignored.
+# declared, not populated.
 #
-# CONSEQUENCE: commitments can only come from CRS, whose commitments ARE usable
-# from ~1973. That makes the CRS pull load-bearing rather than a nice-to-have —
-# it is the only available source for the commitment-side measure.
+# Commitments therefore come from **DAC3A** ("Aid (ODA) commitments to countries
+# and regions"), which this script also reads. DAC3A is the same donor ×
+# recipient × year granularity and starts in 1970 — exactly the paper's universe.
+# That is a better commitment source than CRS, which is activity-level and would
+# need aggregating up. An earlier revision of this header claimed commitments
+# "can only come from CRS"; that was written before DAC3A was found, and is
+# wrong. CRS remains wanted for sector detail only.
 #
 # ─────────────────────────────────────────────────────────────────────────────
 # MULTILATERALS: retained and flagged, NOT dropped, NOT weighted
@@ -47,13 +50,13 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # UNITS AND BASE YEAR
 # ─────────────────────────────────────────────────────────────────────────────
-# OECD ships DAC2A in millions (UNIT_MULT = 6). This applies the multiplier, so
+# OECD ships these in millions (UNIT_MULT = 6). This applies the multiplier, so
 # `oda_usd_const` and `oda_usd_current` are in ACTUAL USD, not millions.
-# Constant-price base year is whatever the release ships — 2022 (BASE_PER),
-# per the decision to avoid a second deflation step. Asserted below.
+# Constant-price base year is whatever each release ships, per the decision to
+# avoid a second deflation step — and the two DIFFER (see EXPECTED_BASE below).
 #
-# Coverage is 1960–2022. 2023 and 2024 return HTTP 404 from the API: they are
-# not yet published in DAC2A, not a download failure.
+# Coverage: DAC2A 1960–2022, DAC3A 1970–2024. DAC2A 2023/2024 return HTTP 404 —
+# not yet published, not a download failure.
 
 library(here)
 suppressPackageStartupMessages({
@@ -61,6 +64,7 @@ suppressPackageStartupMessages({
   library(tidyr)
   library(readr)
   library(arrow)
+  library(countrycode)
 })
 
 DIR_2A <- here("data", "oecd-dac", "raw", "dac2a-2026-07-29")   # disbursements
@@ -106,8 +110,43 @@ raw <- bind_rows(
   read_table(DIR_3A, "dac3a", "dac3a")
 )
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ENTITY CLASSIFICATION — validated against ISO 3166, not against string shape
+# ─────────────────────────────────────────────────────────────────────────────
+# ⚠️ An earlier revision typed anything matching ^[A-Z]{3}$ as a country. That is
+# wrong and expensively so: ACP, EAC ("East African Community") and LDC ("Least
+# developed countries") are GROUPINGS that happen to be three uppercase letters.
+# They were therefore labelled `bilateral` — the exact rows the docs tell
+# consumers to keep. Summing bilateral->bilateral disbursements with them
+# included INFLATES total ODA BY 41.8% (1,455.6bn of 3,485.8bn current USD
+# across 2.58% of rows), because they are sums of other rows already present.
+#
+# The reliable test is whether the code is a real ISO 3166-1 alpha-3, which
+# `countrycode` answers. Of 265 three-letter codes in the OECD codelist, 249
+# validate and 16 do not; every one of the 16 is a grouping (ACP, AES, CIS, DAE,
+# EEA, SDR, EAC, DAC, ODA, LDC, WBA/WBM world bunkers, IEA, WXD) except two real
+# places that have no ISO3 because they are not UN members. Those two are
+# hand-patched rather than silently swept into `aggregate`.
+NON_ISO_TERRITORIES <- c("XKV",   # Kosovo — real polity, no ISO 3166 entry
+                         "CPT")   # Clipperton Island
+
 codes <- read_csv(file.path(DIR_2A, "cl_area_org.csv"), col_types = cols()) %>%
-  mutate(entity_type = ifelse(entity_type == "country", "bilateral", entity_type))
+  mutate(
+    is_iso3 = grepl("^[A-Z]{3}$", code) &
+              !is.na(suppressWarnings(
+                countrycode::countrycode(code, "iso3c", "iso.name.en", warn = FALSE))),
+    entity_type = case_when(
+      grepl("^[0-9]", code)            ~ "multilateral",
+      code %in% NON_ISO_TERRITORIES    ~ "bilateral",
+      is_iso3                          ~ "bilateral",
+      TRUE                             ~ "aggregate"
+    )
+  ) %>%
+  select(-is_iso3)
+
+# Regression guard: the three that caused the 41.8% inflation must never again
+# come out as bilateral.
+stopifnot(codes$entity_type[match(c("ACP", "EAC", "LDC"), codes$code)] == "aggregate")
 
 tidy <- raw %>%
   transmute(
