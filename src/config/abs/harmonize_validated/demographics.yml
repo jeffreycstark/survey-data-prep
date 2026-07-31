@@ -315,6 +315,15 @@ variables:
       w4: se8b
       w5: SE8B
       w6: se8b
+    note: >
+      W6 JAPAN ONLY adds a response option coded 10 = "Single" (107 cases) —
+      a single-person household, which is one generation. Under identity
+      harmonization valid_range [1,4] deleted all 107. Mapped to 1 from
+      2026-07-31: respondents in other countries and waves who live alone have
+      no such option and answer "One generation", so folding 10 into 1 makes
+      Japan W6 MORE comparable, not less. Found by the out-of-range triage
+      (src/r/audit/03_oob_triage.R); raw label confirmed in
+      data/abs/raw/wave6/W6_1_Japan_Release_20260225.sav.
     scale:
       min: 1
       max: 4
@@ -328,6 +337,16 @@ variables:
     harmonize:
       default:
         method: identity
+      by_wave:
+        w6:
+          method: recode
+          note: "Japan-only code 10 ('Single') folded into 1 = One generation."
+          mapping:
+            1: 1
+            2: 2
+            3: 3
+            4: 4
+            10: 1
     qc:
       valid_range: [1, 4]
       validate:

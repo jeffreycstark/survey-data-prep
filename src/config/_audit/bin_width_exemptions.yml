@@ -23,6 +23,47 @@
 schema_version: 1
 
 exempt_variables:
+  # -------------------------------------------------------------------------
+  # The three below are seams CREATED DELIBERATELY on 2026-07-31 to close
+  # out-of-range findings (Check E). In each case the wave carried an extra
+  # source code that valid_range was silently deleting; folding it into an
+  # existing bin preserves the respondents at the price of one wave's bin
+  # holding two source categories. That trade was chosen consciously — the
+  # alternative was to keep discarding real respondents — so the seam is
+  # recorded here rather than left to read as an unexamined failure.
+  # -------------------------------------------------------------------------
+  - variable: hh_generations
+    survey: abs
+    reason: >
+      W6 Japan alone offers `10 = "Single"` (107 cases), deleted outright
+      until 2026-07-31. Folded into 1 = "One generation", so W6's bin 1 holds
+      {1, 10} against {1} elsewhere. A single-person household IS one
+      generation, and respondents elsewhere who live alone simply answer 1 —
+      the seam is in the Japanese questionnaire, and this mapping removes its
+      effect rather than introducing one. See the note on the variable in
+      src/config/abs/harmonize_validated/demographics.yml.
+  - variable: bribe_police
+    survey: afro
+    reason: >
+      R2 Mozambique alone offers a 5th frequency point `4 = "Always"` (30
+      cases), deleted outright until 2026-07-31. Folded into 3 = "Often", so
+      R2's top bin holds {3, 4} against {3} elsewhere. This one IS a genuine
+      loss of resolution, accepted because the alternative biases a
+      bribe-FREQUENCY measure downward for Mozambique R2 by dropping exactly
+      its most frequent payers. Anyone comparing R2 Mozambique top-box against
+      other rounds should know its top box is wider. Revisit if a paper leans
+      on that cell.
+  - variable: urban_rural
+    survey: afro
+    reason: >
+      R6 (88 cases) and R7 (40) carry `460 = "Peri-Urban"` alongside
+      `3 = "Semi-Urban"`, deleted outright until 2026-07-31. Folded into 3, so
+      those rounds' bin 3 holds {3, 460}. The variable is `type: nominal`, for
+      which "bin width" carries no ordinal meaning, and the two labels name
+      the same concept — no round offers them as distinct substantive options.
+      Continues the 2026-05-14 decision on this same variable to preserve the
+      semi-urban category rather than NA-coerce it.
+
   - variable: education_level
     survey: afro
     reason: >

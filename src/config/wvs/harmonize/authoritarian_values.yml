@@ -284,7 +284,20 @@ variables:
       w5: null
       w6: null
       w7: Q149
-    note: "W2 and W7 only. W2 has 3 categories (adds Neither); W7 is binary."
+    note: >
+      W2 and W7 only, and THE TWO WAVES DO NOT SHARE A CODE ORDER.
+      W7 (Q149) is binary: 1=Freedom, 2=Equality.
+      W2 (V247) is three-category and puts the middle option SECOND:
+      1=Freedom, 2=Neither, 3=Equality.
+      Until 2026-07-31 this variable used `method: identity` for both waves on
+      the strength of a note claiming "W2 code 3 (Neither) treated as NA" —
+      which had W2's codes 2 and 3 backwards. The consequences were twofold and
+      both silent: all 8,787 W2 "Equality" responses were deleted by
+      valid_range [1,2], and the 2,029 W2 "Neither" responses were relabelled
+      as "Equality". W2 therefore contained NO equality responses at all, and
+      pooling it with W7 compared W7's equality camp against W2's neither camp.
+      Found by the out-of-range triage (src/r/audit/03_oob_triage.R) flagging
+      the 8,787 deletions, then confirmed against the raw SPSS value labels.
     scale:
       min: 1
       max: 2
@@ -296,9 +309,24 @@ variables:
     harmonize:
       default:
         method: identity
-        note: "Binary: 1=Freedom, 2=Equality. W2 code 3 (Neither) treated as NA."
+        note: "W7 (Q149) is already 1=Freedom, 2=Equality."
+      by_wave:
+        w2:
+          method: recode
+          note: >
+            W2 (V247) is 1=Freedom, 2=Neither, 3=Equality. Map the equality
+            pole onto 2 and drop the middle option, since W7 offers no
+            equivalent and the harmonized scale is declared binary.
+          mapping:
+            1: 1      # Freedom            -> Freedom
+            2: null   # Neither            -> NA (no W7 counterpart)
+            3: 2      # Equality           -> Equality
     qc:
       valid_range: [1, 2]
+      coverage_missing_codes_by_wave:
+        # W2 code 2 = "Neither" is an intentional drop, not silent loss: the
+        # harmonized scale is binary because W7 has no middle option.
+        w2: [2]
       validate:
         - waves: [w2, w7]
           phrase: "freedom.*equality"

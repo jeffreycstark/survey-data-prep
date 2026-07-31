@@ -63,6 +63,17 @@ variables:
       w7: Q49T
       w8: Q44N
       w9: Q43E
+    note: >
+      R2 MOZAMBIQUE ONLY adds a 5th frequency point, `4 = "Always (Moz. only)"`
+      (30 cases), which valid_range [0,3] was silently deleting until
+      2026-07-31. Dropping them biases Mozambique R2 downward on a
+      bribe-FREQUENCY measure by removing precisely its most frequent payers,
+      so 4 is folded into 3 ("Often") rather than discarded. That does make R2
+      the only round whose top bin holds two source categories — a deliberate,
+      documented seam, exempted in src/config/_audit/bin_width_exemptions.yml
+      rather than hidden. Found by the out-of-range triage
+      (src/r/audit/03_oob_triage.R); raw label confirmed in
+      data/afro/raw/round2/merged_r2_data.sav.
     scale:
       min: 0
       max: 3
@@ -77,6 +88,16 @@ variables:
       default:
         method: identity
         note: "0-3 scale consistent R2-R9."
+      by_wave:
+        w2:
+          method: recode
+          note: "Mozambique-only 4 ('Always') folded into 3 ('Often')."
+          mapping:
+            0: 0
+            1: 1
+            2: 2
+            3: 3
+            4: 3
     qc:
       valid_range: [0, 3]
 

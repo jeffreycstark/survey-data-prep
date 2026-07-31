@@ -37,7 +37,19 @@ variables:
       w5: null
       w7: null
       w8: null
-    note: "W2-W3 only. Value labels vary — decode from questionnaire PDF."
+    note: |
+      W2-W3 only. Value labels vary — decode from questionnaire PDF.
+      W2 raw has 52 cases of country-specific extension codes (2001-10503,
+      "Other: independent judiciary / freedom of the media / justice / etc.")
+      that fall outside the [1, 10] standard scale. Same analytic choice as
+      dem_feature_2nd: keep only the universal 1-10 codes and declare the
+      extension codes below so the audit recognizes them as intentional drops
+      rather than coverage loss. The code SET differs from dem_feature_2nd's —
+      these are different questions with different observed "other" answers —
+      so it is enumerated from the raw data, not copied from the twin.
+      Added 2026-07-31; until then only dem_feature_2nd carried the
+      declaration, which left the twins split across error and warn in the
+      out-of-range triage.
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -45,6 +57,10 @@ variables:
         method: identity
     qc:
       valid_range: [1, 10]
+      coverage_missing_codes_by_wave:
+        w2: [2001, 2002, 2003, 2004, 3001, 3501, 3505,
+             4501, 4502, 4503, 4504, 4505, 9001,
+             10002, 10003, 10501, 10502, 10503]
 
   - id: dem_feature_2nd
     concept: meanings_of_democracy

@@ -1,8 +1,46 @@
 # Audit findings — open for review
 
-Last updated: 2026-07-22
+Last updated: 2026-07-31
 
 This file records audit findings that need substantive judgment from Jeff. The audit infrastructure surfaces; this file tracks what remains to investigate. Update as items get resolved.
+
+---
+
+## ⚠️ BREAKING DATA CHANGE 2026-07-31 — WVS `freedom_vs_equality` was wrong in W2, now fixed
+
+**Anything built on `freedom_vs_equality` before 2026-07-31 must be re-run. The W2 arm of this variable was not merely lossy, it was substantively wrong, and the error was silent.**
+
+The two waves do not share a code order, and the spec assumed they did:
+
+| wave | raw | 1 | 2 | 3 |
+|---|---|---|---|---|
+| W7 | `Q149` | Freedom | Equality | — |
+| W2 | `V247` | Freedom | **Neither** | **Equality** |
+
+Under `method: identity` with `valid_range: [1, 2]`, W2 produced:
+
+| W2 raw | n | became | labelled |
+|---|---|---|---|
+| 1 Freedom | 10,455 | 1 | "Freedom" ✓ |
+| 2 **Neither** | 2,029 | 2 | **"Equality"** ✗ |
+| 3 **Equality** | 8,787 | **deleted** | — ✗ |
+
+So W2 contained **no equality responses at all**, and the 2,029 cases sitting in the "Equality" slot were the people who refused the choice. Pooling W2 with W7 compared W7's equality camp against W2's *neither* camp. The spec's own note asserted "W2 code 3 (Neither) treated as NA", which had codes 2 and 3 backwards — so the bug was documented as intended behaviour, which is why it survived.
+
+- **Now:** W2 uses an explicit recode (1→1, 2→NA, 3→2); W2 Equality reads 8,787. W7 is unchanged.
+- **Direction of the error:** any W2 "equality" estimate was built on the wrong 2,029 respondents and understated the equality camp roughly 4×. Anything comparing W2↔W7 on this item is invalid, not just imprecise.
+- **Found by:** out-of-range triage (`src/r/audit/03_oob_triage.R`) flagging the 8,787 deletions; confirmed against the raw SPSS value labels. No direction, battery, or label check could see it — the harmonized values were in range, internally consistent, and matched their (wrong) declared labels. This is the "wrong-but-consistent recode" class `docs/QA.md` names as uncovered.
+
+---
+
+## ✅ Resolved 2026-07-31 — the other five out-of-range findings
+
+Closed with real fixes, not exemptions; 9,052 respondent-values recovered in total (incl. the WVS 8,787). Three deliberately created bin-width seams, each recorded with a reason in `src/config/_audit/bin_width_exemptions.yml`:
+
+- **abs `hh_generations` w6** — Japan-only `10 = "Single"` (107) was deleted; folded into 1 ("One generation").
+- **afro `urban_rural` w6/w7** — `460 = "Peri-Urban"` (128) was deleted; folded into 3 ("Semi-Urban"). Same leak as the code-3 bug fixed 2026-05-14, one code further out.
+- **afro `bribe_police` w2** — Mozambique-only `4 = "Always"` (30) was deleted; folded into 3 ("Often"). ⚠️ The only one of the five that loses real resolution: R2 Mozambique's top box is now wider than other rounds'. Revisit if a paper leans on that cell.
+- **arab-barometer `dem_feature_1st` w2** — 52 country-specific extension codes now declared as intentional drops, matching the twin `dem_feature_2nd`, which had carried the declaration alone.
 
 ---
 
