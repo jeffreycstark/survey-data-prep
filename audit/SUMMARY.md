@@ -1,47 +1,49 @@
-# Audit summary — 2026-05-14 20:16:12 +07
+# Audit summary — 2026-07-31 10:24:07 +07
 
-git_commit: `bf6ec3a`  git_dirty: **true**
+git_commit: `e4a25f0`  git_dirty: **true**
 
 Mode: `--quick` (G1, F4 skipped)
-Runtime: 116.3 s
+Runtime: 391.6 s
 
 ## Per-survey status
 
-| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L5 drift | L6 determ | L6 input |
-|--------|-----------|---------------|-------------|------------|-----------|----------|-----------|----------|
-| abs | OK 28/28 | FAIL err=3 warn=89 | skip --quick | FAIL 3 constructs, 7 sign-disagreements, 444 weak (+107 ack) | OK 510 ok, 0 fail, 0 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| wvs | OK 14/14 | skip needs harmonization rerun | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 219 skip | skip --quick | skip no manifest | skip no manifest |
-| lbs | OK 9/9 | OK err=0 warn=19 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 334 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| afro | OK 14/14 | OK err=0 warn=25 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 24 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| arab-barometer | OK 9/9 | OK err=0 warn=25 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 78 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| kamos | OK 6/6 | OK err=0 warn=6 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 8 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| kgss | OK 18/18 | OK err=0 warn=64 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 790 skip | skip --quick | skip no manifest | skip no manifest |
-| kipa-corruption | OK 4/4 | skip needs harmonization rerun | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 3 skip | skip --quick | skip no manifest | skip no manifest |
-| kinu | OK 8/8 | OK err=0 warn=219 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 43 skip | skip --quick | FAIL exit=1 | OK all inputs unchanged |
-| ipus | OK 3/3 | OK err=0 warn=0 | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 86 skip | skip --quick | OK all paths match | OK all inputs unchanged |
+| Survey | L1 schema | L3 invariants | L3 oob | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L4 binwidth | L5 drift | L6 determ | L6 input |
+|--------|-----------|---------------|--------|-------------|------------|-----------|-----------|------------|-------------|-------------|----------|-----------|----------|
+| abs | OK 28/28 | FAIL err=3 warn=89 | FAIL 1 err, 15 warn | skip --quick | FAIL 5 constructs, 7 sign-disagreements, 719 weak (+107 ack) | OK 577 ok, 0 fail, 0 skip | FAIL 322 ok, 18 err, 793 skip | warn 557 ok, 101 hint, 110 weak | warn 44 cov, 16 ex, 207 unc | FAIL 1034 ok, 56 err, 2 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| wvs | OK 15/15 | FAIL err=9 warn=2 | FAIL 1 err, 4 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 219 skip | OK 179 ok, 0 err, 202 skip | warn 194 ok, 15 hint, 19 weak | warn 8 cov, 7 ex, 59 unc | FAIL 373 ok, 1 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| lbs | OK 10/10 | OK err=0 warn=19 | FAIL 2 err, 5 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 341 skip | OK 271 ok, 0 err, 266 skip | warn 224 ok, 10 hint, 2 weak | warn 9 cov, 3 ex, 13 unc | OK 511 ok, 0 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| afro | OK 21/21 | FAIL err=4 warn=25 | FAIL 4 err, 15 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 36 skip | OK 160 ok, 0 err, 224 skip | warn 153 ok, 9 hint, 0 weak | warn 9 cov, 9 ex, 37 unc | FAIL 320 ok, 1 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| arab-barometer | OK 9/9 | OK err=0 warn=25 | FAIL 2 err, 3 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 78 skip | OK 39 ok, 0 err, 150 skip | warn 72 ok, 10 hint, 15 weak | warn 9 cov, 8 ex, 22 unc | FAIL 142 ok, 3 err, 2 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| kamos | OK 6/6 | OK err=0 warn=6 | OK 0 err, 0 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 8 skip | OK 4 ok, 0 err, 139 skip | warn 30 ok, 6 hint, 0 weak | warn 1 cov, 6 ex, 24 unc | OK 108 ok, 0 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| kgss | OK 18/18 | OK err=0 warn=182 | OK 0 err, 0 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 790 skip | OK 548 ok, 0 err, 826 skip | warn 693 ok, 39 hint, 148 weak | warn 5 cov, 6 ex, 161 unc | OK 1223 ok, 0 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| kipa-corruption | OK 4/4 | OK err=0 warn=77 | OK 0 err, 0 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 3 skip | OK 13 ok, 0 err, 579 skip | warn 405 ok, 16 hint, 0 weak | warn 0 cov, 3 ex, 31 unc | warn 589 ok, 0 err, 3 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| kinu | OK 8/8 | OK err=0 warn=228 | warn 0 err, 37 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 43 skip | OK 502 ok, 0 err, 820 skip | warn 507 ok, 57 hint, 202 weak | warn 1 cov, 9 ex, 109 unc | OK 1322 ok, 0 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| ipus | OK 3/3 | OK err=0 warn=0 | OK 0 err, 0 warn | skip --quick | skip no applicable anchors (anchor var absent) | skip 0 ok, 0 fail, 86 skip | OK 48 ok, 0 err, 144 skip | warn 25 ok, 6 hint, 14 weak | warn 0 cov, 2 ex, 4 unc | FAIL 191 ok, 1 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
+| gcb | OK 4/4 | OK err=0 warn=1 | OK 0 err, 0 warn | skip --quick | skip no applicable anchors (anchor var absent) | OK 0 ok, 0 fail, 0 skip | OK 7 ok, 0 err, 15 skip | OK 6 ok, 0 hint, 0 weak | warn 0 cov, 7 ex, 11 unc | OK 18 ok, 0 err, 0 warn | skip --quick | skip no manifest | skip no manifest |
+| klosa | OK 8/8 | OK err=0 warn=9 | warn 0 err, 1 warn | skip --quick | skip no applicable anchors (anchor var absent) | OK 0 ok, 0 fail, 0 skip | skip 0 ok, 0 err, 1 skip | warn 27 ok, 12 hint, 67 weak | warn 0 cov, 10 ex, 15 unc | OK 156 ok, 0 err, 0 warn | skip --quick | OK all paths match | OK all inputs unchanged |
 
 ## Top audit findings
 
-1. **[abs]** L4 anchors — economic_evaluations/econ_outlook_1yr/w1: expected=positive observed=negative  
+1. **[abs]** L4 binwidth — community_leader_contact/w5: bin signature 3:2|2:1|1:2 diverges from sibling waves  
    See `audit/reports/abs/`
-2. **[abs]** L4 anchors — economic_evaluations/econ_family_outlook/w1: expected=positive observed=negative  
+2. **[abs]** L4 binwidth — community_leader_contact/w6: bin signature 3:2|2:1|1:2 diverges from sibling waves  
    See `audit/reports/abs/`
-3. **[abs]** L4 anchors — economic_evaluations/gov_basic_necessities/w2: expected=positive observed=negative  
+3. **[abs]** L4 binwidth — corrupt_local_govt/w6: bin signature 4:1|3:1|2:1|1:2 diverges from sibling waves  
    See `audit/reports/abs/`
-4. **[abs]** L3 invariants — idnumber/w6/coverage: Gained 19 values (harmonized > raw) - check logic  
+4. **[abs]** L4 labels — demo_political_equality/w1/safe_reverse_4pt: raw pos@high but declared pos@high  
    See `audit/reports/abs/`
-5. **[abs]** L3 invariants — gate_contact_influential/w2/coverage: 30.0% coverage loss (4006 of 13347 values)  
+5. **[abs]** L4 labels — econ_family_income_fair_6pt/w4/identity: raw pos@low but declared pos@high  
    See `audit/reports/abs/`
-6. **[abs]** L3 invariants — gate_contact_influential/w2/crosstab: 3 raw values map to multiple outputs  
+6. **[abs]** L4 labels — govt_should_censor_ideas/w1/safe_reverse_4pt: raw pos@low but declared pos@low  
    See `audit/reports/abs/`
-7. **[abs]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
+7. **[wvs]** L3 invariants — freedom_vs_equality/w2/coverage: 41.3% coverage loss (8787 of 21271 values)  
+   See `audit/reports/wvs/`
+8. **[wvs]** L3 invariants — corrupt_national_govt/w6/transformation: scale conversion (|ρ| ≈ 1) FAILED: r=0.950, ρ=0.930 (expected >0.99)  
+   See `audit/reports/wvs/`
+9. **[wvs]** L3 invariants — corrupt_national_govt/w7/transformation: scale conversion (|ρ| ≈ 1) FAILED: r=0.950, ρ=0.912 (expected >0.99)  
+   See `audit/reports/wvs/`
+10. **[abs]** L4 anchors — economic_evaluations/econ_outlook_1yr/w1: expected=positive observed=negative  
    See `audit/reports/abs/`
-8. **[afro]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
-   See `audit/reports/afro/`
-9. **[arab-barometer]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
-   See `audit/reports/arab-barometer/`
-10. **[kamos]** L6 determinism — [drift] src/r/utils/recoding.R  (engine_versions)  
-   See `audit/reports/kamos/`
 
 ## Acknowledged findings (documented measurement-validity)
 
@@ -67,19 +69,21 @@ Anchor-diagnostic rows the anchor YAMLs flag as documented findings
 ## Cross-cutting
 
 - Recoding registry: OK
-- JEFF_MUST_INVESTIGATE.md: 5 open findings (high+medium priority)
+- JEFF_MUST_INVESTIGATE.md: 6 open findings (high+medium priority)
 
 ## Skipped modules (prerequisites missing)
 
-- **wvs**: L3 invariants (needs harmonization rerun); L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 219 skip); L6 determinism (no manifest); L6 input drift (no manifest)
-- **lbs**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 334 skip)
-- **afro**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 24 skip)
+- **wvs**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 219 skip)
+- **lbs**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 341 skip)
+- **afro**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 36 skip)
 - **arab-barometer**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 78 skip)
 - **kamos**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 8 skip)
-- **kgss**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 790 skip); L6 determinism (no manifest); L6 input drift (no manifest)
-- **kipa-corruption**: L3 invariants (needs harmonization rerun); L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 3 skip); L6 determinism (no manifest); L6 input drift (no manifest)
+- **kgss**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 790 skip)
+- **kipa-corruption**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 3 skip)
 - **kinu**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 43 skip)
 - **ipus**: L4 anchors (no applicable anchors (anchor var absent)); L4 strict (0 ok, 0 fail, 86 skip)
+- **gcb**: L4 anchors (no applicable anchors (anchor var absent)); L6 determinism (no manifest); L6 input drift (no manifest)
+- **klosa**: L4 anchors (no applicable anchors (anchor var absent)); L4 labels (0 ok, 0 err, 1 skip)
 
 ---
-Generated by `src/r/audit/run_all.R` at 2026-05-14 20:16:12 +07.
+Generated by `src/r/audit/run_all.R` at 2026-07-31 10:24:07 +07.

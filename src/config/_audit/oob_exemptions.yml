@@ -1,0 +1,31 @@
+# Out-of-range triage exemptions
+# -----------------------------------------------------------------------------
+# The out-of-range triage (src/r/audit/03_oob_triage.R, Check E) reads
+# outputs/<survey>/oob_log.csv — the engine's record of values it coerced to NA
+# for falling outside qc.valid_range — and grades each event.
+#
+# This file is the `allow_oob` concept from audit/01-audit-framework.md Layer 3.
+# Listing an event downgrades `error` to `ok_exempt`. It does NOT silence
+# `warn` rows, which stay visible by design.
+#
+# Exemption is a deliberate editorial act. It says: "I have looked at this
+# variable x wave, the coercion to NA is the RIGHT outcome, and here is why."
+# Prefer FIXING the spec — declaring the code in missing.codes, adding a
+# per-wave recode, widening valid_range — over exempting. Do NOT exempt to
+# silence a finding you have not triaged: an exemption without a `reason` is a
+# hard config error (exit 2), not a quiet pass.
+#
+# The events found on introduction (2026-07-31) are deliberately NOT exempted,
+# following the precedent set for the ABS W5 bin-width findings: they stay
+# visible until each is triaged on its merits. Several are already-known bugs
+# (afro dem_satisfaction w9 = the 932 R9 respondents recorded in
+# JEFF_MUST_INVESTIGATE.md) and exempting them would re-hide exactly what this
+# layer was built to surface.
+#
+# Form: exempt_events, each entry
+#   {variable, reason, survey (optional — omit to match every survey),
+#    wave (optional — scalar or list; omit to match every wave)}
+
+schema_version: 1
+
+exempt_events: []

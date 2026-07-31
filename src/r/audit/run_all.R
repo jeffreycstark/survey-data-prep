@@ -321,6 +321,68 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Module 2b: Layer 3b out-of-range triage (Check E) — HARD. The harmonize
+# engine coerces every value outside qc.valid_range to NA and logs it to
+# outputs/<survey>/oob_log.csv; until 2026-07-31 nothing read that log, so
+# ~29,700 silently deleted respondent-values sat unexamined (incl. the 932 afro
+# R9 "not a democracy" responses already recorded in JEFF_MUST_INVESTIGATE.md).
+# Classification is deterministic and evidence-based, so errors count as fails;
+# acknowledged events are exempted in src/config/_audit/oob_exemptions.yml.
+#
+# NOTE: unlike most modules this reads a BUILD artifact, so it is only as fresh
+# as the last harmonize run — pair with 06_check_freshness.R.
+# ---------------------------------------------------------------------------
+.run_layer_3_oob <- function(survey, verbose = FALSE) {
+  .log_module(survey, "L3 out-of-range triage (Check E)")
+  rr <- .run_external("src/r/audit/03_oob_triage.R",
+                      c("--survey", survey), verbose = verbose)
+
+  # Exit 2 is a config error (unreadable log / reasonless exemption) — never
+  # let it read as a pass.
+  if (rr$status == 2L) {
+    return(list(module = "L3 oob", status = "fail", exit = rr$status,
+                ok = 0L, fail = 0L, skip = 0L,
+                first_fails = "out-of-range triage config error (see stdout)",
+                summary = "config error"))
+  }
+
+  csv_path <- here::here("audit/reports", survey, "03-oob.csv")
+  if (!file.exists(csv_path)) {
+    return(list(module = "L3 oob", status = "skip", exit = rr$status,
+                ok = 0L, fail = 0L, skip = 0L, first_fails = character(0),
+                summary = "no oob log — pipeline not run with logging"))
+  }
+
+  counts <- .count_csv_statuses(csv_path)
+  ok   <- .count_get(counts, "ok_exempt")
+  err  <- .count_get(counts, "error")
+  wrn  <- .count_get(counts, "warn")
+
+  first_fails <- character(0)
+  fails_df <- .top_fail_rows(csv_path, fail_statuses = "error")
+  if (nrow(fails_df) > 0L) {
+    first_fails <- vapply(seq_len(nrow(fails_df)), function(i) {
+      r <- fails_df[i, ]
+      code <- if (isTRUE(r$obs_min == r$obs_max)) format(r$obs_min) else
+        sprintf("%s..%s", r$obs_min, r$obs_max)
+      sprintf("%s/%s: %s x code %s coerced to NA [valid %s-%s] (%s)",
+              r$variable %||% "?", r$wave %||% "?", r$n_oob %||% "?", code,
+              r$valid_min %||% "?", r$valid_max %||% "?", r$class %||% "?")
+    }, character(1))
+  }
+
+  list(
+    module = "L3 oob",
+    status = if (err > 0L) "fail" else if (wrn > 0L) "warn" else "ok",
+    exit = rr$status,
+    ok = as.integer(ok), fail = as.integer(err), skip = 0L,
+    first_fails = first_fails,
+    summary = sprintf("%d err, %d warn", err, wrn)
+  )
+}
+
+
+# ---------------------------------------------------------------------------
 # Module 3: Layer 2 codebook reconciliation (F4).
 # Skipped if no data/<survey>/codebook/*.parquet on disk.
 # ---------------------------------------------------------------------------
@@ -789,6 +851,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   results <- list()
   results$L1 <- .run_layer_1(survey, verbose)
   results$L3 <- .run_layer_3(survey, verbose)
+  results$L3_oob <- .run_layer_3_oob(survey, verbose)
   results$L2_codebook <- if (quick) {
     list(module = "L2 codebook", status = "skip", summary = "--quick",
          first_fails = character(0), ok = 0L, fail = 0L, unreconciled = 0L)
@@ -861,15 +924,16 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   # ---- Per-survey table -------------------------------------------------
   w("## Per-survey status")
   w("")
-  w("| Survey | L1 schema | L3 invariants | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L4 binwidth | L5 drift | L6 determ | L6 input |")
-  w("|--------|-----------|---------------|-------------|------------|-----------|-----------|------------|-------------|-------------|----------|-----------|----------|")
+  w("| Survey | L1 schema | L3 invariants | L3 oob | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L4 binwidth | L5 drift | L6 determ | L6 input |")
+  w("|--------|-----------|---------------|--------|-------------|------------|-----------|-----------|------------|-------------|-------------|----------|-----------|----------|")
   for (s in surveys_attempted) {
     r <- all_results[[s]]
     if (is.null(r)) next
-    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
+    w(sprintf("| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |",
               s,
               .cell(r$L1),
               .cell(r$L3),
+              .cell(r$L3_oob),
               .cell(r$L2_codebook),
               .cell(r$L4_anchor),
               .cell(r$L4_strict),
