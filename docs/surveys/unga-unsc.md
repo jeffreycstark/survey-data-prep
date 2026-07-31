@@ -55,11 +55,28 @@ joining on country must filter them explicitly. `98_task0_gate.R` does.
 
 ### ⚠️ The two UNGA files are from DIFFERENT deposit versions
 
-Ideal points are v38.0; votes are v33.0. That is why coverage ends **2025** for
-one and **2022** for the other — it is a version skew, not a property of the
-underlying data. It costs the paper's second outcome about 32 events (below).
-**Refreshing the votes extract to v38.0 would likely close the gap** and is the
-single cheapest available power gain.
+Ideal points are v38.0; votes are v33.0. **This is not fixable by re-pulling.**
+
+**`UNVotes` was REMOVED from the deposit after v33.0.** Versions v34.0 (Dec
+2024) through v39.0 (Jul 2026) contain no roll-call file at all — only ideal
+points and agreement scores. v33.0 is the last version that ever shipped
+roll-calls, so the extract we hold is already the newest available from this
+DOI. A search of Harvard Dataverse turned up no newer replacement deposit.
+
+### ⚠️ DO NOT TRUST THE `year` COLUMN IN THE VOTES FILE
+
+Coverage ends **2024**, not 2022 — the `year` column is wrong at the tail, in
+the SOURCE data. Every session-78 roll-call is labelled `year = 2022` though
+those votes are dated **2023-09-01 to 2024-06-04**. Verified against the
+archived raw `UNVotes-1.RData`, whose row count matches ours exactly, so this is
+an upstream Voeten defect we inherit rather than a build error.
+
+Taking `year` at face value understates roll-call coverage by two years.
+**Derive calendar year from `date`.** `98_task0_gate.R` does; anything building
+the agreement-rate outcome must too.
+
+(Separately, 1.5% of rows have `year != year(date)` because a session spans a
+New Year. That part is benign — only the session-78 block is actually wrong.)
 
 ## Deliverable 2.3 — `unsc_membership_terms` / `_cy` ✅
 
@@ -128,12 +145,18 @@ The agreement-rate outcome is built from the roll-call file, which ends 2022:
 
 | Window | Ideal-point outcome | Agreement-rate outcome | Δ |
 |---|---|---|---|
-| +5 | 253 | **220** | −33 |
+| +5 | 253 | **225** | −28 |
 | +10 | 227 | **195** | −32 |
 
 Both still clear the gate. But **if the two outcomes are co-primary the binding N
-is the smaller figure**, and the headline should not be 227. See the version-skew
-note above — this gap is closable.
+is the smaller figure**, and the headline should not be 227.
+
+**This gap is NOT closable.** An earlier revision of this page said refreshing
+the votes extract to v38.0 would close it. That was wrong on both counts: v38.0
+ships no roll-call file at all, and the shortfall is driven by the roll-call
+series genuinely ending mid-2024 against ideal points running to 2025 — not by
+version skew. Deriving calendar year from `date` rather than the broken `year`
+column recovers 5 events at +5 (220 → 225) and none at +10.
 
 ### Criterion 4 — crosswalk **PASS**
 
@@ -266,8 +289,11 @@ ideal-point outcome at +10, **195** if the agreement-rate outcome is co-primary,
 2. **UNSC second source + 15 hand-checked terms.** The roster is still ONE
    source where the request requires two reconciled. This is the only remaining
    *requirement* rather than an enhancement.
-3. **Refresh the votes extract to deposit v38.0** — would close the 2022/2025
-   coverage skew and recover ~32 events for the second outcome.
+3. ~~Refresh the votes extract to deposit v38.0~~ — **CLOSED, not possible.**
+   `UNVotes` was removed from the deposit after v33.0; v34–v39 ship no roll-call
+   file, and no replacement deposit exists. v33.0 is already what we hold. The
+   investigation did surface the broken `year` column (above), which recovered
+   5 events at +5; that fix is applied.
 
 ## Pipeline
 

@@ -131,7 +131,21 @@ if (length(unmatched)) {
 # Reported separately rather than folded in, because if the two outcomes are
 # co-primary the paper's usable N is the SMALLER of the two, not the headline.
 vt <- readRDS(here("data", "processed", "unga_votes.rds"))
-v_end <- max(vt$year, na.rm = TRUE)
+
+# ⚠️ DO NOT USE THE `year` COLUMN. It is wrong at the tail in the SOURCE data,
+# not in our extract: in UNVotes-1.RData (deposit v33.0) every session-78
+# roll-call is labelled year = 2022, though those votes are dated 2023-09-01 to
+# 2024-06-04. Verified against the archived raw file, whose row count matches
+# ours exactly, so this is an upstream Voeten defect we inherit.
+#
+# Taking `year` at face value understates roll-call coverage by two years and
+# makes the agreement-rate outcome look far more truncated than it is. Calendar
+# year is therefore derived from `date`, which is correct throughout.
+#
+# (1.5% of rows have year != year(date) generally, because a session spans a New
+# Year. That part is benign — it is only the session-78 block that is wrong.)
+vt <- vt %>% mutate(cal_year = as.integer(format(as.Date(date), "%Y")))
+v_end <- max(vt$cal_year, na.rm = TRUE)
 
 # ⚠️ 88 rows (0.007%) carry NO country identity at all — country_text_id,
 # country_name and COWcode are all NA. Left in, they turn every `==` comparison
@@ -139,8 +153,8 @@ v_end <- max(vt$year, na.rm = TRUE)
 # wrong, which is at least loud. Dropped here; reported so the defect is not
 # laundered by this script.
 n_orphan <- sum(is.na(vt$country_text_id))
-have_v <- vt %>% filter(!is.na(country_text_id), !is.na(year)) %>%
-  distinct(country_text_id, year)
+have_v <- vt %>% filter(!is.na(country_text_id), !is.na(cal_year)) %>%
+  distinct(country_text_id, year = cal_year)
 
 window_complete_votes <- function(k) {
   tm %>%
