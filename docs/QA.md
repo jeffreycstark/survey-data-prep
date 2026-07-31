@@ -75,7 +75,7 @@ Then deterministic classification, no statistical inference (same standard as Ch
 
 Volume escalation exists because bulk deletion is never benign regardless of class: one stray 6 in a 1–5 item is a typo, 8,787 of them is a lost response category.
 
-**Proof.** `test_oob_triage.R` — 58 assertions, 0 failures. Every headline event above is pinned as a regression fixture; plus exact threshold boundaries (29 warn / 30 error), missing-log → `skip` vs empty-log → `ok`, malformed log → config error, and exemption scoping (wave- and survey-scoped exemptions must not leak, and must never silence `warn` rows). Three design faults were caught during the build and are now pinned. The costliest: the layer shipped without reading `qc.coverage_missing_codes`, and so re-raised three already-documented drops as errors — found only by cross-checking its own output against the specs. The other two were caught by the tests: `scale_extension` firing on continuous variables (WVS age 15 against a floor of 16 is a 15-year-old, not a lost category), and the sentinel evidence base being polluted by bespoke per-variable missing codes — ABS declares `{0,3,5,6,7,8,9,10,11}` as missing on one variable or another, which downgraded both the `afro dem_satisfaction` 932 and the `abs hh_generations` 107 to warn until the evidence base was restricted to sentinel-*shaped* codes.
+**Proof.** `test_oob_triage.R` — 61 assertions, 0 failures. Every headline event above is pinned as a regression fixture; plus exact threshold boundaries (29 warn / 30 error), missing-log → `skip` vs empty-log → `ok`, malformed log → config error, and exemption scoping (wave- and survey-scoped exemptions must not leak, and must never silence `warn` rows). Three design faults were caught during the build and are now pinned. The costliest: the layer shipped without reading `qc.coverage_missing_codes`, and so re-raised three already-documented drops as errors — found only by cross-checking its own output against the specs. The other two were caught by the tests: `scale_extension` firing on continuous variables (WVS age 15 against a floor of 16 is a 15-year-old, not a lost category), and the sentinel evidence base being polluted by bespoke per-variable missing codes — ABS declares `{0,3,5,6,7,8,9,10,11}` as missing on one variable or another, which downgraded both the `afro dem_satisfaction` 932 and the `abs hh_generations` 107 to warn until the evidence base was restricted to sentinel-*shaped* codes.
 
 **Catches.** Undeclared response categories, wave-specific code frames, undeclared missing codes, and bulk deletion of any kind — the class where the harmonized output looks perfectly clean *because* the offending values are already gone.
 
@@ -210,7 +210,7 @@ Rscript src/r/audit/run_all.R --quick            # skip drift + codebook (faster
 Rscript src/r/audit/03_oob_triage.R --all-surveys           # exit 1 on any error row
 Rscript src/r/audit/03_oob_triage.R --all-surveys --quiet   # error rows only
 Rscript src/r/audit/03_oob_triage.R --survey afro
-Rscript src/r/audit/test_oob_triage.R                       # its 58 fault-injection tests
+Rscript src/r/audit/test_oob_triage.R                       # its 61 fault-injection tests
 
 # The direction gate, standalone — REPORT-ONLY unless you opt in:
 Rscript src/r/audit/99_post_harmonize_gate.R --survey abs            # prints errors, exit 0

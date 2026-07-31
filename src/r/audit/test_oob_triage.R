@@ -145,6 +145,21 @@ ok(cls(0, 0, 1, 4, elsewhere = shape(afro_declared)) == "zero_leak",
 ok(cls(94, 94, 0, 3, elsewhere = shape(afro_declared)) == "sentinel_leak",
    "  ... while sentinel-shaped 94 is still excused by the same evidence base")
 
+# .SENTINEL_SHAPE_MIN is an ABSOLUTE bar, not one relative to each variable's
+# own scale. 97.8% of non-continuous scales top out at <= 11, so it holds for
+# almost the whole corpus — but on the 9 wide-scale variables (kinu 0-100
+# warmth, ipus religion 1-98, kgss income 0-87, abs nominal 1-996/1-9999) any
+# possible stray is >= 20 by construction, so their evidence base is
+# effectively unfiltered. Pinned so the limitation is executable, not just
+# prose: if the bar is ever made relative, this assertion is what changes.
+ok(cls(150, 150, 0, 100, elsewhere = c(150)) == "sentinel_leak",
+   "wide-scale var: a declared code just past the bound IS excused (known gap)")
+ok(cls(150, 150, 0, 100, elsewhere = numeric(0)) != "sentinel_leak",
+   "  ... and is NOT excused when nothing declares it — the gap needs both")
+ok(cls(2000, 2000, 2001, 2025, elsewhere = c(-2, -1, 99, 999, 9999)) ==
+     "scale_extension",
+   "abs int_year w3: the one live wide-scale event is unaffected by the gap")
+
 
 cat("\n-- log handling: missing vs empty ---------------------------------------\n")
 

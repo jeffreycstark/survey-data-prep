@@ -153,16 +153,39 @@ here::i_am("src/r/audit/03_oob_triage.R")
 .SENTINELS_SINGLE <- c(7, 8, 9)
 
 # A code only counts as evidence from OTHER variables' declarations if it is
-# sentinel-SHAPED: negative, or far enough above any real response scale that it
-# cannot be an ordinary category. Without this the evidence base is polluted —
-# abs declares {0, 3, 5, 6, 7, 8, 9, 10, 11} as bespoke missing codes on one
-# variable or another, which would excuse a stray on every other variable in the
-# survey. It did exactly that on first run: afro dem_satisfaction's 932 code-0
-# responses (a KNOWN substantive group, JEFF_MUST_INVESTIGATE.md) and abs
-# hh_generations' 107 code-10 values were both downgraded to warn.
-# Small positive codes must be earned by the universal rules — contiguity and
-# .SENTINELS_SINGLE — because that is exactly the shape of a real category.
-# The widest response scale in this repo is 11 points (0-10).
+# sentinel-SHAPED: negative, or high enough that it is unlikely to be an ordinary
+# response category. Without this the evidence base is polluted — abs declares
+# {0, 3, 5, 6, 7, 8, 9, 10, 11} as bespoke missing codes on one variable or
+# another, which would let any of those excuse a stray on every OTHER variable in
+# the survey. It did exactly that on first run: abs hh_generations' 107 code-10
+# values (still a live error) and afro dem_satisfaction's 932 code-0 responses
+# were both classed sentinel_leak. Small positive codes must instead be earned by
+# the universal rules — contiguity and .SENTINELS_SINGLE — because that is
+# precisely the shape of a real category. (Classing dem_satisfaction correctly as
+# zero_leak is this constant's doing; the spec's coverage_missing_codes
+# declaration is what then clears it to ok_declared. Two separate mechanisms.)
+#
+# WHY 20, and where that stops being safe. Measured over the 1,041 non-continuous
+# variables that declare a valid_range: 1,018 (97.8%) top out at <= 11, so for
+# almost the whole corpus a code >= 20 cannot be an in-scale response. Only 13
+# exceed 20 — four year-valued (int_year x3, gcb fieldwork_year) plus:
+#
+#   abs  religion 1-9999   abs  problem_most_important 1-996
+#   kinu leader/party_warmth_* 0-100 (x4)  ipus religion 1-98
+#   kgss income 0-87       kgss religion 1-77
+#
+# On THOSE nine the bar does almost no work: any value that could be an
+# out-of-range stray there is already >= 20 by construction, so their evidence
+# base is effectively unfiltered and a substantive out-of-range code would be
+# excused as sentinel_leak (-> warn). The bar is absolute rather than relative to
+# each variable's own scale, which is the simplification that buys this.
+#
+# No live event hits that gap today: none of those nine appears in any oob log.
+# The only wide-scale variable that does is abs int_year (one stray 2000 against
+# [2001, 2025]), and it is unaffected — 2000 is declared missing nowhere in abs,
+# so it never reaches the evidence base at all. Latent limitation, not an active
+# bug. Making the bar relative (some multiple of valid_max) is the fix if a live
+# case ever appears; test_oob_triage.R pins the current behaviour either way.
 .SENTINEL_SHAPE_MIN <- 20
 
 # Remedy text per class — what the person triaging should actually do.
