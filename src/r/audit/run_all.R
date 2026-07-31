@@ -354,7 +354,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   }
 
   counts <- .count_csv_statuses(csv_path)
-  ok   <- .count_get(counts, "ok_exempt")
+  ok   <- .count_get(counts, "ok_exempt") + .count_get(counts, "ok_declared")
   err  <- .count_get(counts, "error")
   wrn  <- .count_get(counts, "warn")
 

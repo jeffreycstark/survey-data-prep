@@ -71,9 +71,29 @@
 # class: one stray 6 in a 1-5 item is a typo, 8,787 of them is a lost response
 # category.
 #
-# Acknowledged events are exempted in src/config/_audit/oob_exemptions.yml —
-# the `allow_oob` concept from audit/01-audit-framework.md Layer 3. Exemption
-# downgrades error -> ok_exempt and requires a written reason.
+# TWO WAYS AN EVENT IS CLEARED
+# ----------------------------
+#   1. `qc.coverage_missing_codes[_by_wave]` in the variable's own spec — the
+#      repo's EXISTING first-class "this drop is deliberate" declaration, which
+#      validate_coverage() already honours (.vvw_collect_coverage_codes in
+#      validation.R). That is why lbs age y2010 reports "Coverage OK (100.0%)"
+#      despite 2,483 deletions: someone triaged it and wrote the intent down.
+#      Matching events become `ok_declared`.
+#
+#      This layer shipped without reading that field and consequently re-raised
+#      three already-documented drops as errors (lbs age y2010, lbs
+#      education_level y2004, afro dem_satisfaction w9). An audit that re-opens
+#      settled decisions trains people to ignore it, so intent declared in the
+#      spec outranks the grade.
+#
+#      SPANS ARE NOT CLEARED. The engine logs only n/min/max, so matching
+#      endpoints cannot prove every value in between is declared; such events
+#      are capped at `warn` with the reason recorded, never cleared outright.
+#
+#   2. src/config/_audit/oob_exemptions.yml — the `allow_oob` concept from
+#      audit/01-audit-framework.md Layer 3, for events that are acceptable but
+#      have no natural home in a spec. Downgrades error -> ok_exempt and
+#      requires a written reason.
 #
 # Reads only the log + YAML specs. No data load, no raw .sav, so it is fast and
 # safe to run anywhere. It does NOT re-derive the events — it audits the record
@@ -190,6 +210,7 @@ load_spec_context <- function(survey = NULL, spec_dir = NULL) {
   types <- character(0)
   var_missing <- list()
   survey_missing <- numeric(0)
+  declared_drops <- list()
 
   extract_codes <- function(conv) {
     if (is.null(conv)) return(numeric(0))
@@ -222,14 +243,51 @@ load_spec_context <- function(survey = NULL, spec_dir = NULL) {
       }
       var_missing[[id]] <- unique(codes[!is.na(codes)])
       survey_missing <- c(survey_missing, codes)
+
+      # `qc.coverage_missing_codes[_by_wave]` is the repo's EXISTING first-class
+      # statement of "this drop is intentional" — validate_coverage() already
+      # honours it (.vvw_collect_coverage_codes in validation.R), which is why
+      # lbs age y2010 reports "Coverage OK (100.0%)" despite 2,483 deletions.
+      # Check E must honour the same declaration or it re-raises work that has
+      # already been triaged and documented in the spec.
+      glob <- suppressWarnings(as.numeric(unlist(v$qc$coverage_missing_codes)))
+      byw  <- lapply(v$qc$coverage_missing_codes_by_wave %||% list(),
+                     function(z) suppressWarnings(as.numeric(unlist(z))))
+      if (length(glob) > 0L || length(byw) > 0L) {
+        declared_drops[[id]] <- list(global = glob[!is.na(glob)], by_wave = byw)
+      }
     }
   }
 
   list(
     types = types,
     var_missing = var_missing,
-    survey_missing = sort(unique(survey_missing[!is.na(survey_missing)]))
+    survey_missing = sort(unique(survey_missing[!is.na(survey_missing)])),
+    declared_drops = declared_drops
   )
+}
+
+
+#' Is this event a drop the spec already declared intentional?
+#'
+#' @return "full"    every resolvable stray value is declared;
+#'         "partial" the event is a SPAN and both endpoints are declared, but
+#'                   the engine's log records only n/min/max so the interior
+#'                   values cannot be verified;
+#'         "none"    not declared.
+.declared_drop_status <- function(declared, variable, wave, obs_min, obs_max) {
+  d <- .get_named(declared, variable, NULL)
+  if (is.null(d)) return("none")
+  codes <- c(d$global %||% numeric(0),
+             .get_named(d$by_wave, wave, numeric(0)))
+  codes <- codes[!is.na(codes)]
+  if (length(codes) == 0L) return("none")
+
+  if (isTRUE(obs_min == obs_max)) {
+    return(if (obs_min %in% codes) "full" else "none")
+  }
+  if (obs_min %in% codes && obs_max %in% codes) return("partial")
+  "none"
 }
 
 
@@ -417,9 +475,25 @@ triage_oob_log <- function(log_df, spec_ctx = NULL, exemptions = list(),
       var_type = vtype, declared_elsewhere = elsewhere
     )
     status <- grade_oob_event(cls, r$n_oob, escalate_n, bulk_n)
+    reason <- NA_character_
 
-    reason <- .match_exemption(exemptions, survey, vid, wave)
-    if (!is.na(reason) && status == "error") status <- "ok_exempt"
+    # Spec-declared intent outranks the grade: the spec already says this drop
+    # is deliberate, and validate_coverage() already honours the same field.
+    dstat <- .declared_drop_status(spec_ctx$declared_drops, vid, wave,
+                                   as.numeric(r$obs_min), as.numeric(r$obs_max))
+    if (dstat == "full") {
+      status <- "ok_declared"
+      reason <- "declared intentional drop (qc.coverage_missing_codes)"
+    } else if (dstat == "partial" && status == "error") {
+      status <- "warn"
+      reason <- paste("span endpoints declared intentional; interior values",
+                      "unverifiable (engine logs only n/min/max)")
+    }
+
+    if (is.na(reason)) {
+      reason <- .match_exemption(exemptions, survey, vid, wave)
+      if (!is.na(reason) && status == "error") status <- "ok_exempt"
+    }
 
     out[[i]] <- data.frame(
       survey = survey, variable = vid, wave = wave,
@@ -498,7 +572,7 @@ run_oob_triage <- function(survey, log_path = NULL, exemptions = NULL,
 
   n_error <- sum(rows$status == "error")
   n_warn  <- sum(rows$status == "warn")
-  n_ok    <- sum(rows$status == "ok_exempt")
+  n_ok    <- sum(rows$status %in% c("ok_exempt", "ok_declared"))
 
   status <- if (n_error > 0L) "fail" else if (n_warn > 0L) "warn" else "ok"
 
@@ -507,7 +581,7 @@ run_oob_triage <- function(survey, log_path = NULL, exemptions = NULL,
     n_error = as.integer(n_error), n_warn = as.integer(n_warn),
     n_ok = as.integer(n_ok), n_rows = nrow(rows), rows = rows,
     message = if (nrow(rows) == 0L) "no out-of-range events" else
-      sprintf("%d event(s): %d error, %d warn, %d exempt",
+      sprintf("%d event(s): %d error, %d warn, %d declared/exempt",
               nrow(rows), n_error, n_warn, n_ok)
   )
 }
@@ -525,7 +599,8 @@ run_oob_triage <- function(survey, log_path = NULL, exemptions = NULL,
   if (quiet) show <- show[show$status == "error", , drop = FALSE]
   if (nrow(show) == 0L) return(invisible(NULL))
 
-  show <- show[order(factor(show$status, levels = c("error", "warn", "ok_exempt")),
+  show <- show[order(factor(show$status,
+                            levels = c("error", "warn", "ok_declared", "ok_exempt")),
                      -show$n_oob), , drop = FALSE]
   for (i in seq_len(nrow(show))) {
     r <- show[i, ]

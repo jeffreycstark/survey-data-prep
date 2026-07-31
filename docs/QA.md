@@ -56,9 +56,13 @@ Legend — **Enforcement:** 🔴 hard (nonzero exit / stops pipeline) · 🟡 so
 
 That matters more than a missing tally, because the engine's default action is to **destroy the evidence**: once an undeclared code is `NA` it is indistinguishable from item nonresponse.
 
-**What it found on introduction (2026-07-31).** 90 events across 7 surveys — **29,699 silently deleted respondent-values**, 10 of them error-grade. Headline rows: `wvs freedom_vs_equality` w2 (8,787 × code 3 on a 1–2 item — an entire third response option), `lbs education_level` y2004 (2,491 × code 0) and `age` y2010 (2,483 × code 0), `abs hh_generations` w6 (107 × code 10 on a 1–4 item), `arab-barometer dem_feature_1st/2nd` w2 (a 4–5-digit code frame where the spec declares 1–10). And `afro dem_satisfaction` w9 — the **same 932 R9 respondents** `JEFF_MUST_INVESTIGATE.md` records as "previously silently NA-coerced by the engine's `valid_range [1,4]`". That one was found by a human reading data; this layer is what would have raised it.
+**What it found on introduction (2026-07-31).** 90 events across 7 surveys — **29,699 silently deleted respondent-values**, 6 of them error-grade. Headline error rows: `wvs freedom_vs_equality` w2 (8,787 × code 3 on a 1–2 item — an entire third response option), `abs hh_generations` w6 (107 × code 10 on a 1–4 item), `afro urban_rural` w6/w7 (128 × code 460), `arab-barometer dem_feature_1st` w2 (a 4–5-digit code frame where the spec declares 1–10), `afro bribe_police` w2 (30 × code 4 on a 0–3 item).
 
-**How.** Deterministic classification, no statistical inference (same standard as Check D), preferring what the survey's own specs declare over any hardcoded guess:
+The largest deletions turned out to be **already triaged**: `lbs education_level` y2004 (2,491 × code 0), `lbs age` y2010 (2,483 × code 0) and `afro dem_satisfaction` w9 (932 × code 0 — the group preserved in `dem_country_not_democracy`) all declare their drops in `qc.coverage_missing_codes_by_wave`, so they report `ok_declared`. See "How" below: this layer initially re-raised all three as errors, which is a failure mode worth naming — an audit that re-opens settled decisions trains people to ignore it.
+
+**How.** Two clearing mechanisms run before grading. `qc.coverage_missing_codes[_by_wave]` in the variable's own spec is the repo's existing first-class "this drop is deliberate" declaration — `validate_coverage()` already honours it, which is why `lbs age` y2010 reports "Coverage OK (100.0%)" despite 2,483 deletions. Matching events become `ok_declared`; spec-declared intent outranks the grade. Spans are never cleared outright — the engine logs only n/min/max, so matching endpoints cannot prove the values in between are declared, and such events cap at `warn` with the reason recorded. Anything else acceptable goes in `src/config/_audit/oob_exemptions.yml` (`ok_exempt`, written reason mandatory).
+
+Then deterministic classification, no statistical inference (same standard as Check D), preferring what the survey's own specs declare over any hardcoded guess:
 
 | class | meaning | grade |
 |---|---|---|
@@ -71,7 +75,7 @@ That matters more than a missing tally, because the engine's default action is t
 
 Volume escalation exists because bulk deletion is never benign regardless of class: one stray 6 in a 1–5 item is a typo, 8,787 of them is a lost response category.
 
-**Proof.** `test_oob_triage.R` — 47 assertions, 0 failures. Every headline event above is pinned as a regression fixture; plus exact threshold boundaries (29 warn / 30 error), missing-log → `skip` vs empty-log → `ok`, malformed log → config error, and exemption scoping (wave- and survey-scoped exemptions must not leak, and must never silence `warn` rows). Two design faults were caught *by* these tests during the build and are now pinned: `scale_extension` firing on continuous variables (WVS age 15 against a floor of 16 is a 15-year-old, not a lost category), and the sentinel evidence base being polluted by bespoke per-variable missing codes — ABS declares `{0,3,5,6,7,8,9,10,11}` as missing on one variable or another, which downgraded both the `afro dem_satisfaction` 932 and the `abs hh_generations` 107 to warn until the evidence base was restricted to sentinel-*shaped* codes.
+**Proof.** `test_oob_triage.R` — 58 assertions, 0 failures. Every headline event above is pinned as a regression fixture; plus exact threshold boundaries (29 warn / 30 error), missing-log → `skip` vs empty-log → `ok`, malformed log → config error, and exemption scoping (wave- and survey-scoped exemptions must not leak, and must never silence `warn` rows). Three design faults were caught during the build and are now pinned. The costliest: the layer shipped without reading `qc.coverage_missing_codes`, and so re-raised three already-documented drops as errors — found only by cross-checking its own output against the specs. The other two were caught by the tests: `scale_extension` firing on continuous variables (WVS age 15 against a floor of 16 is a 15-year-old, not a lost category), and the sentinel evidence base being polluted by bespoke per-variable missing codes — ABS declares `{0,3,5,6,7,8,9,10,11}` as missing on one variable or another, which downgraded both the `afro dem_satisfaction` 932 and the `abs hh_generations` 107 to warn until the evidence base was restricted to sentinel-*shaped* codes.
 
 **Catches.** Undeclared response categories, wave-specific code frames, undeclared missing codes, and bulk deletion of any kind — the class where the harmonized output looks perfectly clean *because* the offending values are already gone.
 
@@ -160,7 +164,7 @@ It also required an extension to `write_manifest()`. Engine files were hardcoded
 
 Read this before trusting a "clean" run.
 
-1. **A default `run_all.R` / build does not verify direction.** The gate is **report-only**; the ABS strict-reversal check is ABS-only; the label-recon and bin-width-parity checks run but their errors only *fail a run* through `run_all`'s L4_labels / L4_binwidth tallies, not through the per-build gate. **ABS carries 18 label-reconciliation error rows (7 variables: `demo_political_equality`, `econ_family_income_fair_6pt`, `govt_should_censor_ideas`, `no_accountability_between_elections`, `gov_elections_real_choice`, `sat_president_govt`, `efficacy_ability_participate`) AND 56 bin-width parity_error rows (41 variables, headlined by the W5 6→4pt trust class) right now** — known, deferred backlogs ([`project_abs_label_recon_backlog`], `JEFF_MUST_INVESTIGATE.md`). Flip `HARMONIZE_AUDIT_GATE=block` to make them stop the pipeline; until the backlogs are triaged, "clean" ≠ "ABS is directionally correct and level-comparable." Separately, **10 out-of-range error rows are open across abs/wvs/lbs/afro/arab-barometer** (layer 2b) — these *do* fail `run_all`, but they are not wired into the per-build gate, so a build still cannot be stopped by them.
+1. **A default `run_all.R` / build does not verify direction.** The gate is **report-only**; the ABS strict-reversal check is ABS-only; the label-recon and bin-width-parity checks run but their errors only *fail a run* through `run_all`'s L4_labels / L4_binwidth tallies, not through the per-build gate. **ABS carries 18 label-reconciliation error rows (7 variables: `demo_political_equality`, `econ_family_income_fair_6pt`, `govt_should_censor_ideas`, `no_accountability_between_elections`, `gov_elections_real_choice`, `sat_president_govt`, `efficacy_ability_participate`) AND 56 bin-width parity_error rows (41 variables, headlined by the W5 6→4pt trust class) right now** — known, deferred backlogs ([`project_abs_label_recon_backlog`], `JEFF_MUST_INVESTIGATE.md`). Flip `HARMONIZE_AUDIT_GATE=block` to make them stop the pipeline; until the backlogs are triaged, "clean" ≠ "ABS is directionally correct and level-comparable." Separately, **6 out-of-range error rows are open across abs/wvs/afro/arab-barometer** (layer 2b) — these *do* fail `run_all`, but they are not wired into the per-build gate, so a build still cannot be stopped by them.
 2. **Wrong-but-consistent recodes pass everything.** If a recode is wrong yet produces in-range values, coherent within its battery, and matching its (also-wrong) labels, *no* layer catches it. QA verifies internal consistency and label agreement, not ground truth against the questionnaire.
 3. **Soft checks never fail a run.** Battery coherence, anchor coverage, and drift only warn/report. A battery hint or 207 "uncovered" vars will not turn `run_all` red.
 4. **Coverage of the hard checks is uneven across surveys.** Strict reversal and source-coverage reconciliation exist for ABS (+IPUS/KINU for the latter) only. Non-ABS surveys lean on label reconciliation + invariants alone for direction.
@@ -182,7 +186,7 @@ Concrete evidence the machinery works on real bugs, not just injected ones:
 | ABS democracy-supply battery (4 `dem_*` items) reversed vs labels | same | `6e622f5` (2026-06-20) |
 | ABS `econ_family_income_fair_6pt` stored opposite labels | label reconciliation | **caught, still open** — in the 18-error backlog above |
 | ABS W5 trust 6→4pt pole-merge (top-box inflated ~2.4–4.6×, direction correct) | bin-width parity (Check D) | **caught, still open** — 18 W5 items (13 institutional + 4 social trust + `econ_family_income_fair`) flagged `parity_error`; left visible by decision 2026-07-22, see `JEFF_MUST_INVESTIGATE.md` |
-| 29,699 respondent-values silently coerced to `NA` across 7 surveys, incl. an entire third response option in `wvs freedom_vs_equality` w2 (8,787 cases) | out-of-range triage (Check E) | **caught, all 10 error rows open** — deliberately not exempted, see `src/config/_audit/oob_exemptions.yml` |
+| 29,699 respondent-values silently coerced to `NA` across 7 surveys, incl. an entire third response option in `wvs freedom_vs_equality` w2 (8,787 cases) | out-of-range triage (Check E) | **caught, 6 error rows open** — deliberately not exempted, see `src/config/_audit/oob_exemptions.yml` |
 
 The third row is the point: the check *found* it (Phase 5, `1308831`); the report-only gate is why it's still sitting there. The fourth row closes a whole class the direction checks could never see — it was found by a downstream paper first (paper 05), and Check D now regression-pins it.
 
@@ -206,7 +210,7 @@ Rscript src/r/audit/run_all.R --quick            # skip drift + codebook (faster
 Rscript src/r/audit/03_oob_triage.R --all-surveys           # exit 1 on any error row
 Rscript src/r/audit/03_oob_triage.R --all-surveys --quiet   # error rows only
 Rscript src/r/audit/03_oob_triage.R --survey afro
-Rscript src/r/audit/test_oob_triage.R                       # its 47 fault-injection tests
+Rscript src/r/audit/test_oob_triage.R                       # its 58 fault-injection tests
 
 # The direction gate, standalone — REPORT-ONLY unless you opt in:
 Rscript src/r/audit/99_post_harmonize_gate.R --survey abs            # prints errors, exit 0
@@ -218,7 +222,7 @@ HARMONIZE_AUDIT_GATE=block Rscript .../99_create_final_dataset.R     # enforce i
 # Every check CSV lives under audit/reports/<survey>/04-*.csv, 02-*, 05-*.
 ```
 
-Reading a result: `status` columns use `ok / warn / error / skip` (invariants), `ok / error / skip` (label recon — **`error` is the one that matters**), `ok / hint / weak / na / skip` (battery), `covered / exempt / uncovered / skip` (anchor coverage), `error / warn / ok_exempt` (out-of-range triage — every row is a real deletion; the grade says how likely it was wrong). **`skip` is not a pass.**
+Reading a result: `status` columns use `ok / warn / error / skip` (invariants), `ok / error / skip` (label recon — **`error` is the one that matters**), `ok / hint / weak / na / skip` (battery), `covered / exempt / uncovered / skip` (anchor coverage), `error / warn / ok_declared / ok_exempt` (out-of-range triage — every row is a real deletion; the grade says how likely it was wrong, and `ok_declared` means the spec already documented the drop). **`skip` is not a pass.**
 
 ## Calibrated confidence verdict
 

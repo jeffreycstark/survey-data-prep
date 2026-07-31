@@ -217,6 +217,80 @@ ok(warn_only_ex$n_warn == 2L,
    "exemption does NOT silence warn rows — they stay visible")
 
 
+cat("\n-- spec-declared intentional drops (qc.coverage_missing_codes) ----------\n")
+
+# The repo already had a first-class "this drop is deliberate" field, honoured
+# by validate_coverage(). Check E shipped without reading it and therefore
+# re-raised three already-triaged, already-documented drops as errors:
+#   lbs age y2010 [0], lbs education_level y2004 [0], afro dem_satisfaction w9 [0]
+declared_ctx <- function(entry) {
+  list(types = character(0), var_missing = list(), survey_missing = numeric(0),
+       declared_drops = entry)
+}
+
+log_zero <- write_log(mk_row("dem_satisfaction", "w9", 932, 0, 0, 1, 4), "z.csv")
+
+res_undeclared <- run_oob_triage("afro", log_path = log_zero, exemptions = list(),
+                                 spec_ctx = declared_ctx(list()), write_report = FALSE)
+ok(res_undeclared$rows$status[1] == "error",
+   "undeclared code-0 drop stays an error")
+
+res_declared <- run_oob_triage(
+  "afro", log_path = log_zero, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_satisfaction = list(
+    global = numeric(0), by_wave = list(w9 = 0)))),
+  write_report = FALSE)
+ok(res_declared$rows$status[1] == "ok_declared" && res_declared$n_error == 0L,
+   "the SAME drop declared in qc.coverage_missing_codes_by_wave -> ok_declared")
+ok(grepl("declared intentional", res_declared$rows$exempt_reason[1]),
+   "  ... and records why it was cleared")
+
+res_wrong_wave <- run_oob_triage(
+  "afro", log_path = log_zero, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_satisfaction = list(
+    global = numeric(0), by_wave = list(w2 = 0, w3 = 0, w4 = 0)))),
+  write_report = FALSE)
+ok(res_wrong_wave$rows$status[1] == "error",
+   "a declaration for OTHER waves does not clear this wave")
+
+res_global <- run_oob_triage(
+  "afro", log_path = log_zero, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_satisfaction = list(
+    global = 0, by_wave = list()))),
+  write_report = FALSE)
+ok(res_global$rows$status[1] == "ok_declared",
+   "variable-wide qc.coverage_missing_codes also clears it")
+
+res_wrong_code <- run_oob_triage(
+  "afro", log_path = log_zero, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_satisfaction = list(
+    global = c(97, 99), by_wave = list()))),
+  write_report = FALSE)
+ok(res_wrong_code$rows$status[1] == "error",
+   "a declaration of DIFFERENT codes does not clear this one")
+
+# Spans: the engine logs only n/min/max, so matching endpoints cannot prove
+# every stray value in between is declared. Cap at warn, never clear.
+log_span <- write_log(mk_row("dem_feature_2nd", "w2", 81, 2001, 10506, 1, 10), "sp.csv")
+res_span <- run_oob_triage(
+  "arab-barometer", log_path = log_span, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_feature_2nd = list(
+    global = c(2001, 10506), by_wave = list()))),
+  write_report = FALSE)
+ok(res_span$rows$status[1] == "warn" && res_span$n_error == 0L,
+   "span with both endpoints declared -> warn, not cleared")
+ok(grepl("interior values", res_span$rows$exempt_reason[1]),
+   "  ... and says why it cannot be cleared outright")
+
+res_span_partial <- run_oob_triage(
+  "arab-barometer", log_path = log_span, exemptions = list(),
+  spec_ctx = declared_ctx(list(dem_feature_2nd = list(
+    global = 2001, by_wave = list()))),
+  write_report = FALSE)
+ok(res_span_partial$rows$status[1] == "error",
+   "span with only ONE endpoint declared stays an error")
+
+
 cat("\n-- exemptions file validation -------------------------------------------\n")
 
 write_ex <- function(entries, name) {
@@ -256,7 +330,8 @@ yaml::write_yaml(list(
     list(id = "trust_x", type = "ordinal",
          missing = list(use_convention = "treat_as_na")),
     list(id = "age", type = "continuous",
-         missing = list(use_convention = "treat_as_na", codes = c(999)))
+         missing = list(use_convention = "treat_as_na", codes = c(999)),
+         qc = list(coverage_missing_codes_by_wave = list(y2010 = 0)))
   )
 ), file.path(spec_dir, "s.yml"))
 
@@ -267,6 +342,10 @@ ok(all(c(-1, 9, 94, 999) %in% sc$survey_missing),
    "load_spec_context unions convention + variable-level missing codes")
 ok(999 %in% sc$var_missing[["age"]],
    "load_spec_context keeps per-variable missing codes")
+ok(identical(sc$declared_drops$age$by_wave$y2010, 0),
+   "load_spec_context reads qc.coverage_missing_codes_by_wave")
+ok(is.null(sc$declared_drops$trust_x),
+   "  ... and records nothing for a variable that declares none")
 
 # A variable's OWN codes must be subtracted, so its own convention can never
 # explain away an event that got past that convention.
