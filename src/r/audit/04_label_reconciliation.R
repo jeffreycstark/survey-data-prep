@@ -117,6 +117,19 @@ default_polarity_lexicon <- function() {
                              "(?<!불)만족"),
                      neg = c("\\bdissatisfied\\b", "not.*satisfied",
                              "불만족", "만족하지 않")),
+    # ABS responsiveness battery ("Very responsive" .. "Not responsive at
+    # all"). English-only: no Korean pattern is asserted here because none
+    # has been verified against a Korean-labelled file, and an unverified
+    # KO pattern would classify rather than skip — the failure direction
+    # this family exists to fix. The two lookbehinds are fixed-length (PCRE
+    # forbids variable-length) and keep "not very responsive" out of pos.
+    responsive = list(pos = c("(?<!not )(?<!not very )responsive"),
+                      neg = c("not.*responsive")),
+    # "Very well" / "Fairly well" / "Not very well" — the DECLARED side of the
+    # same battery. End-anchored so "well being", "as well as" and "does well
+    # enough" stay unclassified rather than being read as a positive pole.
+    well      = list(pos = c("(?<!not )(?<!not very )\\bwell\\b\\s*$"),
+                     neg = c("not.*\\bwell\\b\\s*$")),
     trust     = list(pos = c("great deal", "\\ba lot\\b", "quite a lot",
                              "trust.*completely", "\\bfully trust",
                              "신뢰(?!\\s?하지)", "믿는다", "믿는 편"),

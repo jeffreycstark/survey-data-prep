@@ -58,6 +58,19 @@ families:
   satisfied:
     pos: ["\\bsatisfied\\b", "\\bsatisfaction\\b", "(?<!불)만족"]
     neg: ["\\bdissatisfied\\b", "not.*satisfied", "불만족", "만족하지 않"]
+  # ABS responsiveness battery ("Very responsive" .. "Not responsive at all").
+  # English-only by design: no verified Korean pattern exists, and an
+  # unverified one would classify rather than skip. Lookbehinds are
+  # fixed-length (PCRE requirement) and keep "not very responsive" out of pos.
+  responsive:
+    pos: ["(?<!not )(?<!not very )responsive"]
+    neg: ["not.*responsive"]
+  # "Very well" / "Fairly well" / "Not very well" — the DECLARED side of the
+  # same battery. End-anchored so "well being", "as well as" and "does well
+  # enough" stay unclassified rather than reading as a positive pole.
+  well:
+    pos: ["(?<!not )(?<!not very )\\bwell\\b\\s*$"]
+    neg: ["not.*\\bwell\\b\\s*$"]
   trust:
     pos: ["great deal", "\\ba lot\\b", "quite a lot", "trust.*completely",
           "\\bfully trust", "신뢰(?!\\s?하지)", "믿는다", "믿는 편"]
