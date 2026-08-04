@@ -188,9 +188,27 @@ These are framework tickets that haven't shipped yet. Each is in `audit/02-imple
 ABS Tier 2 done (SPSS metadata, 99.6% coverage). Tier 1 (KINU + IPUS xlsx) done. Tier 3 is the long tail.
 
 ### Phase H (CI integration)
-- H1: Local audit orchestrator (`make audit`)
-- H2: GitHub Actions audit workflow with merge gates
-- H3: Per-layer gating policy
+- ~~H1: Local audit orchestrator (`make audit`)~~ — **DONE 2026-08-03.** `run_all.R`
+  already existed; the ticket's remaining part was the convention wrapper. `Makefile`
+  adds `make audit` / `audit-quick` / `audit-specs` / `audit-report` / `check-r`
+  (`make audit SURVEY=abs` narrows to one survey). Thin wrappers only — no logic in
+  the Makefile, so `make` and a bare `Rscript` call stay interchangeable.
+- **H2: PARTIAL 2026-08-03** — `.github/workflows/audit.yml` gates every check that
+  works from the source tree alone: R parse over 124 files, Layer 1 schema validation
+  for all 12 surveys, recoding-registry drift. Runs on PR + push to main, blocking.
+  **It cannot do what the ticket asked.** The ticket says CI should run
+  `run_all.R --survey abs`, but `*.sav` and `data/processed/*.rds` are gitignored and
+  the raw data is licensed — a runner has no data, so L2/L3/L4/L5/L6 are unrunnable
+  in CI and are skipped by the new `--specs-only` flag (which also suppresses the
+  exit-2 "prereqs missing", since on a clean checkout that is the expected state).
+  Verified by cloning to a data-free tree: exit 0 clean; malformed YAML → exit 1;
+  schema violation (`method: nonexistent_method_xyz`) → exit 1. **Untested against a
+  live runner** — the workflow has never executed; first PR proves it.
+  To close H2 as specified you need data on the runner: a self-hosted runner with a
+  data mount, or committing `data/processed/*.rds` (check licences first).
+- H3: Per-layer gating policy — **partly moot until H2 is closed.** The layers that
+  the ticket wants split into block-vs-warn (L1/L3/L4/L6 block, L2/L5 warn) are, apart
+  from L1, exactly the layers CI cannot run. Everything CI runs today is blocking.
 - H4: Audit-pass certificate generator for tagged releases
 
 ---

@@ -1,0 +1,93 @@
+name: Audit
+
+# Harmonization audit gate (audit ticket H2/H3).
+#
+# SCOPE — read this before assuming the badge means "the data is fine".
+# Raw survey files (*.sav) and the harmonized outputs (data/processed/*.rds)
+# are gitignored, and most of them are licensed data that cannot live in a
+# repo at all. A CI runner therefore has NO survey data, and the layers that
+# read data (L2 codebook, L3 invariants, L4 anchors/labels/battery/bin-width,
+# L5 drift, L6 determinism) cannot run here.
+#
+# What this workflow gates is everything that can be checked from the source
+# tree alone:
+#   * every R file parses
+#   * every harmonize YAML passes Layer 1 schema + cross-reference validation
+#   * the recoding registry has not drifted from recoding.R
+#
+# The data-dependent layers stay a local command: `make audit`. Their result
+# is recorded in audit/SUMMARY.md, which is committed.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/config/**'
+      - 'src/r/**'
+      - 'Makefile'
+      - 'renv.lock'
+      - '.github/workflows/audit.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  specs:
+    name: Spec schema + registry drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          # renv.lock pins R 4.6.0, but this job deliberately does NOT restore
+          # renv: the lockfile carries arrow, haven and the tidyverse, none of
+          # which the data-free path touches, and restoring them costs minutes
+          # per run. The checks below are YAML/JSON-schema work and are not
+          # R-version sensitive.
+          r-version: 'release'
+          use-public-rspm: true
+
+      - name: Install audit dependencies
+        # Exactly the packages reachable from run_all.R --specs-only:
+        #   run_all.R              -> yaml, here
+        #   validate_spec.R        -> yaml, here, dplyr, jsonlite, jsonvalidate
+        #   check_registry_complete.R -> yaml, here, renv
+        run: |
+          install.packages(c(
+            "here", "yaml", "dplyr", "jsonlite", "jsonvalidate", "renv"
+          ))
+        shell: Rscript {0}
+
+      - name: R syntax check
+        run: make check-r
+
+      - name: Audit — data-free layers
+        run: make audit-specs
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f audit/SUMMARY.md ]; then
+            {
+              echo '### Audit summary (data-free layers)'
+              echo
+              cat audit/SUMMARY.md
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'No audit/SUMMARY.md was produced.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload summary artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-summary
+          path: audit/SUMMARY.md
+          if-no-files-found: warn
