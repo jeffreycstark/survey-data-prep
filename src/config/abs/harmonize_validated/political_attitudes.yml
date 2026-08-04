@@ -101,7 +101,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "Raw is 1=Very responsive -> 4=Not responsive at all in every wave, i.e. OPPOSITE the labels above. Was safe_4pt_none until 2026-08-04, which stored the item backwards against its own labels and against every other ABS attitude battery. Found by paper 01b empirically (r=-.56..-.58 vs covid_govt_handling, covid_trust_info, institutional_trust_index, dem_satisfaction, all three countries); label reconciliation had skipped it because 'responsive'/'well' were absent from the polarity lexicon."
     qc:
       valid_range: [1, 4]
       validate:

@@ -69,6 +69,14 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_3pt
+        note: "W3-W5 coded 1=Very close -> 3=Just a little close; reverse so high=closer"
+      exceptions:
+        w1:
+          method: identity
+          note: "W1 (q063) coded 1=Just a little close -> 3=Very close, i.e. ALREADY ascending. Reversing it inverted w1 against w3-w5. Verified from raw value labels 2026-08-04. (w1 also has code 0='Extent unknown'.)"
+        w2:
+          method: identity
+          note: "W2 (q55) coded 1=Just a little close -> 3=Very close, same as w1. ABS flipped the raw order between w2 and w3."
     qc:
       valid_range: [1, 3]
       validate:

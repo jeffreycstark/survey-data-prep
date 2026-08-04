@@ -120,8 +120,8 @@ variables:
         4: "Very easy"
     harmonize:
       default:
-        method: r_function
-        fn: safe_reverse_4pt
+        method: identity
+        note: "W4 raw (q39) is 1=Very difficult -> 4=Very easy, IDENTICAL to the labels above, so no reversal is warranted. Was safe_reverse_4pt until 2026-08-04, which stored the item opposite its own labels. NB the W5 access_* items have the OPPOSITE raw order and their reversal is correct — this is a per-variable fix, not a battery-wide one."
     qc:
       valid_range: [1, 4]
       validate:
@@ -224,8 +224,8 @@ variables:
         4: "Very easy"
     harmonize:
       default:
-        method: r_function
-        fn: safe_reverse_4pt
+        method: identity
+        note: "W4 raw (q40) is 1=Very difficult -> 4=Very easy, IDENTICAL to the labels above, so no reversal is warranted. Was safe_reverse_4pt until 2026-08-04, which stored the item opposite its own labels. NB the W5 access_* items have the OPPOSITE raw order and their reversal is correct — this is a per-variable fix, not a battery-wide one."
     qc:
       valid_range: [1, 4]
       validate:
