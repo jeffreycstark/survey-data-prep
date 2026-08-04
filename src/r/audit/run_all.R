@@ -76,13 +76,15 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # CLI parsing
 # ---------------------------------------------------------------------------
 .parse_cli_args <- function(argv) {
-  out <- list(survey = NULL, quick = FALSE, verbose = FALSE, help = FALSE)
+  out <- list(survey = NULL, quick = FALSE, specs_only = FALSE,
+              verbose = FALSE, help = FALSE)
   i <- 1L
   while (i <= length(argv)) {
     a <- argv[i]
     if (a %in% c("-h", "--help"))   { out$help    <- TRUE;       i <- i + 1L; next }
     if (a == "--survey")            { out$survey  <- argv[i + 1L]; i <- i + 2L; next }
     if (a == "--quick")             { out$quick   <- TRUE;       i <- i + 1L; next }
+    if (a == "--specs-only")        { out$specs_only <- TRUE;    i <- i + 1L; next }
     if (a == "--verbose")           { out$verbose <- TRUE;       i <- i + 1L; next }
     stop(sprintf("unknown argument: %s (see --help)", a), call. = FALSE)
   }
@@ -98,10 +100,15 @@ source(here::here("src/r/harmonize/validate_spec.R"))
         paste(.SUPPORTED_SURVEYS, collapse = ", "), ").\n",
     "                  Default: every survey with prerequisites present.\n",
     "  --quick         Skip the two slowest modules (G1 drift, F4 codebook).\n",
+    "  --specs-only    Run only the modules that need no survey data: L1 schema\n",
+    "                  validation and the recoding-registry drift check. This is\n",
+    "                  the CI mode — raw and harmonized data are gitignored, so a\n",
+    "                  clean checkout can run these two and nothing else.\n",
     "  --verbose       Echo each module's full stdout (default: one summary line).\n",
     "  -h, --help      Show this message.\n",
     "\n",
     "Writes audit/SUMMARY.md. Exit 0 = all clean; 1 = fails detected; 2 = prereqs missing.\n",
+    "(--specs-only never exits 2: absent data is the expected state, not a failure.)\n",
     sep = ""
   )
 }
@@ -847,9 +854,33 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # ---------------------------------------------------------------------------
 # Per-survey orchestrator. Returns a list of module results for one survey.
 # ---------------------------------------------------------------------------
-.run_one_survey <- function(survey, quick = FALSE, verbose = FALSE) {
+.run_one_survey <- function(survey, quick = FALSE, verbose = FALSE,
+                            specs_only = FALSE) {
   results <- list()
   results$L1 <- .run_layer_1(survey, verbose)
+  # CI mode: L1 is the only per-survey module that reads nothing but YAML.
+  # Every module below opens a harmonized .rds or a raw survey file, both of
+  # which are gitignored, so on a clean checkout they would report absence as
+  # failure. Skip them explicitly rather than let them fail for the wrong reason.
+  if (specs_only) {
+    skipped <- function(name) list(module = name, status = "skip",
+                                   summary = "--specs-only",
+                                   first_fails = character(0),
+                                   ok = 0L, fail = 0L, total = 0L)
+    results$L3          <- skipped("L3 invariants")
+    results$L3_oob      <- skipped("L3 out-of-range")
+    results$L2_codebook <- skipped("L2 codebook")
+    results$L4_anchor   <- skipped("L4 anchor")
+    results$L4_strict   <- skipped("L4 strict reversal")
+    results$L4_labels   <- skipped("L4 label recon")
+    results$L4_battery  <- skipped("L4 battery coherence")
+    results$L4_coverage <- skipped("L4 anchor coverage")
+    results$L4_binwidth <- skipped("L4 bin-width parity")
+    results$L5_drift    <- skipped("L5 drift")
+    results$L6_determ   <- skipped("L6 determinism")
+    results$L6_input    <- skipped("L6 input drift")
+    return(results)
+  }
   results$L3 <- .run_layer_3(survey, verbose)
   results$L3_oob <- .run_layer_3_oob(survey, verbose)
   results$L2_codebook <- if (quick) {
@@ -1216,7 +1247,8 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   for (s in surveys_attempted) {
     .log("\n[run_all] === survey: ", s, " ===")
     all_results[[s]] <- .run_one_survey(s, quick = args$quick,
-                                        verbose = args$verbose)
+                                        verbose = args$verbose,
+                                        specs_only = isTRUE(args$specs_only))
   }
 
   registry_result <- .run_registry_check(verbose = args$verbose)
@@ -1239,7 +1271,10 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
   prereq_missing <- length(surveys_with_data) < length(surveys_attempted)
 
+  # In --specs-only mode missing data is the expected state (CI checkout), so
+  # it must not be reported as a prerequisite failure.
   exit_code <- if (any_fail) 1L
+               else if (isTRUE(args$specs_only)) 0L
                else if (prereq_missing && length(surveys_with_data) == 0L) 2L
                else 0L
 
