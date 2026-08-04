@@ -51,12 +51,4 @@ audit-report:
 	@cat audit/SUMMARY.md
 
 check-r:
-	@$(R) -e 'files <- list.files("src/r", pattern = "[.][Rr]$$", recursive = TRUE, full.names = TRUE); \
-	  bad <- character(0); \
-	  for (f in files) { \
-	    ok <- tryCatch({ parse(f); TRUE }, \
-	                   error = function(e) { cat("PARSE FAIL:", f, "-", conditionMessage(e), "\n"); FALSE }); \
-	    if (!ok) bad <- c(bad, f) \
-	  }; \
-	  cat(sprintf("parsed %d R files, %d failures\n", length(files), length(bad))); \
-	  if (length(bad)) quit(status = 1)'
+	$(R) src/r/audit/check_parse.R
