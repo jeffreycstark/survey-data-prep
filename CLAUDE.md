@@ -21,6 +21,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | KLoSA (Korean Longitudinal Study of Aging) | Complete | 43 vars, 9 waves W1–W9 biennial 2006–2022, 68,352 person-wave rows, 11,146 distinct `pid`; **standalone aging panel, 45+ only** | [docs/surveys/klosa.md](docs/surveys/klosa.md) |
 | Korean Unification Tri-Survey Panel (derived) | Complete | KGSS + KINU + IPUS, 46 wave-rows | [docs/surveys/korean-unification-panel.md](docs/surveys/korean-unification-panel.md) |
 | Global Corruption Barometer (GCB) | Scaffold | 22 vars, 1 edition (Asia 2020), 19,416 resp, 17 countries; region-extensible | [docs/surveys/gcb.md](docs/surveys/gcb.md) |
+| China Family Panel Studies (CFPS) | Scaffold — **no data yet** | Pipeline + 4 specs written and schema-valid; every `source:` null pending discovery pass. Access needs a DUA to ISSS Peking University. | [docs/surveys/cfps.md](docs/surveys/cfps.md) |
 | V-Dem v15 | Scaffold | Country-year panel, 202 countries, 1789–2024 | [docs/surveys/vdem.md](docs/surveys/vdem.md) |
 | MARPOR / CMP (MPDS2025a) | Scaffold | **party × election** panel (NOT individual respondents), 5,285 manifestos, 67 countries, 822 elections, 1920–2025 | [docs/surveys/marpor.md](docs/surveys/marpor.md) |
 | UNGA voting (Bailey–Strezhnev–Voeten) | Scaffold | **country × year** ideal points (11,610 rows, 198 states, 1946–2025) + **country × roll-call** votes (1,283,746 rows, 6,551 roll-calls, 1946–2022). NOT respondents. | [docs/surveys/unga-unsc.md](docs/surveys/unga-unsc.md) |

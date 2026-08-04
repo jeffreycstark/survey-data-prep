@@ -1,0 +1,117 @@
+# CFPS Identifiers / Administrative Variables
+# Waves: y2010, y2012, y2014, y2016, y2018, y2020
+#
+# ⚠ SCAFFOLD — every `source:` is null pending 00_probe_variables.R.
+#
+# CFPS is a genuine panel: the same individual recurs across waves under a
+# stable personal ID. The harmonized output is LONG (person-wave keyed), so
+# downstream must cluster on pid rather than treat rows as independent — the
+# same caveat KLoSA carries.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, -8, -9, -10]
+    description: "PROVISIONAL CFPS negative sentinels — resolve via 00_probe_variables.R before mapping any source."
+
+variables:
+  - id: pid
+    concept: identifiers
+    description: "CFPS stable personal ID (panel linkage key, constant across waves)"
+    type: nominal
+    note: "TODO: resolve source. Then VERIFY linkage with a real overlap check (share of late-wave pids present in 2010), as KLoSA's spec does — do not infer a stable key from the name alone."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: fid
+    concept: identifiers
+    description: "CFPS family/household ID within wave"
+    type: nominal
+    note: "TODO: resolve source. CFPS family IDs are wave-specific in some releases — check before using for household-level joins."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: weight
+    concept: identifiers
+    description: "Cross-sectional sampling weight"
+    type: continuous
+    note: "TODO: resolve source. CFPS ships several weight families (cross-sectional vs panel, national vs provincial). Record WHICH one this is; many RD papers do not weight at all, so an unresolved choice here is not blocking."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: iw_year
+    concept: identifiers
+    description: "Interview year"
+    type: continuous
+    note: "TODO: resolve source. Needed to compute age at interview from birth_date, and to confirm each wave's fielding window."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [2009, 2022]
+
+  - id: iw_month
+    concept: identifiers
+    description: "Interview month"
+    type: continuous
+    note: "TODO: resolve source."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]

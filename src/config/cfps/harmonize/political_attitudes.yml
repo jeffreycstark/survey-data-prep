@@ -1,0 +1,143 @@
+# CFPS Political Attitudes — trust and efficacy (the paper's outcomes)
+# Waves: y2010, y2012, y2014, y2016, y2018, y2020
+#
+# ⚠ SCAFFOLD — every `source:` is null pending 00_probe_variables.R.
+#
+# ⚠ COVERAGE IS NOT GUARANTEED WAVE TO WAVE. This is checklist item 1 for the
+# consuming paper and it can reshape the design on its own: CFPS rotates
+# modules, so a political battery present in one wave may be absent in the next.
+# Leave `source: null` for any wave that genuinely lacks the item — a null is a
+# finding, not a gap to be papered over.
+#
+# WHY THE WAVE COVERAGE MATTERS SO MUCH HERE
+# The consuming design pools dragon cohorts to recover power at the RD boundary.
+# Against CFPS's actual wave years, the 2012 dragon cohort is ~8 years old even
+# in the newest release and cannot answer a political battery at all, and the
+# 2000 cohort only reaches adulthood in 2018+. So the usable cohort count hinges
+# on whether the LATE waves carry these items. If they do not, the design is
+# down to 1976 and 1988 — report that plainly rather than letting it surface
+# later as a thin N.
+#
+# ⚠ SCALE DIRECTION: record it explicitly per item, and state it in `scale.direction`.
+# The paper's entire test is the SIGN of the trust coefficient. A silently
+# reversed scale does not degrade the result, it inverts the conclusion.
+# See CLAUDE.md "Cross-survey scale gotchas" — CFPS trust is its OWN scale
+# family and must not be assumed comparable to the ABS/WVS 1-4 convention.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, -8, -9, -10]
+    description: "PROVISIONAL CFPS negative sentinels — resolve via 00_probe_variables.R before mapping any source."
+
+variables:
+  - id: trust_local_govt
+    concept: political_trust
+    description: "Trust in local government officials"
+    type: ordinal
+    note: "TODO: resolve source + native scale range + direction. CFPS trust items are commonly 0-10; do NOT assume the ABS/WVS 1-4 convention."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      direction: "TODO — confirm whether higher = more trust"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: trust_central_govt
+    concept: political_trust
+    description: "Trust in central government"
+    type: ordinal
+    note: "TODO: resolve source. In the Chinese case the central/local trust gap is large and well documented — keep the two items SEPARATE rather than averaging them into one index; the paper may well want the contrast."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      direction: "TODO — confirm whether higher = more trust"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: govt_performance
+    concept: political_trust
+    description: "Evaluation of government performance / cadre honesty"
+    type: ordinal
+    note: "TODO: resolve source. Secondary outcome — useful as a discriminating check but not the headline test."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      direction: "TODO"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: efficacy_internal
+    concept: political_efficacy
+    description: "Internal political efficacy — belief in one's own capacity to influence outcomes"
+    type: ordinal
+    note: "TODO: resolve source. This is the outcome on which H1 and H2 AGREE (both predict positive), so it is the consistency check rather than the discriminating test. If CFPS carries no efficacy battery at all, say so — the paper's two-outcome structure depends on it and would need rethinking."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      direction: "TODO"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: efficacy_external
+    concept: political_efficacy
+    description: "External political efficacy — belief that officials are responsive"
+    type: ordinal
+    note: "TODO: resolve source. Conceptually closer to institutional trust than internal efficacy is; keep separate."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      direction: "TODO"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true

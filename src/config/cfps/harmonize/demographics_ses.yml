@@ -1,0 +1,235 @@
+# CFPS Demographics and SES
+# Waves: y2010, y2012, y2014, y2016, y2018, y2020
+#
+# ⚠ SCAFFOLD — every `source:` is null pending 00_probe_variables.R.
+#
+# Two distinct jobs in one file:
+#
+#   (a) ADULT SES — education and income. The consuming paper uses these to
+#       split its two hypotheses: H1 says the treatment effect on trust runs
+#       through adult SES, H2 says it does not. NB adult SES is POST-TREATMENT
+#       relative to birth-year assignment, so this supports a descriptive
+#       decomposition, NOT identified mediation. That caveat belongs in the
+#       paper, but it is worth stating here so nobody builds a "mediator" column
+#       and implies more than the design earns.
+#
+#   (b) BOUNDARY-BALANCE COVARIATES — hukou, urbanicity, ethnicity, region,
+#       parental characteristics. These are the pre-treatment variables the RD
+#       balance tests run on. Anything discontinuous at the lunar boundary is a
+#       problem, so coverage matters more than precision here.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-1, -2, -8, -9, -10]
+    description: "PROVISIONAL CFPS negative sentinels — resolve via 00_probe_variables.R before mapping any source."
+
+variables:
+  - id: sex
+    concept: demographics
+    description: "Respondent's sex (project standard 1=male, 2=female)"
+    type: nominal
+    note: "TODO: resolve source AND raw coding. Recode to the project-standard 1/2 if CFPS uses 0/1."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Male"
+        2: "Female"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+
+  - id: education
+    concept: ses
+    description: "Highest completed education, on CFPS's native ladder"
+    type: ordinal
+    note: "TODO: resolve source + native ladder. Stays on the NATIVE ladder per project convention. Cross-survey comparison requires education_5cat via an edu5_from_cfps() mapping added to src/r/utils/education.R — see CLAUDE.md's education gotcha. Do NOT use normalize_01() on a raw ladder that contains an 'other' code."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: income_personal
+    concept: ses
+    description: "Personal annual income (CNY)"
+    type: continuous
+    note: "TODO: resolve source + units. Check whether zero means 'no income' or is a sentinel; check top-coding. Log-transform downstream, not here."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: income_household
+    concept: ses
+    description: "Total household annual income (CNY)"
+    type: continuous
+    note: "TODO: resolve source + units. CFPS relocates household income variables between releases — verify the name per wave rather than assuming stability."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: hukou
+    concept: demographics
+    description: "Hukou (household registration) type: agricultural vs non-agricultural"
+    type: nominal
+    note: "TODO: resolve source. Central stratifier in the Chinese case and a key balance covariate — hukou status at birth is plausibly correlated with birth-timing practices, which is exactly why it belongs in the boundary balance table."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: urban_rural
+    concept: demographics
+    description: "Urban / rural residence classification"
+    type: nominal
+    note: "TODO: resolve source. Distinct from hukou — a rural-hukou respondent may reside in a city. Keep both."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: ethnicity_han
+    concept: demographics
+    description: "Han majority (1) vs ethnic minority (0)"
+    type: binary
+    note: "TODO: resolve source. Relevant here beyond the usual: zodiac belief is a Han cultural practice, so minority respondents may be differently exposed to the treatment's mechanism. Potential heterogeneity split, not just a control."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        0: "Ethnic minority"
+        1: "Han"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+
+  - id: province
+    concept: demographics
+    description: "Province of residence"
+    type: nominal
+    note: "TODO: resolve source. Check code stability across waves before pooling raw numerics — the ABS region gotcha in CLAUDE.md is the cautionary case."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: father_education
+    concept: parental
+    description: "Father's education (CFPS native ladder)"
+    type: ordinal
+    note: "TODO: resolve source. Pre-treatment, so it belongs in the boundary balance table. Also the most direct available proxy for the H1 parental-investment channel."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+
+  - id: mother_education
+    concept: parental
+    description: "Mother's education (CFPS native ladder)"
+    type: ordinal
+    note: "TODO: resolve source. Same role as father_education."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true

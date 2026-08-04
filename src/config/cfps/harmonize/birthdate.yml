@@ -1,0 +1,149 @@
+# CFPS Birth Date — the design-critical block
+# Waves: y2010, y2012, y2014, y2016, y2018, y2020
+#
+# ⚠ SCAFFOLD — EVERY `source:` IS null PENDING 00_probe_variables.R.
+# Null sources are schema-valid and harmonize to nothing, so this file is safe
+# to commit unresolved. It is NOT safe to guess names into: a wrong birth-date
+# column produces a running variable that still estimates cleanly and means
+# nothing.
+#
+# WHY THIS BLOCK EXISTS
+# Consumer is paper-bank paper 26, a lunar-boundary RD on zodiac birth cohorts.
+# The running variable is days from Lunar New Year, so exact birth date is not
+# a demographic nicety here — it IS the identification.
+#
+# ── THREE THINGS THE PROBE MUST RESOLVE ──────────────────────────────────────
+#
+# 1. EXACT DATE, NOT JUST YEAR. Item B1 is reported to carry y/m/d. Confirm
+#    month and day are actually populated, not just defined.
+#
+# 2. ⚠ SOLAR vs LUNAR REPORTING — the identification-critical one.
+#    Chinese respondents commonly give birthdays in the lunar calendar (农历),
+#    disproportionately in the older cohorts this design leans on (1976, 1988).
+#    If CFPS carries a 阳历/农历 flag, it must be harmonized as `birth_calendar`
+#    and respected downstream. If it does NOT carry one, that is a first-order
+#    threat to the paper, not a footnote: a lunar-reported date read as solar is
+#    wrong in a way that CORRELATES WITH TREATMENT, because the two calendars
+#    diverge most precisely around the new-year boundary the RD sits on.
+#    Resolve this before anyone writes a results section.
+#
+# 3. THE "ONLY AGE KNOWN" CODE. CFPS reportedly marks unknown month/day with a
+#    CTRL-D style sentinel when only age was collected. Keep that code
+#    DISTINGUISHABLE from ordinary refusal — the RD sample is defined by exactly
+#    this selection, so "how many have an exact date" must stay measurable.
+#    Do not fold it into a generic NA.
+
+schema_version: 1
+
+missing_conventions:
+  # PROVISIONAL — resolve from outputs/cfps/missing_code_universe.csv and replace.
+  # Left as a plausible CFPS negative-sentinel set so the file validates; inert
+  # while every source is null.
+  treat_as_na:
+    codes: [-1, -2, -8, -9, -10]
+    description: "PROVISIONAL CFPS negative sentinels — NOT yet verified against the codebook. Resolve via 00_probe_variables.R before mapping any source."
+
+variables:
+  - id: birth_year
+    concept: birthdate
+    description: "Year of birth (4-digit)"
+    type: continuous
+    note: "TODO: resolve source name per wave from 00_probe_variables.R Part A."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1900, 2020]
+
+  - id: birth_month
+    concept: birthdate
+    description: "Month of birth (1-12)"
+    type: continuous
+    note: "TODO: resolve source. Report the non-missing rate per wave — it sets the RD's usable N and belongs in the paper body, not an appendix."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]
+
+  - id: birth_day
+    concept: birthdate
+    description: "Day of month of birth (1-31)"
+    type: continuous
+    note: "TODO: resolve source. Same completeness reporting as birth_month."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 31]
+
+  - id: birth_calendar
+    concept: birthdate
+    description: "Calendar the birth date was reported in: 1=solar/Gregorian (阳历/公历), 2=lunar (农历/阴历)"
+    type: nominal
+    note: "⚠ IDENTIFICATION-CRITICAL, see the header. If no such flag exists in CFPS, leave every source null, DELETE nothing, and record the absence explicitly in docs/surveys/cfps.md — downstream must then treat all-solar as a stated assumption rather than a fact. Do not silently omit this variable; its absence is itself a finding."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    scale:
+      min: 1
+      max: 2
+      labels:
+        1: "Solar / Gregorian"
+        2: "Lunar"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+
+  - id: zodiac_cfps
+    concept: birthdate
+    description: "CFPS-computed Chinese zodiac animal"
+    type: nominal
+    note: "CFPS reportedly ships its own zodiac field. Harmonize it as-is; do NOT use it as the treatment variable. The paper assigns zodiac itself from birth_date against a verified lunar-boundary table, and cross-checks against this column — disagreements are boundary cases and are informative, which is exactly why both are needed."
+    source:
+      y2010: null
+      y2012: null
+      y2014: null
+      y2016: null
+      y2018: null
+      y2020: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
