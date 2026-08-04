@@ -36,6 +36,8 @@ triaging the ABS backlogs. Those are separate work with their own trade-offs.
 3. `src/r/audit/test_qa_self_audit.R` — its fault-injection suite.
 4. `make qa-validate` target; a second job in `.github/workflows/audit.yml`.
 5. An updated, re-stamped `docs/QA.md`.
+6. **Exact-sequence direction check** in `04_label_reconciliation.R` (added to scope
+   2026-08-04 — see below).
 
 ## Architecture
 
@@ -135,6 +137,47 @@ that "Misses: a transformation that's wrong but preserves sign and range" is
 still true. Those sentences are the most valuable content in the guide and remain
 human-verified — which is what Phase 1 below exists for.
 
+## Exact-sequence direction check (scope addition, 2026-08-04)
+
+Added after the `govt_responds_people` investigation demonstrated the gap live.
+
+**The problem.** Layer 3 decides direction by classifying labels into poles with a
+regex lexicon. Unknown vocabulary yields `skip`, and 789 of 1,133 ABS rows are
+skips — 281 for `no_classifiable_poles` across 140 variables. `skip` is not a
+pass, but nothing works the list, so a real inversion sat in it until a paper
+found it empirically.
+
+**The rule.** Compare the raw value labels and the spec's declared labels **as
+ordered sequences, by code**. No vocabulary at all:
+
+| raw vs declared | fn reverses | verdict |
+|---|---|---|
+| identical sequence | yes | **error** — harmonized cannot match its own labels |
+| identical sequence | no | ok |
+| exactly reversed | yes | ok |
+| exactly reversed | no | **error** |
+| neither | either | fall through to the lexicon, else `skip` |
+
+Deterministic, needs no lexicon, and cannot false-positive: if the two sequences
+are byte-identical and the function reverses, the claim and the data disagree by
+construction.
+
+**Live yield on introduction:** three variables the lexicon had skipped —
+`access_identity_document` (w4), `access_public_school` (w4), `party_closeness`
+(w1, w2). All three confirmed real and fixed the same day.
+
+**What it does not do.** It only fires when the declared labels reuse the raw
+wording. `govt_responds_people` (raw "Very responsive" vs declared "Very well")
+is invisible to it; that one needs the lexicon or a human. A negation-parity
+variant was prototyped and **rejected**: scales that mark polarity with antonyms
+rather than negation ("easy/difficult", "agree/disapprove", "good/harm") make it
+report agreement on correctly-reversed items, i.e. false positives on the
+healthy majority.
+
+**Companion deliverable — the skip census.** Emit the unclassifiable variables
+*with their actual label vocabulary*, ranked, as a worklist. The lexicon should
+grow deliberately, not when a paper trips over something.
+
 ## The staged exercise
 
 **Phase 0 — build the instrument.** Registry, checker, test suite, make target,
@@ -149,8 +192,11 @@ CI job. Nothing is re-validated yet.
    layers have changed since the prose was written.
 
 **Phase 2 — targeted fresh injection**, prioritised by Phase 1 in this order:
-layers A5 flags as stale (expect 2b, 5c, 10); then layers whose prose could not
-be confirmed by reading; then layers with thin fixtures. For each, invent a fault
+layers A5 flags as stale (expect 2b, 5c, 10); then **layers with large `skip`
+populations**, because a skip is exactly where a bug hides from the check that
+would otherwise catch it (789/1,133 on ABS layer 3, which is how
+`govt_responds_people` survived); then layers whose prose could not be confirmed
+by reading; then layers with thin fixtures. For each, invent a fault
 that is **not** already a fixture, apply it **to a scratch copy — never a real
 spec** (the safety rule QA.md already observes for the coverage-reconciliation
 `over` case), and record whether the layer fires.

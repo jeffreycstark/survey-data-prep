@@ -46,6 +46,19 @@ Closed with real fixes, not exemptions; 9,052 respondent-values recovered in tot
 
 ## 🔴 High priority — likely real bugs
 
+### NEW 2026-08-04: four ABS direction bugs found via the label-recon SKIP list — specs fixed, RE-HARMONIZE PENDING
+- **`govt_responds_people` (all waves).** Raw is 1=Very responsive → 4=Not responsive at all in every wave, i.e. opposite the spec's own labels, and `fn` was `safe_4pt_none` (identity). The item was stored backwards against its labels and against every other ABS attitude battery. Found empirically by **paper 01b** (r = −.56..−.58 against `covid_govt_handling`, `covid_trust_info`, `institutional_trust_index`, `dem_satisfaction`, in all three countries). Fixed → `safe_reverse_4pt`.
+- **`access_identity_document`, `access_public_school` (W4-only).** Raw labels byte-identical to the declared labels (1=Very difficult → 4=Very easy) yet `fn: safe_reverse_4pt`. Their sibling `access_healthcare` had the correct per-wave treatment (`identity` for W2–W4, reverse for W5/W6), so the battery was right for one variable and wrong for these two. Fixed → `method: identity`.
+- **`party_closeness` (w1, w2) — the worst of the four.** ABS flipped the raw order mid-series: w1/w2 are 1=Just a little close → 3=Very close (ascending), w3–w5 are 1=Very close → 3=Just a little close (descending). One `safe_reverse_3pt` was applied to all, so **w1/w2 are stored inverted against w3–w5** and any cross-wave trend on party closeness reads a spurious flip at the w2→w3 seam. Fixed via per-wave `exceptions:` (identity for w1/w2). ⚠️ **w6 has no raw value labels** — its orientation is unverified and still on the reversing default.
+- **⚠️ ALL FOUR ARE SPEC-ONLY SO FAR.** `abs_harmonized.rds` still holds the old values until ABS is re-harmonized. Freshness (layer 6d) should now report ABS STALE.
+
+**Why nothing caught them.** Layer 3 classifies direction with a regex polarity lexicon; unknown vocabulary → `skip`. ABS layer 3 is **322 ok / 22 error / 789 skip**, with 281 skips for `no_classifiable_poles` across 140 variables. `docs/QA.md` states this blind spot correctly and warns that **`skip` is not a pass** — the failure is that nobody worked the skip list. Adding `responsive` + `well` families to the lexicon converted `govt_responds_people` from skip to error (18 → 22 ABS error rows); the other three were found by an exact-sequence rule that needs no vocabulary at all. Both are scoped in `docs/superpowers/specs/2026-08-04-qa-validation-design.md`.
+
+**`docs/QA.md`'s "18 error rows / 7 variables" still holds.** The lexicon addition pushed ABS to 22 errors, then fixing `govt_responds_people` returned it to 18 (ok 322 → 326). The other three fixes are invisible to layer 3 — they are the exact-sequence class it cannot yet see — so they are corrected in the specs while still reporting `skip`.
+
+---
+
+
 ### NEW 2026-07-22: ABS W5 6→4pt pole-merge class — 18 W5 items with structurally wider top/bottom bins (Check D)
 - **What:** ABS W5 fielded several batteries on 6-point bipolar scales, collapsed 6→4 by merging both poles (`safe_6pt_to_4pt` / `collapse_6pt_to_4pt_reverse`: native 6,5→4; 2,1→1). W5's top bin absorbs two native categories vs one in every other wave → W5 top-box shares/means mechanically inflated ~2.4–4.6× (verified for the trust battery, every country). Direction checks pass this legitimately; found via paper 05's bug report (`paper-bank-05_thailand_trust_collapse/claudedocs/ABS-W5-trust-harmonization-artefact.md`), now caught by the new bin-width parity check (Check D, `src/r/audit/04_bin_width_parity.R`).
 - **Affected (all w5, signature `4:2|3:1|2:1|1:2`):** the 13 institutional-trust items (`trust_president/courts/national_government/political_parties/parliament/civil_service/military/police/local_government/election_commission/newspapers/ngos/television`), the 4 social-trust items (`trust_acquaintances/neighbors/relatives/strangers`), and `econ_family_income_fair`.
