@@ -41,9 +41,16 @@ names(countries) <- NULL
 cat("Country mapping from filename:\n")
 print(setNames(countries, basename(sav_files)))
 
+# Value labels captured per country BEFORE stripping, so they can be restored
+# after the bind. See .restore_value_labels() below for why.
+.w6_label_sets <- new.env(parent = emptyenv())
+
 # Read each file, attach country column, drop haven labels for safe stacking.
 read_one <- function(path, country_name) {
   df <- haven::read_sav(path)
+  # Capture the value labels first — stripping them was losing metadata that
+  # exists in every country file (see .restore_value_labels()).
+  .w6_label_sets[[country_name]] <- lapply(df, function(x) attr(x, "labels"))
   # Strip haven_labelled so bind_rows doesn't choke on type mismatches across
   # country files (different countries can have different label sets for the
   # same variable name). Cast preserving the underlying storage type — numeric
@@ -54,6 +61,50 @@ read_one <- function(path, country_name) {
     } else x
   })
   df$country <- country_name
+  df
+}
+
+#' Restore value labels onto the stacked frame.
+#'
+#' Stripping labels before bind_rows is necessary — countries genuinely differ
+#' in their label sets and bind_rows fails on the resulting type mismatches —
+#' but discarding them permanently left W6 unverifiable. `data/processed/w6.rds`
+#' retained value labels on 0 of 488 columns, which is why label reconciliation
+#' reported `too_few_labels` for 192 W6 rows (193 variables) and why the
+#' `govt_responds_people` w6 direction had to be confirmed by correlation rather
+#' than read off the metadata that was sitting in all twelve source files.
+#'
+#' A label set is restored ONLY when every country that has one agrees on it,
+#' code for code. Where countries disagree the column is left unlabelled and the
+#' conflict is reported — a disagreement is a real finding in its own right (cf.
+#' the W6 Thailand `REGION` 803/804 swap documented in CLAUDE.md), not something
+#' to paper over by picking one country's labels.
+#'
+#' Only the `labels` ATTRIBUTE is attached, never the `haven_labelled` class:
+#' values and storage types stay byte-identical, so no downstream consumer
+#' changes behaviour, while `attr(x, "labels")` — all the audit reads — works.
+.restore_value_labels <- function(df, label_sets) {
+  canon <- function(l) {
+    if (is.null(l) || !length(l)) return(NA_character_)
+    o <- order(unname(l))
+    paste(sprintf("%s=%s", unname(l)[o], names(l)[o]), collapse = "")
+  }
+  restored <- 0L; conflicts <- character(0); unlabelled <- 0L
+  for (col in names(df)) {
+    sets <- Filter(Negate(is.null), lapply(label_sets, function(cl) cl[[col]]))
+    if (!length(sets)) { unlabelled <- unlabelled + 1L; next }
+    sigs <- unique(vapply(sets, canon, character(1)))
+    if (length(sigs) > 1L) { conflicts <- c(conflicts, col); next }
+    attr(df[[col]], "labels") <- sets[[1]]
+    restored <- restored + 1L
+  }
+  cat(sprintf("\nValue labels restored: %d columns | conflicting across countries: %d | never labelled: %d\n",
+              restored, length(conflicts), unlabelled))
+  if (length(conflicts)) {
+    cat("  columns whose countries disagree (left unlabelled, worth a look):\n    ",
+        paste(utils::head(conflicts, 25), collapse = ", "),
+        if (length(conflicts) > 25) sprintf(" ... +%d more", length(conflicts) - 25) else "", "\n")
+  }
   df
 }
 
@@ -110,6 +161,10 @@ for (col in all_cols) {
 
 # bind_rows fills missing columns with NA — we want the column union.
 w6 <- bind_rows(dfs)
+
+# Restore the value labels stripped in read_one() — attribute only, so values
+# and types are unchanged.
+w6 <- .restore_value_labels(w6, as.list(.w6_label_sets))
 
 # Move country to the front to match existing convention
 if ("country" %in% names(w6)) {
