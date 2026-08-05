@@ -52,6 +52,28 @@ Closed with real fixes, not exemptions; 9,052 respondent-values recovered in tot
 - **`party_closeness` (w1, w2) — the worst of the four.** ABS flipped the raw order mid-series: w1/w2 are 1=Just a little close → 3=Very close (ascending), w3–w5 are 1=Very close → 3=Just a little close (descending). One `safe_reverse_3pt` was applied to all, so **w1/w2 are stored inverted against w3–w5** and any cross-wave trend on party closeness reads a spurious flip at the w2→w3 seam. Fixed via per-wave `exceptions:` (identity for w1/w2). **w6 RESOLVED 2026-08-05:** all twelve W6 country `.sav` files label q55 as 1=Very close → 3=Just a little close, i.e. descending like w3–w5, so the reversing default is correct for w6 and it needs no exception.
 - **⚠️ ALL FOUR ARE SPEC-ONLY SO FAR.** `abs_harmonized.rds` still holds the old values until ABS is re-harmonized. Freshness (layer 6d) should now report ABS STALE.
 
+### NEW 2026-08-05: four ABS W6 items inverted — the COVID `safe_4pt_none` battery
+Found by sweeping W6-mapped variables against the country-file labels directly (bypassing the merge that was eating the metadata).
+
+| variable | src | raw | declared | fn | empirical r vs `trust_national_government` |
+|---|---|---|---|---|---|
+| `covid_govt_handling` | q142 | 1=positive | 1=negative | `safe_4pt_none` | **−0.428** |
+| `covid_trust_govt_info` | q141 | 1=positive | 1=negative | `safe_4pt_none` | **−0.410** |
+| `income_fairness` | q163 | 1=positive | 1=negative | `safe_4pt_none` | **−0.230** |
+| `covid_livelihood_impact` | q140 | 1=positive | 1=negative | `safe_4pt_none` | −0.072 (anchor inappropriate; label evidence stands) |
+
+Control: the five `covid_restrict_*` items use `safe_reverse_3pt` and check out (`covid_restrict_lockdown` r = **+0.158**). So the defect is specific to the W6-only `safe_4pt_none` items, and it is the same class as `govt_responds_people` — declared labels written as if a reversal were applied, `fn` left at identity.
+
+**`covid_trust_govt_info` was invisible to layer 3 even after the W6 label restore**, because q141 is one of the columns countries disagree on — see below. A label conflict was hiding a direction bug.
+
+**⚠️ q141 carries a genuine cross-country code conflict.** Eleven countries code "This is not the government's responsibility" as **5** with 97="Do not understand"; **Taiwan uses 97** for that substantive option. With `valid_range: [1,4]` both are dropped, so 13 substantive responses (12 Taiwan + 1 Singapore) are deleted. Small in volume, but it is the same "substantive option treated as missing" class as the WVS `freedom_vs_equality` and KIPA bribery bugs — and it is why q141's labels could not be merged.
+
+**⚠️ Paper 01b is compensating for this.** Its `17_sdb_inventory.R` declares `positive_pole = 4` for `covid_govt_handling` and `covid_trust_info`, and reports r = −.56..−.58 between `govt_responds_people` and `covid_govt_handling`. On the repo's harmonized data that pair is **+0.389** pre-fix (−0.389 post-fix), i.e. the opposite sign — consistent with 01b reversing the COVID items in its own pipeline. **If these four are fixed upstream, 01b will double-reverse**, exactly like the Class B papers after the `system_deserves_support` fix in June. Coordinate the paper-side change with the spec change.
+
+**NOT FIXED** — deliberately. Each is a data change with a downstream consumer, and the 01b interaction needs a decision, not a guess.
+
+---
+
 ### NEW 2026-08-05: ABS W6 label metadata is dropped by our own merge — 192 skips, the layer's biggest blind spot
 - **What:** `04_label_reconciliation.R` reads ABS labels from `data/processed/w{n}.rds`. For w6 that file retains value labels on **0 of 488 columns**, so every W6 variable reports `too_few_labels` and is never direction-checked.
 - **It is not an ABS limitation.** All twelve W6 country files (`data/abs/raw/wave6/*.sav`) carry complete value labels — verified variable-by-variable for q55 across all 12. Our merge step drops them.
