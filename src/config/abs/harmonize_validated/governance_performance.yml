@@ -75,9 +75,8 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: r_function
-        fn: safe_reverse_4pt
-        note: "Reverse so high = more anti-censorship / pro-freedom"
+        method: identity
+        note: "Raw is 1=Strongly agree -> 4=Strongly disagree in every wave, which MATCHES the labels above (1 = pro-censorship). Was safe_reverse_4pt until 2026-08-06, which stored the item opposite its own labels in all six waves."
     qc:
       valid_range: [1, 4]
       validate:
@@ -110,9 +109,8 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: r_function
-        fn: safe_reverse_4pt
-        note: "Reverse so high = MORE perceived accountability"
+        method: identity
+        note: "Raw is 1=Strongly agree -> 4=Strongly disagree in every wave, MATCHING the labels above (1 = no accountability). Was safe_reverse_4pt until 2026-08-06. After the fix, higher = more perceived accountability, which correlates positively with the trust composite."
     qc:
       valid_range: [1, 4]
       validate:

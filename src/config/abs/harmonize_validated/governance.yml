@@ -163,17 +163,18 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "Raw is 1=Always -> 4=Rarely in every wave, OPPOSITE the labels above. Was safe_4pt_none until 2026-08-06. Empirical r=-0.277 against the trust composite before the fix."
       exceptions:
         w5:
           method: recode
           mapping:
-            1: 1
-            2: 2
-            3: 3
-            4: 4
+            1: 4
+            2: 3
+            3: 2
+            4: 1
             5: 1
-          note: "W5 includes 5=Never; collapse into 1=Rarely"
+          note: "W5 (q119) adds 5=Never. Mapping reverses like the default AND collapses Never into 1=Rarely, preserving the original collapse intent. Mapping was 1:1,2:2,3:3,4:4,5:1 until 2026-08-06, which carried the same inversion as the default."
     qc:
       valid_range: [1, 4]
       validate:

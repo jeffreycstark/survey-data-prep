@@ -52,6 +52,32 @@ Closed with real fixes, not exemptions; 9,052 respondent-values recovered in tot
 - **`party_closeness` (w1, w2) — the worst of the four.** ABS flipped the raw order mid-series: w1/w2 are 1=Just a little close → 3=Very close (ascending), w3–w5 are 1=Very close → 3=Just a little close (descending). One `safe_reverse_3pt` was applied to all, so **w1/w2 are stored inverted against w3–w5** and any cross-wave trend on party closeness reads a spurious flip at the w2→w3 seam. Fixed via per-wave `exceptions:` (identity for w1/w2). **w6 RESOLVED 2026-08-05:** all twelve W6 country `.sav` files label q55 as 1=Very close → 3=Just a little close, i.e. descending like w3–w5, so the reversing default is correct for w6 and it needs no exception.
 - **⚠️ ALL FOUR ARE SPEC-ONLY SO FAR.** `abs_harmonized.rds` still holds the old values until ABS is re-harmonized. Freshness (layer 6d) should now report ABS STALE.
 
+### ✅ CLEARED 2026-08-06: the ABS label-reconciliation backlog — 18 errors to 0
+
+All seven variables triaged against their raw value labels, per wave, and fixed. Two distinct defects, not one:
+
+**Identity where a reversal was needed** (raw runs opposite the declared labels):
+| variable | waves | fix |
+|---|---|---|
+| `econ_family_income_fair_6pt` | w4 | `identity` -> `safe_reverse_6pt` |
+| `gov_elections_real_choice` | all | -> `safe_reverse_4pt`; the w5 collapse mapping carried the same inversion and was flipped too (1:4,2:3,3:2,4:1,5:1) |
+| `sat_president_govt` | w3-w6 | per-wave exceptions; **w1 was already correct** and left alone |
+| `sm_express_political` | w6 | default -> `safe_reverse_4pt` |
+
+**Reversal where identity was needed** (declared labels MATCH the raw, so reversing broke the match):
+| variable | waves | fix |
+|---|---|---|
+| `govt_should_censor_ideas` | all six | `safe_reverse_4pt` -> `identity` |
+| `no_accountability_between_elections` | w2-w6 | `safe_reverse_4pt` -> `identity` |
+| `efficacy_ability_participate` | w1 only | w1 exception `identity`; w2-w6 reversal is correct |
+| `demo_political_equality` | w1 only | w1 exception `identity`; same shape as above |
+
+**Verified:** exactly 8 of 373 columns changed, 113,945 rows unchanged, strict reversal 562/562 ok, and every correlation against the trust composite flipped as predicted — `sat_president_govt` -0.54 to **+0.54** (w3) and -0.56 to **+0.56** (w6), `gov_elections_real_choice` -0.28 to **+0.28**, `no_accountability_between_elections` -0.11 to **+0.11**. ABS `run_all` fails 84 -> 66 (the residue is bin-width 56 + anchor 7 + invariants 3, none of them direction).
+
+**Note the per-wave pattern.** Three of the eight were wrong in only *some* waves — ABS flipped the raw coding of these items between waves, exactly as it did for `party_closeness`. A blanket fix would have broken the waves that were already right. Any future direction fix must check per wave before touching the default.
+
+---
+
 ### NEW 2026-08-05: four ABS W6 items inverted — the COVID `safe_4pt_none` battery
 Found by sweeping W6-mapped variables against the country-file labels directly (bypassing the merge that was eating the metadata).
 

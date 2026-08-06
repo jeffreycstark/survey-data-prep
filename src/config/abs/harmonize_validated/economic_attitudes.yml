@@ -188,7 +188,9 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "W4 raw (q159a) is 1=Very fair -> 6=Very unfair, OPPOSITE the labels above. Was method identity until 2026-08-06. Empirical r=-0.210 against the trust composite before the fix. W4-only variable."
     qc:
       valid_range: [1, 6]
       validate:

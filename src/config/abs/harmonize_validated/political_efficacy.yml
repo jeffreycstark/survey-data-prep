@@ -36,6 +36,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
+        note: "W2-W6 raw is 1=Strongly agree -> 4=Strongly disagree, opposite the labels above, so the reversal is correct there (all five reconcile ok)."
+      exceptions:
+        w1:
+          method: identity
+          note: "W1 (q126) is the odd wave: raw is 1=Strongly disagree -> 4=Strongly agree, i.e. ALREADY matching the labels. Reversing it inverted W1 against W2-W6. Verified from raw value labels 2026-08-06."
     qc:
       valid_range: [1, 4]
       validate:

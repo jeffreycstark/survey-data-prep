@@ -180,7 +180,11 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_4pt
-        note: "Raw: 1=agree (democratic) → 4=disagree; reverse so high=more inclusive"
+        note: "W2-W6 raw is 1=agree (democratic) -> 4=disagree; reverse so high=more inclusive. Correct for those five waves (all reconcile ok)."
+      exceptions:
+        w1:
+          method: identity
+          note: "W1 (q132) is the odd wave: raw is 1=Strongly disagree -> 4=Strongly agree, i.e. ALREADY matching the labels. Reversing it inverted W1 against W2-W6. Same shape as efficacy_ability_participate w1. Verified from raw value labels 2026-08-06."
     qc:
       valid_range: [1, 4]
       validate:

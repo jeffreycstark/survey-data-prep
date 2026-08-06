@@ -404,6 +404,24 @@ variables:
       default:
         method: r_function
         fn: safe_4pt_none
+        note: "W1 raw matches the labels above, so identity is correct there and W1 reconciles ok."
+      exceptions:
+        w3:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "W3-W6 raw is 1=Very satisfied -> 4=Very dissatisfied, OPPOSITE the labels. Was inheriting the identity default until 2026-08-06. Empirical r=-0.540 against the trust composite before the fix -- the strongest signal in the ABS backlog."
+        w4:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "See w3."
+        w5:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "See w3."
+        w6:
+          method: r_function
+          fn: safe_reverse_4pt
+          note: "See w3."
     qc:
       valid_range: [1, 4]
       validate:

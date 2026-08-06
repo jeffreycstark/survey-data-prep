@@ -268,12 +268,14 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: r_function
+        fn: safe_reverse_4pt
+        note: "W6 raw (q52b) is 1=Often -> 4=Never, OPPOSITE the labels above. Was method identity until 2026-08-06. Battery coherence had flagged this at median sibling r=-0.560 and the hint went unread."
       exceptions:
         w4:
           method: r_function
           fn: recode_6pt_freq_to_4pt
-          note: "W4 uses 6-point frequency; collapse to 4-point"
+          note: "W4 uses 6-point frequency; collapse to 4-point. NOT verified by label reconciliation (reports skip) -- the collapse fn must also invert W4 raw 1=Everyday -> 6=Practically never onto 1=Never -> 4=Often."
     qc:
       valid_range: [1, 4]
       validate:
