@@ -65,7 +65,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "W6 raw (q142) is 1=Very well -> 4=Very badly, i.e. OPPOSITE the labels above. Was safe_4pt_none until 2026-08-06, which stored the item backwards against its own labels. Confirmed empirically: r=-0.428 against trust_national_government before the fix -- an item meaning 'handled it very well' cannot correlate -0.43 with trusting that government."
     qc:
       valid_range: [1, 4]
       validate:
@@ -207,7 +208,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "W6 raw (q140) is 1=Very serious impact -> 4=Not much impact, i.e. OPPOSITE the labels above. Was safe_4pt_none until 2026-08-06. Rests on the label evidence alone: the trust anchor gives r=-0.072, too weak to confirm by correlation, which is expected since livelihood impact need not track trust in government."
     qc:
       valid_range: [1, 4]
       validate:
@@ -240,7 +242,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "W6 raw (q141) is 1=A great deal of trust -> 4=No trust at all, i.e. OPPOSITE the labels above. Was safe_4pt_none until 2026-08-06. Confirmed empirically: r=-0.410 against trust_national_government before the fix. NB q141 also carries a cross-country code conflict (Taiwan codes 'this is not the government's responsibility' as 97, most others as 5), which blocked label reconciliation from ever classifying this variable -- see JEFF_MUST_INVESTIGATE.md."
     qc:
       valid_range: [1, 4]
       validate:
@@ -586,7 +589,8 @@ variables:
     harmonize:
       default:
         method: r_function
-        fn: safe_4pt_none
+        fn: safe_reverse_4pt
+        note: "W6 raw (q163) runs positive-at-1, i.e. OPPOSITE the labels above. Was safe_4pt_none until 2026-08-06. Confirmed empirically: r=-0.230 against trust_national_government before the fix. Raw labels agree across all 12 W6 country files."
     qc:
       valid_range: [1, 4]
       validate:

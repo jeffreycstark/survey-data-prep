@@ -70,7 +70,11 @@ Control: the five `covid_restrict_*` items use `safe_reverse_3pt` and check out 
 
 **⚠️ Paper 01b is compensating for this.** Its `17_sdb_inventory.R` declares `positive_pole = 4` for `covid_govt_handling` and `covid_trust_info`, and reports r = −.56..−.58 between `govt_responds_people` and `covid_govt_handling`. On the repo's harmonized data that pair is **+0.389** pre-fix (−0.389 post-fix), i.e. the opposite sign — consistent with 01b reversing the COVID items in its own pipeline. **If these four are fixed upstream, 01b will double-reverse**, exactly like the Class B papers after the `system_deserves_support` fix in June. Coordinate the paper-side change with the spec change.
 
-**NOT FIXED** — deliberately. Each is a data change with a downstream consumer, and the 01b interaction needs a decision, not a guess.
+**FIXED 2026-08-06** (`safe_4pt_none` -> `safe_reverse_4pt`, all four, W6-only). Re-harmonized and verified: exactly 4 of 373 columns changed, distributions mirrored, and every correlation against `trust_national_government` flipped sign (-0.428 -> +0.428, -0.410 -> +0.410, -0.230 -> +0.230) while the untouched control `covid_restrict_lockdown` held at +0.158. Strict reversal now reports `expected=-1 pearson=-1 ok` for all four. `covid_livelihood_impact` and `income_fairness` moved to `ok_match` in layer 3; `covid_govt_handling` and `covid_trust_govt_info` remain `skip` there, because q141/q142 are label-conflict columns the W6 merge still cannot reconcile — fixed in data, unverifiable by the checker.
+
+⚠️ **PAPER 01b MUST BE UPDATED BEFORE ITS NEXT RUN.** Its `17_sdb_inventory.R` declares `positive_pole = 4` for `covid_govt_handling` and `covid_trust_info` and reverses them in its own pipeline to compensate for this bug. That compensation is now a double-reversal. Same trap as the Class B papers after `system_deserves_support`.
+
+**Still open:** `sm_express_political` (w6 q52b) is a fifth case with identical evidence — raw 1=Often -> 4=Never against declared 1=Never -> 4=Often, `method: identity`. Left unfixed because only four were authorised.
 
 ---
 
