@@ -11,7 +11,11 @@
   if (!var_name %in% names(data)) {
     stop(glue::glue("❌ {var_name}: variable not found in data"))
   }
-  qtext <- attr(data[[var_name]], "label")
+  # exact = TRUE: attr() partial-matches, so on a column carrying value labels
+  # (`labels`) but no question text (`label`) the non-exact form returns the
+  # whole value-label vector; is.na() on it is length > 1, which is a hard
+  # error under R >= 4.2. [1] guards any residual multi-element label.
+  qtext <- attr(data[[var_name]], "label", exact = TRUE)[1]
   if (is.null(qtext) || is.na(qtext) || !nzchar(qtext)) {
     stop(glue::glue("❌ {var_name}: missing question label for validation"))
   }

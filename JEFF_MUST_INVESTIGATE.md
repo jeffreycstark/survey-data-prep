@@ -78,6 +78,19 @@ All seven variables triaged against their raw value labels, per wave, and fixed.
 
 ---
 
+### NEW 2026-08-07: engine fault-injection — Check E is structurally blind to non-identity methods, plus four latent hazards
+
+Fault-injected `harmonize.R` + `.safe_npt` directly with adversarial inputs (script pattern preserved in this entry's commit). Findings, ranked:
+
+**1. 🔴 The out-of-range log only ever sees `method: identity` deletions.** `.safe_npt`'s `TRUE ~ NA_real_` arm absorbs any out-of-domain value *inside* the fn; `method: recode` initialises output to NA and never logs unmapped values. By the time `valid_range` runs, the evidence is already `NA` — so Check E (layer 2b) structurally cannot see a deleted response category in ANY `r_function` or `recode` variable. Verified synthetically (stray code 5 on a 4-pt item: identity → logged; `safe_4pt_none` → 3 values deleted, 0 logged; `recode` → same) and in production: every row in `outputs/abs/oob_log.csv` is an identity path — `pol_news_follow`'s logged wave (w2) is an identity *exception*. **The WVS `freedom_vs_equality` bug was catchable only because that spec happened to use identity.** The same bug behind a `safe_*` fn would still be invisible today. Fix sketch: have `.safe_npt` attach an `n_absorbed` attribute (it knows exactly which values hit the fall-through arm) and have the engine log it; count unmapped values in the `recode` branch.
+**2. 🔴 `.safe_npt` has no domain guard.** `safe_reverse_4pt` on a 5-pt raw silently deletes the 5s (unlogged, per #1); `safe_reverse_5pt` on a 4-pt raw silently SHIFTS to 2–5 — the `gov_leaders_abuse_power`/`party_closeness` class reproduced at engine level. The 08-range-report now catches this symptomatically (RANGE-VARIES-BY-WAVE, 26 variables); the engine could catch it at cause.
+**3. 🟡 fn default `missing_codes` override the spec.** Spec declares missing = {7,8,9}; `safe_4pt_none`'s own default *also* deletes 0. The declared convention is not what governs — the union of convention + fn defaults is. **No live exposure** (0 specs pair a `safe_*` fn with a 0-based valid_range) but any future 0-valid scale through `safe_*` loses its zeros. Fix: engine passes the resolved convention codes INTO the fn instead of letting fn defaults apply.
+**4. 🟡 `method: identity` on a character column compares lexicographically at the range gate.** Verified: with valid_range [1,50], "9" is deleted ("9" > "50" as strings) while "100" is kept. **No live exposure** — the one character column with a range (`country` w6) is converted by `recode_w6_country` before QC. Fix: coerce or refuse character at the QC step.
+**5. ✅ FIXED in this commit: `.validate_semantic_label` crashed on labels-without-label columns.** `attr(data[[v]], "label")` partial-matched the value-label vector → `is.na()` length > 1 → hard error under R ≥ 4.2. Now `exact = TRUE` + `[1]`. Zero current exposure (`validate_all` appears in no spec) but it was a crash waiting for the first user of a documented feature.
+**6. 🟡 `harmonize_all` converts a crashed variable into a warning and drops it.** 2 variables in, 1 out, no error — a spec crash makes its variable silently absent from the harmonized file. The freshness/invariant layers do not flag a variable that simply is not there. Consider collecting errors and failing at the end.
+
+---
+
 ### NEW 2026-08-05: four ABS W6 items inverted — the COVID `safe_4pt_none` battery
 Found by sweeping W6-mapped variables against the country-file labels directly (bypassing the merge that was eating the metadata).
 
