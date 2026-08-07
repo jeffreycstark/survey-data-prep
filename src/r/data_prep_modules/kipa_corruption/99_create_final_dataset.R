@@ -1,13 +1,13 @@
 # KIPA Corruption: Create final combined dataset
 #
-# Loads per-wave master files from outputs/kipa-corruption/, adds country
+# Loads per-wave master files from outputs/kipa_corruption/, adds country
 # and year identifiers, saves kipa_corruption_harmonized.rds/.parquet.
 
 library(here)
 library(dplyr)
 library(arrow)
 
-source(here::here("src", "r", "data_prep_modules", "kipa-corruption", "0_load_waves.R"))
+source(here::here("src", "r", "data_prep_modules", "kipa_corruption", "0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
@@ -16,13 +16,13 @@ cat(strrep("=", 70), "\n")
 cat("CREATING FINAL DATASET: kipa_corruption_harmonized\n")
 cat(strrep("=", 70), "\n\n")
 
-output_dir <- here("outputs", "kipa-corruption")
+output_dir <- here("outputs", "kipa_corruption")
 wave_files <- sort(list.files(output_dir,
                               pattern = "^master_w[0-9]{4}\\.rds$",
                               full.names = TRUE))
 
 if (length(wave_files) == 0) {
-  stop("No master files found in outputs/kipa-corruption/. Run 2_harmonize_all.R first.")
+  stop("No master files found in outputs/kipa_corruption/. Run 2_harmonize_all.R first.")
 }
 
 cat("Loading master wave files...\n")
@@ -90,7 +90,7 @@ arrow::write_parquet(kipa_corruption_harmonized, parquet_path)
 cat(sprintf("  Parquet: %s\n", parquet_path))
 
 saveRDS(kipa_corruption_harmonized,
-        here("outputs", "kipa-corruption", "kipa_corruption_harmonized.rds"))
+        here("outputs", "kipa_corruption", "kipa_corruption_harmonized.rds"))
 
 cat(sprintf("\n✅ kipa_corruption_harmonized saved: %s rows, %d columns\n",
             format(nrow(kipa_corruption_harmonized), big.mark = ","),
@@ -104,7 +104,7 @@ cat(strrep("=", 70), "\n\n")
 # loader prefers the Korean-label .sav over an English copy in the same
 # directory; mirror that policy when picking the file to hash.
 .kipa_corr_pick_sav <- function(handle) {
-  hdir <- here("data", "kipa-corruption", "raw", "unzipped", handle)
+  hdir <- here("data", "kipa_corruption", "raw", "unzipped", handle)
   if (!dir.exists(hdir)) return(NA_character_)
   files <- list.files(hdir, pattern = "\\.sav$|\\.SAV$", full.names = TRUE)
   if (length(files) == 0) return(NA_character_)
@@ -119,26 +119,26 @@ manifest_inputs <- unname(manifest_inputs[!is.na(manifest_inputs)])
 manifest_outputs <- c(
   rds_path,
   parquet_path,
-  here("outputs", "kipa-corruption", "kipa_corruption_harmonized.rds")
+  here("outputs", "kipa_corruption", "kipa_corruption_harmonized.rds")
 )
 
 write_manifest(
-  survey      = "kipa-corruption",
+  survey      = "kipa_corruption",
   inputs      = manifest_inputs,
-  specs       = list_survey_specs("kipa-corruption"),
+  specs       = list_survey_specs("kipa_corruption"),
   outputs     = manifest_outputs,
-  output_path = here("outputs", "kipa-corruption", "manifest.json")
+  output_path = here("outputs", "kipa_corruption", "manifest.json")
 )
 
 cat("Manifest written: ",
-    here("outputs", "kipa-corruption", "manifest.json"), "\n", sep = "")
+    here("outputs", "kipa_corruption", "manifest.json"), "\n", sep = "")
 
 # ==============================================================================
 # OUTPUT INVARIANTS (audit ticket E2)
 # ==============================================================================
 source(here("src", "r", "data_prep_modules", "2.5_validate_harmonization.R"))
 results <- tryCatch(
-  run_validation(survey = "kipa-corruption", save_report = TRUE, verbose = FALSE),
+  run_validation(survey = "kipa_corruption", save_report = TRUE, verbose = FALSE),
   error = function(e) { message("validation step failed: ", e$message); NULL }
 )
 if (!is.null(results)) {
@@ -159,4 +159,4 @@ if (!is.null(results)) {
 # HARMONIZE_AUDIT_GATE=block to make label-reconciliation errors fail the
 # pipeline (flip once the label-recon backlog is cleared).
 source(here::here("src", "r", "audit", "99_post_harmonize_gate.R"))
-run_post_harmonize_gate("kipa-corruption", quiet_checks = TRUE)
+run_post_harmonize_gate("kipa_corruption", quiet_checks = TRUE)

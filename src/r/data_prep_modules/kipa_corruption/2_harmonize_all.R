@@ -5,10 +5,10 @@ library(yaml)
 library(dplyr)
 
 source(here::here("src/r/data_prep_modules/2_harmonize_all.R"))
-source(here::here("src/r/data_prep_modules/kipa-corruption/0_load_waves.R"))
+source(here::here("src/r/data_prep_modules/kipa_corruption/0_load_waves.R"))
 
 run_kipa_corruption_harmonization <- function(output_format = "wide", silent = FALSE) {
-  run_survey_harmonization("kipa-corruption", load_kipa_corruption_waves,
+  run_survey_harmonization("kipa_corruption", load_kipa_corruption_waves,
                            output_format, silent)
 }
 
@@ -20,13 +20,13 @@ if (sys.nframe() == 0) {
 
   waves <- load_kipa_corruption_waves()
 
-  specs <- list_survey_specs("kipa-corruption")
+  specs <- list_survey_specs("kipa_corruption")
   cat(sprintf("\nFound %d YAML specs: %s\n\n",
               length(specs),
               paste(basename(specs), collapse = ", ")))
 
   # E1: always-on out-of-range logging
-  oob_log_path <- here::here("outputs", "kipa-corruption", "oob_log.csv")
+  oob_log_path <- here::here("outputs", "kipa_corruption", "oob_log.csv")
   dir.create(dirname(oob_log_path), showWarnings = FALSE, recursive = TRUE)
 
   results <- harmonize_all_specs(waves, specs = specs,
@@ -37,7 +37,7 @@ if (sys.nframe() == 0) {
   cat("SAVING MASTER FILES\n")
   cat(strrep("=", 70), "\n\n")
 
-  output_dir <- here::here("outputs", "kipa-corruption")
+  output_dir <- here::here("outputs", "kipa_corruption")
   dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
   for (wave_name in names(harmonized_wide)) {

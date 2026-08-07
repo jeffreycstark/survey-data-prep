@@ -56,7 +56,7 @@ Questionnaires held locally: `kipa_2021_questionnaire.pdf`, `kipa_2022_questionn
 
 ## Related
 
-- KIPA **Corruption** Survey (a *different* survey, `data/kipa-corruption/`) ships its own
-  per-dataset READMEs with DOIs; see `data/kipa-corruption/raw/unzipped/<handle>/README.txt`.
+- KIPA **Corruption** Survey (a *different* survey, `data/kipa_corruption/`) ships its own
+  per-dataset READMEs with DOIs; see `data/kipa_corruption/raw/unzipped/<handle>/README.txt`.
 - Year→handle map for the corruption survey:
-  `src/r/data_prep_modules/kipa-corruption/0_load_waves.R`.
+  `src/r/data_prep_modules/kipa_corruption/0_load_waves.R`.

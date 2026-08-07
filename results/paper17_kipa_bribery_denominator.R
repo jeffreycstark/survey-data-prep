@@ -22,7 +22,7 @@
 # -----------------------------------------------------------------------------
 suppressMessages({library(haven); library(here)})
 
-B <- here("data", "kipa-corruption", "raw", "unzipped")
+B <- here("data", "kipa_corruption", "raw", "unzipped")
 rd <- function(f) suppressWarnings(read_sav(file.path(B, f), user_na = TRUE))
 
 # Strip haven's value-label / user-missing attributes so 비해당(-1) and refuse(3/9)

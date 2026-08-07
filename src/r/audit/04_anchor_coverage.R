@@ -248,7 +248,7 @@ run_all_surveys <- function() {
     source(here::here("src", "r", "utils", "spec_discovery.R"))
   }
   supported <- c("abs", "wvs", "lbs", "afro", "arab-barometer", "kamos",
-                 "kgss", "kipa-corruption", "kinu", "ipus", "gcb")
+                 "kgss", "kipa_corruption", "kinu", "ipus", "gcb")
   all_results <- list()
   for (survey in supported) {
     res <- tryCatch(run_anchor_coverage(survey), error = function(e) {

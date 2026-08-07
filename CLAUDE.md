@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Arab Barometer | Verbatim done; harmonization in progress | W1–W8 | [docs/surveys/arab-barometer.md](docs/surveys/arab-barometer.md) |
 | KAMOS | Complete | 39 vars, 2 waves (2016, 2019), 3,500 resp | [docs/surveys/kamos.md](docs/surveys/kamos.md) |
 | KGSS | Complete | 187 vars, 17 years 2003–2025, 23,282 resp | [docs/surveys/kgss.md](docs/surveys/kgss.md) |
-| KIPA Corruption | Complete | 36 vars, 20 years 2004–2023; **specialty sample** | [docs/surveys/kipa-corruption.md](docs/surveys/kipa-corruption.md) |
+| KIPA Corruption | Complete | 36 vars, 20 years 2004–2023; **specialty sample** | [docs/surveys/kipa_corruption.md](docs/surveys/kipa_corruption.md) |
 | KINU Unification | Complete | 127 vars, 13 waves 2014–2023 (biannual 2019–2021) | [docs/surveys/kinu.md](docs/surveys/kinu.md) |
 | IPUS Unification | Initial | 11 vars, 18 annual waves 2007–2024, 21,617 resp | [docs/surveys/ipus.md](docs/surveys/ipus.md) |
 | KLoSA (Korean Longitudinal Study of Aging) | Complete | 43 vars, 9 waves W1–W9 biennial 2006–2022, 68,352 person-wave rows, 11,146 distinct `pid`; **standalone aging panel, 45+ only** | [docs/surveys/klosa.md](docs/surveys/klosa.md) |

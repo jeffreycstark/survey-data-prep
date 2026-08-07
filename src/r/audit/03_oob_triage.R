@@ -133,7 +133,7 @@ here::i_am("src/r/audit/03_oob_triage.R")
 # Kept in sync with run_all.R's .SUPPORTED_SURVEYS (Layer 7 enforces this).
 .OOB_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa"
 )
 
 .EXEMPTIONS_PATH <- "src/config/_audit/oob_exemptions.yml"

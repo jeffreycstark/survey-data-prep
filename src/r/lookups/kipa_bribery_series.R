@@ -23,7 +23,7 @@
 #' uncond 1.90% -> 1.60%). A consumer who writes `mean(x == 1, na.rm = TRUE)`
 #' silently gets the inflated, bumpy series. Always prefer uncond_pct for
 #' trend/triangulation work. See the variable note in
-#' src/config/kipa-corruption/harmonize/core_corruption.yml and
+#' src/config/kipa_corruption/harmonize/core_corruption.yml and
 #' results/paper17_kipa_bribery_denominator.R for the underlying analysis.
 #'
 #' NOTE: KIPA is a specialty sample (corporate employees + self-employed with

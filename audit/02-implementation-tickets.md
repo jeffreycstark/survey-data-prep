@@ -253,7 +253,7 @@ Manifest writing, per-variable provenance, determinism check, raw-input drift de
 
 **Files touched.**
 - `src/r/data_prep_modules/99_create_final_dataset.R` (ABS).
-- `src/r/data_prep_modules/<survey>/99_create_final_dataset.R` for each of: wvs, lbs, afro, arab-barometer, kamos, kgss, kipa-corruption, kinu, ipus.
+- `src/r/data_prep_modules/<survey>/99_create_final_dataset.R` for each of: wvs, lbs, afro, arab-barometer, kamos, kgss, kipa_corruption, kinu, ipus.
 
 **Acceptance.**
 - Every per-survey pipeline run produces `outputs/<survey>/manifest.json`.

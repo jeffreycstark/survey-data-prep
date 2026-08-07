@@ -35,7 +35,7 @@
 # there is exactly one hashing implementation in the repo.
 #
 # Usage:
-#   Rscript src/r/audit/06_check_freshness.R --survey kipa-corruption
+#   Rscript src/r/audit/06_check_freshness.R --survey kipa_corruption
 #   Rscript src/r/audit/06_check_freshness.R --all
 #   Rscript src/r/audit/06_check_freshness.R --all --quiet
 #   Rscript src/r/audit/06_check_freshness.R --help
@@ -71,7 +71,7 @@ source(here::here("src", "r", "utils", "spec_discovery.R"))
 .FRESHNESS_SURVEYS <- c(
   # YAML-spec surveys (mirror .SUPPORTED_SURVEYS)
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa",
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa",
   # Non-survey modules: freshness-only (see exemptions YAML)
   "vdem", "marpor", "unga", "unsc", "oecd_dac"
 )
@@ -102,7 +102,7 @@ source(here::here("src", "r", "utils", "spec_discovery.R"))
     "A survey can be both STALE and TAMPERED; STALE is reported first.\n",
     "\n",
     "Arguments:\n",
-    "  --survey <name>   One survey (e.g. abs, kgss, kipa-corruption).\n",
+    "  --survey <name>   One survey (e.g. abs, kgss, kipa_corruption).\n",
     "  --all             Every supported survey.\n",
     "  --quiet           Only print non-FRESH surveys and the summary.\n",
     "  -h, --help        Print this help and exit 0.\n",

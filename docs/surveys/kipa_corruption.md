@@ -11,11 +11,11 @@ This is **NOT a general-population survey**. Respondents are corporate employees
 ## Pipeline
 
 ```bash
-Rscript src/r/data_prep_modules/kipa-corruption/2_harmonize_all.R
-Rscript src/r/data_prep_modules/kipa-corruption/99_create_final_dataset.R
+Rscript src/r/data_prep_modules/kipa_corruption/2_harmonize_all.R
+Rscript src/r/data_prep_modules/kipa_corruption/99_create_final_dataset.R
 ```
 
-Data directory: `data/kipa-corruption/raw/unzipped/<handle>/`. Year-to-handle mapping lives in `src/r/data_prep_modules/kipa-corruption/0_load_waves.R`.
+Data directory: `data/kipa_corruption/raw/unzipped/<handle>/`. Year-to-handle mapping lives in `src/r/data_prep_modules/kipa_corruption/0_load_waves.R`.
 
 ## Loading
 
@@ -40,7 +40,7 @@ d <- readRDS("data/processed/kipa_corruption_harmonized.rds")
 
 ## Verbatim dictionary
 
-`data/kipa-corruption/questionnaire_text/kipa_corruption_verbatim_items.csv` — Complete (36 vars, 20 years, 720 rows; English 2004-2008, Korean 2009-2023; corr_punishment_relative_strength absent 2018-2023 due to scale change).
+`data/kipa_corruption/questionnaire_text/kipa_corruption_verbatim_items.csv` — Complete (36 vars, 20 years, 720 rows; English 2004-2008, Korean 2009-2023; corr_punishment_relative_strength absent 2018-2023 due to scale change).
 
 ## Raw variable naming: two families across years
 

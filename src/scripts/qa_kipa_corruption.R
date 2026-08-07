@@ -74,7 +74,7 @@ if (length(empty_vars)) {
 cat("\n### 2a. Mapped-wave NA rates\n")
 cat("  Warn >50% NA; Error =100% NA on any YAML-mapped wave.\n")
 
-spec_files <- list.files(here::here("src", "config", "kipa-corruption", "harmonize"),
+spec_files <- list.files(here::here("src", "config", "kipa_corruption", "harmonize"),
                          pattern = "\\.yml$", full.names = TRUE)
 
 yaml_source_map <- list()
@@ -170,7 +170,7 @@ oob_log_path <- here::here("data", "processed", "kipa_corruption_oob_log.csv")
 oob_flags <- 0L
 if (!file.exists(oob_log_path)) {
   cat("  ⚠ OOB log not found — re-run the harmonization pipeline to generate it.\n")
-  cat("    (Rscript src/r/data_prep_modules/kipa-corruption/2_harmonize_all.R)\n")
+  cat("    (Rscript src/r/data_prep_modules/kipa_corruption/2_harmonize_all.R)\n")
 } else {
   oob_df <- read.csv(oob_log_path, stringsAsFactors = FALSE)
   if (nrow(oob_df) == 0) {

@@ -29,7 +29,7 @@ src/
 │   │   ├── 1_harmonize_funs.R      # Shared recoding helpers
 │   │   ├── 2_harmonize_all.R       # ABS harmonization (shared functions)
 │   │   ├── 99_create_final_dataset.R
-│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa-corruption,kinu,ipus,klosa,vdem}/
+│   │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa_corruption,kinu,ipus,klosa,vdem}/
 │   │       # Per-survey subdirs: 0_load_waves.R + 2_harmonize_all.R + 99_create_final_dataset.R
 │   │
 │   └── models/                 # Statistical models
@@ -38,7 +38,7 @@ src/
 │   ├── abs/                    # harmonize/ = production specs; _drafts/ = never loaded
 │   │   ├── harmonize/          # legacy / scratch
 │   │   └── harmonize/
-│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu,ipus,klosa}/harmonize/
+│   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa_corruption,kinu,ipus,klosa}/harmonize/
 │
 ├── python/                     # Python utilities
 │   ├── ingest/
@@ -90,7 +90,7 @@ outputs/
 ├── figures/
 ├── tables/
 ├── master_w*.rds               # ABS per-wave harmonized data
-├── {wvs,lbs,afro,kamos,kgss,kipa-corruption,arab-barometer}/master_*.rds
+├── {wvs,lbs,afro,kamos,kgss,kipa_corruption,arab-barometer}/master_*.rds
 └── harmonization_validation_*  # Validation reports
 
 # Final combined per-survey datasets live in data/processed/{survey}_harmonized.rds

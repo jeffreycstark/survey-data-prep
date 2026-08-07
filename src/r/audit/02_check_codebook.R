@@ -62,7 +62,7 @@ source(here::here("src/r/utils/spec_discovery.R"))
 # Surveys recognized by --all-surveys. Mirrors src/r/audit/05_drift_check.R.
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus"
 )
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b

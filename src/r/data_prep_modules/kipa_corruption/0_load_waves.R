@@ -1,7 +1,7 @@
 # KIPA Survey on Corruption in Public Office (공직부패의 실태에 관한 설문조사)
 # Load raw wave files into a year-keyed list.
 #
-# Source files live in data/kipa-corruption/raw/unzipped/<handle>/ with the
+# Source files live in data/kipa_corruption/raw/unzipped/<handle>/ with the
 # following year mapping (determined from KOSSDA handles):
 #
 #   Cumulative (2004-2007):  13081 / kor_data_cum0009.sav  (n=2000; year col = 1..4)
@@ -45,7 +45,7 @@ load_kipa_corruption_waves <- function() {
 
   cat("\n── Loading KIPA Corruption raw waves ──\n")
 
-  base_dir <- here("data", "kipa-corruption", "raw", "unzipped")
+  base_dir <- here("data", "kipa_corruption", "raw", "unzipped")
   if (!dir.exists(base_dir)) {
     stop("Unzipped directory not found: ", base_dir)
   }

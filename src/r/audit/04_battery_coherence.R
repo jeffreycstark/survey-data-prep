@@ -513,7 +513,7 @@ run_battery_coherence <- function(survey, output_dir = NULL, ...) {
 
 run_all_surveys <- function() {
   supported <- c("abs", "wvs", "lbs", "afro", "arab-barometer", "kamos",
-                 "kgss", "kipa-corruption", "kinu", "ipus", "gcb")
+                 "kgss", "kipa_corruption", "kinu", "ipus", "gcb")
   all_results <- list()
   for (survey in supported) {
     res <- tryCatch(run_battery_coherence(survey), error = function(e) {

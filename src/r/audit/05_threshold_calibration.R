@@ -58,7 +58,7 @@ here::i_am("src/r/audit/05_threshold_calibration.R")
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus"
 )
 
 

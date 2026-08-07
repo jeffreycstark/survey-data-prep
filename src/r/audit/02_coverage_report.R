@@ -50,7 +50,7 @@ source(here::here("src/r/utils/spec_discovery.R"))
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus"
 )
 
 # Coverage threshold for CI gating. > .COVERAGE_THRESHOLD_PCT → exit 0.

@@ -524,7 +524,7 @@ run_all_surveys <- function() {
   supported <- names(.SURVEY_RAW_LOADERS)
   unsupported_msg <- setdiff(c(
     "abs", "kgss", "lbs", "afro", "arab-barometer", "kamos",
-    "kipa-corruption", "kinu", "ipus", "wvs"
+    "kipa_corruption", "kinu", "ipus", "wvs"
   ), supported)
   if (length(unsupported_msg) > 0) {
     cat(sprintf(

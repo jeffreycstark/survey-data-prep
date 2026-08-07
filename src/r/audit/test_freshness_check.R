@@ -103,8 +103,8 @@ expect(any(grepl("spec drift", r$rebuild)), "reason names 'spec drift'")
 cat("\n=== test 3: NEW spec added but never harmonized -> STALE ===\n")
 # Use a real survey so list_survey_specs() resolves, and drop the real specs
 # from the manifest's recorded set to simulate 'one spec never harmonized'.
-real_specs <- list_survey_specs("kipa-corruption")
-expect(length(real_specs) > 1L, "kipa-corruption has >1 spec on disk")
+real_specs <- list_survey_specs("kipa_corruption")
+expect(length(real_specs) > 1L, "kipa_corruption has >1 spec on disk")
 fx3 <- make_fixture()
 m <- jsonlite::read_json(fx3$manifest, simplifyVector = FALSE)
 sha <- function(p) digest::digest(file = p, algo = "sha256")
@@ -112,13 +112,13 @@ sha <- function(p) digest::digest(file = p, algo = "sha256")
 recorded <- lapply(real_specs[-1], function(p) list(path = p, sha256 = sha(p)))
 m$specs <- recorded
 jsonlite::write_json(m, fx3$manifest, auto_unbox = TRUE, null = "null")
-r3 <- check_survey_freshness("kipa-corruption", manifest_path = fx3$manifest)
+r3 <- check_survey_freshness("kipa_corruption", manifest_path = fx3$manifest)
 expect(r3$verdict == "STALE", "unrecorded spec -> STALE")
 expect(any(grepl("spec ADDED", r3$rebuild)), "reason names 'spec ADDED'")
 # And with every real spec recorded, the added-set is empty again.
 m$specs <- lapply(real_specs, function(p) list(path = p, sha256 = sha(p)))
 jsonlite::write_json(m, fx3$manifest, auto_unbox = TRUE, null = "null")
-r3b <- check_survey_freshness("kipa-corruption", manifest_path = fx3$manifest)
+r3b <- check_survey_freshness("kipa_corruption", manifest_path = fx3$manifest)
 expect(!any(grepl("spec ADDED", r3b$rebuild)), "all specs recorded -> no ADDED")
 
 cat("\n=== test 4: recorded spec deleted -> STALE ===\n")

@@ -69,7 +69,7 @@ paper17_surveys <- list(
     intro     = paper17_abs_intro
   ),
   kipa = list(
-    survey    = "kipa-corruption",
+    survey    = "kipa_corruption",
     sub_label = "A3. KIPA variable wording and coding",
     groups    = paper17_kipa_groups,
     intro     = paper17_kipa_intro

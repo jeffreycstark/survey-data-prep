@@ -52,7 +52,7 @@ If you skip the audit after a change, you don't know whether you introduced a si
 ### A. After editing one or more YAML specs for a survey
 
 ```bash
-SURVEY=abs   # or wvs, lbs, afro, arab-barometer, kamos, kgss, kipa-corruption, kinu, ipus
+SURVEY=abs   # or wvs, lbs, afro, arab-barometer, kamos, kgss, kipa_corruption, kinu, ipus
 
 # 1. Schema + cross-reference validation (fast, catches typos, unknown keys, missing codes)
 #    The engine refuses to harmonize a spec that fails this; running it standalone first

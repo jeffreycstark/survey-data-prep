@@ -58,11 +58,11 @@ which contradicts the CLAUDE.md instruction to store originals under
 - Afrobarometer works around it with 10 force-added PDFs.
 - I force-added the GCB questionnaire originals (`.docx` + `.xlsx`) so
   `data/gcb/questionnaire_parsed/` isn't orphaned.
-- The kipa-corruption `.zip` archives each bundle a questionnaire PDF next to the
+- The kipa_corruption `.zip` archives each bundle a questionnaire PDF next to the
   `.SAV`. Both the zip and the PDF are ignored, so **those questionnaires exist
   in the repo in neither form.**
 
-**Ask:** carve out `!data/*/questionnaires/**` (and the kipa-corruption zips), or
+**Ask:** carve out `!data/*/questionnaires/**` (and the kipa_corruption zips), or
 keep force-adding case by case?
 
 ### 1.4 `data/kipa/raw/kipa_2025.sav` is tracked

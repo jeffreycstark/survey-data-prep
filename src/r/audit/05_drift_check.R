@@ -61,7 +61,7 @@ source(here::here("src/r/data_prep_modules/2.5_validate_harmonization.R"))
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus"
 )
 
 `%||%` <- function(a, b) if (!is.null(a)) a else b

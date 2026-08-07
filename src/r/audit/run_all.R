@@ -42,19 +42,21 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa-corruption", "kinu", "ipus", "gcb", "klosa"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa"
 )
 
 # Survey slug → harmonized .rds filename. Most surveys map slug-to-filename
-# directly, but `arab-barometer` and `kipa-corruption` use underscores in
+# directly, but `arab-barometer` and `kipa_corruption` use underscores in
 # the .rds filename. Mirrors load_harmonized_for_survey() in 04_anchor_diagnostic.R
 # (which is buggy for hyphenated surveys; we resolve the path ourselves so we
 # can detect prerequisites consistently).
 .HARMONIZED_PATH <- function(survey) {
+  # kipa_corruption used to need a special case here (dir `kipa-corruption`,
+  # file `kipa_corruption_harmonized.rds`); the survey was renamed to underscore
+  # form 2026-08-07 so the default now resolves it. arab-barometer still splits.
   fname <- switch(
     survey,
     `arab-barometer` = "arab_barometer_harmonized.rds",
-    `kipa-corruption` = "kipa_corruption_harmonized.rds",
     paste0(survey, "_harmonized.rds")
   )
   here::here("data", "processed", fname)

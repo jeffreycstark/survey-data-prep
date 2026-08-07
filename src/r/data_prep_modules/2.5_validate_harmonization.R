@@ -102,7 +102,7 @@ get_missing_codes <- function(spec, var_spec = NULL) {
                           fn     = "load_kamos_waves"),
   kgss             = list(script = "src/r/data_prep_modules/kgss/0_load_waves.R",
                           fn     = "load_kgss_waves"),
-  `kipa-corruption` = list(script = "src/r/data_prep_modules/kipa-corruption/0_load_waves.R",
+  `kipa_corruption` = list(script = "src/r/data_prep_modules/kipa_corruption/0_load_waves.R",
                           fn     = "load_kipa_corruption_waves"),
   kinu             = list(script = "src/r/data_prep_modules/kinu/0_load_waves.R",
                           fn     = "load_kinu_waves"),
@@ -115,7 +115,7 @@ get_missing_codes <- function(spec, var_spec = NULL) {
 )
 
 # Map survey -> harmonized .rds filename. Most use {survey}_harmonized.rds, but
-# `arab-barometer` and `kipa-corruption` use underscores in the filename.
+# `arab-barometer` and `kipa_corruption` use underscores in the filename.
 .SURVEY_HARMONIZED <- list(
   abs              = "abs_harmonized.rds",
   wvs              = "wvs_harmonized.rds",
@@ -124,7 +124,7 @@ get_missing_codes <- function(spec, var_spec = NULL) {
   `arab-barometer` = "arab_barometer_harmonized.rds",
   kamos            = "kamos_harmonized.rds",
   kgss             = "kgss_harmonized.rds",
-  `kipa-corruption` = "kipa_corruption_harmonized.rds",
+  `kipa_corruption` = "kipa_corruption_harmonized.rds",
   kinu             = "kinu_harmonized.rds",
   ipus             = "ipus_harmonized.rds",
   gcb              = "gcb_harmonized.rds",
@@ -173,7 +173,7 @@ load_raw_waves <- function(survey = "abs") {
 #' Load harmonized dataset for a given survey
 #'
 #' Resolves to `data/processed/{survey}_harmonized.rds` (with the
-#' arab-barometer / kipa-corruption underscore special-cases). Errors loudly
+#' arab-barometer / kipa_corruption underscore special-cases). Errors loudly
 #' if the file is missing — this means the harmonization pipeline has not
 #' been run yet for that survey.
 load_harmonized_data <- function(survey = "abs") {

@@ -120,7 +120,7 @@ build_multi_survey_appendix(
       intro     = paper17_abs_intro
     ),
     kipa = list(
-      survey    = "kipa-corruption",
+      survey    = "kipa_corruption",
       sub_label = "A2. KIPA Anti-Corruption Survey",
       groups    = paper17_kipa_groups,
       intro     = paper17_kipa_intro

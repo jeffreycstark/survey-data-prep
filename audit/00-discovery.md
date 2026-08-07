@@ -50,7 +50,7 @@ src/
 │   ├── data_prep_modules/      ABS-specific 0/2/2.5/2.6/99 scripts at root,
 │   │                           plus per-survey subdirs:
 │   │                           {afro, arab-barometer, ipus, kamos, kgss,
-│   │                            kinu, kipa-corruption, lbs, vdem, wvs}/
+│   │                            kinu, kipa_corruption, lbs, vdem, wvs}/
 │   └── models/                 [statistical models, not part of harmonization]
 ├── config/
 │   ├── abs/
@@ -64,7 +64,7 @@ src/
 │   ├── kamos/harmonize/        6 files
 │   ├── kgss/harmonize/         18 files
 │   ├── kipa/harmonize/         4 files     (KIPA-social, separate from corruption)
-│   ├── kipa-corruption/harmonize/  4 files
+│   ├── kipa_corruption/harmonize/  4 files
 │   ├── kinu/harmonize/         8 files
 │   └── ipus/harmonize/         3 files
 ├── python/                     ingest/ export/ validation/ → all empty __init__.py.
@@ -144,7 +144,7 @@ Production spec counts per survey:
 | KINU              | `src/config/kinu/harmonize/`                | 8       |
 | KAMOS             | `src/config/kamos/harmonize/`               | 6       |
 | KIPA-social       | `src/config/kipa/harmonize/`                | 4       |
-| KIPA-corruption   | `src/config/kipa-corruption/harmonize/`     | 4       |
+| KIPA-corruption   | `src/config/kipa_corruption/harmonize/`     | 4       |
 | IPUS              | `src/config/ipus/harmonize/`                | 3       |
 | ABS (legacy)      | `src/config/abs/harmonize/`                 | 3 (not prod) |
 

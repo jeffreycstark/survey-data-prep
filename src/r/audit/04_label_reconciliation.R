@@ -345,7 +345,7 @@ load_registry_index <- function(
 # parses just the SPSS header — fast even on WVS w7 — and value labels are
 # column metadata, so zero rows suffice.
 #
-# Pooled-file surveys (kgss, kinu, gcb; kipa-corruption 2004-07) read one
+# Pooled-file surveys (kgss, kinu, gcb; kipa_corruption 2004-07) read one
 # file regardless of wave key. Per-wave surveys resolve a path per key.
 #
 # Korean-label files vary in encoding declaration quality: KIPA deposits
@@ -354,7 +354,7 @@ load_registry_index <- function(
 # `ko_retry = TRUE` handles this adaptively: read default; if labels contain
 # no Hangul but high-byte latin noise, re-read with encoding = "CP949".
 #
-# kipa-corruption uses Korean files ONLY (eng_* variants carry known
+# kipa_corruption uses Korean files ONLY (eng_* variants carry known
 # mistranslations — 사법부/judiciary labeled "legislature").
 # ===========================================================================
 .sav_meta_cache <- new.env(parent = emptyenv())
@@ -467,10 +467,10 @@ load_registry_index <- function(
     .read_sav_labels(here::here("data", "kgss", "raw", "kor_data_CUM0074.sav"),
                      ko_retry = TRUE)
   },
-  `kipa-corruption` = function(wave_key) {
+  `kipa_corruption` = function(wave_key) {
     yr <- sub("^w", "", wave_key)
     if (!grepl("^[0-9]{4}$", yr)) return(NULL)
-    base <- here::here("data", "kipa-corruption", "raw", "unzipped")
+    base <- here::here("data", "kipa_corruption", "raw", "unzipped")
     if (yr %in% as.character(2004:2007)) {
       return(.read_sav_labels(file.path(base, "13081", "kor_data_cum0009.sav"),
                               ko_retry = TRUE))

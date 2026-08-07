@@ -47,7 +47,7 @@ source(here::here("scripts", "appendix-variable-builder", "recode_notes.R"))
 #' Load the verbatim question dictionary for a survey.
 #'
 #' Searches several conventional locations. Some surveys use dashes in
-#' the directory name (e.g. `kipa-corruption/`) but underscores in the
+#' the directory name (e.g. `kipa_corruption/`) but underscores in the
 #' filename (`kipa_corruption_verbatim_items.csv`); both are tried.
 load_verbatim <- function(survey, verbatim_path = NULL) {
   if (is.null(verbatim_path)) {
@@ -527,7 +527,7 @@ build_appendix <- function(survey,
 #'
 #' @param surveys  Named list of per-survey specs. Each element is a list
 #'                 with fields:
-#'                   * `survey`    — character (e.g. "abs", "kipa-corruption")
+#'                   * `survey`    — character (e.g. "abs", "kipa_corruption")
 #'                   * `sub_label` — character heading for this sub-appendix
 #'                                   (e.g. "A1. Asian Barometer Survey")
 #'                   * `groups`    — same shape as build_appendix() groups
