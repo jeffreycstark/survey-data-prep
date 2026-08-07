@@ -4,17 +4,17 @@
 # Single source of truth for "where does this survey's harmonization
 # YAML spec directory live, and what production specs are in it?"
 #
-# ABS is the only survey using `harmonize_validated/` (a curated subset
-# of `harmonize/`). Every other survey uses `harmonize/`.
+# Every survey uses `harmonize/`. ABS used to be the exception, reading a
+# curated `harmonize_validated/`; the two were merged 2026-08-07 so the layout
+# is uniform. Draft specs live in `<survey>/_drafts/` and are never loaded.
 
 library(here)
 
 #' Find the canonical harmonization spec directory for a survey
 #'
 #' @param survey Character: survey directory name under `src/config/`
-#'   (e.g. "abs", "kgss", "ipus", "wvs"). For ABS this resolves to the
-#'   validated subset (`harmonize_validated/`); for every other survey
-#'   it resolves to `harmonize/`.
+#'   (e.g. "abs", "kgss", "ipus", "wvs"). Always resolves to
+#'   `src/config/<survey>/harmonize/`.
 #'
 #' @return Absolute path (character) to the spec directory.
 #'   Errors informatively if the directory does not exist.
@@ -26,7 +26,7 @@ find_survey_spec_dir <- function(survey) {
     stop("find_survey_spec_dir(): `survey` must be a non-empty string", call. = FALSE)
   }
 
-  subdir <- if (identical(survey, "abs")) "harmonize_validated" else "harmonize"
+  subdir <- "harmonize"
   spec_dir <- here::here("src", "config", survey, subdir)
 
   if (!dir.exists(spec_dir)) {

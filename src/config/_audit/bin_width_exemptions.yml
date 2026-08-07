@@ -41,7 +41,7 @@ exempt_variables:
       generation, and respondents elsewhere who live alone simply answer 1 —
       the seam is in the Japanese questionnaire, and this mapping removes its
       effect rather than introducing one. See the note on the variable in
-      src/config/abs/harmonize_validated/demographics.yml.
+      src/config/abs/harmonize/demographics.yml.
   - variable: bribe_police
     survey: afro
     reason: >

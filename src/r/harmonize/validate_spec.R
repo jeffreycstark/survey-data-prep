@@ -567,7 +567,7 @@ validate_phrases <- function(spec, waves, verbose = TRUE) {
 #'
 #' @param waves List: named list of wave dataframes
 #' @param survey Survey name (default "abs"). Resolved via the spec-discovery
-#'   utility — ABS reads `harmonize_validated/`, every other survey reads
+#'   utility — ABS reads `harmonize/`, every other survey reads
 #'   `harmonize/`. Pass NULL to use an explicit `config_dir` instead.
 #' @param config_dir Optional: explicit path to a spec directory. Overrides
 #'   `survey` when non-NULL. Retained for back-compat with callers that

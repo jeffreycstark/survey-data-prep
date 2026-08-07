@@ -46,7 +46,7 @@ here::i_am("src/r/audit/generate_phase_b_suggestions.R")
 }
 
 # ---------------------------------------------------------------------------
-# Walk every spec file under src/config/<survey>/{harmonize,harmonize_validated}.
+# Walk every spec file under src/config/<survey>/harmonize/.
 # ---------------------------------------------------------------------------
 .list_specs <- function() {
   roots <- list.files(here::here("src/config"), full.names = TRUE)
@@ -55,7 +55,7 @@ here::i_am("src/r/audit/generate_phase_b_suggestions.R")
   for (r in roots) {
     survey <- basename(r)
     sub_dirs <- list.files(r, full.names = TRUE)
-    sub_dirs <- sub_dirs[basename(sub_dirs) %in% c("harmonize", "harmonize_validated")]
+    sub_dirs <- sub_dirs[basename(sub_dirs) == "harmonize"]
     for (d in sub_dirs) {
       yamls <- list.files(d, pattern = "\\.yml$", full.names = TRUE)
       for (y in yamls) {

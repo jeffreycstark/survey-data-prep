@@ -91,7 +91,7 @@ anchor:
   expected_direction: positive
   notes: >
     Higher harmonized value = more trust. Per
-    src/config/abs/harmonize_validated/institutional_trust.yml, ABS W1
+    src/config/abs/harmonize/institutional_trust.yml, ABS W1
     and W2 are identity (raw 1=None at all -> 4=Great deal); W3, W4, W6
     are reverse-coded by safe_reverse_4pt; W5 uses safe_6pt_to_4pt
     (ABS W5 used a 6-point scale). After harmonization the direction is

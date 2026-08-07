@@ -13,7 +13,7 @@
 #   for the current survey/wave set.
 #
 # Format: Each group is a named list of harmonized variable IDs (matching the
-#   `id:` field in the YAML specs under src/config/abs/harmonize_validated/).
+#   `id:` field in the YAML specs under src/config/abs/harmonize/).
 # ─────────────────────────────────────────────────────────────────────────────
 
 concept_groups:

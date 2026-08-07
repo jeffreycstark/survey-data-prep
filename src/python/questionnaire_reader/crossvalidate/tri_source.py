@@ -109,7 +109,7 @@ def _yaml_source_bridge(survey: str) -> dict[tuple[str, str], str]:
     maps are the authoritative bridge.
     """
     cfg = repo_root() / "src" / "config" / survey
-    spec_dir = cfg / "harmonize_validated"
+    spec_dir = cfg / "harmonize"
     if not spec_dir.is_dir():
         spec_dir = cfg / "harmonize"
     out: dict[tuple[str, str], str] = {}

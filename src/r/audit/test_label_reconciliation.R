@@ -173,9 +173,15 @@ ok(r_rec3$status=="skip" && r_rec3$reason=="recode_poles_unmapped",
    "mapping that NAs an entire pole -> skip/recode_poles_unmapped")
 
 cat("\n=== Git-based regression: pre-fix vs current political_attitudes.yml ===\n")
-spec_rel <- "src/config/abs/harmonize_validated/political_attitudes.yml"
+# NOTE: two different paths on purpose. The historical checkout must use the
+# path as it existed at ebe4f00^ (`harmonize_validated/`); the current file
+# lives in `harmonize/` since the 2026-08-07 merge. Collapsing these to one
+# variable makes `git show` fail, and the failure is SILENT — have_prefix
+# goes FALSE and the regression prints SKIP instead of failing.
+spec_rel_hist <- "src/config/abs/harmonize_validated/political_attitudes.yml"  # at ebe4f00^
+spec_rel      <- "src/config/abs/harmonize/political_attitudes.yml"            # current
 prefix_path <- tempfile(fileext = ".yml")
-gx <- suppressWarnings(system2("git", c("show", paste0("ebe4f00^:", spec_rel)),
+gx <- suppressWarnings(system2("git", c("show", paste0("ebe4f00^:", spec_rel_hist)),
                                stdout = prefix_path, stderr = FALSE))
 have_prefix <- file.exists(prefix_path) && file.info(prefix_path)$size > 0
 

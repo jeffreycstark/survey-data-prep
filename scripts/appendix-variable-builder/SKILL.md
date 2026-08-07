@@ -8,7 +8,7 @@ description: Generate Appendix A (Survey Items / Variable Descriptions) for acad
 Generates the "Survey Items" / "Appendix A: Variable Descriptions" section
 of academic-paper online appendices from the centralized verbatim
 question dictionaries (`data/{survey}/questionnaire_text/{survey}_verbatim_items.csv`)
-and harmonization YAMLs (`src/config/{survey}/harmonize_validated/*.yml`
+and harmonization YAMLs (`src/config/{survey}/harmonize/*.yml`
 or `harmonize/*.yml`) that live in this repo.
 
 ## When to use
@@ -156,7 +156,7 @@ cross-check and rendered survey-appropriate in the QID line.
    wave × question_id × harmonized_name × verbatim text. Built by the
    project's verbatim-dictionary workflow.
 
-2. **`src/config/{survey}/harmonize_validated/*.yml`** (with fallback to
+2. **`src/config/{survey}/harmonize/*.yml`** (with fallback to
    `src/config/{survey}/harmonize/*.yml`) — the per-survey YAML specs.
    Used for:
    - The authoritative per-wave `source:` map → "Wave QIDs" line

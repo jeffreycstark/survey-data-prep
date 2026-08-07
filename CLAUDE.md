@@ -219,4 +219,4 @@ No R MCP is currently configured. R code is executed via `Rscript` in Bash.
 
 **Shared recoding functions** live in `src/r/utils/recoding.R`: `safe_reverse_3pt/4pt/5pt/6pt()`, `safe_3pt/4pt/5pt/6pt_none()`, plus ~90 wave- and survey-specific helpers (`recode_w*_*`, `collapse_*`). These are referenced by name in YAML spec `fn:` fields and reach each survey via `src/r/utils/_load_functions.R`, sourced from each `2_harmonize_all.R`.
 
-**ABS uses validated specs**: Production ABS specs are in `src/config/abs/harmonize_validated/` (28 files), not `harmonize/`.
+**Spec layout is uniform**: every survey's production specs live in `src/config/{survey}/harmonize/` (ABS: 28 files). ABS used to be the exception, reading a curated `harmonize_validated/`; the two were merged 2026-08-07. Draft specs that must not be loaded live in `src/config/{survey}/_drafts/`.

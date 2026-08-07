@@ -80,7 +80,7 @@ cat("\n=== spec wiring: ABS education_years bounds ===\n")
 # Guards the 2026-07-09 fix: `97` is a declared missing code ("No answer"), and
 # range enforcement had been disabled via skip_range_check, letting 60 years of
 # formal education stand.
-abs_spec <- yaml::read_yaml(here::here("src", "config", "abs", "harmonize_validated",
+abs_spec <- yaml::read_yaml(here::here("src", "config", "abs", "harmonize",
                                        "demographics.yml"))
 ey <- Filter(function(v) identical(v$id, "education_years"), abs_spec$variables)[[1]]
 conv <- as.numeric(unlist(abs_spec$missing_conventions$treat_as_na_education_years$codes))

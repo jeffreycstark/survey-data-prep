@@ -37,7 +37,7 @@ Read the official questionnaire files for each wave:
 Do NOT extract every question in the questionnaire. Extract only the items that appear in the harmonization YAML configs at:
 
 ```
-src/config/abs/harmonize_validated/*.yml
+src/config/abs/harmonize/*.yml
 ```
 
 Cross-reference: for each variable in those YAMLs, look at the `source:` block to get the question ID per wave. Then find that question ID in the questionnaire document and extract the verbatim text.
@@ -62,7 +62,7 @@ This means: look up q7 in the Wave 2–6 questionnaire documents, and record tha
 
 ### Step 1: Build the lookup table from YAMLs
 
-Parse all YAML files in `src/config/abs/harmonize_validated/` to build a list of `(harmonized_name, wave, question_id)` tuples. There are roughly 360 variables × 6 waves = ~2,000 entries (minus gaps where items don't exist in a wave). This gives you the complete set of question IDs you need to find per wave.
+Parse all YAML files in `src/config/abs/harmonize/` to build a list of `(harmonized_name, wave, question_id)` tuples. There are roughly 360 variables × 6 waves = ~2,000 entries (minus gaps where items don't exist in a wave). This gives you the complete set of question IDs you need to find per wave.
 
 ### Step 2: Extract verbatim text from questionnaire documents
 

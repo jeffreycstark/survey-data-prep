@@ -70,13 +70,12 @@ load_verbatim <- function(survey, verbatim_path = NULL) {
 
 #' Load and merge all YAML harmonization specs for a survey.
 #'
-#' Prefers `harmonize_validated/` when present (ABS pattern); falls back
-#' to `harmonize/`.
+#' Every survey reads `src/config/<survey>/harmonize/`. ABS used to be the
+#' exception with a curated `harmonize_validated/`; the two were merged
+#' 2026-08-07, so the prefer-then-fall-back dance is gone.
 load_specs <- function(survey, config_dir = NULL) {
   if (is.null(config_dir)) {
-    validated <- here::here("src", "config", survey, "harmonize_validated")
-    plain     <- here::here("src", "config", survey, "harmonize")
-    config_dir <- if (dir.exists(validated)) validated else plain
+    config_dir <- here::here("src", "config", survey, "harmonize")
   }
   if (!dir.exists(config_dir)) {
     stop("config dir not found: ", config_dir)

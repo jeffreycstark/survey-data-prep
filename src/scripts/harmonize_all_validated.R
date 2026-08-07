@@ -104,9 +104,9 @@ cat(sprintf("✓ (%s rows, %s cols)\n\n", nrow(waves$w6), ncol(waves$w6)))
 # LOAD ALL YAML SPECIFICATIONS
 # ==============================================================================
 
-cat("📋 Loading YAML specifications from harmonize_validated/...\n")
+cat("📋 Loading YAML specifications from harmonize/...\n")
 
-yaml_dir <- "src/config/abs/harmonize_validated"
+yaml_dir <- "src/config/abs/harmonize"
 yaml_files <- list.files(yaml_dir, pattern = "\\.yml$", full.names = TRUE)
 
 cat(sprintf("   Found %d YAML files\n\n", length(yaml_files)))

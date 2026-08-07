@@ -24,7 +24,7 @@ import yaml
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-YAML_DIR = PROJECT_ROOT / "src" / "config" / "abs" / "harmonize_validated"
+YAML_DIR = PROJECT_ROOT / "src" / "config" / "abs" / "harmonize"
 OUTPUT_PATH = PROJECT_ROOT / "data" / "abs" / "questionnaire_text" / "abs_verbatim_items.csv"
 
 WAVES = ["w1", "w2", "w3", "w4", "w5", "w6"]

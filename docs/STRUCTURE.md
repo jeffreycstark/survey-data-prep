@@ -35,9 +35,9 @@ src/
 │   └── models/                 # Statistical models
 │
 ├── config/
-│   ├── abs/                    # Production ABS specs are in harmonize_validated/, not harmonize/
+│   ├── abs/                    # harmonize/ = production specs; _drafts/ = never loaded
 │   │   ├── harmonize/          # legacy / scratch
-│   │   └── harmonize_validated/
+│   │   └── harmonize/
 │   └── {wvs,lbs,afro,arab-barometer,kamos,kgss,kipa,kipa-corruption,kinu,ipus,klosa}/harmonize/
 │
 ├── python/                     # Python utilities

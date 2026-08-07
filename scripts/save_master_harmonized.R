@@ -18,7 +18,7 @@ source(here("src/r/data_prep_modules/0_load_waves.R"))
 waves <- load_waves()
 
 # List all YAML specs (excluding MODEL_VARIABLE)
-config_dir <- here("src/config/abs/harmonize_validated")
+config_dir <- here("src/config/abs/harmonize")
 spec_files <- list.files(config_dir, pattern = "\\.yml$", full.names = TRUE)
 spec_files <- spec_files[!grepl("MODEL_VARIABLE", spec_files)]
 

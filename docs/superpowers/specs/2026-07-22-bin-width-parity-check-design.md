@@ -93,7 +93,7 @@ ABS label-recon backlog.
    `parity_error`. CSV columns: `survey, variable, wave, method, fn,
    signature, n_bins, max_width, status, message`.
    Sources `_load_functions.R` for fn evaluation; reads specs from the
-   survey's spec dir (ABS: `harmonize_validated/`), registry from
+   survey's spec dir (ABS: `harmonize/`), registry from
    `recoding_registry.yml`.
 
 2. **`src/config/_audit/bin_width_exemptions.yml`** — empty exemptions

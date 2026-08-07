@@ -69,7 +69,7 @@ Six-step procedure:
 
 3. **Enumerate candidate loaders.** Grep `id:` across the relevant surveys' YAMLs:
    ```bash
-   grep -rh "^  - id:" src/config/abs/harmonize_validated/ \
+   grep -rh "^  - id:" src/config/abs/harmonize/ \
      | sort -u
    ```
    Pick the items that substantive theory predicts should covary with the anchor. Aim for 5–15 loaders per construct; fewer leaves the anchor unstressed, more invites mixed signals.

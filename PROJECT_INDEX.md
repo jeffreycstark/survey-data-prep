@@ -21,7 +21,7 @@ survey-data-prep/
 │   │       └── vdem/           # V-Dem scaffold pipeline
 │   ├── scripts/                # One-off scripts + slope_prospector.R
 │   ├── config/
-│   │   ├── abs/harmonize_validated/  # 28 production ABS YAML specs
+│   │   ├── abs/harmonize/  # 28 production ABS YAML specs
 │   │   ├── wvs/harmonize/            # 11 WVS YAML specs
 │   │   ├── lbs/harmonize/            # 5 LBS YAML specs
 │   │   ├── afro/harmonize/           # 5 Afro YAML specs
@@ -163,7 +163,7 @@ Longitudinal trend detection tool. Takes long-format country-wave-variable means
 
 ## 🔧 Configuration
 
-### YAML Spec Format (`src/config/{survey}/harmonize_validated/*.yml`)
+### YAML Spec Format (`src/config/{survey}/harmonize/*.yml`)
 ```yaml
 variables:
   - id: trust_president         # harmonized variable name

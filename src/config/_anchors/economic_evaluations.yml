@@ -11,7 +11,7 @@
 # typically 0.3-0.6 (Lewis-Beck & Stegmaier 2000; Duch & Stevenson 2008).
 #
 # Anchor is `econ_national_now` (current national economic conditions).
-# This id is declared in ABS only (src/config/abs/harmonize_validated/
+# This id is declared in ABS only (src/config/abs/harmonize/
 # economy.yml). Other surveys use the parallel id `econ_national_current`
 # (arab-barometer, afro, lbs); the cross-survey loaders below use the
 # `surveys:` field to declare those siblings without forcing a separate
@@ -63,7 +63,7 @@ notes:
     provision — closest ABS-declared item to government economic
     performance). `econ_country_past`/`econ_family_past` exist in
     `src/config/abs/harmonize/regime_nostalgia.yml` but that file is
-    not in `harmonize_validated/`, so those ids are not in production
+    not in `harmonize/`, so those ids are not in production
     output. `econ_national_past` exists in arab-barometer and is included
     here gated by `surveys:`.
   - >
@@ -98,7 +98,7 @@ anchor:
   expected_direction: positive
   notes: >
     Higher harmonized value = better national economic conditions. Per
-    `src/config/abs/harmonize_validated/economy.yml`, W1-W2 raw was
+    `src/config/abs/harmonize/economy.yml`, W1-W2 raw was
     1=Very bad → 5=Very good (already in standard direction); W3-W6 raw
     was reversed (1=Very good → 5=Very bad) and is reverse-coded by
     safe_reverse_5pt during harmonization. After harmonization the

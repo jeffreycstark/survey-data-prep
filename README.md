@@ -211,7 +211,7 @@ src/r/audit/            All audit modules:
                           06_check_input_drift.R    (C5) detect raw-input changes
                           check_registry_complete.R (A4 helper) recoding registry drift
                           extractors/<survey>_codebook.R  (per-survey codebook extractors)
-src/config/<survey>/harmonize/   YAML specs (ABS uses harmonize_validated/)
+src/config/<survey>/harmonize/   YAML specs (uniform across all surveys)
 src/config/_schema/              JSON Schema (harmonize_v1.schema.json)
 src/config/_anchors/             Construct anchor files for D3 (democratic_attitudes, institutional_trust, economic_evaluations)
 src/config/_wording_changes.yml  Registry of known wording/coding changes (G2)

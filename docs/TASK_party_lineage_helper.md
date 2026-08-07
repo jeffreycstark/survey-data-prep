@@ -16,7 +16,7 @@ The cross-wave party-name continuity infrastructure is **mostly built**, just no
 | Build script | `data/processed/create_party_crosswalk.R` | 161-line tribble. Run to regenerate the CSV/RDS. |
 | Documentation | `data/processed/party_id_crosswalk.md` | Per-country tables of code → party name across waves. |
 | Pre-joined per-respondent file | `data/processed/party_winner_loser.csv` (17,631 rows) | Joins crosswalk to ABS partisanship raw + adds electoral context (winner/loser, winning_coalition). Already consumed by paper 92b. |
-| ABS partisanship YAML | `src/config/abs/harmonize_validated/partisanship.yml` | Only abstracts `has_party_id` (binary) and `party_closeness` (ordinal). Deliberately avoids party identity. |
+| ABS partisanship YAML | `src/config/abs/harmonize/partisanship.yml` | Only abstracts `has_party_id` (binary) and `party_closeness` (ordinal). Deliberately avoids party identity. |
 | KGSS political_behavior YAML | `src/config/kgss/harmonize/political_behavior.yml` | Stores raw per-wave codes (`party_id`, `party_pref`), documents "NOT comparable across waves". |
 | KINU politics YAML | `src/config/kinu/harmonize/politics.yml` | No wave-comparable party_id — only `party_warmth_justice` (Justice Party feeling thermometer). |
 

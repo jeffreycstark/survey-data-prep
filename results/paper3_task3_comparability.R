@@ -4,7 +4,7 @@
 #         dem_vs_equality, democracy_satisfaction
 # Waves: W2, W3, W4, W6 (Cambodia)
 
-# Source variable numbers from src/config/abs/harmonize_validated/democracy.yml
+# Source variable numbers from src/config/abs/harmonize/democracy.yml
 # Raw SPSS labels confirmed by reading wave files with haven::read_sav()
 
 comparability <- tibble::tribble(

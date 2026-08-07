@@ -10,7 +10,7 @@ Rscript src/r/data_prep_modules/2_harmonize_all.R
 Rscript src/r/data_prep_modules/99_create_final_dataset.R
 ```
 
-ABS uses **validated specs**: production specs are in `src/config/abs/harmonize_validated/` (28 files), not `src/config/abs/harmonize/`.
+ABS production specs are in `src/config/abs/harmonize/` (28 files), like every other survey. Until 2026-08-07 they lived in a separate `harmonize_validated/`; that exception is gone. Two never-validated drafts are parked in `src/config/abs/_drafts/` and are not loaded.
 
 ## Loading
 
