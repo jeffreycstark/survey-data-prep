@@ -44,6 +44,7 @@ print(setNames(countries, basename(sav_files)))
 # Value labels captured per country BEFORE stripping, so they can be restored
 # after the bind. See .restore_value_labels() below for why.
 .w6_label_sets <- new.env(parent = emptyenv())
+.w6_var_labels <- new.env(parent = emptyenv())
 
 # Read each file, attach country column, drop haven labels for safe stacking.
 read_one <- function(path, country_name) {
@@ -51,6 +52,11 @@ read_one <- function(path, country_name) {
   # Capture the value labels first — stripping them was losing metadata that
   # exists in every country file (see .restore_value_labels()).
   .w6_label_sets[[country_name]] <- lapply(df, function(x) attr(x, "labels"))
+  # ...and the question text. attr() PARTIAL-MATCHES, so once a column carries
+  # `labels` but no `label`, attr(x, "label") silently returns the value-label
+  # vector instead of NULL — which recycles into duplicate rows in any
+  # data.frame() built from it. Restoring the real `label` removes that trap.
+  .w6_var_labels[[country_name]] <- lapply(df, function(x) attr(x, "label", exact = TRUE))
   # Strip haven_labelled so bind_rows doesn't choke on type mismatches across
   # country files (different countries can have different label sets for the
   # same variable name). Cast preserving the underlying storage type — numeric
@@ -61,6 +67,32 @@ read_one <- function(path, country_name) {
     } else x
   })
   df$country <- country_name
+  df
+}
+
+#' Restore the question text (`label`) onto the stacked frame.
+#'
+#' Unlike value labels, where a cross-country disagreement can mean a code means
+#' DIFFERENT THINGS and must never be merged, question-text variance is
+#' translation and typo noise ("how serious is it in your view?" vs "how serious
+#' it is in your view?"). The modal text is therefore used, and the number of
+#' columns with variants is reported so the noise stays visible.
+#'
+#' This exists as much for hygiene as for metadata: without a real `label`,
+#' attr(x, "label") partial-matches `labels` and returns a vector.
+.restore_var_labels <- function(df, label_sets) {
+  restored <- 0L; variant <- 0L; none <- 0L
+  for (col in names(df)) {
+    txt <- unlist(Filter(function(z) !is.null(z) && nzchar(z),
+                         lapply(label_sets, function(cl) cl[[col]])))
+    if (!length(txt)) { none <- none + 1L; next }
+    tab <- sort(table(txt), decreasing = TRUE)
+    attr(df[[col]], "label") <- names(tab)[1]
+    restored <- restored + 1L
+    if (length(tab) > 1L) variant <- variant + 1L
+  }
+  cat(sprintf("Question text restored: %d columns | %d had country variants (modal used) | %d had none\n",
+              restored, variant, none))
   df
 }
 
@@ -165,6 +197,7 @@ w6 <- bind_rows(dfs)
 # Restore the value labels stripped in read_one() — attribute only, so values
 # and types are unchanged.
 w6 <- .restore_value_labels(w6, as.list(.w6_label_sets))
+w6 <- .restore_var_labels(w6, as.list(.w6_var_labels))
 
 # Move country to the front to match existing convention
 if ("country" %in% names(w6)) {
