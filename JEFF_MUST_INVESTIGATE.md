@@ -1,6 +1,6 @@
 # Audit findings — open for review
 
-Last updated: 2026-07-31
+Last updated: 2026-08-08
 
 This file records audit findings that need substantive judgment from Jeff. The audit infrastructure surfaces; this file tracks what remains to investigate. Update as items get resolved.
 
@@ -50,7 +50,7 @@ Closed with real fixes, not exemptions; 9,052 respondent-values recovered in tot
 - **`govt_responds_people` (all waves).** Raw is 1=Very responsive → 4=Not responsive at all in every wave, i.e. opposite the spec's own labels, and `fn` was `safe_4pt_none` (identity). The item was stored backwards against its labels and against every other ABS attitude battery. Found empirically by **paper 01b** (r = −.56..−.58 against `covid_govt_handling`, `covid_trust_info`, `institutional_trust_index`, `dem_satisfaction`, in all three countries). Fixed → `safe_reverse_4pt`.
 - **`access_identity_document`, `access_public_school` (W4-only).** Raw labels byte-identical to the declared labels (1=Very difficult → 4=Very easy) yet `fn: safe_reverse_4pt`. Their sibling `access_healthcare` had the correct per-wave treatment (`identity` for W2–W4, reverse for W5/W6), so the battery was right for one variable and wrong for these two. Fixed → `method: identity`.
 - **`party_closeness` (w1, w2) — the worst of the four.** ABS flipped the raw order mid-series: w1/w2 are 1=Just a little close → 3=Very close (ascending), w3–w5 are 1=Very close → 3=Just a little close (descending). One `safe_reverse_3pt` was applied to all, so **w1/w2 are stored inverted against w3–w5** and any cross-wave trend on party closeness reads a spurious flip at the w2→w3 seam. Fixed via per-wave `exceptions:` (identity for w1/w2). **w6 RESOLVED 2026-08-05:** all twelve W6 country `.sav` files label q55 as 1=Very close → 3=Just a little close, i.e. descending like w3–w5, so the reversing default is correct for w6 and it needs no exception.
-- **⚠️ ALL FOUR ARE SPEC-ONLY SO FAR.** `abs_harmonized.rds` still holds the old values until ABS is re-harmonized. Freshness (layer 6d) should now report ABS STALE.
+- ~~⚠️ ALL FOUR ARE SPEC-ONLY SO FAR~~ — **RESOLVED: ABS re-harmonized 2026-08-06** (the backlog-clear verification below counted these columns among the 8-of-373 changed and the correlations flipped as predicted). Freshness reports ABS FRESH as of the 2026-08-08 rebuild.
 
 ### ✅ CLEARED 2026-08-06: the ABS label-reconciliation backlog — 18 errors to 0
 
@@ -111,9 +111,9 @@ Control: the five `covid_restrict_*` items use `safe_reverse_3pt` and check out 
 
 **FIXED 2026-08-06** (`safe_4pt_none` -> `safe_reverse_4pt`, all four, W6-only). Re-harmonized and verified: exactly 4 of 373 columns changed, distributions mirrored, and every correlation against `trust_national_government` flipped sign (-0.428 -> +0.428, -0.410 -> +0.410, -0.230 -> +0.230) while the untouched control `covid_restrict_lockdown` held at +0.158. Strict reversal now reports `expected=-1 pearson=-1 ok` for all four. `covid_livelihood_impact` and `income_fairness` moved to `ok_match` in layer 3; `covid_govt_handling` and `covid_trust_govt_info` remain `skip` there, because q141/q142 are label-conflict columns the W6 merge still cannot reconcile — fixed in data, unverifiable by the checker.
 
-⚠️ **PAPER 01b MUST BE UPDATED BEFORE ITS NEXT RUN.** Its `17_sdb_inventory.R` declares `positive_pole = 4` for `covid_govt_handling` and `covid_trust_info` and reverses them in its own pipeline to compensate for this bug. That compensation is now a double-reversal. Same trap as the Class B papers after `system_deserves_support`.
+~~⚠️ PAPER 01b MUST BE UPDATED BEFORE ITS NEXT RUN~~ — **ALREADY DONE (verified 2026-08-08)**: 01b's `00_data_preparation.R` removed the `5 - x` compensation when the upstream fix landed (its comments document the double-reversal hazard explicitly), and `17_sdb_inventory.R`'s `positive_pole = 4` declarations now match the corrected orientation. Remaining 01b action: plain re-run against the rebuilt `abs_harmonized.rds`, and push its unpushed commits.
 
-**Still open:** `sm_express_political` (w6 q52b) is a fifth case with identical evidence — raw 1=Often -> 4=Never against declared 1=Never -> 4=Often, `method: identity`. Left unfixed because only four were authorised.
+~~**Still open:** `sm_express_political` (w6 q52b) is a fifth case with identical evidence~~ — **RESOLVED 2026-08-06**: fixed in the label-reconciliation backlog clear above (w6 default -> `safe_reverse_4pt`).
 
 ---
 
@@ -166,6 +166,15 @@ noted; every repoint carries a `# FIX 2026-08-07` comment):
 - **Arab Barometer** — `dem_extent_country`/`dem_suitable_country` lost the
   0 anchor and 8/9. **Codebook caveat**: AB has no Tier-3 extract yet;
   98/99-as-missing is assumed. Verify when the AB codebooks land.
+
+**Data rebuilt 2026-08-08 for ALL affected surveys.** ABS and KINU (whose
+2026-08-07 spec fixes had never been re-harmonized) rebuilt and verified:
+KINU recovers 406 Gangwon respondents (region 9, all 13 waves) + 829
+students; ABS recovers ~60k `dem_rating_*` ratings of 7–9 (USA alone
+33,248) and the `action_*_w1` non-participant group (11,674 on
+`action_contact_party_w1`). The six drift-only surveys (wvs, lbs, afro,
+kamos, ipus, klosa) rebuilt **byte-identical** — their staleness was
+`recoding.R` hash drift only. Freshness: 16/16 FRESH.
 
 **The 7 red flags — raw-label-verified and RESOLVED 2026-08-08** (verdicts
 from the raw .sav value labels + observed counts; ~2,476 respondent-values
