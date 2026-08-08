@@ -95,3 +95,138 @@ exempt_variables:
       treating the split as granularity within one conceptual category.
       Decision recorded in JEFF_MUST_INVESTIGATE.md ("IPUS uni_view —
       Frankenstein scale", RESOLVED 2026-05-12).
+  # -------------------------------------------------------------------------
+  # ABS W5 6->4pt trust pole-merge class — exempted 2026-08-08, the day the
+  # seam was FIXED per the 2026-07-22 decision: every affected item now has a
+  # native W5 6-pt companion column (`<id>_w5_6pt`, reversed so higher = more
+  # trust / fairer), the seam is documented in docs/surveys/abs.md and the
+  # CLAUDE.md gotchas, and the verbatim dictionary's W5 response_scale rows
+  # show the real 6-pt card. The 4-pt columns keep the collapse for cross-wave
+  # shape compatibility; W5 LEVELS belong to the companions.
+  # -------------------------------------------------------------------------
+  - variable: trust_president
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_president_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_courts
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_courts_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_national_government
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_national_government_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_political_parties
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_political_parties_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_parliament
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_parliament_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_civil_service
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_civil_service_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_military
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_military_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_police
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_police_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_local_government
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_local_government_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_election_commission
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_election_commission_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_ngos
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_ngos_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_television
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_television_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_newspapers
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_newspapers_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_relatives
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_relatives_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_neighbors
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_neighbors_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_acquaintances
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_acquaintances_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: trust_strangers
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion trust_strangers_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".
+  - variable: econ_family_income_fair
+    survey: abs
+    reason: >
+      W5 pole-merge seam (6,5->4 and 2,1->1): W5 top/bottom bins hold two
+      source categories vs one elsewhere. Fixed 2026-08-08 by the native
+      companion econ_family_income_fair_w5_6pt; use it for W5 levels, the 4-pt for
+      W4<->W6 comparisons. See docs/surveys/abs.md "W5 trust seam".

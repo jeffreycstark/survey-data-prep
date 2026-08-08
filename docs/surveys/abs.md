@@ -47,3 +47,33 @@ Per-wave files: `outputs/master_w{1..6}.rds`.
 - `dem_best_form`: raw 1=Strongly agree → 4=Strongly disagree; REVERSED so 4=pro-democracy
 - `dem_vs_equality`: raw "both equally" at position 5; REMAPPED to center (3)
 - `dem_always_preferable`: W2 response order differs; remapped to W3 standard
+
+## W5 trust seam (6→4pt pole-merge) and the `*_w5_6pt` companions
+
+W5 fielded 18 items on **6-point bipolar scales** that every other wave asked
+as 4-point: the 13 institutional-trust items (`trust_president`, `trust_courts`,
+`trust_national_government`, `trust_political_parties`, `trust_parliament`,
+`trust_civil_service`, `trust_military`, `trust_police`, `trust_local_government`,
+`trust_election_commission`, `trust_ngos`, `trust_television`, `trust_newspapers`),
+the 4 social-trust items (`trust_relatives`, `trust_neighbors`,
+`trust_acquaintances`, `trust_strangers`), and `econ_family_income_fair`.
+
+The harmonized 4-pt columns collapse W5 by **merging both poles**
+(raw 1,2 → 4; 5,6 → 1). That keeps the shape comparable but makes W5's top and
+bottom bins hold TWO native categories where every other wave's hold one —
+mechanically inflating W5 top-box shares and means ~2.4–4.6× (bin-width parity,
+Check D; discovered via paper 05's Thailand analysis).
+
+**Fix (2026-08-08):** each item has a native companion column
+`<id>_w5_6pt` — W5-only, 1–6, reversed so higher = more trust (fairer for
+`econ_family_income_fair`, whose W5 card runs 1=Very fair → 6=Very unfair).
+
+Rules of thumb:
+- **W5 levels** (means, top-box shares, distributions): use `*_w5_6pt`.
+- **Cross-wave comparisons**: use the 4-pt columns W4↔W6, bypassing W5, or
+  model the seam explicitly.
+- W4→W5 / W5→W6 **change scores on the 4-pt columns are artefactual** — do not
+  interpret them as real change.
+
+The verbatim dictionary's W5 rows show the real 6-pt card; the 4-pt items are
+exempted in `src/config/_audit/bin_width_exemptions.yml` with pointers here.

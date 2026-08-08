@@ -573,3 +573,454 @@ variables:
       validate:
         - waves: [w1, w2, w3, w4, w5]
           phrase: "television|TV"
+  # ===========================================================================
+  # W5 native 6-pt companions (added 2026-08-08). The harmonized 4-pt columns
+  # collapse W5's 6-point scale by merging BOTH poles (raw 1,2 -> 4; 5,6 -> 1),
+  # so W5's top/bottom bins are structurally wider than every other wave's and
+  # W5 top-box shares/means are mechanically inflated ~2.4-4.6x (Check D).
+  # These columns preserve W5's native resolution. Use them for any W5-level
+  # analysis; use the 4-pt columns for W4<->W6 comparisons that bypass W5.
+  # Seam documented in docs/surveys/abs.md and CLAUDE.md gotchas.
+  # ===========================================================================
+  - id: trust_president_w5_6pt
+    concept: institutional_trust
+    description: "Trust in president/prime minister — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q7
+      w6: null
+    note: "W5-only companion to trust_president, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "president|prime minister"
+  - id: trust_courts_w5_6pt
+    concept: institutional_trust
+    description: "Trust in courts — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q8
+      w6: null
+    note: "W5-only companion to trust_courts, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "court"
+  - id: trust_national_government_w5_6pt
+    concept: institutional_trust
+    description: "Trust in national government — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q9
+      w6: null
+    note: "W5-only companion to trust_national_government, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "national|government"
+  - id: trust_political_parties_w5_6pt
+    concept: institutional_trust
+    description: "Trust in political parties — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q10
+      w6: null
+    note: "W5-only companion to trust_political_parties, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "party|parties"
+  - id: trust_parliament_w5_6pt
+    concept: institutional_trust
+    description: "Trust in parliament — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q11
+      w6: null
+    note: "W5-only companion to trust_parliament, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "parliament"
+  - id: trust_civil_service_w5_6pt
+    concept: institutional_trust
+    description: "Trust in civil service — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q12
+      w6: null
+    note: "W5-only companion to trust_civil_service, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "civil"
+  - id: trust_military_w5_6pt
+    concept: institutional_trust
+    description: "Trust in military — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q13
+      w6: null
+    note: "W5-only companion to trust_military, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "military"
+  - id: trust_police_w5_6pt
+    concept: institutional_trust
+    description: "Trust in police — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q14
+      w6: null
+    note: "W5-only companion to trust_police, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "police"
+  - id: trust_local_government_w5_6pt
+    concept: institutional_trust
+    description: "Trust in local government — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q15
+      w6: null
+    note: "W5-only companion to trust_local_government, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "local|government"
+  - id: trust_election_commission_w5_6pt
+    concept: institutional_trust
+    description: "Trust in election commission — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q16
+      w6: null
+    note: "W5-only companion to trust_election_commission, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "election"
+  - id: trust_ngos_w5_6pt
+    concept: institutional_trust
+    description: "Trust in NGOs — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q17
+      w6: null
+    note: "W5-only companion to trust_ngos, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "NGO|organization"
+  - id: trust_television_w5_6pt
+    concept: institutional_trust
+    description: "Trust in television — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q53
+      w6: null
+    note: "W5-only companion to trust_television, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "television|TV"
+  - id: trust_newspapers_w5_6pt
+    concept: institutional_trust
+    description: "Trust in newspapers — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q54
+      w6: null
+    note: "W5-only companion to trust_newspapers, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "newspaper"

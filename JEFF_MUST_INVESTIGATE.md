@@ -242,7 +242,19 @@ input (the `govt_anticorrupt_effort` case) need a future fn-input-domain
 check against the registry's `input_scale`.
 
 
-### NEW 2026-07-22: ABS W5 6→4pt pole-merge class — 18 W5 items with structurally wider top/bottom bins (Check D)
+### ~~NEW 2026-07-22~~ **RESOLVED 2026-08-08**: ABS W5 6→4pt pole-merge class — 18 W5 items with structurally wider top/bottom bins (Check D)
+
+**Fixed per the preferred remedy in the artefact memo.** All 18 items now
+have native W5-only companion columns `<id>_w5_6pt` (1–6, `safe_reverse_6pt`,
+higher = more trust; `econ_family_income_fair_w5_6pt` higher = fairer —
+raw-label-verified against the W5 merge .sav). The seam is documented in
+`docs/surveys/abs.md` ("W5 trust seam") and the CLAUDE.md gotchas; the
+verbatim dictionary's 18 W5 `response_scale` rows now show the real 6-pt
+card (plus 18 new companion rows); the 4-pt items are exempted in
+`bin_width_exemptions.yml` with pointers. Rule: W5 LEVELS → companions;
+cross-wave → 4-pt W4↔W6 bypassing W5; W4→W5/W5→W6 4-pt change scores are
+artefactual. Paper 05 should switch its W5 analysis to the companions.
+Original finding below for the record.
 - **What:** ABS W5 fielded several batteries on 6-point bipolar scales, collapsed 6→4 by merging both poles (`safe_6pt_to_4pt` / `collapse_6pt_to_4pt_reverse`: native 6,5→4; 2,1→1). W5's top bin absorbs two native categories vs one in every other wave → W5 top-box shares/means mechanically inflated ~2.4–4.6× (verified for the trust battery, every country). Direction checks pass this legitimately; found via paper 05's bug report (`paper-bank-05_thailand_trust_collapse/claudedocs/ABS-W5-trust-harmonization-artefact.md`), now caught by the new bin-width parity check (Check D, `src/r/audit/04_bin_width_parity.R`).
 - **Affected (all w5, signature `4:2|3:1|2:1|1:2`):** the 13 institutional-trust items (`trust_president/courts/national_government/political_parties/parliament/civil_service/military/police/local_government/election_commission/newspapers/ngos/television`), the 4 social-trust items (`trust_acquaintances/neighbors/relatives/strangers`), and `econ_family_income_fair`.
 - **Deliberately NOT exempted** (decision 2026-07-22): stays red in `run_all` until the seam is fixed/documented. Preferred fix per the artefact memo: expose native W5 6-pt companion columns (`*_w5_6pt`), document the seam in CLAUDE.md gotchas + docs/surveys/abs.md, fix the verbatim dictionary's W5 `response_scale` rows (they wrongly show the harmonized 4-pt scale).

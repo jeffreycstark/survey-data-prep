@@ -325,3 +325,148 @@ variables:
       validate:
         - waves: [w5, w6]
           phrase: "first time|strangers"
+  # ===========================================================================
+  # W5 native 6-pt companions (added 2026-08-08). The harmonized 4-pt columns
+  # collapse W5's 6-point scale by merging BOTH poles (raw 1,2 -> 4; 5,6 -> 1),
+  # so W5's top/bottom bins are structurally wider than every other wave's and
+  # W5 top-box shares/means are mechanically inflated ~2.4-4.6x (Check D).
+  # These columns preserve W5's native resolution. Use them for any W5-level
+  # analysis; use the 4-pt columns for W4<->W6 comparisons that bypass W5.
+  # Seam documented in docs/surveys/abs.md and CLAUDE.md gotchas.
+  # ===========================================================================
+  - id: trust_relatives_w5_6pt
+    concept: social_trust
+    description: "How much trust do you have in your relatives? — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q24
+      w6: null
+    note: "W5-only companion to trust_relatives, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "trust.*relative"
+  - id: trust_neighbors_w5_6pt
+    concept: social_trust
+    description: "How much trust do you have in your neighbors? — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q25
+      w6: null
+    note: "W5-only companion to trust_neighbors, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "neighbor"
+  - id: trust_acquaintances_w5_6pt
+    concept: social_trust
+    description: "How much trust do you have in other people you interact with? — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q26
+      w6: null
+    note: "W5-only companion to trust_acquaintances, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "people.*interact"
+  - id: trust_strangers_w5_6pt
+    concept: social_trust
+    description: "How much trust do you have in people you meet for the first time? — native W5 6-point scale"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q27
+      w6: null
+    note: "W5-only companion to trust_strangers, which collapses W5 6->4 by pole-merge and carries the Check D bin-width seam. This column keeps the native W5 categories, reversed so higher = more trust."
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Distrust fully"
+        2: "Distrust a lot"
+        3: "Distrust somewhat"
+        4: "Trust somewhat"
+        5: "Trust a lot"
+        6: "Trust fully"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W5 runs 1=Trust fully -> 6=Distrust fully; reversed so higher = more trust."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w5]
+          phrase: "first time|strangers"
