@@ -93,9 +93,21 @@ variables:
 
   - id: education
     concept: demographics
-    description: "Respondent education level (categorical; scale interpretation varies slightly across KIPA waves)"
+    description: "Respondent education level on the 2010-21 native 6-category frame (1=중졸 이하 → 6=대학원졸 이상; other eras recoded onto it)"
     type: ordinal
-    note: "KIPA education scale is typically 1=middle school or less → higher = more education. Exact categories and boundaries may differ slightly across years; treat as ordinal but verify specific category meanings against codebook for cross-wave trend analysis."
+    note: >
+      FIX 2026-08-08: all waves recoded onto the 2010-21 native 6-cat frame
+      (1=중졸 이하, 2=고졸, 3=전문대졸, 4=대학중퇴, 5=대졸, 6=대학원졸 이상).
+      Raw-label-verified schemes: 2004-09 are 1-4 (3=대졸, 4=대학원졸) and
+      2022-23 are 1-5 (4=대졸, 5=대학원졸) — under the previous
+      method-identity spec their codes 3/4/5 silently took the WRONG 2010-21
+      meanings (e.g. a 2005 BA read as 전문대졸, a 2015 대학중퇴 read as a
+      2022 대졸). Two granularity caveats survive the recode, both
+      structural: (a) pre-2010 "대졸" explicitly includes 전문대졸 (the 2008
+      dq3 label says 대졸(전문대 포함)), so harmonized 5 is broader before
+      2010 and categories 3/4 cannot occur; (b) 2022-23 dropped the
+      대학중퇴 category, so harmonized 4 cannot occur there. Ordinal
+      direction is consistent in every wave.
     source:
       w2004: edu
       w2005: edu
@@ -117,20 +129,53 @@ variables:
       w2021: edu
       w2022: dq3
       w2023: dq3
-    scale: {min: 1, max: 6, labels: {1: "Lowest", 6: "Highest"}}
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "중졸 이하 (middle school or less)"
+        2: "고졸 (high school graduate)"
+        3: "전문대졸 (junior college; 2010-21 and 2022-23 only)"
+        4: "대학중퇴 (university dropout; 2010-21 only)"
+        5: "대졸 (university graduate; pre-2010 includes junior college)"
+        6: "대학원졸 이상 (graduate school or above)"
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
+        note: "2010-21 native codes ARE the target frame."
+      by_wave:
+        w2004:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2005:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2006:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2007:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2008:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2009:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 5, 4: 6}
+        w2022:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 3, 4: 5, 5: 6}
+        w2023:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 3, 4: 5, 5: 6}
     qc:
-      # FIX 2026-08-08: was [1, 10] — an over-claim that made the convention's
-      # 8/9 collide with the range. Raw-label-verified ladders: 2004-09 are 1-4,
-      # 2010-21 are 1-6, 2022-23 are 1-5; 9=무응답 everywhere it is labeled.
-      # No real 8/9 exist in any wave. ⚠️ 2022-23 categories SHIFT meaning
-      # (4=대졸, 5=대학원 vs 2010-21's 4=대학중퇴, 5=대졸, 6=대학원) — identity
-      # pooling misreads 2022+ codes 4/5 as the 2010-21 categories; needs a
-      # per-wave recode before any cross-wave education analysis.
+      # FIX 2026-08-08 (two-part): valid_range was [1, 10] — an over-claim
+      # that made the convention's 8/9 collide with the range (no real 8/9
+      # exist in any wave; 9=무응답 where labeled, caught by the convention).
+      # Same day, the cross-era code misalignment was closed with the
+      # by_wave recodes above — see the note field for the verified ladders.
       valid_range: [1, 6]
 
   - id: income

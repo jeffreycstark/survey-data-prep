@@ -182,11 +182,16 @@ spot-checked against raw counts):
    228+102).
 3. `kipa_corruption/demographics education` — **valid_range over-claim.**
    Real ladders: 2004–09 1–4, 2010–21 1–6, 2022–23 1–5; 9=무응답; no real
-   8/9 anywhere. Narrowed → [1, 6]. ⚠️ NEW FINDING while verifying: the
-   2022–23 ladder SHIFTS meaning (4=대졸, 5=대학원 vs 2010–21's
-   4=대학중퇴, 5=대졸, 6=대학원) — identity pooling misreads 2022+ codes
-   4/5. Needs a per-wave recode before any cross-wave education analysis;
-   flagged in the spec comment.
+   8/9 anywhere. Narrowed → [1, 6]. ⚠️ NEW FINDING while verifying, FIXED
+   same day: the code frames were misaligned across eras — not just
+   2022–23 (4=대졸, 5=대학원 read as 2010–21's 4=대학중퇴, 5=대졸) but
+   also 2004–09 (3=대졸, 4=대학원 read as 3=전문대졸, 4=대학중퇴). All
+   waves now recoded onto the 2010–21 native 6-cat frame via by_wave
+   recodes (2004–09: 3→5, 4→6; 2022–23: 4→5, 5→6), verified cell-by-cell
+   against raw counts. Two structural caveats remain, documented in the
+   spec note: pre-2010 "대졸" includes 전문대졸 (harmonized 5 is broader
+   there; 3/4 cannot occur), and 2022–23 dropped 대학중퇴 (4 cannot occur
+   there).
 4. `kipa_corruption/demographics income` — **both, wave-dependent.** 8 is a
    REAL top bracket in every wave 2008–23 (600만원+/700만원+; the shared
    convention deleted the entire top tail, 1,274 respondents) and 9 is a
