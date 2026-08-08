@@ -23,14 +23,19 @@
 #   ineq_perc_law:         identity 1-5; higher = perceives more inequality
 #
 # MISSING CONVENTIONS:
-# -8 = DK, -1 = IAP; 8/9 = DK/refusal (same-scale codes); 88 = DK/refusal (INCMFAIR)
+# -8 = DK, -1 = IAP; 8/9 = DK/refusal on the 1-5 items ONLY; 88 = DK/refusal (INCMFAIR).
+# INCMFAIR's own 8/9 are REAL points on its 1-10 continuum (raw-label-verified
+# 2026-08-08) — that item uses treat_as_na_10pt.
 
 schema_version: 1
 
 missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88]
-    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal (scale items); 88=DK/refusal (INCMFAIR 1-10 scale)"
+    description: "KGSS: -8=DK, -1=IAP; 8/9=DK/refusal (1-5 scale items); 88=DK/refusal"
+  treat_as_na_10pt:
+    codes: [-8, -1, 88]
+    description: "For the 1-10 INCMFAIR continuum, where 8 and 9 are REAL scale points (raw-label-verified 2026-08-08; only 88 is the DK/refusal sentinel there, plus -8=DK, -1=IAP)."
 
 variables:
 
@@ -80,13 +85,15 @@ variables:
     concept: social_inequality
     description: "Income fairness continuum: 1=incomes should be more equal, 10=income differences should reflect individual effort (identity)"
     type: ordinal
-    note: "2 waves (2011, 2014). ISSP INCMFAIR item. This is a 10-point agree/disagree span between two polar positions (소득이 더 공평해져야 vs. 노력하는 만큼 소득에 차이가 나야). Higher = stronger preference for meritocratic/effort-based income distribution. Sentinel code 88=DK/Refusal (within valid 1-10 range, so treated as NA by missing_conventions)."
+    note: "2 waves (2011, 2014). ISSP INCMFAIR item. This is a 10-point agree/disagree span between two polar positions (소득이 더 공평해져야 vs. 노력하는 만큼 소득에 차이가 나야). Higher = stronger preference for meritocratic/effort-based income distribution. Sentinel code 88=DK/Refusal (outside the 1-10 range; removed by treat_as_na_10pt)."
     source:
       w2011: INCMFAIR
       w2014: INCMFAIR
     scale: {min: 1, max: 10, labels: {1: "Incomes should be more equal", 10: "Income differences should reflect effort"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-08: shared convention's 8/9 deleted real continuum points
+      # (683 responses across 2011+2014: 8 alone held 260+228)
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity

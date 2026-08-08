@@ -132,7 +132,7 @@ Control: the five `covid_restrict_*` items use `safe_reverse_3pt` and check out 
 
 ---
 
-### NEW 2026-08-07: Convention-collision class — missing codes deleting valid responses (FIXED for 13 specs; 7 flags left red pending raw-label verification)
+### NEW 2026-08-07: Convention-collision class — missing codes deleting valid responses (FIXED for 13 specs 2026-08-07; the 7 red flags raw-label-verified and RESOLVED 2026-08-08 — check now reads 0 errors / 11 exempt)
 
 **The class.** `harmonize_variable()` applies the resolved missing codes to
 RAW values before anything else. On `method: identity` waves the raw scale is
@@ -167,19 +167,47 @@ noted; every repoint carries a `# FIX 2026-08-07` comment):
   0 anchor and 8/9. **Codebook caveat**: AB has no Tier-3 extract yet;
   98/99-as-missing is assumed. Verify when the AB codebooks land.
 
-**Left RED on purpose** (the new check keeps them failing until you verify
-raw .sav labels — each is either a convention bug or a valid_range
-over-claim, and the codebook decides which):
-1. `kgss/religion_beliefs prayer_frequency` — 8/9 inside [1, 11]
-2. `kgss/social_inequality ineq_fair_continuum` — 8/9 inside [1, 10]
-3. `kipa_corruption/demographics education` — 8/9 inside [1, 10]
-4. `kipa_corruption/demographics income` — 8/9 inside [1, 12]
-5. `arab-barometer/demographics education_level` — 8/9 inside [1, 10]
-6. `arab-barometer/meanings_of_democracy dem_feature_1st` — 8/9 inside [1, 10]
-7. `arab-barometer/meanings_of_democracy dem_feature_2nd` — 8/9 inside [1, 10]
-
-If the labels say 8/9 are real categories → repoint the convention (pattern:
-`treat_as_na_10pt`). If they say DK/refuse → narrow `valid_range` instead.
+**The 7 red flags — raw-label-verified and RESOLVED 2026-08-08** (verdicts
+from the raw .sav value labels + observed counts; ~2,476 respondent-values
+recovered; kgss, kipa_corruption and arab-barometer re-harmonized and
+spot-checked against raw counts):
+1. `kgss/religion_beliefs prayer_frequency` — **convention bug.** 8=once a
+   week, 9=several times a week are REAL points on the 11-pt ISSP scale
+   (missing there is -8/-1/88/98/99). Repointed → `treat_as_na_11pt`.
+   Recovered 443 (2008: 77+118; 2018: 58+190).
+2. `kgss/social_inequality ineq_fair_continuum` — **convention bug.** 8/9
+   are literal points on the 1–10 INCMFAIR continuum (DK/refusal is 88,
+   which sits OUTSIDE [1,10] — the spec note claiming otherwise was wrong).
+   Repointed → `treat_as_na_10pt`. Recovered 683 (2011: 260+93; 2014:
+   228+102).
+3. `kipa_corruption/demographics education` — **valid_range over-claim.**
+   Real ladders: 2004–09 1–4, 2010–21 1–6, 2022–23 1–5; 9=무응답; no real
+   8/9 anywhere. Narrowed → [1, 6]. ⚠️ NEW FINDING while verifying: the
+   2022–23 ladder SHIFTS meaning (4=대졸, 5=대학원 vs 2010–21's
+   4=대학중퇴, 5=대졸, 6=대학원) — identity pooling misreads 2022+ codes
+   4/5. Needs a per-wave recode before any cross-wave education analysis;
+   flagged in the spec comment.
+4. `kipa_corruption/demographics income` — **both, wave-dependent.** 8 is a
+   REAL top bracket in every wave 2008–23 (600만원+/700만원+; the shared
+   convention deleted the entire top tail, 1,274 respondents) and 9 is a
+   REAL bracket in 2022–23 (800~900만원, 76). But 9 = 무응답 in 2004–21
+   raw labels. Fix: new `treat_as_na_income` (no 8/9) +
+   `valid_range_by_wave` ([1,6]/[1,8]/[1,10] per bracket scheme) so the
+   2004–21 무응답 9s are range-coerced to NA and declared via
+   `coverage_missing_codes_by_wave` (only 6 exist, all w2007). Recovered
+   1,350.
+5. `arab-barometer/demographics education_level` — **valid_range
+   over-claim.** All six waves top out at 7=MA and above; W2's 9=declined
+   (n=26) is genuine missing. Narrowed → [1, 7]. This also settles the
+   2026-08-07 "verify when AB codebooks land" caveat for this variable:
+   the embedded .sav labels were checked directly.
+6. + 7. `arab-barometer/meanings_of_democracy dem_feature_1st/2nd` —
+   **neither: phantom codes.** 8/9 are unlabeled and unobserved (n=0) in
+   both waves; real codes are 1–6 + W2's 10 (providing jobs) + W3's 7
+   (Other); DK/refused are the 5-digit 99994–99999 markers. Repointed →
+   `treat_as_na_features` (= shared convention minus 8/9), so junk 8/9
+   would now surface in the oob log instead of silently vanishing.
+   Recovered 0 by construction.
 
 **Exempted with reasons** (see
 `src/config/_audit/convention_collision_exemptions.yml`): all `age` top-code

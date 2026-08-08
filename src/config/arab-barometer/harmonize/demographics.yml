@@ -115,14 +115,17 @@ variables:
       w5: Q1003
       w7: Q1003
       w8: Q1003
-    note: "Scale differs across waves — will need custom recode for cross-wave comparison."
+    note: "Raw-label-verified 2026-08-08: every wave (W2-W5, W7-W8) codes 1=illiterate/no formal education → 7=MA and above; the category WORDING drifts slightly (W5 5=tertiary, W7/W8 5=technical degree) but the 1-7 ladder is stable. Missing markers: 0 (W2/W3), 9=declined (W2), 98/99 (W4+), 100 (W7) — all in the convention."
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 10]
+      # FIX 2026-08-08: was [1, 10] — an over-claim that made the convention's
+      # 8/9 collide with the range. No wave has real codes above 7; W2's 9
+      # (declined, n=26) is genuine missing and stays in the convention.
+      valid_range: [1, 7]
 
   - id: urban_rural
     concept: demographics

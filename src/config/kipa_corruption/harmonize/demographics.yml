@@ -17,6 +17,9 @@ missing_conventions:
   treat_as_na:
     codes: [-8, -9, 8, 9, 88, 99]
     description: "KIPA corruption: common sentinel missing codes"
+  treat_as_na_income:
+    codes: [-8, -9, 88, 99]
+    description: "For inc/dq4, where 8 is a REAL top income bracket from 2008 on (600만원+ / 700만원+; ~1,150 respondents) and 9 is a REAL bracket in 2022-23 (800~900만원). Raw-label-verified 2026-08-08. The 무응답 meaning of 9 in 2004-2021 is retired per wave via valid_range_by_wave + coverage_missing_codes_by_wave instead. 99=모름/무응답 (2022)."
 
 variables:
   - id: sex
@@ -114,20 +117,27 @@ variables:
       w2021: edu
       w2022: dq3
       w2023: dq3
-    scale: {min: 1, max: 10, labels: {1: "Lowest", 10: "Highest"}}
+    scale: {min: 1, max: 6, labels: {1: "Lowest", 6: "Highest"}}
     missing:
       use_convention: treat_as_na
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 10]
+      # FIX 2026-08-08: was [1, 10] — an over-claim that made the convention's
+      # 8/9 collide with the range. Raw-label-verified ladders: 2004-09 are 1-4,
+      # 2010-21 are 1-6, 2022-23 are 1-5; 9=무응답 everywhere it is labeled.
+      # No real 8/9 exist in any wave. ⚠️ 2022-23 categories SHIFT meaning
+      # (4=대졸, 5=대학원 vs 2010-21's 4=대학중퇴, 5=대졸, 6=대학원) — identity
+      # pooling misreads 2022+ codes 4/5 as the 2010-21 categories; needs a
+      # per-wave recode before any cross-wave education analysis.
+      valid_range: [1, 6]
 
   - id: income
     concept: demographics
     description: "Respondent monthly household income (categorical; scale boundaries vary by wave due to inflation/KIPA revisions)"
     type: ordinal
-    note: "Household income is categorical with boundaries updated periodically in KIPA — treat as ordinal-within-wave and exercise caution in cross-wave comparisons. Number of categories varies (roughly 8–12)."
+    note: "Household income is categorical with boundaries updated periodically in KIPA — treat as ordinal-within-wave and exercise caution in cross-wave comparisons. Raw-label-verified bracket schemes (2026-08-08): 2004-07 are 1-6 (100만원 steps, 6=500만원+), 2008-20 are 1-8 (8=600만원+), 2021 is 1-8 (8=700만원+), 2022-23 are 1-10 (10=900만원+). 무응답 is 9 in 2004-21 (retired per wave via valid_range_by_wave, declared in coverage_missing_codes_by_wave) and 99 in 2022-23 (in the convention)."
     source:
       w2004: inc
       w2005: inc
@@ -149,11 +159,56 @@ variables:
       w2021: inc
       w2022: dq4
       w2023: dq4
-    scale: {min: 1, max: 12, labels: {1: "Lowest", 12: "Highest"}}
+    scale: {min: 1, max: 10, labels: {1: "Lowest", 10: "Highest"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-08: shared convention's 8 deleted the real top bracket in
+      # every wave 2008-2023 (~1,150 respondents; the entire 600만원+/700만원+
+      # tail) and its 9 deleted the real 800~900만원 bracket in 2022-23 (76).
+      use_convention: treat_as_na_income
     harmonize:
       default:
         method: identity
     qc:
-      valid_range: [1, 12]
+      # Per-wave ranges carry the bracket-scheme changes; the 2004-21 무응답
+      # code 9 falls outside its wave's range and is range-coerced to NA
+      # (logged to the oob log; declared below so Check E reads it as intent).
+      valid_range_by_wave:
+        w2004: [1, 6]
+        w2005: [1, 6]
+        w2006: [1, 6]
+        w2007: [1, 6]
+        w2008: [1, 8]
+        w2009: [1, 8]
+        w2010: [1, 8]
+        w2011: [1, 8]
+        w2012: [1, 8]
+        w2013: [1, 8]
+        w2014: [1, 8]
+        w2015: [1, 8]
+        w2016: [1, 8]
+        w2017: [1, 8]
+        w2018: [1, 8]
+        w2019: [1, 8]
+        w2020: [1, 8]
+        w2021: [1, 8]
+        w2022: [1, 10]
+        w2023: [1, 10]
+      coverage_missing_codes_by_wave:
+        w2004: [9]
+        w2005: [9]
+        w2006: [9]
+        w2007: [9]
+        w2008: [9]
+        w2009: [9]
+        w2010: [9]
+        w2011: [9]
+        w2012: [9]
+        w2013: [9]
+        w2014: [9]
+        w2015: [9]
+        w2016: [9]
+        w2017: [9]
+        w2018: [9]
+        w2019: [9]
+        w2020: [9]
+        w2021: [9]

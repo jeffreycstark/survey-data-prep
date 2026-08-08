@@ -37,6 +37,9 @@ missing_conventions:
   treat_as_na:
     codes: [-8, -1, 8, 9, 88, 98, 99]
     description: "KGSS ISSP Religion: -8=DK, -1=IAP, 8/88/98=DK/refusal, 9/99=IAP"
+  treat_as_na_11pt:
+    codes: [-8, -1, 88, 98, 99]
+    description: "For the 11-point PRAYFREQ scale, where 8 (일주일에 한번, once a week) and 9 (일주일에 여러 번, several times a week) are REAL scale points — raw-label-verified 2026-08-08. Missing markers: -8=DK, -1=IAP, 88=모르겠다/무응답, 98=말할 수 없음(기억 안 남), 99=비해당."
 
 variables:
 
@@ -135,7 +138,9 @@ variables:
       w2018: PRAYFREQ
     scale: {min: 1, max: 11, labels: {1: "Never", 11: "Several times a day"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-08: shared convention's 8/9 deleted the real scale points
+      # 8=once a week / 9=several times a week (443 responses across 2008+2018)
+      use_convention: treat_as_na_11pt
     harmonize:
       default:
         method: identity

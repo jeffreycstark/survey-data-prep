@@ -15,6 +15,14 @@ missing_conventions:
       Arab Barometer missing codes (varies by wave). 99994/99996/99998/99999
       added 2026-05-13 for W2-W3 dem_feature_* — these are W2/W3-specific
       DK/refused markers (Tunisia/Egypt fielding used 5-digit refusal codes).
+  treat_as_na_features:
+    codes: [0, -1, -8, -9, 98, 99, 100, 96, 94, 997, 998, 999, 99994, 99996, 99998, 99999]
+    description: |
+      For dem_feature_1st/2nd, whose [1, 10] scale legitimately reaches 10
+      (W2 10 = "providing jobs"; W3 7 = "Other"). Raw-label-verified
+      2026-08-08: 8/9 are neither labeled categories nor missing markers in
+      either wave (n=0 both) — the actual DK/refused codes there are
+      99994/99996/99998/99999. Same as treat_as_na minus the in-scale 8/9.
 
 variables:
   # ===========================================================================
@@ -51,7 +59,9 @@ variables:
       declaration, which left the twins split across error and warn in the
       out-of-range triage.
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-08: repointed off the shared convention, whose 8/9 sat
+      # inside [1, 10]; raw labels define no 8/9 at all for this item
+      use_convention: treat_as_na_features
     harmonize:
       default:
         method: identity
@@ -81,7 +91,9 @@ variables:
       below so the audit recognizes them as intentional drops, not as
       coverage loss.
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-08: repointed off the shared convention, whose 8/9 sat
+      # inside [1, 10]; raw labels define no 8/9 at all for this item
+      use_convention: treat_as_na_features
     harmonize:
       default:
         method: identity
