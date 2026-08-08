@@ -132,6 +132,73 @@ Control: the five `covid_restrict_*` items use `safe_reverse_3pt` and check out 
 
 ---
 
+### NEW 2026-08-07: Convention-collision class — missing codes deleting valid responses (FIXED for 13 specs; 7 flags left red pending raw-label verification)
+
+**The class.** `harmonize_variable()` applies the resolved missing codes to
+RAW values before anything else. On `method: identity` waves the raw scale is
+the harmonized scale, so any convention code inside `qc.valid_range` silently
+converts real answers to NA — invisible to the range check (already NA) and
+to the oob log (removed as "missing", never coerced). Same failure mode as
+the AFRO `education_5cat` bug fixed 2026-07-09.
+
+**Fixed 2026-08-07** (new per-scale conventions, all codebook-verified unless
+noted; every repoint carries a `# FIX 2026-08-07` comment):
+- **ABS** — 1–10 democracy/ladder items lost ratings 7/8/9 (`dem_rating_*`,
+  8 vars in `democracy.yml`, staircase + `subjective_social_status` +
+  `hh_size` + `religiosity_practice`); `problem_most_important` lost
+  categories 7/8/9 (farming/famine/drought; w3 missing = 97/98/99, w4–w6 =
+  997/998/999); six `action_*_w1` items lost code 9 = **"Never done"** — the
+  entire non-participant group; `govt_anticorrupt_effort` lost raw W2 0
+  ("doing this quite effectively") because the convention NA'd it **before**
+  `recode_w2_anticorrupt` could map 0→1 (see `treat_as_na_keep0` +
+  `qc.coverage_missing_codes_by_wave` there — the engine's
+  missing-before-recode ordering is the general hazard).
+- **KIPA** — the drafted fix (four 0–10 economic evaluations losing ratings
+  8/9, ~19k values) was DROPPED at apply time 2026-08-08: `src/config/kipa/`
+  was removed in 04c5320 as a never-wired false start, so there is no live
+  spec to fix. If those specs are ever revived, the fix pattern is: 0–10
+  items need `treat_as_na_0_10: [98, 99]`, not `treat_as_na: [8, 9, 98, 99]`
+  (the original patch file was deleted after apply).
+- **KINU** — `region`/`home_region` code 9 = **Gangwon** deleted in all 13
+  waves; `employment` 9 = student; `income_manwon` 9/99 = real amounts;
+  thirteen 0–10 NK items lost value 9 (.sav n/a = 99); four 0–100
+  thermometers lost reading 99 (.sav n/a = 999).
+- **Arab Barometer** — `dem_extent_country`/`dem_suitable_country` lost the
+  0 anchor and 8/9. **Codebook caveat**: AB has no Tier-3 extract yet;
+  98/99-as-missing is assumed. Verify when the AB codebooks land.
+
+**Left RED on purpose** (the new check keeps them failing until you verify
+raw .sav labels — each is either a convention bug or a valid_range
+over-claim, and the codebook decides which):
+1. `kgss/religion_beliefs prayer_frequency` — 8/9 inside [1, 11]
+2. `kgss/social_inequality ineq_fair_continuum` — 8/9 inside [1, 10]
+3. `kipa_corruption/demographics education` — 8/9 inside [1, 10]
+4. `kipa_corruption/demographics income` — 8/9 inside [1, 12]
+5. `arab-barometer/demographics education_level` — 8/9 inside [1, 10]
+6. `arab-barometer/meanings_of_democracy dem_feature_1st` — 8/9 inside [1, 10]
+7. `arab-barometer/meanings_of_democracy dem_feature_2nd` — 8/9 inside [1, 10]
+
+If the labels say 8/9 are real categories → repoint the convention (pattern:
+`treat_as_na_10pt`). If they say DK/refuse → narrow `valid_range` instead.
+
+**Exempted with reasons** (see
+`src/config/_audit/convention_collision_exemptions.yml`): all `age` top-code
+collisions (ABS w2 labels 97–99 as DK/refuse — removing them would inject
+refusals as ages), zero survey weights, ABS `religion` (range spans the
+label space; narrowing it is the real fix, tracked here), IPUS
+`nk_sk_relations` recode midpoints. Two side-notes captured in the
+exemption reasons: ABS w1 codes real ages to 109 (top-coerced by the
+[17, 99] range) and AFRO's 101 age code needs per-round provenance.
+
+**Guardrail.** `src/r/audit/check_convention_collisions.R` — cross-cutting,
+YAML-only, wired into `run_all.R` (runs under `make audit` and
+`make audit-specs`/CI), exemptions file above, report at
+`audit/reports/convention_collisions.csv`, fault-injection tests in
+`test_convention_collisions.R`. **Known blind spot:** it audits identity
+waves only; convention codes colliding with an `r_function`'s expected raw
+input (the `govt_anticorrupt_effort` case) need a future fn-input-domain
+check against the registry's `input_scale`.
+
 
 ### NEW 2026-07-22: ABS W5 6→4pt pole-merge class — 18 W5 items with structurally wider top/bottom bins (Check D)
 - **What:** ABS W5 fielded several batteries on 6-point bipolar scales, collapsed 6→4 by merging both poles (`safe_6pt_to_4pt` / `collapse_6pt_to_4pt_reverse`: native 6,5→4; 2,1→1). W5's top bin absorbs two native categories vs one in every other wave → W5 top-box shares/means mechanically inflated ~2.4–4.6× (verified for the trust battery, every country). Direction checks pass this legitimately; found via paper 05's bug report (`paper-bank-05_thailand_trust_collapse/claudedocs/ABS-W5-trust-harmonization-artefact.md`), now caught by the new bin-width parity check (Check D, `src/r/audit/04_bin_width_parity.R`).

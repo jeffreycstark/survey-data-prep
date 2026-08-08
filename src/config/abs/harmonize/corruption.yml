@@ -8,6 +8,9 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
+  treat_as_na_keep0:
+    codes: [-1, 7, 8, 9, 97, 98, 99, 1099]
+    description: "govt_anticorrupt_effort — keeps raw 0 so recode_w2_anticorrupt can map W2 0 ('doing this quite effectively') to 1. The engine applies missing codes BEFORE r_function recodes, so 0 in the convention never reached the recode. W3-W6 declare 0 as intentional-missing via qc.coverage_missing_codes_by_wave; stray zeros there are range-coerced and logged. Added 2026-08-07."
 variables:
   # ===========================================================================
   # GROUP 4: Corruption Comparison to Past (Wave 1 only)
@@ -220,7 +223,8 @@ variables:
         3: "Not very effective / Not doing much"
         4: "Not effective at all / Doing nothing"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: convention 0 was deleting the top W2 category before recode_w2_anticorrupt ran
+      use_convention: treat_as_na_keep0
     harmonize:
       default:
         method: identity
@@ -232,6 +236,14 @@ variables:
           note: "W2 has 5-point scale starting at 0; recode 0→1, 1→1, 2→2, 3→3, 4→4"
     qc:
       valid_range: [1, 4]
+      coverage_missing_codes_by_wave:
+        # 2026-08-07: 0 is a valid W2 answer (mapped 0->1 by recode_w2_anticorrupt)
+        # but Not-applicable in w6 (and unused in w3-w5); declare as intent so
+        # Check E does not count range-coerced zeros against coverage.
+        w3: [0]
+        w4: [0]
+        w5: [0]
+        w6: [0]
       validate:
         - waves: [w2, w3, w4, w5, w6]
           phrase: "crack.*down|root.*brib|effective.*corrupt"

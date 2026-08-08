@@ -38,6 +38,9 @@ missing_conventions:
   treat_as_na:
     codes: [9, 99]
     description: "KINU NK policy: 9=n/a in 1-X scales; 99=n/a in 0-10 oppose-support"
+  treat_as_na_0_10:
+    codes: [99]
+    description: "0-10 items — .sav labels 99 = n/a; 9 is a valid scale point (codebook-verified 2026-08-07)"
 
 variables:
 
@@ -64,7 +67,8 @@ variables:
       w2023:  pc0101
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -88,7 +92,8 @@ variables:
       w2023:  pc0102
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -116,7 +121,8 @@ variables:
       w2023:  pc0104
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -143,7 +149,8 @@ variables:
       w2023:  pc0107
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -170,7 +177,8 @@ variables:
       w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -197,7 +205,8 @@ variables:
       w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -222,7 +231,8 @@ variables:
       w2023: null  # not fielded (codebook)
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -253,7 +263,8 @@ variables:
       w2023:  pc0103
     scale: {min: 0, max: 10, labels: {0: "Oppose very strongly", 10: "Support very strongly"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity

@@ -14,6 +14,9 @@ name: Audit
 #   * every R file parses
 #   * every harmonize YAML passes Layer 1 schema + cross-reference validation
 #   * the recoding registry has not drifted from recoding.R
+#   * no missing-code convention deletes valid responses (convention-collision
+#     check — the 2026-08-07 finding class; exemptions in
+#     src/config/_audit/convention_collision_exemptions.yml)
 #
 # The data-dependent layers stay a local command: `make audit`. Their result
 # is recorded in audit/SUMMARY.md, which is committed.

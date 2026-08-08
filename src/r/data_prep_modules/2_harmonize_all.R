@@ -36,18 +36,26 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
   # Load and validate spec
   spec <- yaml::read_yaml(spec_path)
 
-  tryCatch({
-    # B4: validate_spec_full() runs the JSON Schema check
-    # (validate_harmonize_spec) AND the cross-reference checks
-    # (validate_cross_references): use_convention resolution, fn-in-registry,
-    # duplicate-id-within-spec. The cross-spec consistency check (id conflicts
-    # across specs in the same survey) is opt-in via all_specs_in_survey;
-    # wiring it through harmonize_all_specs() is a future enhancement.
+  # B4: validate_spec_full() runs the JSON Schema check
+  # (validate_harmonize_spec) AND the cross-reference checks
+  # (validate_cross_references): use_convention resolution, fn-in-registry,
+  # duplicate-id-within-spec. The cross-spec consistency check (id conflicts
+  # across specs in the same survey) is opt-in via all_specs_in_survey;
+  # wiring it through harmonize_all_specs() is a future enhancement.
+  #
+  # FIX 2026-08-07: the previous form put `return(NULL)` inside the tryCatch
+  # ERROR HANDLER, which returns from the handler — not from harmonize_spec()
+  # — so invalid specs warned and then harmonized anyway. Capture the outcome
+  # and return from THIS function, restoring the refuse-invalid-specs
+  # contract the README documents.
+  validation_ok <- tryCatch({
     validate_spec_full(spec)
+    TRUE
   }, error = function(e) {
     warning(sprintf("Validation failed for %s: %s", spec_name, e$message))
-    return(NULL)
+    FALSE
   })
+  if (!validation_ok) return(NULL)
 
   # Get missing conventions
   missing_conventions <- spec$missing_conventions

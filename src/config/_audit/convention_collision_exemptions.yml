@@ -1,0 +1,104 @@
+# Exemptions for the convention-collision check
+# (src/r/audit/check_convention_collisions.R)
+#
+# Each entry accepts a documented collision between a missing-code convention
+# and a variable's valid_range. An exemption means "yes, these codes fall
+# inside the valid range, and deleting them is the lesser error" — every
+# entry must say WHY. Same exempt-with-reason contract as
+# bin_width_exemptions.yml.
+#
+# Fields: survey (req), variable (req), spec (opt, basename sans .yml),
+#         codes (opt — exempt only these codes), reason (req).
+
+exemptions:
+  # ---- Age top-code collisions -------------------------------------------
+  # The class: a survey's DK/refuse codes for age sit inside the plausible
+  # age range, so a real 97-99-year-old is indistinguishable from a refusal.
+  # Removing the codes from the convention would inject DK/refuse cases as
+  # fake ages — a worse error than losing a handful of the very old.
+  - survey: abs
+    spec: demographics
+    variable: age
+    codes: [97, 98, 99]
+    reason: >-
+      W2 labels 97/98/99 as NO ANSWER / DON'T KNOW / REFUSED
+      (codebook-verified 2026-08-07), so un-declaring them would inject W2
+      refusals as ages. W1 codes real ages to 109 with 999 = No Answer;
+      its rare 97-109-year-olds are lost to this convention + the [17,99]
+      range — accepted as negligible-n. Revisit if analyzing the very old.
+  - survey: afro
+    spec: demographics
+    variable: age
+    codes: [98, 99, 101]
+    reason: >-
+      Afro age missing is 998/999/-1; 98/99/101 kept in the convention
+      pending per-round verification that no early round used 2-digit or
+      101 markers. Deletes only 98+-year-olds (negligible n). If R1-R9
+      codebooks show no 2-digit age-missing, repoint to [-1, 998, 999]
+      and recover them.
+  - survey: arab-barometer
+    spec: demographics
+    variable: age
+    codes: [98, 99, 100]
+    reason: >-
+      AB waves plausibly use 2-digit DK/refuse on age; un-declaring would
+      inject refusals as ages. Negligible-n loss of real 98-100-year-olds.
+      Verify against AB codebooks when Tier 3 extraction lands.
+  - survey: kinu
+    spec: demographics
+    variable: age
+    codes: [99]
+    reason: >-
+      99 = n/a top-code; KINU panel samples make a real 99-year-old
+      respondent effectively impossible.
+  - survey: ipus
+    spec: demographics
+    variable: age
+    codes: [99]
+    reason: >-
+      99 = n/a top-code; IPUS sampling frame makes a real 99-year-old
+      respondent effectively impossible.
+
+  # ---- Weight zero -------------------------------------------------------
+  # A zero survey weight excludes the case by design; 0 sits at the range
+  # floor only because valid_range is written [0, max].
+  - survey: abs
+    spec: weight
+    variable: weight
+    codes: [0]
+    reason: "Zero weight = case excluded by design."
+  - survey: abs
+    spec: weight
+    variable: weight_cross
+    codes: [0]
+    reason: "Zero weight = case excluded by design."
+  - survey: afro
+    spec: weight
+    variable: weight
+    codes: [0]
+    reason: "Zero weight = case excluded by design."
+  - survey: wvs
+    spec: weight
+    variable: weight
+    codes: [0]
+    reason: "Zero weight = case excluded by design."
+
+  # ---- Label-space sprawl ------------------------------------------------
+  - survey: abs
+    spec: demographics
+    variable: religion
+    reason: >-
+      valid_range [1, 9999] spans the whole label space, so the standard
+      missing codes inevitably fall inside it. The codes are the real
+      missing codes; the range is the over-claim. Proper fix is narrowing
+      valid_range to the enumerated religion codes — tracked in
+      JEFF_MUST_INVESTIGATE.md (2026-08-07 section).
+
+  # ---- Recode-midpoint markers -------------------------------------------
+  - survey: ipus
+    spec: north_korea
+    variable: nk_sk_relations
+    codes: [2.5, 4.5]
+    reason: >-
+      2.5/4.5 are KOSSDA recode-midpoint markers deliberately excluded
+      from the harmonized 1-5 scale, not deleted responses.

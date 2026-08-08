@@ -8,6 +8,9 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
+  treat_as_na_mip:
+    codes: [-1, 97, 98, 99, 997, 998, 999]
+    description: "MIP category item — w3 missing = 97/98/99, w4-w6 = 997/998/999; keeps category codes 7/8/9 (farming/famine/drought) and 990 (no problems). Codebook-verified 2026-08-07."
 variables:
   # ===========================================================================
   # GROUP 3: Basic Rights / Freedoms
@@ -482,7 +485,8 @@ variables:
     description: "What are the most important problems facing this country that government should address?"
     type: nominal
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted problem categories 7 (farming), 8 (famine), 9 (drought/land)
+      use_convention: treat_as_na_mip
       codes: [998, 999]
     source:
       w1: null

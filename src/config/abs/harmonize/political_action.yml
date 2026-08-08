@@ -19,6 +19,9 @@ missing_conventions:
       can interpret them semantically. W1: 9=Never done (valid); W3: 0=Never Done (valid);
       W2/W4: 3=Never (already valid under treat_as_na); W5/W6: 0=N/A, falls to NA in recode.
       True non-response codes (7=don't understand, 8=can't choose, 97/98/99=refuse) → NA.
+  treat_as_na_w1_action:
+    codes: [-1, 0, 97, 98, 99]
+    description: "W1 action items — keeps code 9 = 'Never done' (the non-participant group); missing = 97/98/99. Codebook-verified 2026-08-07."
 variables:
   - id: action_contact_civil_servant
     concept: political_action
@@ -144,7 +147,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity
@@ -325,7 +329,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity
@@ -384,7 +389,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity
@@ -413,7 +419,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity
@@ -442,7 +449,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity
@@ -535,7 +543,8 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = 'Never done' — the entire non-participant group
+      use_convention: treat_as_na_w1_action
     harmonize:
       default:
         method: identity

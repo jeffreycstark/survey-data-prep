@@ -38,6 +38,9 @@ missing_conventions:
   treat_as_na:
     codes: [9, 99]
     description: "KINU NK: 9=n/a in 1-X scales; 99=n/a in 0-10 thermometers"
+  treat_as_na_0_10:
+    codes: [99]
+    description: "0-10 items — .sav labels 99 = n/a; 9 is a valid scale point (codebook-verified 2026-08-07)"
 
 variables:
 
@@ -98,7 +101,8 @@ variables:
       w2023:  nk0401
     scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -127,7 +131,8 @@ variables:
       w2023:  nk0402
     scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -156,7 +161,8 @@ variables:
       w2023:  nk0403
     scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -185,7 +191,8 @@ variables:
       w2023:  nk0404
     scale: {min: 0, max: 10, labels: {0: "Strongly disagree", 10: "Strongly agree"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -360,7 +367,8 @@ variables:
       w2023:  nk14
     scale: {min: 0, max: 10, labels: {0: "Not likely at all", 10: "Very much likely"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid response 9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity

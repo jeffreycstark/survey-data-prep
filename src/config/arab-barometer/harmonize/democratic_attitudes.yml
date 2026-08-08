@@ -18,6 +18,13 @@ missing_conventions:
   treat_as_na:
     codes: [0, -1, -8, -9, 8, 9, 98, 99, 100, 96, 94, 997, 998, 999]
     description: "Arab Barometer missing codes (varies by wave)"
+  treat_as_na_0_10:
+    codes: [98, 99]
+    # CODEBOOK CAVEAT (2026-08-07): 0/8/9 removed from missing — 0 is the labeled
+    # scale anchor and 8/9 are interior points of the 0-10 scale; AB DK/refuse
+    # assumed 98/99. Verify against the AB wave codebooks (Tier 3 extraction
+    # pending) before treating this as settled.
+    description: "0-10 democracy scales — keeps the 0 anchor and interior 8/9; DK/refuse = 98/99"
 
 variables:
   # ===========================================================================
@@ -272,7 +279,8 @@ variables:
       max: 10
     note: "W2-W4 only"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted the 0 endpoint and valid ratings 8/9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity
@@ -295,7 +303,8 @@ variables:
       max: 10
     note: "W2-W4 and W8"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted the 0 endpoint and valid ratings 8/9
+      use_convention: treat_as_na_0_10
     harmonize:
       default:
         method: identity

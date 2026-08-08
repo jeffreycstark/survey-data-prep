@@ -8,6 +8,9 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
+  treat_as_na_10pt:
+    codes: [-1, 0, 97, 98, 99, 1099]
+    description: "Missing codes for 1-10 scales — keeps 7/8/9 as valid responses (codebook-verified 2026-08-07; see convention-collision check)"
 variables:
   - id: dem_always_preferable
     concept: democracy_tradeoffs
@@ -108,7 +111,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -135,7 +139,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -162,7 +167,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -189,7 +195,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -368,7 +375,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -400,7 +408,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -534,7 +543,8 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -647,7 +657,8 @@ variables:
         1: "Not suitable at all"
         10: "Completely suitable"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid ratings 7/8/9
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity

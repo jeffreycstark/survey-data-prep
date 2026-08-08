@@ -41,6 +41,9 @@ missing_conventions:
   treat_as_na:
     codes: [99, 999]
     description: "KINU security: 99/999=n/a in 0-100 thermometers; per-variable 9=n/a for 1-X scales"
+  treat_as_na_0_100:
+    codes: [999]
+    description: "0-100 thermometers — .sav labels 999 = n/a; 99 is a valid reading (codebook-verified 2026-08-07)"
 
 variables:
 
@@ -396,7 +399,8 @@ variables:
       w2023:  se0804
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid thermometer reading 99
+      use_convention: treat_as_na_0_100
     harmonize:
       default:
         method: identity
@@ -418,7 +422,8 @@ variables:
       w2023:  se0806
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid thermometer reading 99
+      use_convention: treat_as_na_0_100
     harmonize:
       default:
         method: identity
@@ -439,7 +444,8 @@ variables:
       w2023:  se0807
     scale: {min: 0, max: 100, labels: {0: "Extremely unfavorable", 50: "Indifferent", 100: "Extremely favorable"}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted valid thermometer reading 99
+      use_convention: treat_as_na_0_100
     harmonize:
       default:
         method: identity

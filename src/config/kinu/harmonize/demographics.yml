@@ -44,6 +44,12 @@ missing_conventions:
   treat_as_na:
     codes: [9, 99, 9999]
     description: "KINU: 9=n/a in 1-X scales; 99=n/a in 0-100/two-digit-code scales; 9999=n/a for continuous income"
+  treat_as_na_cat99:
+    codes: [99, 9999]
+    description: "Categorical demographics where 9 is a valid code (region 9 = Gangwon, occupa 9 = student); .sav n/a = 99. Codebook-verified 2026-08-07."
+  treat_as_na_income:
+    codes: [9999]
+    description: "Continuous income in manwon — only 9999 is n/a; 9 and 99 are real amounts. Added 2026-08-07."
 
 variables:
 
@@ -253,7 +259,8 @@ variables:
         18: "Foreign"
         19: "North Korea"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = Gangwon (every Gangwon respondent, all 13 waves)
+      use_convention: treat_as_na_cat99
     harmonize:
       default:
         method: identity
@@ -333,7 +340,8 @@ variables:
         17: "North Korea"
         18: "Foreign"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = Gangwon
+      use_convention: treat_as_na_cat99
     harmonize:
       default:
         method: identity
@@ -424,7 +432,8 @@ variables:
       w2023:  income
     scale: {min: 0, max: 9998, labels: {}}
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted real incomes of 9 and 99 manwon
+      use_convention: treat_as_na_income
     harmonize:
       default:
         method: identity
@@ -608,7 +617,8 @@ variables:
         11: "Unemployed/retired"
         12: "Other"
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-07: treat_as_na deleted code 9 = student
+      use_convention: treat_as_na_cat99
     harmonize:
       default:
         method: identity

@@ -854,6 +854,33 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Cross-cutting: convention-collision check (2026-08-07 finding). Run once.
+# Missing-code conventions must not delete valid responses: flags every
+# variable whose resolved codes fall inside qc.valid_range on identity
+# waves. Reads only YAML, so it runs in --specs-only / CI too.
+# ---------------------------------------------------------------------------
+.run_convention_check <- function(verbose = FALSE) {
+  .log_module(NULL, "convention collisions")
+  rr <- .run_external("src/r/audit/check_convention_collisions.R",
+                      character(0), verbose = verbose)
+  status <- if (rr$status == 0L) "ok" else "fail"
+  first_lines <- character(0)
+  if (status == "fail") {
+    first_lines <- head(grep("^\\s*(ERROR|PARSE)", rr$stdout, value = TRUE), 3L)
+  }
+  summary_line <- grep("^Summary:", rr$stdout, value = TRUE)
+  list(
+    module = "Convention collisions",
+    status = status, exit = rr$status,
+    first_fails = trimws(first_lines),
+    summary = if (length(summary_line) > 0L) {
+      sub("^Summary:\\s*", "", summary_line[1])
+    } else if (status == "ok") "OK" else "COLLISIONS"
+  )
+}
+
+
+# ---------------------------------------------------------------------------
 # Per-survey orchestrator. Returns a list of module results for one survey.
 # ---------------------------------------------------------------------------
 .run_one_survey <- function(survey, quick = FALSE, verbose = FALSE,
@@ -933,7 +960,8 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # ---------------------------------------------------------------------------
 # Markdown summary writer.
 # ---------------------------------------------------------------------------
-.write_summary <- function(all_results, registry_result, args, runtime_sec,
+.write_summary <- function(all_results, registry_result, convention_result,
+                           args, runtime_sec,
                             git_info, jeff_open, surveys_attempted,
                             surveys_with_data, skipped_modules) {
 
@@ -1073,6 +1101,10 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     if (registry_result$status == "fail") "" else "")
   if (length(registry_result$first_fails) > 0L) {
     for (line in registry_result$first_fails) w("    - `", line, "`")
+  }
+  w("- Convention collisions: ", convention_result$summary)
+  if (length(convention_result$first_fails) > 0L) {
+    for (line in convention_result$first_fails) w("    - `", line, "`")
   }
   w("- JEFF_MUST_INVESTIGATE.md: ", jeff_open, " open finding",
     if (jeff_open == 1L) "" else "s",
@@ -1254,6 +1286,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   }
 
   registry_result <- .run_registry_check(verbose = args$verbose)
+  convention_result <- .run_convention_check(verbose = args$verbose)
   jeff_open <- .count_jeff_open()
   git_info <- .git_info()
   runtime_sec <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
@@ -1270,6 +1303,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     }
   }
   if (identical(registry_result$status, "fail")) any_fail <- TRUE
+  if (identical(convention_result$status, "fail")) any_fail <- TRUE
 
   prereq_missing <- length(surveys_with_data) < length(surveys_attempted)
 
@@ -1283,6 +1317,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   summary_path <- .write_summary(
     all_results = all_results,
     registry_result = registry_result,
+    convention_result = convention_result,
     args = args,
     runtime_sec = runtime_sec,
     git_info = git_info,
