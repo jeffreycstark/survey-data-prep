@@ -4,12 +4,12 @@ Last updated: 2026-08-09
 
 This file records audit findings that need substantive judgment from Jeff. The audit infrastructure surfaces; this file tracks what remains to investigate. Update as items get resolved.
 
-**Open right now: 21 findings + 16 framework tickets.**
+**Open right now: 21 findings + 16 framework tickets.** (The `int_year` finding is half-closed: W1 fixed 2026-08-09, W2 still open and not fixable from the data.)
 
 | Bucket | Open |
 |---|---|
 | 🔴 Engine fault-injection hazards | 5 |
-| 🔴 ABS `int_year` gap (new 2026-08-09) | 1 |
+| 🔴 ABS `int_year` gap — W1 fixed, **W2 open** (new 2026-08-09) | 1 |
 | 🔴 Residuals carried from resolved entries | 2 |
 | 🟡 Check D binning seams | 8 |
 | 📋 Residual systematic findings | 5 |
@@ -52,7 +52,31 @@ So W2 contained **no equality responses at all**, and the 2,029 cases sitting in
 ---
 ## 🔴 High priority — open
 
-### NEW 2026-08-09: ABS `int_year` absent for Korea (both waves) and Philippines W2 — breaks any cohort construction
+### NEW 2026-08-09: ABS `int_year` — **W1 FIXED same day; W2 remains open and is NOT fixable from the data**
+
+**W1 RESOLVED 2026-08-09.** Source repointed `ir007_3` → `yrsurvey` in
+`src/config/abs/harmonize/demographics.yml`. The whole `ir007_*` interview-record block is empty for
+Korea and Mongolia in the W1 merge; `yrsurvey` is populated 8/8 countries and agrees with `ir007_3`
+wherever both exist. Re-harmonized and verified: **W1 int_year 78.3% → 100%**, all eight countries
+at 100%, **2,649 respondents recovered** (Korea 1,500, Mongolia 1,144, plus 5 stray Thai cases).
+Invariants after the rebuild: `int_year` 73 ok / 7 warn / 0 error — the warns are all "sparse levels"
+(each wave spans a few years against a declared 2001–2025 range), which is structural and predates
+this change. The three ABS error rows (`idnumber` w6, `gate_contact_influential` w2 ×2) are unrelated
+and pre-existing; the latter is the documented post-hoc country substitution. Cost of the swap:
+`yrsurvey` is year-only, so `int_day`/`int_month` stay on `ir007_1/_2` and remain NA for Korea and
+Mongolia — the year is recoverable, the full date is not.
+
+**W2 STILL OPEN, and no spec change can close it.** Verified column-by-column: the entire `ir9_*`
+block (day, month AND year) is empty for **Korea, Philippines, Thailand and Singapore**, W2's merge
+carries no `yrsurvey` equivalent, and no field anywhere in those rows holds a 2000–2010 value. Those
+four countries have no interview date in the release at all. A year for them must come from ABS
+fieldwork documentation, not from the data. **Do not assume a single W2 year** — the nine countries
+that do report one spread across 2004–2008 (Mongolia/Taiwan/Indonesia/Vietnam 2006; Japan/HK/Malaysia
+2007; Cambodia 2008; China splits 531 in 2007 and 4,508 in 2008). Suggested shape: a
+`data/lookups/abs_fieldwork_years.csv` keyed country×wave with a `source` column, coalesced after
+`ir9_3`, so the provenance stays visible rather than becoming constants buried in a spec.
+
+Original finding below for the record.
 
 - **What:** `int_year` is missing in **six country×wave cells**, not in any whole wave or year. Wave-level coverage is W1 78.3%, W2 74.6%, W3 94.8%, W4–W6 100%. The zero cells:
 

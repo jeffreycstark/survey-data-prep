@@ -492,13 +492,27 @@ variables:
     missing:
       use_convention: treat_as_na_identifiers
     source:
-      w1: ir007_3
+      w1: yrsurvey   # FIX 2026-08-09: was ir007_3 — see note
       w2: ir9_3
       w3: ir9
       w4: year
       w5: Year
       w6: year
-    note: "W3 stores date as Date object - year extracted via extract_year_from_date()"
+    note: >-
+      W3 stores date as Date object - year extracted via extract_year_from_date().
+      W1 FIX 2026-08-09: source repointed ir007_3 -> yrsurvey. The whole ir007_* interview-record
+      block (day/month/year) is empty for Korea (1,500 rows) and Mongolia (1,144) in the W1 merge,
+      so ir007_3 gave those two countries no year at all; yrsurvey is populated for 8/8 countries
+      and agrees with ir007_3 everywhere both exist. Cost of the swap: yrsurvey is year-only, so
+      int_day/int_month remain ir007_1/_2 and stay NA for Korea and Mongolia — year is recoverable,
+      the full date is not.
+      W2 IS NOT FIXABLE THE SAME WAY. The ir9_* block is empty for Korea, Philippines, Thailand and
+      Singapore, and W2's merge carries no yrsurvey equivalent — verified column-by-column, no field
+      anywhere in those rows holds a 2000-2010 value. Those four countries have no interview date in
+      the release at all; a year for them must come from ABS fieldwork documentation, not the data.
+      Do not assume a single W2 year: the nine countries that do report one spread across 2004-2008
+      (Mongolia/Taiwan/Indonesia/Vietnam 2006; Japan/HK/Malaysia 2007; Cambodia 2008; China splits
+      531 in 2007 and 4,508 in 2008).
     scale:
       min: 2001
       max: 2025
