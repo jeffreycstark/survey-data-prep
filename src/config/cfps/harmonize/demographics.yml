@@ -1,0 +1,247 @@
+# CFPS — identifiers, weights, and demographics (adult module, w2010 + w2014)
+#
+# NAMING ERAS: 2010 raw names are lowercase (qa1y_best, qn4); 2014 names are the
+# release's mixed convention (CFPS_BIRTHY, QN1101, cfps2014edu, rswt_natcs14).
+#
+# MISSING CONVENTION: CFPS codes ALL interviewer/missing states as NEGATIVES
+# (-10 无法判断, -9 缺失, -8 不适用, -7 无法匹配, -2 拒绝回答, -1 不知道), so the
+# convention can never collide with a positive substantive scale (the class the
+# convention-collision check guards). Two POSITIVE traps exist and are handled
+# per variable, never via the convention: legacy code 5 = "no" on some CAPI
+# binaries (in 2010 gender it is labelled but unobserved; on the qn20x items it
+# IS the live "no" code), and in-range DK codes on the qm70x opinion battery
+# (6 = 不知道) — see politics.yml.
+#
+# ⚠️ 2014 VALUE-LABEL GAP: the SAS release carries no value labels (no .sas7bcat
+# in the deposit). Every 2014 coding below marked "assumed" follows the CFPS
+# codebook convention and the 2010 instrument; verify when the 2014 Stata
+# variant (skipped by the Dataverse bundle cap) is downloaded.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-10, -9, -8, -7, -2, -1]
+    description: "CFPS negative missing states: -10 cannot judge, -9 missing, -8 not applicable, -7 unmatchable, -2 refused, -1 don't know. All negative by design — no collision with positive scales."
+
+variables:
+
+  - id: pid
+    concept: identifiers
+    description: "CFPS stable personal ID (constant across waves; panel linkage key)"
+    type: nominal
+    source:
+      w2010: pid
+      w2014: pid
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+
+  - id: province_code
+    concept: identifiers
+    description: "Province code at interview (national GB codes)"
+    type: nominal
+    source:
+      w2010: provcd
+      w2014: provcd14
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+
+  - id: weight_cs
+    concept: weights
+    description: "Cross-sectional person weight, national sample (2010 rswt_nat; 2014 rswt_natcs14)"
+    type: continuous
+    source:
+      w2010: rswt_nat
+      w2014: rswt_natcs14
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+
+  - id: weight_panel
+    concept: weights
+    description: "2010-2014 person panel weight, national sample (w2014 only)"
+    type: continuous
+    source:
+      w2010: null
+      w2014: rswt_natpn1014
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+
+  - id: gender
+    concept: demographics
+    description: "Gender (1 = male, 0 = female — matches the cross-survey harmonized convention)"
+    type: binary
+    source:
+      w2010: gender
+      w2014: CFPS_GENDER
+    note: "2010 labels: 0=女, 1=男, plus a labelled-but-unobserved legacy 5=女; the recode folds any 5 to 0 defensively. 2014 coding assumed 0/1 (no value labels in the SAS release)."
+    scale: {min: 0, max: 1, labels: {0: "Female", 1: "Male"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {0: 0, 1: 1, 5: 0}
+    qc:
+      valid_range: [0, 1]
+
+  - id: birth_year
+    concept: demographics
+    description: "Birth year (2010 corrected qa1y_best; 2014 CFPS_BIRTHY). Zodiac/dragon assignment derives from this + birth_month via src/r/lookups/zodiac.R"
+    type: continuous
+    source:
+      w2010: qa1y_best
+      w2014: CFPS_BIRTHY
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1900, 2000]
+
+  - id: birth_month
+    concept: demographics
+    description: "Birth month 1-12 (w2010 qa1m; no respondent birth-month variable found in the 2014 adult file — panel pid links to the 2010 record for month)"
+    type: ordinal
+    source:
+      w2010: qa1m
+      w2014: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 12]
+
+  - id: age
+    concept: demographics
+    description: "Age at interview (2010 qa1age; 2014 CFPS2014_AGE)"
+    type: continuous
+    source:
+      w2010: qa1age
+      w2014: CFPS2014_AGE
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [16, 110]
+
+  - id: urban
+    concept: demographics
+    description: "Urban residence per NBS classification (1 = urban, 0 = rural)"
+    type: binary
+    source:
+      w2010: urban
+      w2014: urban14
+    scale: {min: 0, max: 1, labels: {0: "Rural", 1: "Urban"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: ethnicity_code
+    concept: demographics
+    description: "Ethnicity code (w2010 qa5code; GB nationality codes, 1 = Han). 2014 counterpart not yet identified."
+    type: nominal
+    source:
+      w2010: qa5code
+      w2014: null
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+
+  - id: education_years
+    concept: demographics
+    description: "Completed years of education (2010 cfps2010eduy_best corrected; 2014 cfps2014eduy)"
+    type: continuous
+    source:
+      w2010: cfps2010eduy_best
+      w2014: cfps2014eduy
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 22]
+
+  - id: education_level
+    concept: demographics
+    description: "Highest completed education level (CFPS 8-rung ladder: 1=illiterate/semi-literate ... 8=doctorate). w2014 cfps2014edu; 2010 derived counterpart not in this release's adult file under a verified name."
+    type: ordinal
+    note: "Coding assumed from the CFPS codebook convention (no value labels in the 2014 SAS release); verify against the 2014 Stata variant when downloaded. NOT comparable to other surveys' ladders without a crosswalk — treat as within-survey."
+    source:
+      w2010: null
+      w2014: cfps2014edu
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 8]
+
+  - id: ccp_member
+    concept: demographics
+    description: "Communist Party member (w2014 CFPS_PARTY, assumed 1=member 0=not; 2010 has no single member flag in the adult file — qa701 join-year covers members only)"
+    type: binary
+    source:
+      w2010: null
+      w2014: CFPS_PARTY
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 1]
+
+  - id: ccp_join_year
+    concept: demographics
+    description: "Year joined the Communist Party (members only; 2010 qa701, 2014 QN402)"
+    type: continuous
+    source:
+      w2010: qa701
+      w2014: QN402
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1920, 2014]

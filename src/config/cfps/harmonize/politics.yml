@@ -1,0 +1,385 @@
+# CFPS — political attitudes, government experience, and subjective position
+# (adult module, w2010 + w2014). Built for paper 26 (Dragon Children).
+#
+# INSTRUMENT MAP ACROSS THE TWO WAVES:
+#   2010 qn4        ~ 2014 QN1101   county/city government evaluation (5-pt)
+#   2010 qn205-208  ~ 2014 QN1014-1017  government mistreatment/conflict battery
+#   2014-only: QN1001 trust disposition, QN10021-QN10026 trust battery (0-10),
+#              QN6011 perceived government corruption severity (0-10)
+#   2010-only: qm70x opinion battery (meritocracy/fairness), qm401-404
+#              subjective position and outlook
+#
+# ⚠️ TWO POSITIVE-CODE TRAPS (raw-verified on 2010, live counts):
+#   1. On qn205-208 the "no" code IS 5 (n=21,633 at qn205), not the labelled 0
+#      (n=0), and 79 = "此种经历不适用" (n=7,302) is a real skip category. The
+#      recode maps {1->1, 5->0, 0->0}; 79 is declared an intentional drop.
+#   2. The qm70x agree battery runs 1=十分不同意, 2=不同意, 3=同意, 4=十分同意
+#      with the midpoint OUT OF ORDER at 5=既不同意也不反对 (n≈1,500) and an
+#      in-range 6=不知道 (n≈5,500). Recoded to an ordered 5-pt with the neutral
+#      at center; 6 declared an intentional drop.
+#   2014 codings are assumed identical (no value labels in the SAS release);
+#   verify against the 2014 Stata variant when downloaded.
+
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-10, -9, -8, -7, -2, -1]
+    description: "CFPS negative missing states (see demographics.yml)."
+
+variables:
+
+  # ---- government evaluation --------------------------------------------------
+
+  - id: govt_eval_county
+    concept: politics
+    description: "Overall evaluation of county/city government's work last year (1=worse than before ... 5=great achievements; REVERSED so higher = better evaluation)"
+    type: ordinal
+    note: "Raw runs 1=有很大成绩 -> 4=没有成绩, 5=比之前更糟了 (descending). safe_reverse_5pt gives higher = better. 2014 QN1101 assumed same instrument."
+    source:
+      w2010: qn4
+      w2014: QN1101
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Worse than before"
+        2: "No achievements"
+        3: "Not much achievement"
+        4: "Some achievements"
+        5: "Great achievements"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_5pt
+    qc:
+      valid_range: [1, 5]
+      validate:
+        - waves: [w2010, w2014]
+          phrase: "政府|government"
+
+  # ---- government experience battery (1 = experienced it, 0 = not) ------------
+
+  - id: govt_mistreated
+    concept: politics
+    description: "Experienced unfair treatment by government cadres (1=yes, 0=no)"
+    type: binary
+    source:
+      w2010: qn205
+      w2014: QN1014
+    scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 5: 0, 0: 0}
+        note: "Raw 'no' is CAPI code 5 (live, n=21,633 in 2010); labelled 0=no never occurs. 79 = experience-type not applicable -> NA, declared below."
+    qc:
+      valid_range: [0, 1]
+      coverage_missing_codes: [79]
+      validate:
+        - waves: [w2010, w2014]
+          phrase: "政府干部|干部"
+
+  - id: govt_conflict
+    concept: politics
+    description: "Had a conflict with government cadres (1=yes, 0=no)"
+    type: binary
+    source:
+      w2010: qn206
+      w2014: QN1015
+    scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 5: 0, 0: 0}
+    qc:
+      valid_range: [0, 1]
+      coverage_missing_codes: [79]
+      validate:
+        - waves: [w2010, w2014]
+          phrase: "干部|冲突"
+
+  - id: govt_delay
+    concept: politics
+    description: "Experienced unreasonable delay / buck-passing at government offices (1=yes, 0=no)"
+    type: binary
+    source:
+      w2010: qn207
+      w2014: QN1016
+    scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 5: 0, 0: 0}
+    qc:
+      valid_range: [0, 1]
+      coverage_missing_codes: [79]
+      validate:
+        - waves: [w2010, w2014]
+          phrase: "拖延|推诿|delay"
+
+  - id: govt_fees
+    concept: politics
+    description: "Charged unreasonable fees at government offices (1=yes, 0=no)"
+    type: binary
+    source:
+      w2010: qn208
+      w2014: QN1017
+    scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 5: 0, 0: 0}
+    qc:
+      valid_range: [0, 1]
+      coverage_missing_codes: [79]
+      validate:
+        - waves: [w2010, w2014]
+          phrase: "收费|fees"
+
+  # ---- trust (w2014 only; 0-10, higher = more trust) --------------------------
+
+  - id: trust_officials
+    concept: politics
+    description: "Trust in (government) cadres, 0-10 (w2014 QN10025)"
+    type: ordinal
+    source:
+      w2010: null
+      w2014: QN10025
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 10]
+      validate:
+        - waves: [w2014]
+          phrase: "干部"
+
+  - id: trust_parents
+    concept: politics
+    description: "Trust in parents, 0-10 (w2014 QN10021)"
+    type: ordinal
+    source: {w2010: null, w2014: QN10021}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_neighbors
+    concept: politics
+    description: "Trust in neighbors, 0-10 (w2014 QN10022)"
+    type: ordinal
+    source: {w2010: null, w2014: QN10022}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_americans
+    concept: politics
+    description: "Trust in Americans, 0-10 (w2014 QN10023)"
+    type: ordinal
+    source: {w2010: null, w2014: QN10023}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_strangers
+    concept: politics
+    description: "Trust in strangers, 0-10 (w2014 QN10024)"
+    type: ordinal
+    source: {w2010: null, w2014: QN10024}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_doctors
+    concept: politics
+    description: "Trust in doctors, 0-10 (w2014 QN10026)"
+    type: ordinal
+    source: {w2010: null, w2014: QN10026}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+
+  - id: trust_disposition
+    concept: politics
+    description: "General trust disposition: most people trustworthy vs can't be too careful (w2014 QN1001; assumed 1=most people can be trusted, 2=can't be too careful — VERIFY against 2014 Stata labels)"
+    type: nominal
+    source: {w2010: null, w2014: QN1001}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [1, 2]
+
+  - id: corruption_severity
+    concept: politics
+    description: "Perceived severity of government corruption in China, 0-10, higher = more severe (w2014 QN6011)"
+    type: ordinal
+    source: {w2010: null, w2014: QN6011}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [0, 10]
+      validate:
+        - waves: [w2014]
+          phrase: "腐败"
+
+  # ---- meritocracy / fairness opinion battery (w2010 only) --------------------
+  # Raw: 1=十分不同意 2=不同意 3=同意 4=十分同意, midpoint OUT OF ORDER at
+  # 5=既不同意也不反对, in-range 6=不知道. Recoded to ordered 5-pt agreement
+  # (higher = agree more), neutral at center, 6 -> NA (declared).
+
+  - id: opin_inequality_for_prosperity
+    concept: politics
+    description: "Opinion: widening income gaps are necessary for prosperity (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm701, w2014: null}
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Neither agree nor disagree"
+        4: "Agree"
+        5: "Strongly agree"
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+        note: "Raw midpoint sits at 5; raw 6=don't know -> NA (declared)."
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  - id: opin_fair_competition
+    concept: politics
+    description: "Opinion: only fair competition brings harmonious relations (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm702, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  - id: opin_wealth_is_achievement
+    concept: politics
+    description: "Opinion: wealth reflects personal achievement (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm703, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  - id: opin_effort_rewarded
+    concept: politics
+    description: "Opinion: hard work is rewarded in today's society (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm704, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  - id: opin_talent_rewarded
+    concept: politics
+    description: "Opinion: intelligence and ability are rewarded in today's society (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm705, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  - id: opin_connections_over_ability
+    concept: politics
+    description: "Opinion: social connections matter more than ability in today's society (1=strongly disagree ... 5=strongly agree)"
+    type: ordinal
+    source: {w2010: qm707, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6]
+
+  # ---- subjective position and outlook (w2010 only) ---------------------------
+  # 1-5 self-placements; assumed ascending (1 = low/dissatisfied -> 5 =
+  # high/satisfied) per the CFPS 2010 questionnaire; verify wording in
+  # data/cfps/raw/*2010 Wave 1 Questionnaires*.pdf.
+
+  - id: subjective_income_position
+    concept: politics
+    description: "Self-rated local income position, 1-5 higher = higher position (w2010 qm401)"
+    type: ordinal
+    source: {w2010: qm401, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [1, 5]
+
+  - id: subjective_social_status
+    concept: politics
+    description: "Self-rated local social status, 1-5 higher = higher status (w2010 qm402)"
+    type: ordinal
+    source: {w2010: qm402, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [1, 5]
+
+  - id: life_satisfaction
+    concept: politics
+    description: "Life satisfaction, 1-5 higher = more satisfied (w2010 qm403)"
+    type: ordinal
+    source: {w2010: qm403, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [1, 5]
+
+  - id: confidence_future
+    concept: politics
+    description: "Confidence in one's future, 1-5 higher = more confident (w2010 qm404)"
+    type: ordinal
+    source: {w2010: qm404, w2014: null}
+    missing: {use_convention: treat_as_na}
+    harmonize: {default: {method: identity}}
+    qc:
+      valid_range: [1, 5]

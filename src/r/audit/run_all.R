@@ -42,7 +42,8 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # ---------------------------------------------------------------------------
 .SUPPORTED_SURVEYS <- c(
   "abs", "wvs", "lbs", "afro", "arab-barometer",
-  "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa"
+  "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa",
+  "cfps"
 )
 
 # Survey slug → harmonized .rds filename. Most surveys map slug-to-filename

@@ -20,6 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | IPUS Unification | Initial | 11 vars, 18 annual waves 2007–2024, 21,617 resp | [docs/surveys/ipus.md](docs/surveys/ipus.md) |
 | KLoSA (Korean Longitudinal Study of Aging) | Complete | 43 vars, 9 waves W1–W9 biennial 2006–2022, 68,352 person-wave rows, 11,146 distinct `pid`; **standalone aging panel, 45+ only** | [docs/surveys/klosa.md](docs/surveys/klosa.md) |
 | Korean Unification Tri-Survey Panel (derived) | Complete | KGSS + KINU + IPUS, 46 wave-rows | [docs/surveys/korean-unification-panel.md](docs/surveys/korean-unification-panel.md) |
+| CFPS (China Family Panel Studies) | Scaffold | 37 vars, 2 waves (2010, 2014) of 7, 70,745 person-waves; **family PANEL, adult module only**; 2014 SAS release has no value labels; zodiac/dragon via `src/r/lookups/zodiac.R` (paper 26) | [docs/surveys/cfps.md](docs/surveys/cfps.md) |
 | Global Corruption Barometer (GCB) | Scaffold | 22 vars, 1 edition (Asia 2020), 19,416 resp, 17 countries; region-extensible | [docs/surveys/gcb.md](docs/surveys/gcb.md) |
 | V-Dem v15 | Scaffold | Country-year panel, 202 countries, 1789–2024 | [docs/surveys/vdem.md](docs/surveys/vdem.md) |
 | MARPOR / CMP (MPDS2025a) | Scaffold | **party × election** panel (NOT individual respondents), 5,285 manifestos, 67 countries, 822 elections, 1920–2025 | [docs/surveys/marpor.md](docs/surveys/marpor.md) |

@@ -1,0 +1,70 @@
+[CFPS   User Guide] CFPS User's Manual (3rd Edition) (CHN) 用户手册（第三版）（中文）.pdf (application/pdf) 1701056 bytes.
+[CFPS   User Guide] CFPS User's Manual (3rd Edition) (ENG).pdf (application/pdf) 1915810 bytes.
+[CFPS  Restricted Data] CFPS限制数据申请指南.pdf (application/pdf) 230709 bytes.
+[CFPS Public Data] CFPS 2010_in_SAS_(Chinese).rar (application/x-rar-compressed) 20128171 bytes.
+[CFPS Public Data] CFPS 2010_in_SAS_(English).rar (application/x-rar-compressed) 20231326 bytes.
+[CFPS Public Data] CFPS 2010_in_STATA_(Chinese).rar (application/x-rar-compressed) 31291871 bytes.
+[CFPS Public Data] CFPS 2010_in_STATA_(English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2014 in SAS (Chinese).rar (application/x-rar-compressed) 15789126 bytes.
+[CFPS Public Data] CFPS 2014 in SAS (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2014 in STATA (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2014 in STATA (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2016 in SAS (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2016 in SAS (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2016 in STATA (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2016 in STATA (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2020_in_STATA_(Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2022 in SAS (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS 2022 in Stata (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS-2018-in-SAS (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS-2018-in-STATA (English).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS_2018-in-SAS (Chinese).rar.rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] CFPS_2018-in-STATA (Chinese).rar (application/x-rar-compressed)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Public Data] 中国家庭追踪调查预调查 (application/x-rar-compressed) 6468963 bytes.
+[CFPS Questionnaires] 2010 Wave 1 Questionnaires (CHN) 2010年基线调查问卷（中文）.pdf (application/pdf) 4583243 bytes.
+[CFPS Questionnaires] 2010 Wave 1 Questionnaires (ENG).pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2012 Wave 2 Face-to-Face Interview Questionnaires (CHN) 2012年追踪调查面访问卷（中文）.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2012 Wave 2 Face-to-Face Interview Questionnaires (ENG).pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2012 Wave 2 Telephone Interview Questionnaires (CHN) 2012年追踪调查电访问卷（中文）.pdf (application/pdf) 2031222 bytes.
+[CFPS Questionnaires] 2014 Wave 3 Questionnaires (CHN) 2014年追踪调查问卷（中文）.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2014 Wave 3 Questionnaires (ENG).pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2016 Wave 4 Questionnaires (CHN) 2016年追踪调查问卷（中文）.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2016 Wave 4 Questionnaires (ENG).pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2018 Wave 5 Questionnaires (CHN) 2018年追踪调查问卷（中文）.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Questionnaires] 2018 Wave 5 Questionnaires (ENG).pdf  (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 001 (CHN) 中国家庭追踪调查抽样设计.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 002 (CHN) 中国家庭追踪调查2010年基线调查末端抽样框制作.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 003 (CHN) 中国家庭追踪调查2010年基线调查执行报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 004 (CHN) 中国家庭追踪调查2010年基线调查质量督导报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 005 (CHN) 中国家庭追踪调查2010年基线调查样本联系情况.pdf (application/pdf) 445537 bytes.
+[CFPS Technical Report] 006 (CHN) 中国家庭追踪调查2010年家庭关系原始数据库的分解与匹配.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 007 (CHN) 中国家庭追踪调查2010年家庭关系数据库清理.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 008 (CHN) 中国家庭追踪调查 2010 年职业行业编码.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 010 (CHN) 中国家庭追踪调查职业社会经济地位测量指标构建.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 011 (CHN) 中国家庭追踪调查2010年综合变量(1)：字词与数学测试.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 012 (CHN) 中国家庭追踪调查2010年综合变量(2)：受教育水平&抑郁量表(2012.12.20).pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 013 (CHN) 中国家庭追踪调查2010年综合变量(3)：年龄、婚姻最佳变量.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 014 (CHN) 中国家庭追踪调查2010年农村家庭收入的调整办法.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 015 (CHN) 中国家庭追踪调查2010年收入消费支出数据整理.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 016 (CHN) CGSS、CHIP、CHFS和CFPS收入比较.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 017 (CHN) 中国家庭追踪调查2010年基线调查权数计算.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 019 (CHN) CFPS、CGSS、CHIP、CHFS 贫困率比较.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 023 (CHN) 中国家庭追踪调查区县数据库模糊方法.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 024 (CHN) 中国家庭追踪调查2012年综合变量：生育子女数量和子女具体信息.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 025 (CHN) 中国家庭追踪调查2012年数据库介绍及数据清理报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 026 (CHN) 中国家庭追踪调查2012年心理健康量表.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 027 (CHN) 中国家庭追踪调查2012年家庭收入的调整办法.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 028 (CHN) 中国家庭追踪调查方言编码.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 029 (CHN) 中国家庭追踪调查2012年和2010年财产数据技术报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 030 (CHN) 中国家庭追踪调查2012年当前主要职业综合变量的建构.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 031 (CHN) 中国家庭追踪调查2012年数列测试题.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 033 (CHN) 中国家庭追踪调查2012年家庭成员库的分解与家庭关系库的构建.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 034 (CHN)  中国家庭追踪调查2014年数据库介绍及数据清理报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 035 (CHN)  中国家庭追踪调查2016年数据库介绍及数据清理报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 036 (CHN) 中国家庭追踪调查2010年教育程度相关变量清理与评估.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 037 (CHN) 中国家庭追踪调查家庭社会经济地位综合变量：父亲和母亲的 出生年、最高学历、政治面貌和主要职业.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 038 (CHN) 中国家庭追踪调查事件历史日历记录法(EHC)设计方案.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 039 (CHN) 中国家庭追踪调查2018年数据库介绍及数据清理报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 040 (CHN) 中国家庭追踪调查跨年个人核心变量库清理报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS Technical Report] 041 (CHN) 中国家庭追踪调查文本编码技术报告.pdf (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
+[CFPS User Guide] User guide for CFPS2018 (ENG).pdf  (application/pdf)  skipped because the total size of the download bundle exceeded the limit of 104857600 bytes.
