@@ -4,12 +4,13 @@ Last updated: 2026-08-09
 
 This file records audit findings that need substantive judgment from Jeff. The audit infrastructure surfaces; this file tracks what remains to investigate. Update as items get resolved.
 
-**Open right now: 21 findings + 16 framework tickets.** (The `int_year` finding is half-closed: W1 fixed 2026-08-09, W2 still open and not fixable from the data.)
+**Open right now: 22 findings + 16 framework tickets.** (The `int_year` finding is half-closed: W1 fixed 2026-08-09, W2 still open and not fixable from the data.)
 
 | Bucket | Open |
 |---|---|
 | 🔴 Engine fault-injection hazards | 5 |
 | 🔴 ABS `int_year` gap — W1 fixed, **W2 open** (new 2026-08-09) | 1 |
+| 🔴 ABS has no unique row identifier (new 2026-08-09) | 1 |
 | 🔴 Residuals carried from resolved entries | 2 |
 | 🟡 Check D binning seams | 8 |
 | 📋 Residual systematic findings | 5 |
@@ -95,6 +96,38 @@ Original finding below for the record.
 - **Observed year values contain no 2005, 2009, 2013 or 2017** — consistent with ABS fieldwork gaps rather than a defect, but worth confirming rather than assuming, since the four W2-missing countries are exactly the ones whose fieldwork year would sit at the W2 boundary.
 - **Related, worth recording while here:** ABS W1 and W2 ship **no survey weights** — not a harmonization gap, the raw release files contain no weight variable (`weight` and `weight_cross` are populated W3+ only; `weight_cross` is W3/W4 only). Any W1/W2 analysis is unweighted by necessity. This is not fixable, only documentable, and belongs in `docs/surveys/abs.md`.
 
+
+---
+
+### NEW 2026-08-09: ABS has NO unique row identifier — `idnumber` collides even within country×wave
+
+Surfaced by Jeff while reviewing the `int_year` work ("the idnumbers are not unique from wave to
+wave" / "don't rely on them being unique"). Verified, and the problem is one level worse than that.
+
+- **`idnumber` is a per-country, per-wave sequential counter.** It restarts each wave, so the same
+  value denotes different people in different waves — `idnumber = 1` appears in 7 countries in W1,
+  11 in W2, 10 in W3, 12 in W4, 8 in W5, 5 in W6. ABS is a repeated cross-section, not a panel;
+  there is no respondent to follow. Any join on `idnumber` fabricates links between unrelated people
+  and will not error.
+- **`country + wave + idnumber` is ALSO not unique.** 113,945 rows → 113,643 distinct triples. The
+  302 extra rows decompose into **357 rows with NA `idnumber`** across 55 country×wave cells, plus
+  **2 genuine duplicates in Hong Kong W5** (`704273201`, `704273901`, each twice). Excluding NA rows:
+  113,588 rows → 113,586 distinct triples.
+- **Consequence: `abs_harmonized.rds` has no unique row key.** Row position is the only identifier.
+
+**Why this is a finding and not a note.** The audit layers check variable direction, ranges, labels
+and coverage — none of them assert row-level uniqueness, so a downstream `left_join` on `idnumber`
+would inflate row counts silently, and a `distinct()` on the triple would drop 302 real respondents.
+Both are the "wrong-but-consistent" class `docs/QA.md` names as uncovered.
+
+**Open questions for Jeff:**
+1. Should the harmonizer **mint a synthetic `row_uid`** (survey + wave + country + row index) so
+   downstream code has something safe to key on? Cheap, and removes the temptation.
+2. The **2 Hong Kong W5 duplicates** — genuine duplicate records in the release, or a merge artefact
+   on our side? Worth checking the raw W5 file before assuming ABS shipped them.
+3. Should an **invariant check** assert uniqueness of whatever key we declare, so this cannot regress?
+
+Recorded in `CLAUDE.md` gotchas 2026-08-09 so it binds future sessions regardless of this file.
 
 ---
 
