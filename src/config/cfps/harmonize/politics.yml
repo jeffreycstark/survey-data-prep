@@ -1,5 +1,10 @@
 # CFPS — political attitudes, government experience, and subjective position
-# (adult module, w2010 + w2014). Built for paper 26 (Dragon Children).
+# (adult frame, w2010-w2022; 2018+ person module filtered to 16+). Built for
+# paper 26 (Dragon Children). Instrument continuity: govt eval qn4/qn1101 all
+# six waves; trust battery + disposition + corruption 2014-2022; govt-experience
+# battery 2010-2016 only; opinion battery 2010 (qm70x) and 2018-2022 (wv10x,
+# subsampled ~7k in 2022); subjective position 2010 (qm40x) and 2014-2022
+# (qn8011/qn8012/qn12012; qn12016 2018+).
 #
 # INSTRUMENT MAP ACROSS THE TWO WAVES:
 #   2010 qn4        ~ 2014 QN1101   county/city government evaluation (5-pt)
@@ -46,6 +51,10 @@ variables:
     source:
       w2010: qn4
       w2014: qn1101
+      w2016: qn1101
+      w2018: qn1101
+      w2020: qn1101
+      w2022: qn1101
     scale:
       min: 1
       max: 5
@@ -63,6 +72,7 @@ variables:
         fn: safe_reverse_5pt
     qc:
       valid_range: [1, 5]
+      coverage_missing_codes: [79]
       validate:
         - waves: [w2010, w2014]
           phrase: "政府|government"
@@ -76,6 +86,10 @@ variables:
     source:
       w2010: qn205
       w2014: qn1014
+      w2016: qn1014
+      w2018: null
+      w2020: null
+      w2022: null
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -103,6 +117,10 @@ variables:
     source:
       w2010: qn206
       w2014: qn1015
+      w2016: qn1015
+      w2018: null
+      w2020: null
+      w2022: null
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -129,6 +147,10 @@ variables:
     source:
       w2010: qn207
       w2014: qn1016
+      w2016: qn1016
+      w2018: null
+      w2020: null
+      w2022: null
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -155,6 +177,10 @@ variables:
     source:
       w2010: qn208
       w2014: qn1017
+      w2016: qn1017
+      w2018: null
+      w2020: null
+      w2022: null
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -183,6 +209,10 @@ variables:
     source:
       w2010: null
       w2014: qn10025
+      w2016: qn10025
+      w2018: qn10025
+      w2020: qn10025
+      w2022: qn10025
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -198,7 +228,13 @@ variables:
     concept: politics
     description: "Trust in parents, 0-10 (w2014 QN10021)"
     type: ordinal
-    source: {w2010: null, w2014: qn10021}
+    source:
+      w2010: null
+      w2014: qn10021
+      w2016: qn10021
+      w2018: qn10021
+      w2020: qn10021
+      w2022: qn10021
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -208,7 +244,13 @@ variables:
     concept: politics
     description: "Trust in neighbors, 0-10 (w2014 QN10022)"
     type: ordinal
-    source: {w2010: null, w2014: qn10022}
+    source:
+      w2010: null
+      w2014: qn10022
+      w2016: qn10022
+      w2018: qn10022
+      w2020: qn10022
+      w2022: qn10022
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -218,7 +260,13 @@ variables:
     concept: politics
     description: "Trust in Americans, 0-10 (w2014 QN10023)"
     type: ordinal
-    source: {w2010: null, w2014: qn10023}
+    source:
+      w2010: null
+      w2014: qn10023
+      w2016: qn10023
+      w2018: qn10023
+      w2020: qn10023
+      w2022: qn10023
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -228,7 +276,13 @@ variables:
     concept: politics
     description: "Trust in strangers, 0-10 (w2014 QN10024)"
     type: ordinal
-    source: {w2010: null, w2014: qn10024}
+    source:
+      w2010: null
+      w2014: qn10024
+      w2016: qn10024
+      w2018: qn10024
+      w2020: qn10024
+      w2022: qn10024
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -238,7 +292,13 @@ variables:
     concept: politics
     description: "Trust in doctors, 0-10 (w2014 QN10026)"
     type: ordinal
-    source: {w2010: null, w2014: qn10026}
+    source:
+      w2010: null
+      w2014: qn10026
+      w2016: qn10026
+      w2018: qn10026
+      w2020: qn10026
+      w2022: qn10026
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -250,7 +310,13 @@ variables:
     type: binary
     note: "VERIFIED 2026-08-09: raw codes are {1=大多数人是可以信任的, 5=要越小心越好} — NOT 1/2. The scaffold's identity+[1,2] would have deleted all 14,628 code-5 answers; recode fixes it (1->1, 5->0)."
     scale: {min: 0, max: 1, labels: {0: "Can't be too careful", 1: "Most people can be trusted"}}
-    source: {w2010: null, w2014: qn1001}
+    source:
+      w2010: null
+      w2014: qn1001
+      w2016: pn1001
+      w2018: qn1001
+      w2020: qn1001
+      w2022: qn1001
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -263,7 +329,13 @@ variables:
     concept: politics
     description: "Perceived severity of government corruption in China, 0-10, higher = more severe (w2014 QN6011)"
     type: ordinal
-    source: {w2010: null, w2014: qn6011}
+    source:
+      w2010: null
+      w2014: qn6011
+      w2016: qn6011
+      w2018: qn6011
+      w2020: qn6011
+      w2022: qn6011
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -281,7 +353,13 @@ variables:
     concept: politics
     description: "Opinion: widening income gaps are necessary for prosperity (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm701, w2014: null}
+    source:
+      w2010: qm701
+      w2014: null
+      w2016: null
+      w2018: wv101
+      w2020: wv101
+      w2022: wv101
     scale:
       min: 1
       max: 5
@@ -299,13 +377,19 @@ variables:
         note: "Raw midpoint sits at 5; raw 6=don't know -> NA (declared)."
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   - id: opin_fair_competition
     concept: politics
     description: "Opinion: only fair competition brings harmonious relations (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm702, w2014: null}
+    source:
+      w2010: qm702
+      w2014: null
+      w2016: null
+      w2018: wv102
+      w2020: wv102
+      w2022: wv102
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -313,13 +397,19 @@ variables:
         mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   - id: opin_wealth_is_achievement
     concept: politics
     description: "Opinion: wealth reflects personal achievement (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm703, w2014: null}
+    source:
+      w2010: qm703
+      w2014: null
+      w2016: null
+      w2018: wv103
+      w2020: wv103
+      w2022: wv103
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -327,13 +417,19 @@ variables:
         mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   - id: opin_effort_rewarded
     concept: politics
     description: "Opinion: hard work is rewarded in today's society (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm704, w2014: null}
+    source:
+      w2010: qm704
+      w2014: null
+      w2016: null
+      w2018: wv104
+      w2020: wv104
+      w2022: wv104
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -341,13 +437,19 @@ variables:
         mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   - id: opin_talent_rewarded
     concept: politics
     description: "Opinion: intelligence and ability are rewarded in today's society (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm705, w2014: null}
+    source:
+      w2010: qm705
+      w2014: null
+      w2016: null
+      w2018: wv105
+      w2020: wv105
+      w2022: wv105
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -355,13 +457,19 @@ variables:
         mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   - id: opin_connections_over_ability
     concept: politics
     description: "Opinion: social connections matter more than ability in today's society (1=strongly disagree ... 5=strongly agree)"
     type: ordinal
-    source: {w2010: qm707, w2014: null}
+    source:
+      w2010: qm707
+      w2014: null
+      w2016: null
+      w2018: wv107
+      w2020: wv107
+      w2022: wv107
     missing: {use_convention: treat_as_na}
     harmonize:
       default:
@@ -369,7 +477,7 @@ variables:
         mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
     qc:
       valid_range: [1, 5]
-      coverage_missing_codes: [6]
+      coverage_missing_codes: [6, 79]
 
   # ---- subjective position and outlook (w2010 only) ---------------------------
   # 1-5 self-placements; assumed ascending (1 = low/dissatisfied -> 5 =
@@ -378,29 +486,49 @@ variables:
 
   - id: subjective_income_position
     concept: politics
-    description: "Self-rated local income position, 1-5 higher = higher position (w2010 qm401)"
+    description: "Self-rated local income position, 1-5 higher = higher position (2010 qm401; 2014-2022 qn8011)"
     type: ordinal
-    source: {w2010: qm401, w2014: null}
+    source:
+      w2010: qm401
+      w2014: qn8011
+      w2016: qn8011
+      w2018: qn8011
+      w2020: qn8011
+      w2022: qn8011
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
       valid_range: [1, 5]
+      coverage_missing_codes: [79]
 
   - id: subjective_social_status
     concept: politics
-    description: "Self-rated local social status, 1-5 higher = higher status (w2010 qm402)"
+    description: "Self-rated local social status, 1-5 higher = higher status (2010 qm402; 2014-2022 qn8012)"
     type: ordinal
-    source: {w2010: qm402, w2014: null}
+    source:
+      w2010: qm402
+      w2014: qn8012
+      w2016: qn8012
+      w2018: qn8012
+      w2020: qn8012
+      w2022: qn8012
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
       valid_range: [1, 5]
+      coverage_missing_codes: [79]
 
   - id: life_satisfaction
     concept: politics
-    description: "Life satisfaction, 1-5 higher = more satisfied (w2010 qm403)"
+    description: "Life satisfaction, 1-5 higher = more satisfied (2010 qm403; 2014-2022 qn12012)"
     type: ordinal
-    source: {w2010: qm403, w2014: null}
+    source:
+      w2010: qm403
+      w2014: qn12012
+      w2016: qn12012
+      w2018: qn12012
+      w2020: qn12012
+      w2022: qn12012
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -408,10 +536,46 @@ variables:
 
   - id: confidence_future
     concept: politics
-    description: "Confidence in one's future, 1-5 higher = more confident (w2010 qm404)"
+    description: "Confidence in one's future, 1-5 higher = more confident (2010 qm404; 2018-2022 qn12016)"
     type: ordinal
-    source: {w2010: qm404, w2014: null}
+    source:
+      w2010: qm404
+      w2014: null
+      w2016: null
+      w2018: qn12016
+      w2020: qn12016
+      w2022: qn12016
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
       valid_range: [1, 5]
+
+  - id: opin_corruption_inevitable
+    concept: politics
+    description: "Opinion: achieving great things inevitably involves corruption (成大事难免腐败; 1=strongly disagree ... 5=strongly agree; 2018-2022 wv106, no 2010 counterpart)"
+    type: ordinal
+    note: "Same trap coding as the rest of the battery: raw 1/2/3/4 ascending agreement, neutral OUT OF ORDER at 5, 6=don't know, 79=situation n/a. Verified 2026-08-09."
+    scale:
+      min: 1
+      max: 5
+      labels:
+        1: "Strongly disagree"
+        2: "Disagree"
+        3: "Neither agree nor disagree"
+        4: "Agree"
+        5: "Strongly agree"
+    source:
+      w2010: null
+      w2014: null
+      w2016: null
+      w2018: wv106
+      w2020: wv106
+      w2022: wv106
+    missing: {use_convention: treat_as_na}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 2, 5: 3, 3: 4, 4: 5}
+    qc:
+      valid_range: [1, 5]
+      coverage_missing_codes: [6, 79]

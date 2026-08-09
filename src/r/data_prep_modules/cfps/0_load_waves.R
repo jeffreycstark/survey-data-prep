@@ -28,8 +28,26 @@ library(haven)
     "[CFPS Public Data] CFPS 2010 in Stata (Chinese)", "cfps2010adult_202008.dta"),
   w2014 = file.path(
     "data", "cfps", "raw", "unzipped", "cfps2014_stata_chinese",
-    "[CFPS Public Data] CFPS2014 in STATA (Chinese)", "cfps2014adult_201906.dta")
+    "[CFPS Public Data] CFPS2014 in STATA (Chinese)", "cfps2014adult_201906.dta"),
+  w2016 = file.path(
+    "data", "cfps", "raw", "unzipped", "cfps2016_stata_chinese",
+    "[CFPS Public Data] CFPS2016 in STATA (Chinese)", "cfps2016adult_201906.dta"),
+  w2018 = file.path(
+    "data", "cfps", "raw", "unzipped", "cfps2018_stata_chinese",
+    "extracted", "cfps2018person_202012.dta"),
+  w2020 = file.path(
+    "data", "cfps", "raw", "unzipped", "cfps2020_stata_chinese",
+    "[CFPS Public Data] CFPS 2020_in_STATA_(Chinese)", "cfps2020person_202306.dta"),
+  w2022 = file.path(
+    "data", "cfps", "raw", "unzipped", "cfps2022_stata_chinese",
+    "extracted", "CFPS2022Stata_解密信息参见Instructions", "cfps2022person_202410.dta")
 )
+
+# From 2018 CFPS unifies adult + child questionnaires into one `person` module
+# that includes children from ~age 9. To keep the harmonized file an ADULT
+# frame consistent with the 2010-2016 adult modules, person waves are filtered
+# to age >= 16 at load (the political modules are not asked below that anyway).
+.CFPS_PERSON_WAVES <- c("w2018", "w2020", "w2022")
 
 load_cfps_waves <- function() {
 
@@ -49,9 +67,19 @@ load_cfps_waves <- function() {
       sas7bdat = read_sas(path),
       stop("Unhandled CFPS file type: ", path)
     )
+    n_raw <- nrow(d)
+    if (wname %in% .CFPS_PERSON_WAVES) {
+      age_num <- as.numeric(haven::zap_labels(d$age))
+      d <- d[!is.na(age_num) & age_num >= 16, , drop = FALSE]
+    }
     waves[[wname]] <- d
-    cat(sprintf("  %s: %s rows, %d cols  (%s)\n",
-                wname, format(nrow(d), big.mark = ","), ncol(d), basename(path)))
+    cat(sprintf("  %s: %s rows%s, %d cols  (%s)\n",
+                wname, format(nrow(d), big.mark = ","),
+                if (nrow(d) < n_raw)
+                  sprintf(" (person module: %s under-16 rows dropped)",
+                          format(n_raw - nrow(d), big.mark = ","))
+                else "",
+                ncol(d), basename(path)))
   }
 
   waves
