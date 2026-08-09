@@ -10,7 +10,7 @@ This file records audit findings that need substantive judgment from Jeff. The a
 |---|---|
 | 🔴 Engine fault-injection hazards | 5 |
 | 🔴 ABS `int_year` gap — W1 fixed, **W2 open** (new 2026-08-09) | 1 |
-| 🔴 ABS has no unique row identifier (new 2026-08-09) | 1 |
+| 🔴 ABS `idnumber` — root cause fixed; **2 HK W5 duplicates need a decision** | 1 |
 | 🔴 Residuals carried from resolved entries | 2 |
 | 🟡 Check D binning seams | 8 |
 | 📋 Residual systematic findings | 5 |
@@ -99,7 +99,45 @@ Original finding below for the record.
 
 ---
 
-### NEW 2026-08-09: ABS has NO unique row identifier — `idnumber` collides even within country×wave
+### ~~NEW 2026-08-09~~ **MOSTLY RESOLVED 2026-08-09**: ABS `idnumber` — 357 real IDs were being deleted as missing codes
+
+**ROOT CAUSE FOUND AND FIXED.** The 357 NA `idnumber`s were not a data gap — they were real IDs
+destroyed by a convention collision, in two layers:
+
+1. `idnumber` used `use_convention: treat_as_na`, which deletes `[-1, 0, 7, 8, 9, 97, 98, 99, 1099]`.
+   ABS numbers respondents serially from 1 per country-wave, so **every** cell contains a respondent
+   7, 8, 9, 97, 98 and 99 — all six were NA'd, ~6-7 per cell across ~55 cells. Raw Korea W2 has
+   1,212 rows and **zero** missing IDs. Repointed to a new `no_missing_codes` convention: a serial
+   identifier has no missing codes.
+2. That only got 357 → 160. The rest was `no_verify()` carrying its own hardcoded
+   `missing_codes = c(-1, 97, 98, 99)`, which the engine never overrides with the declared
+   convention. **This is finding #3 of the 2026-08-07 engine fault-injection entry, which assessed
+   it as "No live exposure". It was live — here.** Default changed to `numeric(0)`; a function named
+   `no_verify` and documented as returning values as-is must not delete anything. Verified safe for
+   its only other consumer (KLoSA `iw_month` 3-12 / `iw_day` 1-31 contain none of those codes).
+
+**Result after re-harmonize:** NA `idnumber` **357 → 0**; duplicate keys on country+wave+idnumber
+**302 → 2**; ABS invariant errors 2 → 1.
+
+**STILL OPEN — needs Jeff's decision.** Two Hong Kong W5 keys remain duplicated: `704273201`
+(two rows identical across **all 308 columns**) and `704273901` (identical in 307 of 308, differing
+only in the **weight factor**, 1.467 vs 1.394). Both are present in the raw ABS W5 release, not
+created by our merge. Byte-identical answers to 300+ questions rule out two distinct respondents, so
+these are duplicated records; the differing weight suggests duplication preceded weighting. **Not
+deleted** — dropping respondent rows changes the sample and the weight totals, which is Jeff's call.
+Options: drop one of each pair, keep and document, or query ABS.
+
+Plain-English writeup for Jeff: `research-vault/ABS idnumber bug — why respondent IDs were
+disappearing (2026-08-09).md`.
+
+**Two framework questions this raises:**
+1. Should the harmonizer mint a synthetic `row_uid`, so downstream code never needs `idnumber`?
+2. Should an invariant assert uniqueness of the declared key? Nothing in the audit stack does, which
+   is why 357 destroyed IDs and 302 collapsed keys were invisible until Jeff asked.
+
+Original finding below for the record.
+
+### ~~Original~~: ABS has NO unique row identifier — `idnumber` collides even within country×wave
 
 Surfaced by Jeff while reviewing the `int_year` work ("the idnumbers are not unique from wave to
 wave" / "don't rely on them being unique"). Verified, and the problem is one level worse than that.

@@ -21,6 +21,11 @@ missing_conventions:
   treat_as_na_10pt:
     codes: [-1, 0, 97, 98, 99, 1099]
     description: "Missing codes for 1-10/1-11 ladders and counts — keeps 7/8/9 as valid responses (codebook-verified 2026-08-07)"
+  # A serial identifier has no missing codes: every value it takes is a valid ID.
+  # Added 2026-08-09 for `idnumber` — see the FIX note on that variable.
+  no_missing_codes:
+    codes: []
+    description: "No missing codes — for serial identifiers, where every observed value is valid"
 variables:
   - id: age
     concept: demographics
@@ -430,7 +435,15 @@ variables:
       w5: IDnumber
       w6: idnumber
     missing:
-      use_convention: treat_as_na
+      # FIX 2026-08-09: was treat_as_na, which deletes [-1, 0, 7, 8, 9, 97, 98, 99, 1099].
+      # Those are REAL ID numbers. Every country-wave numbers its respondents from 1, so
+      # each cell contains a respondent 7, 8, 9, 97, 98 and 99 — all six were being NA'd,
+      # producing ~6-7 NA ids per country-wave and 357 across the file, in a raw dataset
+      # where idnumber is never missing (Korea W2 raw: 0 NA of 1,212). Same convention-collision
+      # class as the 2026-08-07 sweep. Note the spec already defined treat_as_na_identifiers
+      # to protect 7/8/9, but idnumber did not use it — and that convention would still have
+      # deleted 97/98/99. A serial identifier takes no missing codes at all.
+      use_convention: no_missing_codes
     harmonize:
       default:
         method: r_function

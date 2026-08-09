@@ -925,14 +925,26 @@ recode_w2_dem_preferable <- function(x,
 #' @param x Numeric vector
 #' @param data Optional dataframe for semantic validation
 #' @param var_name Optional variable name for semantic validation
-#' @param missing_codes Values to convert to NA (default: standard missing codes)
+#' @param missing_codes Values to convert to NA. DEFAULT IS EMPTY — see the note below.
 #' @param validate_all Optional character vector of regex patterns to match question text
 #'
-#' @return Numeric vector with missing codes converted to NA
+#' @section FIX 2026-08-09 — the default was `c(-1, 97, 98, 99)` and it was deleting real data:
+#' The engine does not pass a spec's resolved missing convention into an `r_function`, so this
+#' default silently governed instead of the declared one — the hazard recorded as finding #3 in
+#' the 2026-08-07 engine fault-injection entry, which assessed it as "no live exposure". It was
+#' live here. ABS `idnumber` is a per-country-per-wave serial starting at 1, so every country-wave
+#' contains respondents numbered 97, 98 and 99; this default was NA-ing all three in each of ~55
+#' cells (197 real IDs) in a raw dataset where `idnumber` is never missing. A function named
+#' `no_verify`, documented as "returns values as-is", must not delete anything by default.
+#' Callers that genuinely need codes stripped should pass `missing_codes` explicitly.
+#' Verified safe for the only other consumer: KLoSA `iw_month` (3–12) and `iw_day` (1–31) contain
+#' none of -1/97/98/99, so their behaviour is unchanged — as their own spec note already asserted.
+#'
+#' @return Numeric vector, unchanged unless `missing_codes` is supplied
 no_verify <- function(x,
                       data = NULL,
                       var_name = NULL,
-                      missing_codes = c(-1, 97, 98, 99),
+                      missing_codes = numeric(0),
                       validate_all = NULL) {
 
   # ---- semantic validation (optional) ----
