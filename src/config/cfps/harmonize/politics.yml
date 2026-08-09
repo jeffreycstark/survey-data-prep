@@ -17,8 +17,15 @@
 #      with the midpoint OUT OF ORDER at 5=既不同意也不反对 (n≈1,500) and an
 #      in-range 6=不知道 (n≈5,500). Recoded to an ordered 5-pt with the neutral
 #      at center; 6 declared an intentional drop.
-#   2014 codings are assumed identical (no value labels in the SAS release);
-#   verify against the 2014 Stata variant when downloaded.
+# 2014 CODINGS VERIFIED 2026-08-09 against the Chinese Stata release. Two
+# differences from the assumed scaffold, both fixed the same day:
+#   - qn1001 codes are {1=大多数人是可以信任的, 5=要越小心越好} — NOT 1/2. The
+#     original valid_range [1,2] would have deleted all 14,628 "careful" answers.
+#   - The 2014 government battery ADDS a middle category the 2010 items lack:
+#     {1=亲身经历过, 3=见到过此类事情但没有亲身经历过, 5=没有见到过, 79=没听懂}.
+#     Harmonized as PERSONAL experience (1->1; 3,5->0); the witnessed-only group
+#     (n≈2,400-3,300 per item) folds to 0 by design — a paper wanting the
+#     3-category version should read raw qn1014-1017 directly.
 
 schema_version: 1
 
@@ -35,10 +42,10 @@ variables:
     concept: politics
     description: "Overall evaluation of county/city government's work last year (1=worse than before ... 5=great achievements; REVERSED so higher = better evaluation)"
     type: ordinal
-    note: "Raw runs 1=有很大成绩 -> 4=没有成绩, 5=比之前更糟了 (descending). safe_reverse_5pt gives higher = better. 2014 QN1101 assumed same instrument."
+    note: "Raw runs 1=有很大成绩 -> 4=没有成绩, 5=比之前更糟了 (descending). safe_reverse_5pt gives higher = better. VERIFIED 2026-08-09: 2014 qn1101 carries the identical label set."
     source:
       w2010: qn4
-      w2014: QN1101
+      w2014: qn1101
     scale:
       min: 1
       max: 5
@@ -68,7 +75,7 @@ variables:
     type: binary
     source:
       w2010: qn205
-      w2014: QN1014
+      w2014: qn1014
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -76,7 +83,12 @@ variables:
       default:
         method: recode
         mapping: {1: 1, 5: 0, 0: 0}
-        note: "Raw 'no' is CAPI code 5 (live, n=21,633 in 2010); labelled 0=no never occurs. 79 = experience-type not applicable -> NA, declared below."
+        note: "2010: raw 'no' is CAPI code 5 (n=21,633); labelled 0=no never occurs. 79 -> NA, declared below."
+      by_wave:
+        w2014:
+          method: recode
+          mapping: {1: 1, 3: 0, 5: 0}
+          note: "2014 adds 3=witnessed-but-not-experienced (n=3,311); harmonized binary is PERSONAL experience, so 3 folds to 0. 79 = didn't understand -> NA."
     qc:
       valid_range: [0, 1]
       coverage_missing_codes: [79]
@@ -90,7 +102,7 @@ variables:
     type: binary
     source:
       w2010: qn206
-      w2014: QN1015
+      w2014: qn1015
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -98,6 +110,11 @@ variables:
       default:
         method: recode
         mapping: {1: 1, 5: 0, 0: 0}
+      by_wave:
+        w2014:
+          method: recode
+          mapping: {1: 1, 3: 0, 5: 0}
+          note: "2014 adds 3=witnessed-but-not-experienced; harmonized binary is PERSONAL experience (3 -> 0). 79 = didn't understand -> NA."
     qc:
       valid_range: [0, 1]
       coverage_missing_codes: [79]
@@ -111,7 +128,7 @@ variables:
     type: binary
     source:
       w2010: qn207
-      w2014: QN1016
+      w2014: qn1016
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -119,6 +136,11 @@ variables:
       default:
         method: recode
         mapping: {1: 1, 5: 0, 0: 0}
+      by_wave:
+        w2014:
+          method: recode
+          mapping: {1: 1, 3: 0, 5: 0}
+          note: "2014 adds 3=witnessed-but-not-experienced; harmonized binary is PERSONAL experience (3 -> 0). 79 = didn't understand -> NA."
     qc:
       valid_range: [0, 1]
       coverage_missing_codes: [79]
@@ -132,7 +154,7 @@ variables:
     type: binary
     source:
       w2010: qn208
-      w2014: QN1017
+      w2014: qn1017
     scale: {min: 0, max: 1, labels: {0: "No", 1: "Yes"}}
     missing:
       use_convention: treat_as_na
@@ -140,6 +162,11 @@ variables:
       default:
         method: recode
         mapping: {1: 1, 5: 0, 0: 0}
+      by_wave:
+        w2014:
+          method: recode
+          mapping: {1: 1, 3: 0, 5: 0}
+          note: "2014 adds 3=witnessed-but-not-experienced; harmonized binary is PERSONAL experience (3 -> 0). 79 = didn't understand -> NA."
     qc:
       valid_range: [0, 1]
       coverage_missing_codes: [79]
@@ -155,7 +182,7 @@ variables:
     type: ordinal
     source:
       w2010: null
-      w2014: QN10025
+      w2014: qn10025
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -171,7 +198,7 @@ variables:
     concept: politics
     description: "Trust in parents, 0-10 (w2014 QN10021)"
     type: ordinal
-    source: {w2010: null, w2014: QN10021}
+    source: {w2010: null, w2014: qn10021}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -181,7 +208,7 @@ variables:
     concept: politics
     description: "Trust in neighbors, 0-10 (w2014 QN10022)"
     type: ordinal
-    source: {w2010: null, w2014: QN10022}
+    source: {w2010: null, w2014: qn10022}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -191,7 +218,7 @@ variables:
     concept: politics
     description: "Trust in Americans, 0-10 (w2014 QN10023)"
     type: ordinal
-    source: {w2010: null, w2014: QN10023}
+    source: {w2010: null, w2014: qn10023}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -201,7 +228,7 @@ variables:
     concept: politics
     description: "Trust in strangers, 0-10 (w2014 QN10024)"
     type: ordinal
-    source: {w2010: null, w2014: QN10024}
+    source: {w2010: null, w2014: qn10024}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -211,7 +238,7 @@ variables:
     concept: politics
     description: "Trust in doctors, 0-10 (w2014 QN10026)"
     type: ordinal
-    source: {w2010: null, w2014: QN10026}
+    source: {w2010: null, w2014: qn10026}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:
@@ -219,19 +246,24 @@ variables:
 
   - id: trust_disposition
     concept: politics
-    description: "General trust disposition: most people trustworthy vs can't be too careful (w2014 QN1001; assumed 1=most people can be trusted, 2=can't be too careful — VERIFY against 2014 Stata labels)"
-    type: nominal
-    source: {w2010: null, w2014: QN1001}
+    description: "General trust disposition (1 = most people can be trusted, 0 = can't be too careful; w2014 qn1001)"
+    type: binary
+    note: "VERIFIED 2026-08-09: raw codes are {1=大多数人是可以信任的, 5=要越小心越好} — NOT 1/2. The scaffold's identity+[1,2] would have deleted all 14,628 code-5 answers; recode fixes it (1->1, 5->0)."
+    scale: {min: 0, max: 1, labels: {0: "Can't be too careful", 1: "Most people can be trusted"}}
+    source: {w2010: null, w2014: qn1001}
     missing: {use_convention: treat_as_na}
-    harmonize: {default: {method: identity}}
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 5: 0}
     qc:
-      valid_range: [1, 2]
+      valid_range: [0, 1]
 
   - id: corruption_severity
     concept: politics
     description: "Perceived severity of government corruption in China, 0-10, higher = more severe (w2014 QN6011)"
     type: ordinal
-    source: {w2010: null, w2014: QN6011}
+    source: {w2010: null, w2014: qn6011}
     missing: {use_convention: treat_as_na}
     harmonize: {default: {method: identity}}
     qc:

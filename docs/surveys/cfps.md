@@ -13,17 +13,39 @@ cross-sectional attitude surveys.
 
 ## Coverage
 
-| wave | n | source file | value labels |
-|---|---|---|---|
-| w2010 | 33,598 | `cfps2010adult_202008.dta` (Stata, Chinese) | ✅ full |
-| w2014 | 37,147 | `cfps2014adult_201906.sas7bdat` (SAS, Chinese) | ❌ **none** |
+| wave | n | source file | value labels | status |
+|---|---|---|---|---|
+| w2010 | 33,598 | `cfps2010adult_202008.dta` (Stata-CH) | ✅ | harmonized |
+| w2014 | 37,147 | `cfps2014adult_201906.dta` (Stata-CH) | ✅ | harmonized, **label-verified 2026-08-09** |
+| 2016 | — | `cfps2016adult_201906.dta` (Stata-CH) | ✅ | on disk, not yet wired |
+| 2018 | — | `cfps2018person_202012.dta` (Stata-CH; +ENG variant) | ✅ | on disk, not yet wired |
+| 2020 | — | `cfps2020person_202306.dta` (Stata-CH) | ✅ | on disk, not yet wired |
+| 2022 | — | `cfps2022person_202410.dta` (Stata-CH) | ✅ | on disk, not yet wired |
 
-⚠️ **The deposit has NO SPSS files — Stata + SAS only** — and the SAS files ship
-without `.sas7bcat` catalogs, so **every 2014 value-coding is assumed from the
-CFPS codebook convention**, flagged "assumed"/"verify" in the YAML. The 2014
-Stata variant (which has labels) was skipped by the Dataverse 100MB bundle cap,
-along with all of 2016/2018/2020/2022 — `data/cfps/raw/MANIFEST.TXT` lists all
-59 skipped files. Re-download those to extend.
+The deposit has **no SPSS files** (Stata + SAS only; SAS ships without value-label
+catalogs — never harmonize from the SAS variants). **No 2012 data exists in the
+deposit at all** (0 files; only 2012 questionnaires) — if a paper ever needs the
+2012 wave, it must be sourced separately from PKU. ⚠️ From 2018 the individual
+module is renamed `person` (adult+child unified); 2022 ships password-protected
+(password = the compliance sentence in its `Instructions.docx`). ⚠️ Variable
+names are LOWERCASE in Stata releases, UPPERCASE in SAS releases — specs follow
+Stata.
+
+**2014 label-verification results (2026-08-09)** — three scaffold assumptions
+were wrong, all fixed same day:
+- `qn1001` trust disposition codes are **{1, 5}** not {1,2} — the assumed
+  `[1,2]` range would have deleted all 14,628 "can't be too careful" answers.
+  Now recoded 1→1, 5→0 (binary, 1=trusting).
+- The 2014 government-experience battery **adds 3 = witnessed-but-not-
+  experienced** (n≈2,400–3,300/item), absent in 2010. Harmonized binary =
+  PERSONAL experience (3→0, documented); read raw `qn1014-1017` for 3-category.
+- **`cfps_party` is NOT a CCP-membership variable** despite its variable label:
+  value labels read 0=数据缺失/1=数据正常 and zero of its code-1 cases have a
+  join year. `ccp_member` is null in both waves; `pn401a` is real but
+  skip-routed (n≈1,055). Derive membership from `ccp_join_year` (members-only)
+  or find a full-sample source in famconf/2018+ person files.
+- Also: `cfps2014edu` code 9 = 不必读书 covers **1,943 real adults** —
+  declared-dropped from the 1–8 ladder pending investigation.
 
 Pipeline: `src/r/data_prep_modules/cfps/{0_load_waves,2_harmonize_all,99_create_final_dataset}.R`;
 specs in `src/config/cfps/harmonize/{demographics,politics}.yml` (37 variables).

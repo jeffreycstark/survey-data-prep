@@ -1,11 +1,11 @@
 # CFPS (China Family Panel Studies) — load raw ADULT waves into a wave-keyed list.
 #
 # SOURCE FILES (data/cfps/raw/unzipped/, from the PKU Dataverse deposit):
-#   w2010  cfps2010_stata_chinese/.../cfps2010adult_202008.dta   (Stata, FULL value labels)
-#   w2014  cfps2014_sas_chinese/.../cfps2014adult_201906.sas7bdat (SAS — variable labels
-#          only: the deposit ships NO .sas7bcat catalogs, so the SAS files carry ZERO
-#          value labels. The 2014 Stata variant was skipped by the Dataverse 100MB
-#          bundle cap — see raw/MANIFEST.TXT. Re-download it to enable label checks.)
+#   w2010  cfps2010_stata_chinese/.../cfps2010adult_202008.dta  (Stata, FULL value labels)
+#   w2014  cfps2014_stata_chinese/.../cfps2014adult_201906.dta  (Stata, FULL value labels —
+#          switched from the SAS variant 2026-08-09 when the Stata rar was downloaded.
+#          ⚠️ The Stata release uses LOWERCASE variable names (qn1101, cfps_gender);
+#          the SAS release upper-cases them (QN1101, CFPS_GENDER). Specs follow Stata.)
 #
 # NO SPSS (.sav) files exist for CFPS — the deposit is Stata + SAS only.
 #
@@ -27,8 +27,8 @@ library(haven)
     "data", "cfps", "raw", "unzipped", "cfps2010_stata_chinese",
     "[CFPS Public Data] CFPS 2010 in Stata (Chinese)", "cfps2010adult_202008.dta"),
   w2014 = file.path(
-    "data", "cfps", "raw", "unzipped", "cfps2014_sas_chinese",
-    "[CFPS Public Data] CFPS2014 in SAS (Chinese)", "cfps2014adult_201906.sas7bdat")
+    "data", "cfps", "raw", "unzipped", "cfps2014_stata_chinese",
+    "[CFPS Public Data] CFPS2014 in STATA (Chinese)", "cfps2014adult_201906.dta")
 )
 
 load_cfps_waves <- function() {

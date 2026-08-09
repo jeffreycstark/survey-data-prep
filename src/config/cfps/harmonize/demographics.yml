@@ -1,7 +1,7 @@
 # CFPS — identifiers, weights, and demographics (adult module, w2010 + w2014)
 #
-# NAMING ERAS: 2010 raw names are lowercase (qa1y_best, qn4); 2014 names are the
-# release's mixed convention (CFPS_BIRTHY, QN1101, cfps2014edu, rswt_natcs14).
+# NAMING: both waves' Stata releases use lowercase raw names (qa1y_best, qn4;
+# cfps_birthy, qn1101, cfps2014edu, rswt_natcs14).
 #
 # MISSING CONVENTION: CFPS codes ALL interviewer/missing states as NEGATIVES
 # (-10 无法判断, -9 缺失, -8 不适用, -7 无法匹配, -2 拒绝回答, -1 不知道), so the
@@ -12,10 +12,11 @@
 # IS the live "no" code), and in-range DK codes on the qm70x opinion battery
 # (6 = 不知道) — see politics.yml.
 #
-# ⚠️ 2014 VALUE-LABEL GAP: the SAS release carries no value labels (no .sas7bcat
-# in the deposit). Every 2014 coding below marked "assumed" follows the CFPS
-# codebook convention and the 2010 instrument; verify when the 2014 Stata
-# variant (skipped by the Dataverse bundle cap) is downloaded.
+# 2014 CODINGS VERIFIED 2026-08-09 against the Chinese Stata release
+# (cfps2014adult_201906.dta), which carries full value labels — the earlier
+# SAS-based scaffold could only assume them. ⚠️ The Stata release names are
+# LOWERCASE (cfps_gender, qn1101); the SAS release upper-cases the same
+# variables. Sources below follow the Stata names; the loader reads Stata.
 
 schema_version: 1
 
@@ -96,8 +97,8 @@ variables:
     type: binary
     source:
       w2010: gender
-      w2014: CFPS_GENDER
-    note: "2010 labels: 0=女, 1=男, plus a labelled-but-unobserved legacy 5=女; the recode folds any 5 to 0 defensively. 2014 coding assumed 0/1 (no value labels in the SAS release)."
+      w2014: cfps_gender
+    note: "VERIFIED both waves: 0=女, 1=男, plus a labelled-but-unobserved legacy 5=女 (2010 and 2014 alike); the recode folds any 5 to 0 defensively."
     scale: {min: 0, max: 1, labels: {0: "Female", 1: "Male"}}
     missing:
       use_convention: treat_as_na
@@ -114,7 +115,7 @@ variables:
     type: continuous
     source:
       w2010: qa1y_best
-      w2014: CFPS_BIRTHY
+      w2014: cfps_birthy
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -144,7 +145,7 @@ variables:
     type: continuous
     source:
       w2010: qa1age
-      w2014: CFPS2014_AGE
+      w2014: cfps2014_age
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -204,7 +205,7 @@ variables:
     concept: demographics
     description: "Highest completed education level (CFPS 8-rung ladder: 1=illiterate/semi-literate ... 8=doctorate). w2014 cfps2014edu; 2010 derived counterpart not in this release's adult file under a verified name."
     type: ordinal
-    note: "Coding assumed from the CFPS codebook convention (no value labels in the 2014 SAS release); verify against the 2014 Stata variant when downloaded. NOT comparable to other surveys' ladders without a crosswalk — treat as within-survey."
+    note: "VERIFIED 2026-08-09: 1=文盲/半文盲, 2=小学, 3=初中, 4=高中/中专/技校/职高, 5=大专, 6=大学本科, 7=硕士, 8=博士. Two extra codes declared below: 0=没数据 and 9=不必读书 — ⚠️ 9 has n=1,943 REAL adults (5%); its semantics are unclear and dropped from the ordinal ladder pending investigation. NOT comparable to other surveys' ladders without a crosswalk — treat as within-survey."
     source:
       w2010: null
       w2014: cfps2014edu
@@ -215,14 +216,24 @@ variables:
         method: identity
     qc:
       valid_range: [1, 8]
+      coverage_missing_codes: [0, 9]
 
   - id: ccp_member
     concept: demographics
-    description: "Communist Party member (w2014 CFPS_PARTY, assumed 1=member 0=not; 2010 has no single member flag in the adult file — qa701 join-year covers members only)"
+    description: "Communist Party member — NO USABLE FULL-SAMPLE SOURCE in w2010/w2014 adult files; both waves null. See note."
     type: binary
+    note: >
+      ⚠️ TRAP, verified 2026-08-09: cfps_party's VARIABLE label says
+      是否为中国共产党党员 but its VALUE labels are 0=数据缺失/1=数据正常 and
+      ZERO of its 2,205 code-1 cases have a valid join year (while 436 code-0
+      cases do) — it is NOT a membership measure; never use it. pn401a
+      (是否中共党员, 0/5=no 1=yes 79=n/a) is real but skip-routed to ~1,055
+      respondents (proxy module). Until a full-sample source is found (check
+      famconf or the 2018+ person files), derive membership at analysis time
+      from ccp_join_year non-missing (members-only coverage, n≈500 in 2014).
     source:
       w2010: null
-      w2014: CFPS_PARTY
+      w2014: null
     missing:
       use_convention: treat_as_na
     harmonize:
@@ -237,7 +248,7 @@ variables:
     type: continuous
     source:
       w2010: qa701
-      w2014: QN402
+      w2014: qn402
     missing:
       use_convention: treat_as_na
     harmonize:

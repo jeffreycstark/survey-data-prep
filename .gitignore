@@ -270,4 +270,4 @@ outputs/oecd_dac/
 *.sas7bdat
 *.sas7bcat
 # CFPS raw archives (100M+; contents extracted to unzipped/, data files ignored above)
-data/cfps/raw/*.rar
+data/cfps/raw/**/*.rar
