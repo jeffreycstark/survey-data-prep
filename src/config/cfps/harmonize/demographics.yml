@@ -250,7 +250,7 @@ variables:
     concept: demographics
     description: "Highest completed education level (CFPS 8-rung ladder: 1=illiterate/semi-literate ... 8=doctorate). w2014 cfps2014edu; 2010 derived counterpart not in this release's adult file under a verified name."
     type: ordinal
-    note: "VERIFIED 2026-08-09: 1=文盲/半文盲, 2=小学, 3=初中, 4=高中/中专/技校/职高, 5=大专, 6=大学本科, 7=硕士, 8=博士. Two extra codes declared below: 0=没数据 and 9=不必读书 — ⚠️ 9 has n=1,943 REAL adults (5%); its semantics are unclear and dropped from the ordinal ladder pending investigation. NOT comparable to other surveys' ladders without a crosswalk — treat as within-survey."
+    note: "VERIFIED 2026-08-09: 1=文盲/半文盲, 2=小学, 3=初中, 4=高中/中专/技校/职高, 5=大专, 6=大学本科, 7=硕士, 8=博士. Code 9=不必读书 ('no need for schooling') is FOLDED INTO 1: empirically ALL its n=1,943 (2014) carriers have exactly 0 years of education, mean age 59.6, 74% female, 66% rural — the never-schooled profile, sitting at or below category 1 (whose members have 0-4+ years). Interpretation confirmed by Jeff 2026-08-09. 0=没数据 stays a declared drop. NOT comparable to other surveys' ladders without a crosswalk — treat as within-survey."
     source:
       w2010: null
       w2014: cfps2014edu
@@ -262,10 +262,12 @@ variables:
       use_convention: treat_as_na
     harmonize:
       default:
-        method: identity
+        method: recode
+        mapping: {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 1}
+        note: "9 -> 1: never-schooled folds into the ladder floor (see note)."
     qc:
       valid_range: [1, 8]
-      coverage_missing_codes: [0, 9]
+      coverage_missing_codes: [0]
 
   - id: ccp_member
     concept: demographics

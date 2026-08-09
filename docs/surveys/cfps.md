@@ -60,8 +60,10 @@ were wrong, all fixed same day:
   join year. `pn401a` is real but skip-routed (n≈1,055).
   Full-sample membership exists only in w2016 (`qn4001`); see the spec note
   for the 2018+ new-respondent-only routing.
-- Also: `cfps2014edu` code 9 = 不必读书 covers **1,943 real adults** —
-  declared-dropped from the 1–8 ladder pending investigation.
+- Also: `cfps20XXedu` code 9 = 不必读书 ("no need for schooling") is **folded
+  into ladder floor 1**: all 1,943 carriers (2014) have exactly 0 education
+  years, mean age ~60, 74% female, 66% rural — the never-schooled profile
+  (interpretation Jeff's, verified empirically 2026-08-09).
 
 Pipeline: `src/r/data_prep_modules/cfps/{0_load_waves,2_harmonize_all,99_create_final_dataset}.R`;
 specs in `src/config/cfps/harmonize/{demographics,politics}.yml` (37 variables).
