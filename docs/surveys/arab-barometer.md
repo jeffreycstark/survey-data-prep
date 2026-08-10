@@ -11,3 +11,5 @@ The `src/r/data_prep_modules/arab-barometer/` directory contains in-progress har
 ## Verbatim dictionary
 
 `data/arab-barometer/questionnaire_text/arab_barometer_verbatim_items.csv` — Complete (44 vars, 6 waves, 264 rows; W1 PDF + SPSS labels).
+
+**Row identity:** `row_uid` (bank-wide); native_id W5-W8 only (W1-W4 releases carry no ID; W8 has a 2,400-row ID=0 block, kept verbatim and exempted).

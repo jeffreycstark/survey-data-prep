@@ -49,3 +49,5 @@ All three Korean unification series are now harmonized. **Direction conventions*
 - KGSS `pol_unification`: higher=LESS pro-unification (OPPOSITE direction; reverse before comparing)
 
 All three peak in 2018 (Pyongyang summit) and decline post-2020. IPUS's 2007 baseline (which both KGSS and KINU lack) shows that 2007 had the highest pro-unification of the entire 18-year period — useful contextual baseline.
+
+**Row identity:** `row_uid` (bank-wide); native key `wave+native_id` (unique, verified).

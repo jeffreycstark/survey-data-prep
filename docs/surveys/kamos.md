@@ -47,3 +47,5 @@ Wave keys: w1=2016, w4=2019.
 - No interview date variable in either wave; year assigned statically.
 - Missing-value conventions: 98 and 99 treated as NA for age; other variables per-spec.
 - Gender coding corrected via `recode_kamos_gender_w1()` (W1 had 1=female,2=male; standardized to 1=male,2=female).
+
+**Row identity:** `row_uid` (bank-wide); native key `wave+native_id` (unique in the four loaded annual files).

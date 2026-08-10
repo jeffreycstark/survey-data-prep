@@ -104,3 +104,5 @@ codes the standard ordinal `treat_as_na` set would have deleted.
 - R1 dem_satisfaction excluded (5-point scale, incompatible with R2-R9 4-point).
 - Country codes change meaning every round — use value labels, not numeric codes.
 - Custom recode functions in `src/r/utils/recoding.R`: `recode_afro_r1_trust`, `recode_afro_dem_sat`, `recode_afro_dem_pref_r1`, `recode_afro_dem_pref_r2_r8`.
+
+**Row identity:** `row_uid` (bank-wide); native `respno` R2+ (none in R1); key `wave+country+respno`, unique except 24 exempted R8 release duplicates.

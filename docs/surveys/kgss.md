@@ -60,3 +60,5 @@ Wave column: `wave` = calendar year integer (2003, 2004, …, 2025), **not** a s
 - **No interview date variable** exists in the cumulative file; year is the only temporal identifier.
 - ⚠️ **`party_id` / `party_pref` caveats**: NOMINAL raw codes that DIFFER per wave (Korean party system reshuffles regularly — Saenuri dissolved 2017, 조국혁신당 emerged 2024). Use within a single wave or construct per-wave camp mappings for longitudinal analysis.
 - **Widest-coverage variables by module**: `gov_spend_*` items (7 waves: 2006/2014/2016/2018/2021/2023/2025); `pol_satisfaction`, `econ_hh_satisfaction`, `econ_hh_outlook` (10+ waves each); `wb_financial_satisfaction` (14 waves: best wellbeing time series). Social inequality items are ISSP-rotation (3–4 waves) — sparse by design.
+
+**Row identity:** `row_uid` (bank-wide); native key `year+respid` (unique, verified).

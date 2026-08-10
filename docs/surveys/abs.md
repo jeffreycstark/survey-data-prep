@@ -77,3 +77,5 @@ Rules of thumb:
 
 The verbatim dictionary's W5 rows show the real 6-pt card; the 4-pt items are
 exempted in `src/config/_audit/bin_width_exemptions.yml` with pointers here.
+
+**Row identity:** every row carries the bank-wide `row_uid` (see CLAUDE.md); `country+wave+idnumber` is the native key, unique except 2 exempted HK W5 release duplicates — never join on fewer columns.

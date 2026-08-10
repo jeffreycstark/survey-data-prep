@@ -40,3 +40,5 @@ Country identifier: `country` (3-letter ISO alpha codes, e.g. "USA", "CHN", "DEU
 ## Verbatim dictionary
 
 `data/wvs/questionnaire_text/wvs_verbatim_items.csv` — Complete (79 vars, 7 waves, 553 rows).
+
+**Row identity:** `row_uid` (bank-wide); native `s007` populated w1/w2/w5 only (w3's raw S007 is dup-ridden and deliberately unmapped).

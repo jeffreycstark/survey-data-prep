@@ -10,7 +10,7 @@ This file records audit findings that need substantive judgment from Jeff. The a
 |---|---|
 | 🔴 Engine fault-injection hazards | 5 |
 | 🔴 ABS `int_year` gap — W1 fixed, **W2 open** (new 2026-08-09) | 1 |
-| 🔴 ABS `idnumber` — root cause fixed; **2 HK W5 duplicates need a decision** | 1 |
+| ~~ABS `idnumber`~~ — resolved 2026-08-10 (row_uid everywhere; HK dups kept+exempted) | 0 |
 | 🔴 Residuals carried from resolved entries | 2 |
 | 🟡 Check D binning seams | 8 |
 | 📋 Residual systematic findings | 5 |
@@ -99,7 +99,7 @@ Original finding below for the record.
 
 ---
 
-### ~~NEW 2026-08-09~~ **MOSTLY RESOLVED 2026-08-09**: ABS `idnumber` — 357 real IDs were being deleted as missing codes
+### ~~NEW 2026-08-09~~ **FULLY RESOLVED 2026-08-10**: ABS `idnumber` — 357 real IDs were being deleted as missing codes
 
 **ROOT CAUSE FOUND AND FIXED.** The 357 NA `idnumber`s were not a data gap — they were real IDs
 destroyed by a convention collision, in two layers:
@@ -119,21 +119,25 @@ destroyed by a convention collision, in two layers:
 **Result after re-harmonize:** NA `idnumber` **357 → 0**; duplicate keys on country+wave+idnumber
 **302 → 2**; ABS invariant errors 2 → 1.
 
-**STILL OPEN — needs Jeff's decision.** Two Hong Kong W5 keys remain duplicated: `704273201`
-(two rows identical across **all 308 columns**) and `704273901` (identical in 307 of 308, differing
-only in the **weight factor**, 1.467 vs 1.394). Both are present in the raw ABS W5 release, not
-created by our merge. Byte-identical answers to 300+ questions rule out two distinct respondents, so
-these are duplicated records; the differing weight suggests duplication preceded weighting. **Not
-deleted** — dropping respondent rows changes the sample and the weight totals, which is Jeff's call.
-Options: drop one of each pair, keep and document, or query ABS.
+**RESOLVED 2026-08-10 (Jeff's call): keep and document.** The two Hong Kong W5 duplicate pairs
+(`704273201` identical in all 308 columns; `704273901` identical in 307 of 308, differing only in
+weight, 1.467 vs 1.394 — both in ABS's own release) are KEPT, recorded as a reasoned exemption in
+`src/config/_audit/key_uniqueness_exemptions.yml`, and enforced with a surplus budget of exactly 2 —
+if the anomaly ever grows, the key-uniqueness check goes red.
 
 Plain-English writeup for Jeff: `research-vault/ABS idnumber bug — why respondent IDs were
 disappearing (2026-08-09).md`.
 
-**Two framework questions this raises:**
-1. Should the harmonizer mint a synthetic `row_uid`, so downstream code never needs `idnumber`?
-2. Should an invariant assert uniqueness of the declared key? Nothing in the audit stack does, which
-   is why 357 destroyed IDs and 302 collapsed keys were invisible until Jeff asked.
+**Both framework questions RESOLVED 2026-08-10** (design:
+`docs/superpowers/specs/2026-08-10-row-identifiers-design.md`):
+1. YES — the engine now mints `row_uid` (`<survey>.<wave>.<position>`, stable across rebuilds while
+   raw file + loader are unchanged) in every harmonized survey file, hard-asserted by every
+   99-script before saving. Native IDs (incl. a new nine-survey `identifiers.yml` layer:
+   kgss respid, afro respno, lbs numentre, wvs s007, native_id elsewhere) are data columns, never
+   the backbone — every candidate native key was measured first, and only 5 of 12 surveys were
+   clean (evidence table in the design doc).
+2. YES — `check_key_uniqueness.R` asserts row_uid (hard) + declared native keys
+   (`key_declarations.yml`) against per-survey exemption budgets; wired into run_all.
 
 Original finding below for the record.
 

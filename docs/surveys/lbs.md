@@ -68,3 +68,5 @@ same construct. `incumbent_ideology` (the extension moderator) is hand-coded in 
 - 2024 has Spanish labels only (no English translation available).
 - Trust variables need `safe_reverse_4pt` (raw 1=A lot → 4=No trust).
 - See `src/config/lbs/harmonize/LBS_VARIABLE_REVIEW.md` for WVS→LBS mappability assessment.
+
+**Row identity:** `row_uid` (bank-wide); native `numentre` 1997+ only (none 1995/96; 2,491 NA in 2004 raw); key `wave+country+numentre`.

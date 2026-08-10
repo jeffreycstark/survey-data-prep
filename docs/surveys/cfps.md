@@ -104,3 +104,5 @@ Required before papers cite item wording (repo standard). Questionnaires for
 per the repo *.pdf rule); 2020/2022 questionnaires are not deposited at PKU —
 use the .dta variable labels + the 2018 instrument as reference for those.
 Chinese-first extraction, like KIPA/KGSS.
+
+**Row identity:** `row_uid` (bank-wide); native panel key `wave+pid` (unique, verified).

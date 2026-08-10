@@ -52,3 +52,5 @@ Wave keys: w2014, w2015, w2016, w2017, w2018, w2019a, w2019b, w2020a, w2020b, w2
 
 - Missing-value conventions: 9=n/a in 1–5 / 1–4 / 1–7 scales (per-variable handling); 99=n/a in 0–10 / 1–9 scales; 999=n/a in 0–100 thermometers.
 - **KINU vs KGSS for unification analysis**: KINU `uni_necessity` (higher=pro-unification) and KGSS `pol_unification` (lower=pro-unification, OPPOSITE direction; reverse one before comparing). Both peak in 2018; KINU's biannual 2019–2021 fielding localizes the post-Pyongyang-summit decline more precisely than KGSS's 2018→2021 gap.
+
+**Row identity:** `row_uid` (bank-wide); native key `wave+native_id` (unique, verified).

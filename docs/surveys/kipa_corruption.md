@@ -58,3 +58,5 @@ Semantic content is broadly stable across the naming shift, but the Kim Young-ra
 ## Errata
 
 The English SPSS labels mistranslate 사법부 (judiciary) as "legislature". Korean-label matching is the correct path; document in any paper using these data.
+
+**Row identity:** `row_uid` (bank-wide); native_id per year except 2013-2015 (absent in raw); 74 exempted 2019 release duplicates.
