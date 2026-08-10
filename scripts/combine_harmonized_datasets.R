@@ -149,7 +149,7 @@ for (wave in c("w1", "w2", "w3", "w4", "w5", "w6")) {
     concept_data <- harmonized_data[[concept]]
     
     for (var_id in names(concept_data)) {
-      if (wave in names(concept_data[[var_id]])) {
+      if (wave %in% names(concept_data[[var_id]])) {
         col_name <- paste(concept, var_id, sep = "_")
         wave_columns[[col_name]] <- concept_data[[var_id]][[wave]]
       }

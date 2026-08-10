@@ -19,15 +19,19 @@
 #   1  at least one file failed to parse
 
 args <- commandArgs(trailingOnly = TRUE)
-root <- if (length(args) >= 1L) args[[1L]] else "src/r"
+# Default to BOTH R trees. `scripts/` sat outside the gate, which is how
+# scripts/combine_harmonized_datasets.R shipped with `if (wave in names(...))`
+# — Python syntax that has never parsed — without anything noticing.
+roots <- if (length(args) >= 1L) args else c("src/r", "scripts")
+roots <- roots[dir.exists(roots)]
 
-if (!dir.exists(root)) {
-  cat(sprintf("check_parse: no such directory: %s\n", root))
+if (length(roots) == 0L) {
+  cat("check_parse: no such directory\n")
   quit(status = 1L)
 }
 
-files <- list.files(root, pattern = "[.][Rr]$", recursive = TRUE,
-                    full.names = TRUE)
+files <- unlist(lapply(roots, list.files, pattern = "[.][Rr]$",
+                       recursive = TRUE, full.names = TRUE))
 
 bad <- character(0)
 for (f in files) {
@@ -42,6 +46,6 @@ for (f in files) {
 }
 
 cat(sprintf("parsed %d R files under %s, %d failures\n",
-            length(files), root, length(bad)))
+            length(files), paste(roots, collapse = " + "), length(bad)))
 
 quit(status = if (length(bad)) 1L else 0L)

@@ -689,8 +689,12 @@ check_recoding_functions <- function(spec, registry_path = NULL) {
   # Wave keys NOT to treat as wave-rules at the top level of `harmonize`
   reserved <- c("default", "by_wave", "exceptions")
 
-  for (var_id in names(spec$variables)) {
-    var_spec <- spec$variables[[var_id]]
+  # `variables:` is a YAML *array* in every production spec, so names() is NULL
+  # and this loop silently never executed — the fn pre-flight was a no-op and
+  # typo'd `fn:` values reached the engine. Index positionally; the named-map
+  # form still works because seq_along() covers both.
+  for (i in seq_along(spec$variables)) {
+    var_spec <- spec$variables[[i]]
     h <- var_spec$harmonize
     if (is.null(h)) next
 
