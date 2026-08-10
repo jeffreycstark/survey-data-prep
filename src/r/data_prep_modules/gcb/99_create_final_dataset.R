@@ -12,6 +12,9 @@ library(dplyr)
 library(arrow)
 
 source(here::here("src", "r", "data_prep_modules", "gcb", "0_load_waves.R"))
+source(here::here("src", "r", "utils", "keys.R"))
+source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n", strrep("=", 70), "\n", sep = "")
 cat("CREATING FINAL DATASET: gcb_harmonized\n")
@@ -36,11 +39,13 @@ for (f in wave_files) {
 }
 
 gcb_harmonized <- bind_rows(pieces) %>%
-  relocate(wave, region, row_id)
+  relocate(wave, region, row_uid)
 
 out_rds <- here("data", "processed", "gcb_harmonized.rds")
 out_pq  <- here("data", "processed", "gcb_harmonized.parquet")
 dir.create(dirname(out_rds), showWarnings = FALSE, recursive = TRUE)
+assert_row_uid(gcb_harmonized, "gcb")
+
 saveRDS(gcb_harmonized, out_rds)
 arrow::write_parquet(gcb_harmonized, out_pq)
 
@@ -61,5 +66,16 @@ print(table(gcb_harmonized$wave))
 # REPORT-ONLY by default: prints findings, never stops this script. Set
 # HARMONIZE_AUDIT_GATE=block to make label-reconciliation errors fail the
 # pipeline (flip once the label-recon backlog is cleared).
+# Run manifest — closes the long-standing "gcb = SKIP (no manifest)"
+# freshness gap now that gcb is an active, key-checked survey.
+write_manifest(
+  survey      = "gcb",
+  inputs      = c(here("data", "gcb", "raw", "asia2020", "GCB_Edition10_Asia_2020.sav")),
+  specs       = list_survey_specs("gcb"),
+  outputs     = c(out_rds, out_pq),
+  output_path = here("outputs", "gcb", "manifest.json")
+)
+cat("Manifest written: ", here("outputs", "gcb", "manifest.json"), "\n", sep = "")
+
 source(here::here("src", "r", "audit", "99_post_harmonize_gate.R"))
 run_post_harmonize_gate("gcb", quiet_checks = TRUE)

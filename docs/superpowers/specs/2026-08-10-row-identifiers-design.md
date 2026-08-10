@@ -128,3 +128,15 @@ semantics), and any row deletion.
    drift is a new finding, not noise.
 4. Stability proof: rebuild one survey twice; `row_uid` byte-identical.
 5. `make audit-specs`, local `run_all`, and all fault-injection tests green.
+
+## Post-rebuild evidence corrections (2026-08-10, exact-match verification)
+
+The §6 exact-match rule surfaced two corrections to the evidence table, both
+raw-verified as release-file artifacts and folded into the exemptions:
+
+- **kipa_corruption: 75 surplus, not 74** — the cumulative 2004-2007 release
+  carries one additional duplicate id inside its 2006 block.
+- **lbs: 2,920 surplus, not 0** — `numentre` is not a within-country key in
+  1997/1998/2000/2001/2002/2006/2010 (1998 alone: 2,841 surplus in raw). The
+  original sample (2003, 2024) hit only clean years. numentre remains a
+  traceability column; it is a usable key only in the fifteen clean years.

@@ -235,6 +235,14 @@ for (wn in names(wave_list)) {
 }
 
 cat("\nCombining waves...\n")
+# respno arrives numeric from the merged R2-R9 releases but character from
+# the R10 per-country stacker (its cross-country type-mismatch coercion);
+# standardize to character before binding — an ID is a label, not a quantity.
+wave_list <- lapply(wave_list, function(df) {
+  if ("respno" %in% names(df)) df$respno <- as.character(df$respno)
+  df
+})
+
 afro_combined <- bind_rows(wave_list)
 
 # Convert wave column from character ("w9") to numeric (9)

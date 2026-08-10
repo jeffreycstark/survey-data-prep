@@ -14,7 +14,7 @@ missing_conventions:
 variables:
   - id: numentre
     concept: identifiers
-    description: "Questionnaire number within country-year (raw numentre/NUMENTRE; year+idenpa+numentre unique where present, verified). y1995/y1996 null — those releases carry no ID variables. 2004 has 2,491 NA numentre in raw; kept as NA (IDs have no missing codes, these are genuinely absent)."
+    description: "Questionnaire number within country-year (raw numentre/NUMENTRE; year+idenpa+numentre unique where present, verified). y1995/y1996 null — those releases carry no ID variables. 2004 has 2,491 NA numentre in raw; kept as NA (IDs have no missing codes, these are genuinely absent). ⚠️ NOT unique within country-year in 1997/1998/2000/2001/2002/2006/2010 (2,920 surplus rows, raw-verified for 1998; see key_uniqueness_exemptions.yml) — a traceability column, reliable as a key only in the other fifteen years."
     type: nominal
     source:
       y1995: null

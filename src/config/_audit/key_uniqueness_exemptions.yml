@@ -25,10 +25,12 @@ exemptions:
       R8 merged release carries 24 duplicated round+country+respno rows.
       Release-file artifact; kept and documented.
   - survey: kipa_corruption
-    max_dup_rows: 74
+    max_dup_rows: 75
     reason: >
-      The 2019 release file (handle 24742) duplicates 74 id values.
-      Release-file artifact; kept and documented.
+      The 2019 release file (handle 24742) duplicates 74 id values, and the
+      cumulative 2004-2007 release carries 1 duplicate id within its 2006
+      block (raw-verified 2026-08-10). Release-file artifacts; kept and
+      documented.
   - survey: arab-barometer
     max_dup_rows: 2402
     reason: >
@@ -37,6 +39,17 @@ exemptions:
       verbatim (an ID variable has no missing codes, and inventing IDs
       would be fabrication). The zero block collapses to 2,399 surplus
       rows; + 3 from W5 = 2,402.
+  - survey: lbs
+    max_dup_rows: 2920
+    reason: >
+      numentre is NOT a within-country respondent key in seven years:
+      1997, 1998, 2000, 2001, 2002, 2006 and 2010 carry 2,920 surplus
+      wave+country+numentre rows in total (1998 alone: 2,841, verified in
+      the raw release — the questionnaire numbering repeats across
+      subsamples). Discovered by the post-rebuild exact-match verification
+      2026-08-10; the initial evidence sample (2003, 2024) hit only clean
+      years. numentre stays a traceability column; treat it as a key only
+      in the fifteen clean years.
   - survey: wvs
     max_dup_rows: 0
     reason: >

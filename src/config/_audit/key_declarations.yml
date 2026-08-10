@@ -36,7 +36,7 @@ declarations:
     note: "respno null in R1; R8's 24 release duplicates exempted"
   - survey: lbs
     key: [wave, country, numentre]
-    note: "numentre null 1995/96 and 2,491 NA in 2004 raw; complete rows only"
+    note: "numentre null 1995/96 and 2,491 NA in 2004 raw; NOT unique within country-year in 7 years (2,920 surplus, exempted) — a questionnaire number, not a respondent key, there"
   - survey: wvs
     key: [wave, country, s007]
     note: "s007 populated w1/w2/w5 only (w3 deliberately unmapped — dup-ridden)"
@@ -44,5 +44,5 @@ declarations:
     key: [wave, country, native_id]
     note: "null w1-w4; W5's 3 dups and W8's 2,400-row ID=0 block exempted"
   - survey: gcb
-    key: [wave, respondent_id]
-    note: "dormant — no processed output yet; the check skips absent files"
+    key: [wave, country, respondent_id]
+    note: "single edition (asia2020); respondent_id is per-country — country belongs in the key (verified unique)"
