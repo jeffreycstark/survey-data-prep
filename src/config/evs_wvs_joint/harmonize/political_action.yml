@@ -1,0 +1,118 @@
+# Joint EVS/WVS 2017-2022 — political action repertoire + strong-leader item.
+# ⚠️ DELIBERATE DIRECTION EXCEPTION: the four action_* items KEEP the native
+# 3-level ordinal 1=Have done, 2=Might do, 3=Would never do — i.e. HIGHER =
+# MORE WITHDRAWAL, opposite the bank's usual higher-is-more-participation
+# reading. This is the paper design (withdrawal measured dispositionally by
+# the would-never category; have-done is the secondary check); reversing
+# would destroy the reading the analysis leads with. Documented here and in
+# docs/surveys/evs-wvs-joint.md.
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "Joint EVS/WVS negative missing scheme: -1 dk, -2 no answer, -3 not applicable, -4 not asked in survey, -5 missing/other. All negative — collision-free with positive scales."
+  no_missing_codes:
+    codes: []
+    description: "Serial IDs have no refused/DK values; every code is real."
+
+variables:
+  - id: action_petition
+    concept: political_action
+    description: "Signing a petition: 1=Have done, 2=Might do, 3=Would never do (higher = withdrawal)"
+    type: ordinal
+    scale:
+      min: 1
+      max: 3
+      labels:
+        1: "Have done"
+        2: "Might do"
+        3: "Would never do"
+
+    source:
+      joint2017_2022: E025
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "petition"
+  - id: action_boycott
+    concept: political_action
+    description: "Joining a boycott: 1=Have done, 2=Might do, 3=Would never do (higher = withdrawal)"
+    type: ordinal
+    source:
+      joint2017_2022: E026
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "boycott"
+  - id: action_demonstration
+    concept: political_action
+    description: "Attending a lawful demonstration: 1=Have done, 2=Might do, 3=Would never do (higher = withdrawal)"
+    type: ordinal
+    source:
+      joint2017_2022: E027
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "demonstrat"
+  - id: action_strike
+    concept: political_action
+    description: "Joining an unofficial strike: 1=Have done, 2=Might do, 3=Would never do (higher = withdrawal)"
+    type: ordinal
+    source:
+      joint2017_2022: E028
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 3]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "strike"
+  - id: dem_strong_leader
+    concept: political_action
+    description: "Strong leader who does not bother with parliament and elections (1-4, higher = MORE approval)"
+    type: ordinal
+    note: "Raw 1=Very good -> 4=Very bad; reversed so higher = more pro-strong-leader."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+
+    source:
+      joint2017_2022: E114
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "strong leader"

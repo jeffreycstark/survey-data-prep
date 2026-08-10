@@ -1,0 +1,61 @@
+{
+  "run_id": "20260810121524-164b",
+  "timestamp_utc": "2026-08-10T05:15:24Z",
+  "git_commit": "0ba675e",
+  "git_dirty": true,
+  "schema_version": 1,
+  "inputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/wvs/raw/evs_wvs_joint/EVS_WVS_Joint_Spss_v5_0.sav",
+      "sha256": "6edb78837bf2c435c246f334ea5fbe116378abc00cb4aa9efafd051c5313b118"
+    }
+  ],
+  "specs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/demographics.yml",
+      "sha256": "15ff9ca47a34314d0b4bdaa3b179b65727ddf2d1e67267a6c26edbd81ea89b3c",
+      "n_variables": 7
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/identifiers.yml",
+      "sha256": "50ff09072ea873ac5eb59bd4e81fce10fd411ddc1fddf529e34a7db6d23a37c9",
+      "n_variables": 7
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/political_action.yml",
+      "sha256": "dcedb35006913d0009635df9629f0f8cde3aec736a5f07dbb4ae2bbf05f20fa4",
+      "n_variables": 5
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/trust.yml",
+      "sha256": "281e0f9aecf6a78efdda280377edcfcfe974292850d433f937686252cf455a76",
+      "n_variables": 5
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.rds",
+      "sha256": "10c9cc35c1b42637df284061f06b7d1b5bd8da858bca3b7bb94788f3597f791d",
+      "n_rows": 156658,
+      "n_cols": 26
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.parquet",
+      "sha256": "3349fce1dc67ee07d5535677ba79f56bde0694297ddb261eb228bc3630135a00",
+      "n_rows": 156658,
+      "n_cols": 26
+    },
+    {
+      "path": "/Users/jeffreystark/Development/Research/survey-data-prep/outputs/evs_wvs_joint/evs_wvs_joint_harmonized.rds",
+      "sha256": "10c9cc35c1b42637df284061f06b7d1b5bd8da858bca3b7bb94788f3597f791d",
+      "n_rows": 156658,
+      "n_cols": 26
+    }
+  ],
+  "engine_versions": {
+    "src/r/harmonize/harmonize.R": "a4fd020b2cf21ac42d67d2bf1227841d8a68a2f69b22a58f81c8ea3162843070",
+    "src/r/utils/recoding.R": "79c6c91c6b77f81c0c8d8f550bd8dd57b768e0c38ecdf23a93b49b5d5e30ad64",
+    "src/r/harmonize/validate_spec.R": "70efdeafa6d65567ac1a9ab1fd5d389e70e62ad5974c92cd9d0d43ea80698ff1",
+    "src/r/utils/validation.R": "9d8f4e77cf730025f9765a299fa66554848d329bf6bb94776fe5c22a066e3d7e"
+  }
+}

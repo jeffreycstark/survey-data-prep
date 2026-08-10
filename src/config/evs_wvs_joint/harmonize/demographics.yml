@@ -1,0 +1,113 @@
+# Joint EVS/WVS 2017-2022 — controls.
+# Country-level controls (V-Dem polyarchy, GDP per capita) are NOT baked in:
+# join at paper time from vdem_harmonized on country(+year) — this file
+# carries the join keys (`country` ISO2 in identifiers.yml, `year`).
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "Joint EVS/WVS negative missing scheme: -1 dk, -2 no answer, -3 not applicable, -4 not asked in survey, -5 missing/other. All negative — collision-free with positive scales."
+  no_missing_codes:
+    codes: []
+    description: "Serial IDs have no refused/DK values; every code is real."
+
+variables:
+  - id: gender
+    concept: demographics
+    description: "Gender (1 = male, 0 = female; raw X001 1=Male 2=Female)"
+    type: binary
+    scale: {min: 0, max: 1, labels: {0: "Female", 1: "Male"}}
+
+    source:
+      joint2017_2022: X001
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: recode
+        mapping: {1: 1, 2: 0}
+    qc:
+      valid_range: [0, 1]
+  - id: age
+    concept: demographics
+    description: "Age in years (X003)"
+    type: continuous
+    source:
+      joint2017_2022: X003
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [15, 110]
+  - id: education_isced
+    concept: demographics
+    description: "Highest education, ISCED 0-8 (0=less than primary ... 8=doctoral; X025A_01). Within-survey ladder; not cross-bank comparable without a crosswalk"
+    type: ordinal
+    source:
+      joint2017_2022: X025A_01
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [0, 8]
+  - id: income_decile
+    concept: demographics
+    description: "Household income step/decile 1-10 (loader-coalesced from study-split X047_WVS7 / X047E_EVS5 — see 0_load_waves.R)"
+    type: ordinal
+    source:
+      joint2017_2022: x047_joint
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]
+  - id: urban_size
+    concept: demographics
+    description: "Town size, 5 categories (1=under 5k ... 5=500k+; size_5c)"
+    type: ordinal
+    source:
+      joint2017_2022: size_5c
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 5]
+  - id: pol_interest
+    concept: demographics
+    description: "Interest in politics (1-4, higher = more interested; raw E023 reversed)"
+    type: ordinal
+    source:
+      joint2017_2022: E023
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "[Ii]nterest"
+  - id: ideology_lr
+    concept: demographics
+    description: "Left-right self-placement 1-10 (higher = right; E033). Highest nonresponse of the set: ~20-29% by study"
+    type: ordinal
+    source:
+      joint2017_2022: E033
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 10]

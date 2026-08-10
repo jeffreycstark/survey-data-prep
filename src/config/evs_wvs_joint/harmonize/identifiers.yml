@@ -1,0 +1,110 @@
+# Joint EVS/WVS 2017-2022 — identifiers, admin, weights.
+# uniqid is fully unique (156,658 of 156,658, verified 2026-08-10) — the
+# cleanest native key in the bank; declared in key_declarations.yml.
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "Joint EVS/WVS negative missing scheme: -1 dk, -2 no answer, -3 not applicable, -4 not asked in survey, -5 missing/other. All negative — collision-free with positive scales."
+  no_missing_codes:
+    codes: []
+    description: "Serial IDs have no refused/DK values; every code is real."
+
+variables:
+  - id: uniqid
+    concept: identifiers
+    description: "Unified respondent ID (fully unique file-wide; native key)"
+    type: nominal
+    source:
+      joint2017_2022: uniqid
+    missing:
+      use_convention: no_missing_codes
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+  - id: country
+    concept: identifiers
+    description: "Country ISO 3166-1 alpha-2 (character; join key for V-Dem/GDP country-year merges together with `year`)"
+    type: nominal
+    source:
+      joint2017_2022: cntry_AN
+    missing:
+      use_convention: no_missing_codes
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+  - id: country_num
+    concept: identifiers
+    description: "Country ISO 3166-1 numeric"
+    type: nominal
+    source:
+      joint2017_2022: cntry
+    missing:
+      use_convention: no_missing_codes
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+  - id: study
+    concept: identifiers
+    description: "Source instrument: 1=EVS, 2=WVS. Keep in every model — several items have study-specific fielding/nonresponse profiles"
+    type: nominal
+    source:
+      joint2017_2022: study
+    missing:
+      use_convention: no_missing_codes
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [1, 2]
+  - id: year
+    concept: identifiers
+    description: "Fieldwork year (2017-2023; per respondent, NOT constant per country)"
+    type: continuous
+    source:
+      joint2017_2022: year
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      valid_range: [2017, 2023]
+  - id: weight
+    concept: identifiers
+    description: "Within-country equilibrated weight (gwght)"
+    type: continuous
+    source:
+      joint2017_2022: gwght
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true
+  - id: weight_pop
+    concept: identifiers
+    description: "Population-size weight (pwght; multiply with weight for pooled cross-country analysis)"
+    type: continuous
+    source:
+      joint2017_2022: pwght
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true

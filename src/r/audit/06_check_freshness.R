@@ -72,7 +72,7 @@ source(here::here("src", "r", "utils", "spec_discovery.R"))
   # YAML-spec surveys (mirror .SUPPORTED_SURVEYS)
   "abs", "wvs", "lbs", "afro", "arab-barometer",
   "kamos", "kgss", "kipa_corruption", "kinu", "ipus", "gcb", "klosa",
-  "cfps",
+  "cfps", "evs_wvs_joint",
   # Non-survey modules: freshness-only (see exemptions YAML)
   "vdem", "marpor", "unga", "unsc", "oecd_dac"
 )
