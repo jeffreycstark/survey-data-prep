@@ -197,6 +197,17 @@ harmonize_variable <- function(
       ))
     }
 
+    # qc.treat_as_na is in harmonize_v1.schema.json and documented as
+    # "Engine appends these to the convention codes" (the KINU pattern), but
+    # nothing read it. 47 variables relied on it; they were rescued only by the
+    # valid_range gate, which logs them as out-of-range instead of missing.
+    if (!is.null(var_spec$qc$treat_as_na)) {
+      missing_codes <- unique(c(
+        missing_codes,
+        as.numeric(var_spec$qc$treat_as_na)
+      ))
+    }
+
     if (!is.character(x)) {
       x <- apply_missing(x, missing_codes)
     }
@@ -205,7 +216,16 @@ harmonize_variable <- function(
     wave_rule <- resolve_wave_rule(var_spec, wave_name)
 
     # ---- apply harmonization method ----
-    if (wave_rule$method == "identity") {
+    # `method: null` is valid per the schema ("do nothing / not mapped"), but
+    # NULL == "identity" is logical(0) and `if (logical(0))` is an error, so the
+    # variable used to die and get swallowed by the caller's tryCatch. Treat it
+    # as an unmapped wave, exactly like a null source.
+    if (is.null(wave_rule$method)) {
+
+      out[[wave_name]] <- rep(NA_real_, nrow(df))
+      next
+
+    } else if (wave_rule$method == "identity") {
 
       # No transformation
       x_harm <- x
@@ -374,9 +394,13 @@ harmonize_all <- function(spec, waves, silent = FALSE) {
 
   results <- list()
 
-  var_ids <- names(spec$variables)
+  # `variables:` is a YAML array in every production spec, so names() is NULL
+  # and this loop returned an empty list without erroring. Take the id from the
+  # entry itself; the legacy named-map form keeps working via the %||%.
+  for (i in seq_along(spec$variables)) {
 
-  for (var_id in var_ids) {
+    var_spec <- spec$variables[[i]]
+    var_id <- var_spec$id %||% names(spec$variables)[i]
 
     if (!silent) {
       message(sprintf("Harmonizing: %s", var_id))
@@ -384,7 +408,7 @@ harmonize_all <- function(spec, waves, silent = FALSE) {
 
     tryCatch({
       results[[var_id]] <- harmonize_variable(
-        var_spec = spec$variables[[var_id]],
+        var_spec = var_spec,
         waves = waves,
         missing_conventions = spec$missing_conventions
       )

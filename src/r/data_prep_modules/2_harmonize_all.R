@@ -36,7 +36,10 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
   # Load and validate spec
   spec <- yaml::read_yaml(spec_path)
 
-  tryCatch({
+  # `return(NULL)` inside an error handler returns from the *handler*, not from
+  # harmonize_spec(), so a spec that failed validation was warned about and then
+  # harmonized anyway. Capture the outcome and gate on it.
+  spec_ok <- tryCatch({
     # B4: validate_spec_full() runs the JSON Schema check
     # (validate_harmonize_spec) AND the cross-reference checks
     # (validate_cross_references): use_convention resolution, fn-in-registry,
@@ -44,10 +47,15 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
     # across specs in the same survey) is opt-in via all_specs_in_survey;
     # wiring it through harmonize_all_specs() is a future enhancement.
     validate_spec_full(spec)
+    TRUE
   }, error = function(e) {
     warning(sprintf("Validation failed for %s: %s", spec_name, e$message))
-    return(NULL)
+    FALSE
   })
+
+  if (!isTRUE(spec_ok)) {
+    return(NULL)
+  }
 
   # Get missing conventions
   missing_conventions <- spec$missing_conventions
