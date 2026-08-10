@@ -16,6 +16,7 @@ library(dplyr)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -80,8 +81,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-kgss_harmonized <- kgss_combined %>%
-  select(-row_id)
+kgss_harmonized <- kgss_combined
 
 # Zap any remaining haven labels
 kgss_harmonized <- kgss_harmonized %>%
@@ -137,6 +137,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "kgss_harmonized.rds")
 parquet_path <- here("data", "processed", "kgss_harmonized.parquet")
+
+assert_row_uid(kgss_harmonized, "kgss")
 
 saveRDS(kgss_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

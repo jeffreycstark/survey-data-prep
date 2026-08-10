@@ -15,6 +15,7 @@ library(dplyr)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -57,8 +58,7 @@ for (f in wave_files) {
 # ==============================================================================
 
 cat("\nCombining waves...\n")
-klosa <- bind_rows(wave_list) %>%
-  select(-row_id)
+klosa <- bind_rows(wave_list)
 
 cat(sprintf("  Combined: %s person-wave rows, %d columns\n",
             format(nrow(klosa), big.mark = ","), ncol(klosa)))
@@ -146,6 +146,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "klosa_harmonized.rds")
 parquet_path <- here("data", "processed", "klosa_harmonized.parquet")
+
+assert_row_uid(klosa, "klosa")
 
 saveRDS(klosa, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

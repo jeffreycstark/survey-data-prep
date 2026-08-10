@@ -13,6 +13,7 @@ library(dplyr)
 library(haven)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -109,6 +110,8 @@ print(wave_summary)
 
 # Save final dataset
 output_file <- here("data", "processed", "abs_harmonized.rds")
+assert_row_uid(abs_econdev_authpref, "abs")
+
 saveRDS(abs_econdev_authpref, output_file)
 
 cat("\n=== FINAL DATASET SAVED ===\n")
@@ -119,7 +122,7 @@ cat("Waves:", paste(unique(abs_econdev_authpref$wave), collapse = ", "), "\n")
 
 # List variables
 cat("\nVariables:\n")
-var_names <- setdiff(names(abs_econdev_authpref), c("wave", "row_id"))
+var_names <- setdiff(names(abs_econdev_authpref), c("wave", "row_uid"))
 cat(paste(" ", var_names, collapse = "\n"), "\n")
 
 cat("\n", paste(rep("=", 60), collapse = ""), "\n", sep = "")

@@ -9,6 +9,7 @@ library(arrow)
 
 source(here::here("src", "r", "data_prep_modules", "kipa_corruption", "0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -50,7 +51,7 @@ combined <- combined %>%
 cat(sprintf("  Combined: %s rows, %d columns\n",
             format(nrow(combined), big.mark = ","), ncol(combined)))
 
-kipa_corruption_harmonized <- combined %>% select(-row_id)
+kipa_corruption_harmonized <- combined
 
 # Zap any remaining haven labels
 kipa_corruption_harmonized <- kipa_corruption_harmonized %>%
@@ -83,6 +84,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "kipa_corruption_harmonized.rds")
 parquet_path <- here("data", "processed", "kipa_corruption_harmonized.parquet")
+
+assert_row_uid(kipa_corruption_harmonized, "kipa_corruption")
 
 saveRDS(kipa_corruption_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

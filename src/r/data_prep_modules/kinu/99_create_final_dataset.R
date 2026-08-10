@@ -20,6 +20,7 @@ library(arrow)
 
 source(here("src", "r", "data_prep_modules", "kinu", "0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -86,9 +87,6 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # ==============================================================================
 
 kinu_harmonized <- kinu_combined
-if ("row_id" %in% names(kinu_harmonized)) {
-  kinu_harmonized <- kinu_harmonized %>% select(-row_id)
-}
 
 # Zap any remaining haven labels
 kinu_harmonized <- kinu_harmonized %>%
@@ -130,6 +128,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "kinu_harmonized.rds")
 parquet_path <- here("data", "processed", "kinu_harmonized.parquet")
+
+assert_row_uid(kinu_harmonized, "kinu")
 
 saveRDS(kinu_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

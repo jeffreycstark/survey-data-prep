@@ -25,6 +25,7 @@ library(dplyr)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -101,8 +102,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-kamos_harmonized <- kamos_combined %>%
-  select(-row_id)
+kamos_harmonized <- kamos_combined
 
 # Zap any remaining haven labels
 kamos_harmonized <- kamos_harmonized %>%
@@ -142,6 +142,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "kamos_harmonized.rds")
 parquet_path <- here("data", "processed", "kamos_harmonized.parquet")
+
+assert_row_uid(kamos_harmonized, "kamos")
 
 saveRDS(kamos_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

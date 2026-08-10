@@ -12,6 +12,7 @@ library(arrow)
 
 source(here::here("src", "r", "data_prep_modules", "ipus", "0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -56,9 +57,6 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
             format(nrow(ipus_combined), big.mark = ","), ncol(ipus_combined)))
 
 ipus_harmonized <- ipus_combined
-if ("row_id" %in% names(ipus_harmonized)) {
-  ipus_harmonized <- ipus_harmonized %>% select(-row_id)
-}
 
 ipus_harmonized <- ipus_harmonized %>%
   mutate(across(where(~ inherits(.x, "haven_labelled")),
@@ -87,6 +85,8 @@ cat(strrep("=", 70), "\n\n")
 dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 rds_path     <- here("data", "processed", "ipus_harmonized.rds")
 parquet_path <- here("data", "processed", "ipus_harmonized.parquet")
+
+assert_row_uid(ipus_harmonized, "ipus")
 
 saveRDS(ipus_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

@@ -13,6 +13,7 @@ library(haven)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -238,8 +239,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-ab_harmonized <- ab_combined %>%
-  select(-row_id)
+ab_harmonized <- ab_combined
 
 # Zap any remaining haven labels
 ab_harmonized <- ab_harmonized %>%
@@ -281,6 +281,8 @@ cat(strrep("=", 70), "\n\n")
 dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path <- here("data", "processed", "arab_barometer_harmonized.rds")
+assert_row_uid(ab_harmonized, "arab-barometer")
+
 saveRDS(ab_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))
 

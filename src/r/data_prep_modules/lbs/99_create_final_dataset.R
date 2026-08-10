@@ -14,6 +14,7 @@ library(arrow)
 # Load the wave finder function
 source(here::here("src/r/data_prep_modules/lbs/0_load_waves.R"))
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -126,8 +127,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-lbs_harmonized <- lbs_combined %>%
-  select(-row_id)
+lbs_harmonized <- lbs_combined
 
 # Zap any remaining haven labels
 lbs_harmonized <- lbs_harmonized %>%
@@ -181,6 +181,8 @@ cat(strrep("=", 70), "\n\n")
 dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path <- here("data", "processed", "lbs_harmonized.rds")
+assert_row_uid(lbs_harmonized, "lbs")
+
 saveRDS(lbs_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))
 

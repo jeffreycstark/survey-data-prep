@@ -17,6 +17,7 @@ library(haven)
 library(countrycode)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 source(here::here("src", "r", "utils", "education.R"))
 
@@ -127,8 +128,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # ==============================================================================
 
 # Remove row_id (internal tracking, not useful for analysis)
-wvs_harmonized <- wvs_combined %>%
-  select(-row_id)
+wvs_harmonized <- wvs_combined
 
 # Zap any remaining haven labels
 wvs_harmonized <- wvs_harmonized %>%
@@ -186,6 +186,8 @@ cat(strrep("=", 70), "\n\n")
 
 # RDS
 rds_path <- here("data", "processed", "wvs_harmonized.rds")
+assert_row_uid(wvs_harmonized, "wvs")
+
 saveRDS(wvs_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))
 

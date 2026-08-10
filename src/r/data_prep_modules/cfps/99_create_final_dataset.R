@@ -16,6 +16,7 @@ library(dplyr)
 library(arrow)
 
 source(here::here("src", "r", "utils", "provenance.R"))
+source(here::here("src", "r", "utils", "keys.R"))
 source(here::here("src", "r", "utils", "spec_discovery.R"))
 
 cat("\n")
@@ -79,8 +80,7 @@ cat(sprintf("  Combined: %s rows, %d columns\n",
 # CLEAN UP
 # ==============================================================================
 
-cfps_harmonized <- cfps_combined %>%
-  select(-row_id)
+cfps_harmonized <- cfps_combined
 
 # Zap any remaining haven labels
 cfps_harmonized <- cfps_harmonized %>%
@@ -120,6 +120,8 @@ dir.create(here("data", "processed"), showWarnings = FALSE, recursive = TRUE)
 
 rds_path     <- here("data", "processed", "cfps_harmonized.rds")
 parquet_path <- here("data", "processed", "cfps_harmonized.parquet")
+
+assert_row_uid(cfps_harmonized, "cfps")
 
 saveRDS(cfps_harmonized, rds_path)
 cat(sprintf("  RDS:     %s\n", rds_path))

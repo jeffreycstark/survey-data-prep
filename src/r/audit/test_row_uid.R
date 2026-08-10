@@ -33,5 +33,16 @@ r <- tryCatch({ stack_harmonized_wide(results, waves); "no-error" },
               error = function(e) "error")
 ok(r == "error", "omitting survey is an error")
 
+cat("=== T4: assert_row_uid ===\n")
+source(here::here("src/r/utils/keys.R"))
+good <- data.frame(row_uid = c("s.w1.000001", "s.w1.000002"), stringsAsFactors = FALSE)
+ok(identical(assert_row_uid(good, "s"), good), "clean frame passes through")
+r <- tryCatch({ assert_row_uid(data.frame(x = 1), "s"); "no-error" }, error = function(e) "error")
+ok(r == "error", "missing column stops")
+r <- tryCatch({ assert_row_uid(data.frame(row_uid = c("a", "a")), "s"); "no-error" }, error = function(e) "error")
+ok(r == "error", "duplicate stops")
+r <- tryCatch({ assert_row_uid(data.frame(row_uid = c("a", NA)), "s"); "no-error" }, error = function(e) "error")
+ok(r == "error", "NA stops")
+
 cat(sprintf("\n%d passed, %d failed\n", pass, fail))
 if (fail > 0) quit(status = 1)
