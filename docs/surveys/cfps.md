@@ -39,9 +39,19 @@ Dragon cohorts in-frame: 1988ers all six waves; **2000-born enter at 2016
 (n=461)**; trust-in-officials item relabels 干部 → 本地政府官员 from 2020.
 
 The deposit has **no SPSS files** (Stata + SAS only; SAS ships without value-label
-catalogs — never harmonize from the SAS variants). **No 2012 data exists in the
-deposit at all** (0 files; only 2012 questionnaires) — if a paper ever needs the
-2012 wave, it must be sourced separately from PKU. ⚠️ From 2018 the individual
+catalogs — never harmonize from the SAS variants). **2012 (Wave 2, 2012年追踪调查)
+IS in the deposit, but not as a "[CFPS Public Data]" rar** — it ships as loose
+per-module files (`cfps2012*`/`ecfps2012*` .sas7bdat), which is why filename
+searches for "CFPS 2012" miss it (no space in `cfps2012`). An earlier version of
+this note wrongly said "no 2012 data exists in the deposit at all" (corrected
+2026-08-10 after checking the Dataverse file list via API). Two modules carry
+Dataverse-ingested tabs with **Stata-14 originals** recoverable via
+`?format=original`: `ecfps2012adult_202505` (English adult, the only
+label-bearing adult variant — the Chinese adult is SAS-only) and
+`cfps2012famconf_092015`. Download via
+`/api/access/datafile/<id>` (ids: adult-orig 19090, famconf-orig 19101,
+crossyearid 19095); the endpoint 500s during platform "too busy" spells — retry.
+Not yet harmonized: wave w2012 is absent from `cfps_harmonized.rds`. ⚠️ From 2018 the individual
 module is renamed `person` (adult+child unified); 2022 ships password-protected
 (password = the compliance sentence in its `Instructions.docx`). ⚠️ Variable
 names are LOWERCASE in Stata releases, UPPERCASE in SAS releases — specs follow
