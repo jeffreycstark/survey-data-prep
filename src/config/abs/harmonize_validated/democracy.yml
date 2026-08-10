@@ -8,6 +8,13 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
+  # 1-10 scales: 7/8/9 are labelled scale points in the codebook (W4/W5 label
+  # them literally "7"/"8"/"9"; missing_code_flag is FALSE). Only -1/0/97/98/99
+  # are flagged missing. Reusing `treat_as_na` here deleted the top third of
+  # every 1-10 item. Mirrors treat_as_na_10pt in international_relations.yml.
+  treat_as_na_10pt:
+    codes: [-1, 0, 97, 98, 99, 1099]
+    description: "Missing codes for 1-10 scales (keeps 7/8/9 as valid scale points)"
 variables:
   - id: dem_always_preferable
     concept: democracy_tradeoffs
@@ -108,7 +115,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -135,7 +142,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -162,7 +169,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -189,7 +196,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -368,7 +375,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -400,7 +407,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -534,7 +541,7 @@ variables:
         1: "Complete dictatorship"
         10: "Complete democracy"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -647,7 +654,7 @@ variables:
         1: "Not suitable at all"
         10: "Completely suitable"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity

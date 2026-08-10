@@ -9,6 +9,12 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes"
+  # W1-only participation items scored 1=once, 2=more than once, 9=never done.
+  # 9 is the modal substantive response, not a missing code (ABS W1 codebook
+  # flags only 97/98/99). The variables' own scale.labels already say so.
+  treat_as_na_w1_never_done:
+    codes: [-1, 0, 7, 8, 97, 98, 99, 1099]
+    description: "W1 participation items: keeps 9='Never done' as a valid response"
   treat_as_na_winning_losing:
     codes: [-1, 0, 3, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes plus 3=not applicable/other in winner-loser items"
@@ -144,7 +150,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity
@@ -325,7 +331,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity
@@ -384,7 +390,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity
@@ -413,7 +419,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity
@@ -442,7 +448,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity
@@ -535,7 +541,7 @@ variables:
         2: "More than once"
         9: "Never done"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_w1_never_done
     harmonize:
       default:
         method: identity

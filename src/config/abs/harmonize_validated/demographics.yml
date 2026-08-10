@@ -7,6 +7,17 @@ missing_conventions:
   treat_as_na:
     codes: [-1, 0, 7, 8, 9, 97, 98, 99, 1099]
     description: "Standard missing codes for survey items"
+  # 1-10 ladder/staircase items: 7/8/9 are valid rungs, not missing codes.
+  # Same precedent as treat_as_na_education / treat_as_na_identifiers below.
+  treat_as_na_10pt:
+    codes: [-1, 0, 97, 98, 99, 1099]
+    description: "Missing codes for 1-10 ladder scales (preserves rungs 7-9)"
+  # Religious attendance: W1-W5 code 7/8/9 as 'several times a year' /
+  # 'once a year' / 'less often'; W6 as 'less often' / 'practically never'.
+  # All substantive categories per the ABS codebook.
+  treat_as_na_attendance:
+    codes: [-1, 0, 97, 98, 99, 1099]
+    description: "Missing codes for religious attendance (preserves frequency categories 7-9)"
   treat_as_na_education_years:
     codes: [-1, 90, 97, 98, 99]
     description: "Missing codes for years of education (90=Not applicable, 97=No answer / Not applicable in w1, 98=Cannot choose, 99=Decline to answer)"
@@ -619,7 +630,7 @@ variables:
     description: "How often do you practice religious services or rituals?"
     type: ordinal
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_attendance
       codes: [90]
     source:
       w1: se007
@@ -732,7 +743,7 @@ variables:
         1: "Lowest status"
         10: "Highest status"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     harmonize:
       default:
         method: identity
@@ -746,7 +757,7 @@ variables:
     description: "Where would you put yourself on this social staircase? (1=lowest, 10=highest)"
     type: ordinal
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     source:
       w1: null
       w2: null
@@ -774,7 +785,7 @@ variables:
     description: "Where would you put your parents on this social staircase? (1=lowest, 10=highest)"
     type: ordinal
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     source:
       w1: null
       w2: null
@@ -802,7 +813,7 @@ variables:
     description: "Where will your children be on this social staircase? (1=lowest, 10=highest)"
     type: ordinal
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_10pt
     source:
       w1: null
       w2: null

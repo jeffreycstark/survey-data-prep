@@ -44,6 +44,12 @@ missing_conventions:
   treat_as_na:
     codes: [9, 99, 9999]
     description: "KINU: 9=n/a in 1-X scales; 99=n/a in 0-100/two-digit-code scales; 9999=n/a for continuous income"
+  # Two-digit categorical codes (region 1-19, home 1-18, occupa 1-12) use 9 as a
+  # substantive category — 9=Gangwon in region/home, 9=student in occupa — and 99
+  # as the only n/a code (kinu_codebook: missing_code_flag TRUE for 99 only).
+  treat_as_na_2digit:
+    codes: [99, 9999]
+    description: "KINU categorical code lists: 9 is a valid category; only 99/9999 are n/a"
 
 variables:
 
@@ -253,7 +259,7 @@ variables:
         18: "Foreign"
         19: "North Korea"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_2digit
     harmonize:
       default:
         method: identity
@@ -333,7 +339,7 @@ variables:
         17: "North Korea"
         18: "Foreign"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_2digit
     harmonize:
       default:
         method: identity
@@ -608,7 +614,7 @@ variables:
         11: "Unemployed/retired"
         12: "Other"
     missing:
-      use_convention: treat_as_na
+      use_convention: treat_as_na_2digit
     harmonize:
       default:
         method: identity
