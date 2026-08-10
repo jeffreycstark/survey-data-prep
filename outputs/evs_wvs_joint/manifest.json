@@ -1,7 +1,7 @@
 {
-  "run_id": "20260810121524-164b",
-  "timestamp_utc": "2026-08-10T05:15:24Z",
-  "git_commit": "0ba675e",
+  "run_id": "20260810233212-d484",
+  "timestamp_utc": "2026-08-10T16:32:12Z",
+  "git_commit": "9c773f9",
   "git_dirty": true,
   "schema_version": 1,
   "inputs": [
@@ -23,8 +23,8 @@
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/political_action.yml",
-      "sha256": "dcedb35006913d0009635df9629f0f8cde3aec736a5f07dbb4ae2bbf05f20fa4",
-      "n_variables": 5
+      "sha256": "5f8147de2b81f189dd86d18e5fae33bb5a178d05a62bcdf1001854aff0d84562",
+      "n_variables": 8
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/src/config/evs_wvs_joint/harmonize/trust.yml",
@@ -35,21 +35,21 @@
   "outputs": [
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.rds",
-      "sha256": "10c9cc35c1b42637df284061f06b7d1b5bd8da858bca3b7bb94788f3597f791d",
+      "sha256": "b416a2285db8c7e5fe27c74d8a90d0e739fb4846bb2fa0604490edd92686da83",
       "n_rows": 156658,
-      "n_cols": 26
+      "n_cols": 29
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.parquet",
-      "sha256": "3349fce1dc67ee07d5535677ba79f56bde0694297ddb261eb228bc3630135a00",
+      "sha256": "209465e79e9e6d6decbd20bd9c3cfed9b2e75813dc74ec2cafe625042b309a76",
       "n_rows": 156658,
-      "n_cols": 26
+      "n_cols": 29
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/outputs/evs_wvs_joint/evs_wvs_joint_harmonized.rds",
-      "sha256": "10c9cc35c1b42637df284061f06b7d1b5bd8da858bca3b7bb94788f3597f791d",
+      "sha256": "b416a2285db8c7e5fe27c74d8a90d0e739fb4846bb2fa0604490edd92686da83",
       "n_rows": 156658,
-      "n_cols": 26
+      "n_cols": 29
     }
   ],
   "engine_versions": {
