@@ -45,6 +45,8 @@ core_vars <- c(
 
   # High-level democracy indices (0-1)
   "v2x_polyarchy",    # Electoral Democracy Index
+  "e_gdppc",          # GDP per capita (Maddison-based; ⚠️ series ends 2019 —
+                      # for 2020+ country-years join World Bank WDI at paper time)
   "v2x_libdem",       # Liberal Democracy Index
   "v2x_partipdem",    # Participatory Democracy Index
   "v2x_delibdem",     # Deliberative Democracy Index

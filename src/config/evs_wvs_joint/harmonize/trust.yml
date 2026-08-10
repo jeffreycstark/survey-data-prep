@@ -1,0 +1,137 @@
+# Joint EVS/WVS 2017-2022 — institutional + electoral-procedural trust.
+# E069 confidence battery raw: 1=A great deal -> 4=None at all; REVERSED so
+# higher = more trust (bank convention, matches ABS/WVS trust families —
+# NOTE scale is 1-4 like ABS, not 0-10 like KAMOS/KINU).
+# E265 integrity items raw: 1=Very often -> 4=Not at all often (referring to
+# fair conduct); REVERSED so higher = more perceived electoral integrity.
+# ⚠️ There is NO confidence-in-elections item in the joint file (WVS7's Q76
+# did not survive the common core). trust_elections here is E265_01 "votes
+# are counted fairly" — procedural-integrity content, fielded by BOTH
+# studies (EVS 88% / WVS 91% coverage, verified 2026-08-10). The other six
+# E265 items (opposition prevented, TV bias, bribery, journalists, rich buy
+# elections, voter threats) exist raw but are deliberately not harmonized —
+# single-measure design per the paper spec.
+schema_version: 1
+
+missing_conventions:
+  treat_as_na:
+    codes: [-5, -4, -3, -2, -1]
+    description: "Joint EVS/WVS negative missing scheme: -1 dk, -2 no answer, -3 not applicable, -4 not asked in survey, -5 missing/other. All negative — collision-free with positive scales."
+  no_missing_codes:
+    codes: []
+    description: "Serial IDs have no refused/DK values; every code is real."
+
+variables:
+  - id: trust_government
+    concept: trust
+    description: "Confidence in the government (1-4, higher = more trust)"
+    type: ordinal
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+
+    source:
+      joint2017_2022: E069_11
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "[Gg]overnment"
+  - id: trust_parliament
+    concept: trust
+    description: "Confidence in parliament (1-4, higher = more trust)"
+    type: ordinal
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+
+    source:
+      joint2017_2022: E069_07
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "[Pp]arliament"
+  - id: trust_parties
+    concept: trust
+    description: "Confidence in political parties (1-4, higher = more trust)"
+    type: ordinal
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "None at all"
+        2: "Not very much"
+        3: "Quite a lot"
+        4: "A great deal"
+
+    source:
+      joint2017_2022: E069_12
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "[Pp]arties"
+  - id: trust_elections
+    concept: trust
+    description: "Votes are counted fairly in country's elections (1-4, higher = more perceived integrity)"
+    type: ordinal
+    note: "Raw 1=Very often ... 4=Not at all often; reversed. This is the procedural-integrity item, not a confidence item — see file header."
+    source:
+      joint2017_2022: E265_01
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "[Vv]otes.*counted"
+  - id: trust_election_officials
+    concept: trust
+    description: "Election officials are fair (1-4, higher = more perceived integrity; secondary integrity measure)"
+    type: ordinal
+    source:
+      joint2017_2022: E265_06
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "officials"

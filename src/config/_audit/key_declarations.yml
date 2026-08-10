@@ -43,6 +43,9 @@ declarations:
   - survey: arab-barometer
     key: [wave, country, native_id]
     note: "null w1-w4; W5's 3 dups and W8's 2,400-row ID=0 block exempted"
+  - survey: evs_wvs_joint
+    key: [uniqid]
+    note: "fully unique file-wide (156,658; verified 2026-08-10) — the cleanest native key in the bank"
   - survey: gcb
     key: [wave, country, respondent_id]
     note: "single edition (asia2020); respondent_id is per-country — country belongs in the key (verified unique)"
