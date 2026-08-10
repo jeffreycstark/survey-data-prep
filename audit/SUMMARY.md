@@ -1,24 +1,24 @@
-# Audit summary — 2026-08-09 18:41:17 +07
+# Audit summary — 2026-08-10 10:26:39 +07
 
-git_commit: `52b1bdf`  git_dirty: **true**
+git_commit: `aa6ec23`  git_dirty: **true**
 
 Mode: full
-Runtime: 2.4 s
+Runtime: 2.7 s
 
 ## Per-survey status
 
 | Survey | L1 schema | L3 invariants | L3 oob | L2 codebook | L4 anchors | L4 strict | L4 labels | L4 battery | L4 coverage | L4 binwidth | L5 drift | L6 determ | L6 input |
 |--------|-----------|---------------|--------|-------------|------------|-----------|-----------|------------|-------------|-------------|----------|-----------|----------|
 | abs | OK 28/28 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| wvs | OK 15/15 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| lbs | OK 10/10 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| afro | OK 21/21 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| arab-barometer | OK 9/9 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| kamos | OK 6/6 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| wvs | OK 16/16 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| lbs | OK 11/11 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| afro | OK 22/22 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| arab-barometer | OK 10/10 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| kamos | OK 7/7 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
 | kgss | OK 18/18 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| kipa_corruption | OK 4/4 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| kinu | OK 8/8 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
-| ipus | OK 3/3 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| kipa_corruption | OK 5/5 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| kinu | OK 9/9 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
+| ipus | OK 4/4 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
 | gcb | OK 4/4 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
 | klosa | OK 8/8 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
 | cfps | OK 2/2 | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only | skip --specs-only |
@@ -35,7 +35,7 @@ _No acknowledged disagreements in this run._
 
 - Recoding registry: OK
 - Convention collisions: 0 error, 11 exempt, 0 unparseable. Report: /Users/jeffreystark/Development/Research/survey-data-prep/audit/reports/convention_collisions.csv
-- JEFF_MUST_INVESTIGATE.md: 3 open findings (high+medium priority)
+- JEFF_MUST_INVESTIGATE.md: 5 open findings (high+medium priority)
 
 ## Skipped modules (prerequisites missing)
 
@@ -54,4 +54,4 @@ _No acknowledged disagreements in this run._
 - **cfps**: L3 invariants (--specs-only); L3 out-of-range (--specs-only); L2 codebook (--specs-only); L4 anchor (--specs-only); L4 strict reversal (--specs-only); L4 label recon (--specs-only); L4 battery coherence (--specs-only); L4 anchor coverage (--specs-only); L4 bin-width parity (--specs-only); L5 drift (--specs-only); L6 determinism (--specs-only); L6 input drift (--specs-only)
 
 ---
-Generated by `src/r/audit/run_all.R` at 2026-08-09 18:41:17 +07.
+Generated by `src/r/audit/run_all.R` at 2026-08-10 10:26:39 +07.

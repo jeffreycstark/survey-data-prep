@@ -1,0 +1,47 @@
+# Known native-key violations that are KEPT AND DOCUMENTED, never dropped
+# (Jeff's policy call, 2026-08-10). Each entry allows AT MOST `max_dup_rows`
+# surplus rows (rows beyond one per key value) for the given survey — a
+# larger violation than declared here is an ERROR, so growth of a known
+# anomaly cannot hide behind its exemption.
+#
+# All six anomalies are present in the surveys' own release files; verified
+# against raw 2026-08-09/10.
+
+schema_version: 1
+
+exemptions:
+  - survey: abs
+    max_dup_rows: 2
+    reason: >
+      Hong Kong W5 duplicate pairs 704273201 (identical in all 308 columns)
+      and 704273901 (identical in 307 of 308, differing only in survey
+      weight). In ABS's release file, not our merge. Kept per Jeff
+      2026-08-10; two people giving byte-identical answers to 300+
+      questions is not credible, but dropping rows changes samples and
+      weight totals.
+  - survey: afro
+    max_dup_rows: 24
+    reason: >
+      R8 merged release carries 24 duplicated round+country+respno rows.
+      Release-file artifact; kept and documented.
+  - survey: kipa_corruption
+    max_dup_rows: 74
+    reason: >
+      The 2019 release file (handle 24742) duplicates 74 id values.
+      Release-file artifact; kept and documented.
+  - survey: arab-barometer
+    max_dup_rows: 2402
+    reason: >
+      W5 has 3 surplus country+id duplicate rows, and W8 ships a 2,400-row
+      block with ID=0 — IDs never assigned in the release; zeros kept
+      verbatim (an ID variable has no missing codes, and inventing IDs
+      would be fabrication). The zero block collapses to 2,399 surplus
+      rows; + 3 from W5 = 2,402.
+  - survey: wvs
+    max_dup_rows: 0
+    reason: >
+      Placeholder for visibility: w3's raw S007 carries 4,005 within-country
+      duplicates, which is why w3 is deliberately NOT mapped in
+      identifiers.yml (see that spec). No exemption is consumed because the
+      dup-ridden wave never enters the harmonized column; if s007 ever gets
+      mapped for w3, this check must be revisited.

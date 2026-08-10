@@ -1,0 +1,48 @@
+# Which columns claim to identify a row, per survey, and within what scope.
+# Consumed by src/r/audit/check_key_uniqueness.R. row_uid is implicitly
+# declared for every survey and checked as a HARD error; the keys below are
+# the native-ID layer, checked report-level against
+# key_uniqueness_exemptions.yml.
+#
+# Evidence measured 2026-08-10 (design doc:
+# docs/superpowers/specs/2026-08-10-row-identifiers-design.md). Keys are
+# asserted on rows where every key column is non-NA ("complete rows") —
+# partial-coverage native IDs (nulled waves) are thereby skipped, and the
+# report carries the incomplete-row count so coverage stays visible.
+
+schema_version: 1
+
+declarations:
+  - survey: abs
+    key: [country, wave, idnumber]
+    note: "2 HK W5 release duplicates exempted"
+  - survey: cfps
+    key: [wave, pid]
+  - survey: klosa
+    key: [wave, pid]
+  - survey: kgss
+    key: [year, respid]
+  - survey: kinu
+    key: [wave, native_id]
+  - survey: ipus
+    key: [wave, native_id]
+  - survey: kamos
+    key: [wave, native_id]
+  - survey: kipa_corruption
+    key: [wave, native_id]
+    note: "native_id null 2013-2015 (skipped as incomplete rows); 2019's 74 release duplicates exempted"
+  - survey: afro
+    key: [wave, country, respno]
+    note: "respno null in R1; R8's 24 release duplicates exempted"
+  - survey: lbs
+    key: [wave, country, numentre]
+    note: "numentre null 1995/96 and 2,491 NA in 2004 raw; complete rows only"
+  - survey: wvs
+    key: [wave, country, s007]
+    note: "s007 populated w1/w2/w5 only (w3 deliberately unmapped — dup-ridden)"
+  - survey: arab-barometer
+    key: [wave, country, native_id]
+    note: "null w1-w4; W5's 3 dups and W8's 2,400-row ID=0 block exempted"
+  - survey: gcb
+    key: [wave, respondent_id]
+    note: "dormant — no processed output yet; the check skips absent files"

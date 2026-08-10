@@ -882,6 +882,36 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
 
 # ---------------------------------------------------------------------------
+# Key uniqueness (cross-cutting, DATA-DEPENDENT): row_uid backbone + declared
+# native keys vs key_declarations.yml / key_uniqueness_exemptions.yml.
+# Skipped under --specs-only (reads data/processed/*.rds).
+# ---------------------------------------------------------------------------
+.run_key_uniqueness <- function(verbose = FALSE, specs_only = FALSE) {
+  if (specs_only) {
+    return(list(module = "Key uniqueness", status = "skip", exit = 0L,
+                first_fails = character(0), summary = "--specs-only"))
+  }
+  .log_module(NULL, "key uniqueness")
+  rr <- .run_external("src/r/audit/check_key_uniqueness.R",
+                      character(0), verbose = verbose)
+  status <- if (rr$status == 0L) "ok" else "fail"
+  first_lines <- character(0)
+  if (status == "fail") {
+    first_lines <- head(grep("^\\s*ERROR", rr$stdout, value = TRUE), 3L)
+  }
+  summary_line <- grep("^Summary:", rr$stdout, value = TRUE)
+  list(
+    module = "Key uniqueness",
+    status = status, exit = rr$status,
+    first_fails = trimws(first_lines),
+    summary = if (length(summary_line) > 0L) {
+      sub("^Summary:\\s*", "", summary_line[1])
+    } else if (status == "ok") "OK" else "KEY VIOLATIONS"
+  )
+}
+
+
+# ---------------------------------------------------------------------------
 # Per-survey orchestrator. Returns a list of module results for one survey.
 # ---------------------------------------------------------------------------
 .run_one_survey <- function(survey, quick = FALSE, verbose = FALSE,
@@ -962,6 +992,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 # Markdown summary writer.
 # ---------------------------------------------------------------------------
 .write_summary <- function(all_results, registry_result, convention_result,
+                           keys_result = NULL,
                            args, runtime_sec,
                             git_info, jeff_open, surveys_attempted,
                             surveys_with_data, skipped_modules) {
@@ -1106,6 +1137,12 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   w("- Convention collisions: ", convention_result$summary)
   if (length(convention_result$first_fails) > 0L) {
     for (line in convention_result$first_fails) w("    - `", line, "`")
+  }
+  if (!is.null(keys_result)) {
+    w("- Key uniqueness: ", keys_result$summary)
+    if (length(keys_result$first_fails) > 0L) {
+      for (line in keys_result$first_fails) w("    - `", line, "`")
+    }
   }
   w("- JEFF_MUST_INVESTIGATE.md: ", jeff_open, " open finding",
     if (jeff_open == 1L) "" else "s",
@@ -1288,6 +1325,8 @@ source(here::here("src/r/harmonize/validate_spec.R"))
 
   registry_result <- .run_registry_check(verbose = args$verbose)
   convention_result <- .run_convention_check(verbose = args$verbose)
+  keys_result <- .run_key_uniqueness(verbose = args$verbose,
+                                     specs_only = isTRUE(args$specs_only))
   jeff_open <- .count_jeff_open()
   git_info <- .git_info()
   runtime_sec <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
@@ -1305,6 +1344,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
   }
   if (identical(registry_result$status, "fail")) any_fail <- TRUE
   if (identical(convention_result$status, "fail")) any_fail <- TRUE
+  if (identical(keys_result$status, "fail")) any_fail <- TRUE
 
   prereq_missing <- length(surveys_with_data) < length(surveys_attempted)
 
@@ -1319,6 +1359,7 @@ source(here::here("src/r/harmonize/validate_spec.R"))
     all_results = all_results,
     registry_result = registry_result,
     convention_result = convention_result,
+    keys_result = keys_result,
     args = args,
     runtime_sec = runtime_sec,
     git_info = git_info,
