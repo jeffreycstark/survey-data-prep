@@ -271,3 +271,7 @@ outputs/oecd_dac/
 *.sas7bcat
 # CFPS raw archives (100M+; contents extracted to unzipped/, data files ignored above)
 data/cfps/raw/**/*.rar
+
+# Joint EVS/WVS derived outputs — respondent-level data, never tracked (same
+# policy as outputs/cfps/; manifest.json + oob_log.csv stay tracked)
+outputs/evs_wvs_joint/*.rds
