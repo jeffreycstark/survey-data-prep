@@ -1,0 +1,51 @@
+# LBS — respondent/interview identifiers.
+# IDs are DATA for raw-traceability and merges, never the uniqueness
+# backbone (that is row_uid). ID variables carry NO missing codes — the
+# generalized lesson of the 2026-08-09 ABS idnumber bug.
+# Sources + key verdicts label/measure-verified 2026-08-10; see
+# docs/superpowers/specs/2026-08-10-row-identifiers-design.md.
+schema_version: 1
+
+missing_conventions:
+  no_missing_codes:
+    codes: []
+    description: "Serial IDs have no refused/DK values; every code is real."
+
+variables:
+  - id: numentre
+    concept: identifiers
+    description: "Questionnaire number within country-year (raw numentre/NUMENTRE; year+idenpa+numentre unique where present, verified). y1995/y1996 null — those releases carry no ID variables. 2004 has 2,491 NA numentre in raw; kept as NA (IDs have no missing codes, these are genuinely absent)."
+    type: nominal
+    source:
+      y1995: null
+      y1996: null
+      y1997: numentre
+      y1998: numentre
+      y2000: NUMENTRE
+      y2001: numentre
+      y2002: numentre
+      y2003: numentre
+      y2004: numentre
+      y2005: numentre
+      y2006: numentre
+      y2007: numentre
+      y2008: numentre
+      y2009: numentre
+      y2010: NUMENTRE
+      y2011: NUMENTRE
+      y2013: NUMENTRE
+      y2015: NUMENTRE
+      y2016: NUMENTRE
+      y2017: NUMENTRE
+      y2018: NUMENTRE
+      y2020: NUMENTRE
+      y2023: NUMENTRE
+      y2024: NUMENTRE
+    missing:
+      use_convention: no_missing_codes
+    harmonize:
+      default:
+        method: identity
+    qc:
+      skip_range_check: true
+      skip_unmapped_check: true

@@ -1,4 +1,4 @@
-# KGSS — respondent/interview identifiers.
+# WVS — respondent/interview identifiers.
 # IDs are DATA for raw-traceability and merges, never the uniqueness
 # backbone (that is row_uid). ID variables carry NO missing codes — the
 # generalized lesson of the 2026-08-09 ABS idnumber bug.
@@ -12,28 +12,18 @@ missing_conventions:
     description: "Serial IDs have no refused/DK values; every code is real."
 
 variables:
-  - id: respid
+  - id: s007
     concept: identifiers
-    description: "Respondent serial within survey year (raw RESPID; year+respid is the unique key, verified 0 dups on 23,282). YRRESPID also exists in raw as the concatenated form."
+    description: "Original respondent number (raw S007). country+s007 unique in w1/w2/w5 (verified 0 dups). w3 DELIBERATELY null — its raw S007 carries 4,005 within-country duplicates and is join-hazardous; w4/w6 lack S007; w7 not mapped (D_INTERVIEW exists raw but is out of scope)."
     type: nominal
     source:
-      w2003: RESPID
-      w2004: RESPID
-      w2005: RESPID
-      w2006: RESPID
-      w2007: RESPID
-      w2008: RESPID
-      w2009: RESPID
-      w2010: RESPID
-      w2011: RESPID
-      w2012: RESPID
-      w2013: RESPID
-      w2014: RESPID
-      w2016: RESPID
-      w2018: RESPID
-      w2021: RESPID
-      w2023: RESPID
-      w2025: RESPID
+      w1: S007
+      w2: S007
+      w3: null
+      w4: null
+      w5: S007
+      w6: null
+      w7: null
     missing:
       use_convention: no_missing_codes
     harmonize:

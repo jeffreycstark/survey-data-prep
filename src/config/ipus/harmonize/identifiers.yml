@@ -1,4 +1,4 @@
-# KGSS — respondent/interview identifiers.
+# IPUS — respondent/interview identifiers.
 # IDs are DATA for raw-traceability and merges, never the uniqueness
 # backbone (that is row_uid). ID variables carry NO missing codes — the
 # generalized lesson of the 2026-08-09 ABS idnumber bug.
@@ -12,28 +12,29 @@ missing_conventions:
     description: "Serial IDs have no refused/DK values; every code is real."
 
 variables:
-  - id: respid
+  - id: native_id
     concept: identifiers
-    description: "Respondent serial within survey year (raw RESPID; year+respid is the unique key, verified 0 dups on 23,282). YRRESPID also exists in raw as the concatenated form."
+    description: "Respondent serial within year (raw id/ID; unique within every year, verified)."
     type: nominal
     source:
-      w2003: RESPID
-      w2004: RESPID
-      w2005: RESPID
-      w2006: RESPID
-      w2007: RESPID
-      w2008: RESPID
-      w2009: RESPID
-      w2010: RESPID
-      w2011: RESPID
-      w2012: RESPID
-      w2013: RESPID
-      w2014: RESPID
-      w2016: RESPID
-      w2018: RESPID
-      w2021: RESPID
-      w2023: RESPID
-      w2025: RESPID
+      w2007: id
+      w2008: id
+      w2009: id
+      w2010: id
+      w2011: id
+      w2012: id
+      w2013: id
+      w2014: id
+      w2015: id
+      w2016: id
+      w2017: ID
+      w2018: ID
+      w2019: ID
+      w2020: ID
+      w2021: ID
+      w2022: ID
+      w2023: ID
+      w2024: ID
     missing:
       use_convention: no_missing_codes
     harmonize:
