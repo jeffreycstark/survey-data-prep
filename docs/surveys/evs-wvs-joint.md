@@ -1,6 +1,6 @@
 # Joint EVS/WVS 2017–2022 (ZA7505 / WVSA joint release v5.0.0)
 
-**Status: Complete for the paper-26-adjacent CEE design** (24 vars). Built
+**Status: Complete for the paper-26-adjacent CEE design** (27 vars). Built
 2026-08-10 for the trust-typology → participation-withdrawal design.
 
 ## What this is
@@ -38,7 +38,12 @@ every pooled model; treat the two samples as distinct surveys of one country.
   withdrawal measure). CEE would-never shares: petition 42%, boycott 65%,
   demonstration 53%, strike 73%.
 - **Third arm.** `dem_strong_leader` (E114, reversed → higher = MORE
-  pro-strong-leader). CEE r with trust_elections = −0.11.
+  pro-strong-leader). CEE r with trust_elections = −0.11. Added 2026-08-10 for
+  paper 28's exclusivity construct: `dem_democratic_system` (E117),
+  `dem_experts_rule` (E115), `dem_army_rule` (E116) — all raw 1=Very good→4=Very
+  bad, `safe_reverse_4pt` → higher = more approval, directionally matching
+  wvs_harmonized's `dem_democratic_system` (Q238). Pro-democracy saturation is
+  real: 90/92 countries ≥70% approving (floor: IQ 59.3%).
 - **Controls.** `gender` (1=male), `age`, `education_isced` (0–8),
   `income_decile` (loader-coalesced from study-split X047_WVS7/X047E_EVS5;
   89% CEE coverage), `urban_size` (1–5), `pol_interest` (reversed → higher =

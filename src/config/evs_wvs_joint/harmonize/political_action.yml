@@ -116,3 +116,81 @@ variables:
       validate:
         - waves: [joint2017_2022]
           phrase: "strong leader"
+  - id: dem_democratic_system
+    concept: democratic_support
+    description: "Having a democratic political system (1-4, higher = MORE approval)"
+    type: ordinal
+    note: "Raw 1=Very good -> 4=Very bad; reversed so higher = more pro-democracy."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    source:
+      joint2017_2022: E117
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "democratic political system"
+  - id: dem_experts_rule
+    concept: democratic_support
+    description: "Having experts, not government, make decisions (1-4, higher = MORE approval)"
+    type: ordinal
+    note: "Raw 1=Very good -> 4=Very bad; reversed so higher = more pro-expert-rule."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    source:
+      joint2017_2022: E115
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "experts"
+  - id: dem_army_rule
+    concept: democratic_support
+    description: "Having the army rule (1-4, higher = MORE approval)"
+    type: ordinal
+    note: "Raw 1=Very good -> 4=Very bad; reversed so higher = more pro-army-rule."
+    scale:
+      min: 1
+      max: 4
+      labels:
+        1: "Very bad"
+        2: "Fairly bad"
+        3: "Fairly good"
+        4: "Very good"
+    source:
+      joint2017_2022: E116
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_4pt
+    qc:
+      valid_range: [1, 4]
+      validate:
+        - waves: [joint2017_2022]
+          phrase: "army rule"
