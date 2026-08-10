@@ -37,7 +37,7 @@ if (sys.nframe() == 0) {
   dir.create(dirname(oob_log_path), showWarnings = FALSE, recursive = TRUE)
 
   results <- harmonize_all_specs(waves, specs = specs, oob_log_path = oob_log_path)
-  harmonized_wide <- stack_harmonized_wide(results, waves)
+  harmonized_wide <- stack_harmonized_wide(results, waves, survey = "gcb")
 
   cat("\n", strrep("=", 70), "\n", sep = "")
   cat("SAVING MASTER FILES\n")
@@ -52,7 +52,7 @@ if (sys.nframe() == 0) {
     saveRDS(df, output_file)
     cat(sprintf("  Saved %s: %s rows, %d harmonized variables\n",
                 basename(output_file), format(nrow(df), big.mark = ","),
-                ncol(df) - 2))  # -2 for wave, row_id
+                ncol(df) - 2))  # -2 for wave, row_uid
   }
 
   cat("\n✅ GCB harmonization complete\n")

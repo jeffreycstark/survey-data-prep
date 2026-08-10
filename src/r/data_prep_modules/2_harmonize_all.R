@@ -217,8 +217,12 @@ stack_harmonized <- function(harmonized_results, waves) {
 #' column assignment via `[[<-` strips most attributes, so we re-attach
 #' provenance after assignment. `run_id` is populated here because it is
 #' session-scoped, not spec-scoped.
-stack_harmonized_wide <- function(harmonized_results, waves,
+stack_harmonized_wide <- function(harmonized_results, waves, survey,
                                   run_id = format(Sys.time(), "%Y%m%d%H%M%S")) {
+
+  if (missing(survey) || !nzchar(survey)) {
+    stop("stack_harmonized_wide(): `survey` is required — row_uid is minted here.")
+  }
 
   wave_names <- names(waves)
   output <- list()
@@ -226,10 +230,14 @@ stack_harmonized_wide <- function(harmonized_results, waves,
   for (wave_name in wave_names) {
     n_rows <- nrow(waves[[wave_name]])
 
-    # Start with wave identifier
+    # Stable row identifier: <survey>.<wave>.<position-in-loaded-wave>.
+    # Stability contract: unchanged raw file + loader => unchanged row_uid
+    # (run manifests hash the raw inputs, so renumbering events are
+    # detectable via the freshness layer). Scope: a changed wave renumbers
+    # only itself. Design: docs/superpowers/specs/2026-08-10-row-identifiers-design.md
     wave_df <- tibble(
       wave = rep(wave_name, n_rows),
-      row_id = seq_len(n_rows)
+      row_uid = sprintf("%s.%s.%06d", survey, wave_name, seq_len(n_rows))
     )
 
     # Add each harmonized variable
@@ -303,7 +311,7 @@ run_survey_harmonization <- function(survey, load_fn,
   results <- harmonize_all_specs(waves, specs = specs, silent = silent,
                                  oob_log_path = oob_log_path)
   if (output_format == "wide") {
-    stack_harmonized_wide(results, waves)
+    stack_harmonized_wide(results, waves, survey = survey)
   } else {
     stack_harmonized(results, waves)
   }
@@ -329,9 +337,9 @@ run_harmonization <- function(output_format = "wide") {
   # Harmonize all specs
   results <- harmonize_all_specs(waves)
 
-  # Format output
+  # Format output (legacy ABS-only convenience wrapper)
   if (output_format == "wide") {
-    stack_harmonized_wide(results, waves)
+    stack_harmonized_wide(results, waves, survey = "abs")
   } else {
     stack_harmonized(results, waves)
   }
@@ -357,7 +365,7 @@ if (sys.nframe() == 0) {
   results <- harmonize_all_specs(waves, oob_log_path = oob_log_path)
 
   # Stack into wide format
-  harmonized_wide <- stack_harmonized_wide(results, waves)
+  harmonized_wide <- stack_harmonized_wide(results, waves, survey = "abs")
 
   # ---------------------------------------------------------------------------
   # Post-hoc country exclusions

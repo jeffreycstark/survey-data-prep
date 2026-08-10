@@ -41,7 +41,7 @@ if (sys.nframe() == 0) {
   results <- harmonize_all_specs(waves, specs = specs,
                                  oob_log_path = oob_log_path)
 
-  harmonized_wide <- stack_harmonized_wide(results, waves)
+  harmonized_wide <- stack_harmonized_wide(results, waves, survey = "kgss")
 
   cat("\n", strrep("=", 70), "\n", sep = "")
   cat("SAVING MASTER FILES\n")

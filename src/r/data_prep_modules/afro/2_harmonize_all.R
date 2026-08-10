@@ -45,7 +45,7 @@ if (sys.nframe() == 0) {
                                  oob_log_path = oob_log_path)
 
   # Stack into wide format
-  harmonized_wide <- stack_harmonized_wide(results, waves)
+  harmonized_wide <- stack_harmonized_wide(results, waves, survey = "afro")
 
   # Save per-wave master files
   cat("\n", strrep("=", 70), "\n", sep = "")
@@ -59,7 +59,7 @@ if (sys.nframe() == 0) {
     df <- harmonized_wide[[wave_name]]
     output_file <- file.path(output_dir, paste0("master_", wave_name, ".rds"))
     saveRDS(df, output_file)
-    n_vars <- ncol(df) - 2  # subtract wave + row_id
+    n_vars <- ncol(df) - 2  # subtract wave + row_uid
     cat(sprintf("  Saved %s: %s rows, %d harmonized variables\n",
                 basename(output_file),
                 format(nrow(df), big.mark = ","),

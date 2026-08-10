@@ -517,7 +517,7 @@ compute_drift_statistics <- function(harmonized, survey, min_n = 30L) {
   }
 
   # Variables to check: every column except wave/country/row_id.
-  reserved <- c("wave", "country", "row_id")
+  reserved <- c("wave", "country", "row_uid")
   vars <- setdiff(names(harmonized), reserved)
   if (length(vars) == 0L) return(tibble())
 
