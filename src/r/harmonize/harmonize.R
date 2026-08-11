@@ -59,9 +59,14 @@ apply_missing <- function(x, missing_codes) {
 .rule_input_domain <- function(wave_rule, var_spec) {
   m <- wave_rule$method %||% "identity"
   if (identical(m, "identity")) {
-    lo <- suppressWarnings(as.numeric(var_spec$scale$min))
-    hi <- suppressWarnings(as.numeric(var_spec$scale$max))
-    if (!is.na(lo) && !is.na(hi) && hi >= lo) return(seq(lo, hi)) else return(NULL)
+    # NB: scale may be absent entirely (identifiers, free numerics). as.numeric
+    # of NULL is numeric(0), and `if (is.na(numeric(0)))` is the length-zero
+    # crash — guard with length checks FIRST. Span-capped so id ranges and
+    # continuous variables never build absurd domains.
+    lo <- suppressWarnings(as.numeric(var_spec$scale$min %||% NA_real_))[1]
+    hi <- suppressWarnings(as.numeric(var_spec$scale$max %||% NA_real_))[1]
+    if (is.na(lo) || is.na(hi) || hi < lo || (hi - lo + 1) > 1000) return(NULL)
+    return(seq(lo, hi))
   }
   if (identical(m, "recode")) {
     k <- suppressWarnings(as.numeric(names(wave_rule$mapping)))
@@ -79,6 +84,7 @@ apply_missing <- function(x, missing_codes) {
 
 .check_input_domain <- function(x, wave_rule, var_spec, wave_name, src, domain_log) {
   if (is.null(domain_log)) return(invisible(NULL))
+  if (!is.numeric(x)) return(invisible(NULL))
   domain <- .rule_input_domain(wave_rule, var_spec)
   if (is.null(domain)) return(invisible(NULL))
   obs <- sort(unique(x[!is.na(x)]))
@@ -292,8 +298,17 @@ harmonize_variable <- function(
     # ---- select harmonization rule ----
     wave_rule <- resolve_wave_rule(var_spec, wave_name)
 
-    # ---- input-domain guard (report-only) ----
-    .check_input_domain(x, wave_rule, var_spec, wave_name, src, domain_log)
+    # ---- input-domain guard (report-only; MUST be fail-safe) ----
+    # A defect in the guard must never take a variable down with it: on
+    # 2026-08-11 a length-zero crash here was converted by the caller's
+    # per-variable tryCatch into silently dropping every scale-less
+    # identifier bank-wide. The guard observes; it never throws.
+    tryCatch(
+      .check_input_domain(x, wave_rule, var_spec, wave_name, src, domain_log),
+      error = function(e) {
+        warning(sprintf("[domain-guard internal error, check skipped] %s %s: %s",
+                        var_spec$id %||% "?", wave_name, e$message), call. = FALSE)
+      })
 
     # ---- apply harmonization method ----
     # `method: null` is valid per the schema ("do nothing / not mapped"), but

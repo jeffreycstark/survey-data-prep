@@ -104,6 +104,46 @@ spec_fn <- list(
 miss <- check_recoding_functions(spec_fn, registry_path = NA)
 expect("definitely_not_a_function" %in% miss, "missing fn detected")
 
+# --------------------------------------------------------------------------
+cat("\n5. domain guard is fail-safe on scale-less identifiers\n")
+# Regression for 2026-08-11: a variable with NO scale block (identifiers) hit
+# `if (is.na(as.numeric(NULL)))` -> length-zero crash inside the guard, and the
+# caller's tryCatch silently DROPPED the variable — every native ID bank-wide.
+dl <- new.env(parent = emptyenv()); dl$records <- list()
+spec_id <- list(
+  id = "pid_like", type = "nominal",
+  source = list(w1 = "rawid"),
+  missing = list(use_convention = "treat_as_na"),
+  harmonize = list(default = list(method = "identity"))
+  # deliberately NO scale, NO qc
+)
+df_id <- data.frame(rawid = c(100000001, 100000002, 999999999))
+out_id <- harmonize_variable(spec_id, waves = list(w1 = df_id),
+                             missing_conventions = list(treat_as_na = c(-1)),
+                             domain_log = dl)
+expect(!is.null(out_id$w1) && sum(!is.na(out_id$w1)) == 3L,
+       "scale-less identifier survives with guard active")
+expect(length(dl$records) == 0L, "no spurious domain findings for identifiers")
+
+cat("\n6. domain guard still catches the format-seam signature\n")
+safe_reverse_4pt <- function(x, ...) ifelse(x %in% 1:4, 5 - x, NA_real_)  # stub: file is dependency-free
+dl2 <- new.env(parent = emptyenv()); dl2$records <- list()
+spec_yn <- list(
+  id = "yn_through_4pt", type = "ordinal",
+  source = list(w1 = "q"),
+  scale = list(min = 1, max = 4),
+  missing = list(use_convention = "treat_as_na"),
+  harmonize = list(default = list(method = "r_function", fn = "safe_reverse_4pt"))
+)
+df_yn <- data.frame(q = c(1, 2, 1, 1, 2))
+suppressWarnings(
+  harmonize_variable(spec_yn, waves = list(w1 = df_yn),
+                     missing_conventions = list(treat_as_na = c(-1)),
+                     domain_log = dl2))
+expect(length(dl2$records) == 1L &&
+         dl2$records[[1]]$status == "underuses_domain",
+       "Yes/No wave under a 4-pt transform logs underuses_domain")
+
 cat(sprintf("\n%s (%d failures)\n",
             if (fails == 0L) "ALL PASS" else "FAILURES", fails))
 quit(status = if (fails == 0L) 0L else 1L)
