@@ -242,9 +242,12 @@ and writes `outputs/<survey>/domain_log.csv` (report-only). Fifth bug of the
 day found by Jeff's eyeball and fixed the same way: `internet_political_info`
 w4 used `collapse_6pt_to_4pt_reverse` (the TRUST pole-merge bins) instead of
 `recode_6pt_freq_to_4pt` — "a few times a month" landed in Seldom, "a few
-times a year" in Never; new companion `internet_political_info_w4_6pt`.
-⚠️ Paper 01b consumes this variable and is already on the redo list — its
-w4 values changed with the corrected binning.
+times a year" in Never. SUPERSEDED same day per Jeff: the item is W4-ONLY, so
+there is no cross-wave scale to collapse toward — `internet_political_info`
+now carries the NATIVE 6-pt (1=Practically never … 6=Everyday, higher = more
+frequent) and the short-lived `internet_political_info_w4_6pt` companion was
+removed. ⚠️ Paper 01b (vp-ajcp-revisions.R) consumed the old 1–4 coding — it
+must be RE-AUDITED for hard-coded 1–4 assumptions, not just re-run.
 
 ABS domain log: **79 findings (42 outside_domain / 37 underuses_domain)**.
 Unreviewed highlights needing per-item codebook verification:

@@ -76,38 +76,7 @@ variables:
   # ===========================================================================
   - id: internet_political_info
     concept: social_media
-    description: "How often do you use the internet to find information about politics and government?"
-    type: ordinal
-    source:
-      w1: null
-      w2: null
-      w3: null
-      w4: q51
-      w5: null
-      w6: null
-    scale:
-      min: 1
-      max: 4
-      labels:
-        1: "Never"
-        2: "Seldom"
-        3: "Sometimes"
-        4: "Often"
-    missing:
-      use_convention: treat_as_na
-    harmonize:
-      default:
-        method: r_function
-        fn: recode_6pt_freq_to_4pt
-        note: "W4 raw (q51) is 6-pt FREQUENCY (1=Everyday -> 6=Practically never); collapse 1,2->4 | 3,4->3 | 5->2 | 6->1. Until 2026-08-11 this used collapse_6pt_to_4pt_reverse — the W5 TRUST pole-merge (1,2|3|4|5,6 bins) — so 'A few times a month' landed in Seldom and 'A few times a year' in Never. For W4 LEVELS use internet_political_info_w4_6pt."
-    qc:
-      valid_range: [1, 4]
-      validate:
-        - waves: [w4]
-          phrase: "internet.*politic|political.*information"
-  - id: internet_political_info_w4_6pt
-    concept: social_media
-    description: "Internet for political information — W4-only NATIVE 6-pt frequency (1=Practically never ... 6=Everyday, higher = more frequent); companion to internet_political_info, whose 4-pt collapse is for shape use"
+    description: "How often do you use the internet to find information about politics and government? (W4-only; NATIVE 6-pt frequency, higher = more frequent)"
     type: ordinal
     source:
       w1: null
@@ -132,7 +101,7 @@ variables:
       default:
         method: r_function
         fn: safe_reverse_6pt
-        note: "Raw W4 q51 is 1=Everyday -> 6=Practically never; reversed so higher = more frequent. Same companion pattern as sm_express_political_w4_6pt."
+        note: "⚠️ SCALE CHANGED 2026-08-11: was a 6->4 collapse (and before that the wrong collapse fn entirely — the W5 trust pole-merge). This item exists in W4 ONLY, so there is no cross-wave scale to harmonize toward and the collapse was pure information loss; the column now carries the native 6-pt, reversed from raw 1=Everyday -> 6=Practically never so higher = more frequent. Any consumer written against the old 1-4 coding (paper 01b's vp-ajcp-revisions.R) must be re-audited, not just re-run."
     qc:
       valid_range: [1, 6]
       validate:
