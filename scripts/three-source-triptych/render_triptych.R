@@ -120,6 +120,43 @@ esc <- function(x) {
   x <- gsub("<", "&lt;", x, fixed = TRUE)
   gsub(">", "&gt;", x, fixed = TRUE)
 }
+# Where does a raw code LAND under this rule? Used to render the YAML column
+# for transformed waves as "-> <target code> <target label>" instead of
+# misaligning the harmonized label against the raw code number (which made a
+# correct reversal read as its own opposite). Unknown fns return NA -> "?".
+.FN_TARGET_MAP <- list(
+  recode_6pt_freq_to_4pt      = c(`1`=4, `2`=4, `3`=3, `4`=3, `5`=2, `6`=1),
+  collapse_6pt_to_4pt_reverse = c(`1`=4, `2`=4, `3`=3, `4`=2, `5`=1, `6`=1),
+  recode_binary_yes_no        = c(`1`=1, `2`=0)
+)
+map_raw_to_target <- function(rule, raw_code) {
+  m <- rule$method %||% "identity"
+  if (identical(m, "identity")) return(raw_code)
+  if (identical(m, "recode")) {
+    v <- rule$mapping[[as.character(raw_code)]]
+    return(if (is.null(v)) NA_real_ else suppressWarnings(as.numeric(v)))
+  }
+  if (identical(m, "r_function")) {
+    fn <- rule$fn %||% ""
+    hit <- regmatches(fn, regexec("^safe_reverse_([0-9])pt$", fn))[[1]]
+    if (length(hit) == 2) {
+      n <- as.integer(hit[2])
+      return(if (raw_code >= 1 && raw_code <= n) n + 1 - raw_code else NA_real_)
+    }
+    hit <- regmatches(fn, regexec("^safe_([0-9])pt_none$", fn))[[1]]
+    if (length(hit) == 2) {
+      n <- as.integer(hit[2])
+      return(if (raw_code >= 1 && raw_code <= n) raw_code else NA_real_)
+    }
+    tm <- .FN_TARGET_MAP[[fn]]
+    if (!is.null(tm)) {
+      v <- tm[as.character(raw_code)]
+      return(if (is.na(v)) NA_real_ else unname(v))
+    }
+  }
+  NA_real_
+}
+
 resolve_rule <- function(var_spec, wave) {
   h <- var_spec$harmonize
   r <- h$by_wave[[wave]] %||% h$exceptions[[wave]] %||% h[[wave]] %||%
@@ -154,9 +191,13 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
   is_identity <- identical(rule$method %||% "identity", "identity")
   vr   <- var_spec$qc$valid_range
 
+  # Row universe: for identity waves the YAML target codes belong in the union
+  # (they ARE the raw codes); for transformed waves they don't — a target-only
+  # code would fabricate a raw-side row (e.g. harmonized 6 on a 5-category
+  # wave). Raw-side sources only in that case.
   codes <- sort(unique(c(
     suppressWarnings(as.numeric(cbk$response_code)),
-    suppressWarnings(as.numeric(names(yl %||% list()))),
+    if (is_identity) suppressWarnings(as.numeric(names(yl %||% list()))),
     if (!is.null(rl$val_labels)) as.numeric(rl$val_labels)
   )))
   codes <- codes[!is.na(codes)]
@@ -219,9 +260,22 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
       if (is.na(x) || !nzchar(x)) "<td class=absent>&mdash;</td>"
       else sprintf("<td>%s</td>", esc(x))
     }
-    yml_cell <- if (is_identity) cell(lab_yml) else
-      sub("<td", "<td class=nocompare title='harmonized target scale — not compared for this wave'",
-          cell(lab_yml))
+    yml_cell <- if (is_identity) {
+      cell(lab_yml)
+    } else if (is_miss) {
+      "<td class=nocompare>&mdash;</td>"
+    } else {
+      # Show the MAPPING, not a false 1-to-1 alignment: raw code cd lands on
+      # target code tc, whose label comes from the harmonized scale.
+      tc <- map_raw_to_target(rule, cd)
+      if (is.na(tc)) {
+        "<td class=nocompare title='mapping unknown for this fn — see method line'>&rarr; ?</td>"
+      } else {
+        t_lab <- if (!is.null(yl)) as.character(unlist(yl[as.character(tc)]) %||% "")[1] else ""
+        sprintf("<td class=nocompare title='where this raw code lands after the transform'>&rarr; %s %s</td>",
+                format(tc, trim = TRUE), esc(t_lab %||% ""))
+      }
+    }
     rows <- c(rows, sprintf(
       "<tr class=%s><td class=code>%s</td>%s%s%s<td class=mark>%s</td></tr>",
       cls, format(cd, trim = TRUE), cell(lab_cb), yml_cell, cell(lab_raw), mark))
