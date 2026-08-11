@@ -1,8 +1,8 @@
 {
-  "run_id": "20260811145713-d33c",
-  "timestamp_utc": "2026-08-11T07:57:13Z",
-  "git_commit": "609e93b",
-  "git_dirty": true,
+  "run_id": "20260811152026-7f1a",
+  "timestamp_utc": "2026-08-11T08:20:26Z",
+  "git_commit": "67c1f94",
+  "git_dirty": false,
   "schema_version": 1,
   "inputs": [
     {
@@ -35,25 +35,25 @@
   "outputs": [
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.rds",
-      "sha256": "f54324ea05601eee32bcd194adab7194759377acc1785d83b90becfbf8600561",
+      "sha256": "0a6ecc3e0b48bca29febcfbf881fe04a23d59a98a15d4b134f5c2924183453b2",
       "n_rows": 156658,
-      "n_cols": 14
+      "n_cols": 29
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/data/processed/evs_wvs_joint_harmonized.parquet",
-      "sha256": "1ba26f39210a8f52d746a2100db317bfb1cd8df857a6fdef2f8ffe8dead1fdab",
+      "sha256": "389677221d322996191dedab81c01924dccd3177f510f7be3ab1256c0e159864",
       "n_rows": 156658,
-      "n_cols": 14
+      "n_cols": 29
     },
     {
       "path": "/Users/jeffreystark/Development/Research/survey-data-prep/outputs/evs_wvs_joint/evs_wvs_joint_harmonized.rds",
-      "sha256": "f54324ea05601eee32bcd194adab7194759377acc1785d83b90becfbf8600561",
+      "sha256": "0a6ecc3e0b48bca29febcfbf881fe04a23d59a98a15d4b134f5c2924183453b2",
       "n_rows": 156658,
-      "n_cols": 14
+      "n_cols": 29
     }
   ],
   "engine_versions": {
-    "src/r/harmonize/harmonize.R": "bf306fb367864cc7cc595f6058e23891151bebf39b640e19caa908042b18aaab",
+    "src/r/harmonize/harmonize.R": "56c284edba79283f63c25b5eb37250edc9e54e0475357e63c9fcd26b3cd5e6b3",
     "src/r/utils/recoding.R": "79c6c91c6b77f81c0c8d8f550bd8dd57b768e0c38ecdf23a93b49b5d5e30ad64",
     "src/r/harmonize/validate_spec.R": "d4044abee20a830ebc65ee064ef97559e8cec09492c1399897e2009107e16ab4",
     "src/r/utils/validation.R": "9d8f4e77cf730025f9765a299fa66554848d329bf6bb94776fe5c22a066e3d7e"
