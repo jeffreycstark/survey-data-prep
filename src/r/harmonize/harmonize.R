@@ -39,6 +39,82 @@ apply_missing <- function(x, missing_codes) {
 #' @param var_spec One YAML variable entry
 #' @param wave_name Wave identifier (e.g., "w1", "y2013", "2018")
 #' @return List with at least `method`; never NULL (falls back to identity)
+# ---- input-domain guard (2026-08-11) -----------------------------------------
+# The class of bug this kills: a transform applied to a wave whose raw item has
+# a different response format (a Yes/No wave through safe_reverse_4pt recorded
+# No as "Sometimes"; a 5-category wave identity-mapped onto a 6-category scale
+# misfiled 531 people). None of that is visible to the range gate because the
+# outputs are in-range. The guard compares the OBSERVED substantive codes in
+# the wave's data against the rule's expected input domain, before transforming.
+# Report-only: findings go to outputs/<survey>/domain_log.csv via `domain_log`.
+
+# Known input domains for named recoding helpers. Grow as needed; fns not
+# listed (and derive rules) are skipped, not guessed.
+.FN_INPUT_DOMAIN <- list(
+  recode_6pt_freq_to_4pt      = 1:6,
+  collapse_6pt_to_4pt_reverse = 1:6,
+  recode_binary_yes_no        = 1:2
+)
+
+.rule_input_domain <- function(wave_rule, var_spec) {
+  m <- wave_rule$method %||% "identity"
+  if (identical(m, "identity")) {
+    lo <- suppressWarnings(as.numeric(var_spec$scale$min))
+    hi <- suppressWarnings(as.numeric(var_spec$scale$max))
+    if (!is.na(lo) && !is.na(hi) && hi >= lo) return(seq(lo, hi)) else return(NULL)
+  }
+  if (identical(m, "recode")) {
+    k <- suppressWarnings(as.numeric(names(wave_rule$mapping)))
+    k <- k[!is.na(k)]
+    return(if (length(k)) sort(k) else NULL)
+  }
+  if (identical(m, "r_function")) {
+    fn <- wave_rule$fn %||% ""
+    hit <- regmatches(fn, regexec("^safe_(?:reverse_)?([0-9])pt(?:_none)?$", fn))[[1]]
+    if (length(hit) == 2) return(seq_len(as.integer(hit[2])))
+    return(.FN_INPUT_DOMAIN[[fn]])
+  }
+  NULL
+}
+
+.check_input_domain <- function(x, wave_rule, var_spec, wave_name, src, domain_log) {
+  if (is.null(domain_log)) return(invisible(NULL))
+  domain <- .rule_input_domain(wave_rule, var_spec)
+  if (is.null(domain)) return(invisible(NULL))
+  obs <- sort(unique(x[!is.na(x)]))
+  if (!length(obs)) return(invisible(NULL))
+
+  status <- NULL
+  outside <- setdiff(obs, domain)
+  unused_top <- sum(domain > max(obs))
+  if (length(outside)) {
+    status <- "outside_domain"
+    detail <- sprintf("observed codes outside the rule's input domain: %s",
+                      paste(outside, collapse = ","))
+  } else if (unused_top >= 2) {
+    # the format-seam signature: the wave never reaches the top of the domain
+    # (Yes/No data under a 4-pt transform observes only 1..2)
+    status <- "underuses_domain"
+    detail <- sprintf("observed %s..%s but domain runs to %s — format seam?",
+                      min(obs), max(obs), max(domain))
+  }
+  if (is.null(status)) return(invisible(NULL))
+
+  domain_log$records[[length(domain_log$records) + 1L]] <- data.frame(
+    variable = var_spec$id %||% NA_character_, wave = wave_name, source_var = src,
+    method = wave_rule$method %||% "identity", fn = wave_rule$fn %||% "",
+    domain = paste(range(domain), collapse = ".."),
+    observed = paste(range(obs), collapse = ".."),
+    n_obs_values = length(obs), status = status, detail = detail,
+    stringsAsFactors = FALSE
+  )
+  if (identical(status, "outside_domain")) {
+    warning(sprintf("[domain] %s %s: %s", var_spec$id %||% "?", wave_name, detail),
+            call. = FALSE)
+  }
+  invisible(NULL)
+}
+
 resolve_wave_rule <- function(var_spec, wave_name) {
   default_rule <- var_spec$harmonize$default %||% list(method = "identity")
   var_spec$harmonize$by_wave[[wave_name]] %||%
@@ -105,7 +181,8 @@ harmonize_variable <- function(
   var_spec,
   waves,
   missing_conventions,
-  oob_log = NULL
+  oob_log = NULL,
+  domain_log = NULL
 ) {
 
   out <- list()
@@ -214,6 +291,9 @@ harmonize_variable <- function(
 
     # ---- select harmonization rule ----
     wave_rule <- resolve_wave_rule(var_spec, wave_name)
+
+    # ---- input-domain guard (report-only) ----
+    .check_input_domain(x, wave_rule, var_spec, wave_name, src, domain_log)
 
     # ---- apply harmonization method ----
     # `method: null` is valid per the schema ("do nothing / not mapped"), but

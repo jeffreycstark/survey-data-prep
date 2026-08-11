@@ -25,7 +25,8 @@ source(here::here("src/r/data_prep_modules/_yaml_utils.R"))
 #' @param waves List of wave dataframes
 #' @param silent Suppress messages
 #' @return List with harmonized variables and metadata
-harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
+harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL,
+                           domain_log = NULL) {
 
   spec_name <- tools::file_path_sans_ext(basename(spec_path))
 
@@ -75,7 +76,8 @@ harmonize_spec <- function(spec_path, waves, silent = FALSE, oob_log = NULL) {
         var_spec = var_spec,
         waves = waves,
         missing_conventions = missing_conventions,
-        oob_log = oob_log
+        oob_log = oob_log,
+        domain_log = domain_log
       )
 
       # C3: populate spec_path on each wave vector's provenance attribute.
@@ -129,12 +131,23 @@ harmonize_all_specs <- function(waves, specs = NULL, silent = FALSE,
     e
   } else NULL
 
+  # Domain guard log rides alongside the oob log: same directory, fixed name.
+  domain_log_path <- if (!is.null(oob_log_path)) {
+    file.path(dirname(oob_log_path), "domain_log.csv")
+  } else NULL
+  domain_log <- if (!is.null(domain_log_path)) {
+    e <- new.env(parent = emptyenv())
+    e$records <- list()
+    e
+  } else NULL
+
   results <- list()
 
   for (spec_path in specs) {
     spec_name <- tools::file_path_sans_ext(basename(spec_path))
 
-    result <- harmonize_spec(spec_path, waves, silent = silent, oob_log = oob_log)
+    result <- harmonize_spec(spec_path, waves, silent = silent, oob_log = oob_log,
+                             domain_log = domain_log)
 
     if (!is.null(result)) {
       results[[spec_name]] <- result
@@ -156,6 +169,25 @@ harmonize_all_specs <- function(waves, specs = NULL, silent = FALSE,
                             valid_min=numeric(), valid_max=numeric()),
                 oob_log_path, row.names = FALSE)
       if (!silent) cat(sprintf("\n✅ Out-of-range log: no events (written to %s)\n", oob_log_path))
+    }
+  }
+
+  if (!is.null(domain_log_path)) {
+    if (length(domain_log$records) > 0) {
+      dom_df <- do.call(rbind, domain_log$records)
+      write.csv(dom_df, domain_log_path, row.names = FALSE)
+      if (!silent) {
+        cat(sprintf("⚠  Input-domain log: %d finding(s) written to %s\n",
+                    nrow(dom_df), domain_log_path))
+      }
+    } else {
+      write.csv(data.frame(variable=character(), wave=character(),
+                            source_var=character(), method=character(),
+                            fn=character(), domain=character(),
+                            observed=character(), n_obs_values=integer(),
+                            status=character(), detail=character()),
+                domain_log_path, row.names = FALSE)
+      if (!silent) cat(sprintf("✅ Input-domain log: no findings (written to %s)\n", domain_log_path))
     }
   }
 

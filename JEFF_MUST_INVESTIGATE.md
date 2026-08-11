@@ -235,6 +235,30 @@ Each card shows the three sources code-aligned; judge from the labels whether
 the wave needs a per-wave rule, a native companion (W5-seam pattern), or is a
 legitimately narrower wave.
 
+**2026-08-11 (later): the engine now runs this check ON THE DATA at every
+harmonization** — the input-domain guard in `harmonize.R` compares each wave's
+observed substantive codes against the resolved rule's expected input domain
+and writes `outputs/<survey>/domain_log.csv` (report-only). Fifth bug of the
+day found by Jeff's eyeball and fixed the same way: `internet_political_info`
+w4 used `collapse_6pt_to_4pt_reverse` (the TRUST pole-merge bins) instead of
+`recode_6pt_freq_to_4pt` — "a few times a month" landed in Seldom, "a few
+times a year" in Never; new companion `internet_political_info_w4_6pt`.
+⚠️ Paper 01b consumes this variable and is already on the redo list — its
+w4 values changed with the corrected binning.
+
+ABS domain log: **79 findings (42 outside_domain / 37 underuses_domain)**.
+Unreviewed highlights needing per-item codebook verification:
+- `dem_country_future/_authoritarian/_present_govt`, `dem_want_democratic`,
+  `democracy_suitability` **w1: HALF-POINT codes 3.5–8.5 survive into the
+  harmonized data** (in-range under [1,10], so no gate ever fired) — the
+  IPUS-style between-answer markers, on 10-pt W1 items.
+- `covid_livelihood_impact` w6: code 10 through `safe_reverse_4pt` — likely a
+  0–10 item misspecced as 4-pt; out-of-domain responses destroyed via the
+  range gate.
+- `covid_trust_govt_info` w6: code 5 under a 4-pt reverse (5-pt item?).
+- `govt_anticorrupt_effort` w6: code 0 not caught by the missing convention.
+- `age` w1/w4: observed ages above the declared [17,99] (108/109).
+
 ## 📋 Residual systematic findings (post-fixes)
 
 These are categories where the audit infrastructure is doing its job but the remaining signal needs a YAML hardening pass.
