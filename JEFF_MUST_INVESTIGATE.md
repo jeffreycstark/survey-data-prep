@@ -210,6 +210,31 @@ First all-survey bin-width parity sweep surfaced these beyond the W5 class above
 
 
 ---
+## 🟡 Triptych ARITY leads (2026-08-11) — raw code-set vs target-scale span mismatches
+
+The three-source-triptych skill's ARITY check (raw wave carries N contiguous
+substantive codes, harmonized target scale spans M ≠ N) flags **88 cards / 56
+variables** in ABS. Jeff's eyeball found the first two of this class by hand
+(`sm_connect_people` w5 Yes/No through `safe_reverse_4pt`; W5
+`political_info_channel` 5→6 category shift — both FIXED 2026-08-11 along with
+`sm_share_news`, `sm_organize_politics`, and a `sm_express_political_w4_6pt`
+native companion). The rest of the queue is UNREVIEWED leads, not verdicts:
+
+- **Known/corroborating** (no action): the 18 W5 trust-seam items + relatives
+  (already handled via `*_w5_6pt` companions — ARITY independently re-finds the
+  pole-merge) and `sm_express_political` w4 (companion added).
+- **New leads needing per-item review**: `glob_cultural_defense` w1–w4,
+  `glob_trade_protection` w2–w4, `govt_withholds_info` w5,
+  `intl_china_world_influence` / `intl_usa_world_influence` w5/w6,
+  `pol_news_television/_radio/_newspaper` w1, `religiosity_practice` (3 waves),
+  `procedural_preference_index` (3 waves), `sat_president_govt`, and others.
+
+Regenerate the review pack:
+`Rscript scripts/three-source-triptych/render_triptych.R --survey abs --disagreements-only --out outputs/triptych/abs-triage`
+Each card shows the three sources code-aligned; judge from the labels whether
+the wave needs a per-wave rule, a native companion (W5-seam pattern), or is a
+legitimately narrower wave.
+
 ## 📋 Residual systematic findings (post-fixes)
 
 These are categories where the audit infrastructure is doing its job but the remaining signal needs a YAML hardening pass.

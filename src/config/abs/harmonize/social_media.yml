@@ -206,6 +206,11 @@ variables:
     harmonize:
       default:
         method: identity
+      by_wave:
+        w5:
+          method: recode
+          mapping: {1: 1, 2: 2, 3: 3, 4: 4, 5: 6}
+          note: "W5 (q52) offers only five categories and has NO face-to-face option: its 5 = 'Other channel' maps to harmonized 6 = Others, not 5 = Face-to-face. Was identity until 2026-08-11, misfiling 531 W5 respondents as face-to-face."
     qc:
       valid_range: [1, 6]
       validate:
@@ -224,7 +229,7 @@ variables:
       w2: null
       w3: null
       w4: null
-      w5: q51a
+      w5: null  # q51a is a Yes/No screener, NOT the 4-pt frequency — see sm_connect_people_w5_binary
       w6: q52a
     scale:
       min: 1
@@ -243,7 +248,36 @@ variables:
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w5, w6]
+        - waves: [w6]
+          phrase: "connect.*people|talk.*people"
+  - id: sm_connect_people_w5_binary
+    concept: social_media
+    description: "Uses social media primarily to connect with other people (W5 native yes/no; the W6 4-pt frequency version is sm_connect_people)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51a
+      w6: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        1: "Yes"
+        0: "No"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "W5 format seam (same class as the W5 trust pole-merge): W5 q51a-d are Yes/No screeners, W6 q52a-d are 4-pt frequency. Until 2026-08-11 q51a went through safe_reverse_4pt, recording Yes as 4 (Often) and No as 3 (Sometimes)."
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w5]
           phrase: "connect.*people|talk.*people"
   - id: sm_express_political
     concept: social_media
@@ -275,11 +309,44 @@ variables:
         w4:
           method: r_function
           fn: recode_6pt_freq_to_4pt
-          note: "W4 uses 6-point frequency; collapse to 4-point. NOT verified by label reconciliation (reports skip) -- the collapse fn must also invert W4 raw 1=Everyday -> 6=Practically never onto 1=Never -> 4=Often."
+          note: "W4 uses 6-point frequency; collapse to 4-point. NOT verified by label reconciliation (reports skip) -- the collapse fn must also invert W4 raw 1=Everyday -> 6=Practically never onto 1=Never -> 4=Often. Check D parity_error: bins 4 and 3 each hold TWO native categories, so W4<->W6 level comparisons are inflated -- for W4 levels use the native companion sm_express_political_w4_6pt."
     qc:
       valid_range: [1, 4]
       validate:
         - waves: [w4, w6]
+          phrase: "opinion.*politic|express.*politic"
+  - id: sm_express_political_w4_6pt
+    concept: social_media
+    description: "Express political opinion on social media — W4-only NATIVE 6-pt frequency (1=Practically never ... 6=Everyday, higher = more frequent); companion to sm_express_political, whose W4 arm collapses 6->4 (Check D parity_error: top two bins hold two native categories each)"
+    type: ordinal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: q52
+      w5: null
+      w6: null
+    scale:
+      min: 1
+      max: 6
+      labels:
+        1: "Practically never"
+        2: "A few times a year"
+        3: "A few times a month"
+        4: "Once or twice a week"
+        5: "Several times a week"
+        6: "Everyday"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: safe_reverse_6pt
+        note: "Raw W4 q52 is 1=Everyday -> 6=Practically never; reversed so higher = more frequent. Same companion pattern as the W5 trust *_w5_6pt columns: use this for W4 LEVELS, use sm_express_political only for cross-wave shape comparisons that accept the 6->4 collapse."
+    qc:
+      valid_range: [1, 6]
+      validate:
+        - waves: [w4]
           phrase: "opinion.*politic|express.*politic"
 
   - id: sm_express_political_binary
@@ -320,7 +387,7 @@ variables:
       w2: null
       w3: null
       w4: null
-      w5: q51d
+      w5: null  # q51d is a Yes/No screener, NOT the 4-pt frequency — see sm_organize_politics_w5_binary
       w6: q52d
     scale:
       min: 1
@@ -339,7 +406,36 @@ variables:
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w5, w6]
+        - waves: [w6]
+          phrase: "organize.*politic"
+  - id: sm_organize_politics_w5_binary
+    concept: social_media
+    description: "Uses social media primarily to organize to influence politics (W5 native yes/no; the W6 4-pt frequency version is sm_organize_politics)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51d
+      w6: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        1: "Yes"
+        0: "No"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "W5 format seam: q51d is a Yes/No screener. Until 2026-08-11 it went through safe_reverse_4pt (Yes -> 4 Often, No -> 3 Sometimes)."
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w5]
           phrase: "organize.*politic"
   - id: sm_share_news
     concept: social_media
@@ -350,7 +446,7 @@ variables:
       w2: null
       w3: null
       w4: null
-      w5: q51c
+      w5: null  # q51c is a Yes/No screener, NOT the 4-pt frequency — see sm_share_news_w5_binary
       w6: q52c
     scale:
       min: 1
@@ -369,7 +465,36 @@ variables:
     qc:
       valid_range: [1, 4]
       validate:
-        - waves: [w5, w6]
+        - waves: [w6]
+          phrase: "share.*news"
+  - id: sm_share_news_w5_binary
+    concept: social_media
+    description: "Uses social media primarily to share news or information (W5 native yes/no; the W6 4-pt frequency version is sm_share_news)"
+    type: nominal
+    source:
+      w1: null
+      w2: null
+      w3: null
+      w4: null
+      w5: q51c
+      w6: null
+    scale:
+      min: 0
+      max: 1
+      labels:
+        1: "Yes"
+        0: "No"
+    missing:
+      use_convention: treat_as_na
+    harmonize:
+      default:
+        method: r_function
+        fn: recode_binary_yes_no
+        note: "W5 format seam: q51c is a Yes/No screener. Until 2026-08-11 it went through safe_reverse_4pt (Yes -> 4 Often, No -> 3 Sometimes)."
+    qc:
+      valid_range: [0, 1]
+      validate:
+        - waves: [w5]
           phrase: "share.*news"
   # ===========================================================================
   # GROUP 3: Social Media Platform Usage

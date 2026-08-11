@@ -48,6 +48,28 @@ Per-wave files: `outputs/master_w{1..6}.rds`.
 - `dem_vs_equality`: raw "both equally" at position 5; REMAPPED to center (3)
 - `dem_always_preferable`: W2 response order differs; remapped to W3 standard
 
+## Social-media format seams (fixed 2026-08-11)
+
+The W5 seam class extends to the social-media block, caught by hand via the
+three-source-triptych skill:
+
+- **W5 q51a/c/d are Yes/No screeners** while their W6 counterparts (q52a/c/d)
+  are 4-pt frequency items. Until 2026-08-11 all three went through
+  `safe_reverse_4pt`, recording every Yes as 4 (=Often) and every No as
+  3 (=Sometimes). Now: `sm_connect_people`, `sm_share_news`,
+  `sm_organize_politics` are **W6-only**, and the W5 native binaries live in
+  `*_w5_binary` companions (1=Yes, 0=No). Any analysis that used these three
+  columns' W5 values before 2026-08-11 is wrong.
+- **W5 `political_info_channel` (q52) has no face-to-face category** — its
+  5 = "Other channel" was landing on harmonized 5 = "Face-to-face
+  conversation" under identity (531 respondents misfiled). Now a per-wave
+  recode maps W5 5→6 (Others); harmonized 5 is structurally empty in W5.
+- **W4 `sm_express_political` (q52) is a native 6-pt frequency** collapsed
+  6→4 (`recode_6pt_freq_to_4pt`; Check D parity_error — top two bins hold two
+  native categories each). The collapse stays for cross-wave shape use;
+  W4 *levels* should use the native companion `sm_express_political_w4_6pt`
+  (1=Practically never … 6=Everyday).
+
 ## W5 trust seam (6→4pt pole-merge) and the `*_w5_6pt` companions
 
 W5 fielded 18 items on **6-point bipolar scales** that every other wave asked

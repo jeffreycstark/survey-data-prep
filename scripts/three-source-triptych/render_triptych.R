@@ -90,6 +90,17 @@ checkA <- local({
   if (!nrow(x)) return(NULL)
   setNames(sprintf("%s: %s", x$status, x$message), paste(x$variable, x$wave))
 })
+# Check D (bin-width parity): a wave whose harmonized bins hold a different
+# number of native categories than its siblings (the pole-merge / collapse
+# seam class). Overlaid the same way as Check A.
+checkD <- local({
+  f <- here("audit", "reports", survey, "04-bin-width-parity.csv")
+  if (!file.exists(f)) return(NULL)
+  x <- read.csv(f, stringsAsFactors = FALSE)
+  x <- x[grepl("error", x$status, ignore.case = TRUE), , drop = FALSE]
+  if (!nrow(x)) return(NULL)
+  setNames(sprintf("%s: %s", x$status, x$message), paste(x$variable, x$wave))
+})
 
 spec_files <- list.files(S$spec_dir, pattern = "[.]ya?ml$", full.names = TRUE)
 if (!is.null(opt_spec)) {
@@ -140,6 +151,7 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
 
   miss <- resolve_missing(var_spec, conventions)
   rule <- resolve_rule(var_spec, wave)
+  is_identity <- identical(rule$method %||% "identity", "identity")
   vr   <- var_spec$qc$valid_range
 
   codes <- sort(unique(c(
@@ -165,7 +177,6 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
     # they must match the raw wave; under recode/r_function/derive they
     # legitimately differ (that's what the transform is for), so exclude the
     # YAML column from the comparison for those waves.
-    is_identity <- identical(rule$method %||% "identity", "identity")
     present <- if (is_identity) c(cb = lab_cb, yml = lab_yml, raw = lab_raw)
                else c(cb = lab_cb, raw = lab_raw)
     present <- present[!is.na(present) & nzchar(present)]
@@ -221,7 +232,44 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
     hit <- checkA[paste(var_spec$id, wave)]
     if (!is.na(hit)) ca <- unname(hit)
   }
-  if (!is.null(ca)) flagged <- TRUE
+  cd4 <- NULL
+  if (!is.null(checkD)) {
+    hit <- checkD[paste(var_spec$id, wave)]
+    if (!is.na(hit)) cd4 <- unname(hit)
+  }
+  if (!is.null(ca) || !is.null(cd4)) flagged <- TRUE
+
+  # ARITY check: the raw wave's substantive code set (a contiguous run from
+  # its minimum) vs the span of the harmonized target scale. Catches format
+  # seams the label comparison structurally cannot see — e.g. a Yes/No wave
+  # fed through a 4-pt transform, or a 5-category wave mapped by identity
+  # onto a 6-category scale. Contiguity is required so endpoint-labelled
+  # scales (labels only at 1 and 10) don't false-positive.
+  # Exempt by-design mismatches: an explicit recode mapping already handles the
+  # raw code set, and nominal items under a transform are deliberate collapses
+  # (country-pick lists etc.). Ordinal seams and identity mismatches stay.
+  arity <- NULL
+  arity_exempt <- identical(rule$method, "recode") ||
+    (identical(var_spec$type, "nominal") && !is_identity)
+  raw_side <- sort(unique(c(
+    suppressWarnings(as.numeric(cbk$response_code)),
+    if (!is.null(rl$val_labels)) as.numeric(rl$val_labels)
+  )))
+  sub_codes <- if (arity_exempt) numeric(0) else
+    setdiff(raw_side[!is.na(raw_side)], miss$codes)
+  smin <- suppressWarnings(as.numeric(var_spec$scale$min))
+  smax <- suppressWarnings(as.numeric(var_spec$scale$max))
+  if (length(sub_codes) >= 2 && !is.na(smin) && !is.na(smax) &&
+      all(sub_codes == floor(sub_codes)) &&
+      length(sub_codes) == max(sub_codes) - min(sub_codes) + 1) {
+    span <- smax - smin + 1
+    if (length(sub_codes) != span) {
+      arity <- sprintf(
+        "raw wave carries %d substantive codes (%s) but the harmonized target scale spans %d (%s..%s) — format seam?",
+        length(sub_codes), paste(range(sub_codes), collapse = ".."), span, smin, smax)
+      flagged <- TRUE
+    }
+  }
 
   qtxt <- if (nrow(cbk)) esc(cbk$question_text[1]) else "<span class=absent>(no codebook entry)</span>"
   vlab <- if (!is.null(rl) && !is.na(rl$var_label)) esc(rl$var_label) else "<span class=absent>(raw variable absent)</span>"
@@ -240,7 +288,10 @@ make_card <- function(var_spec, wave, conventions, spec_file) {
     if (nzchar(fn)) sprintf(" (<code>%s</code>)", esc(fn)) else "",
     if (is.null(vr)) "&mdash;" else sprintf("[%s, %s]", vr[1], vr[2]),
     esc(miss$key), paste(miss$codes, collapse = ", "),
-    if (is.null(ca)) "" else sprintf("<div class=checka>&#9888; Check A &middot; %s</div>", esc(ca)),
+    paste0(
+      if (is.null(ca))  "" else sprintf("<div class=checka>&#9888; Check A &middot; %s</div>", esc(ca)),
+      if (is.null(cd4)) "" else sprintf("<div class=checkd>&#9888; Check D &middot; %s</div>", esc(cd4)),
+      if (is.null(arity)) "" else sprintf("<div class=arity>&#9888; ARITY &middot; %s</div>", esc(arity))),
     qtxt, vlab, paste(rows, collapse = "\n"))
   list(html = html, flagged = flagged)
 }
@@ -263,6 +314,8 @@ tr.ok td.mark{color:#1e8449} tr.diff{background:#fdecea} tr.diff td.mark{color:#
 tr.miss{color:#999} tr.miss td.mark{color:#999}
 tr.soft{background:#fef9e7} tr.soft td.mark{color:#b7950b}
 .checka{background:#c0392b;color:#fff;font-size:.8em;padding:.25em .5em;border-radius:4px;margin:.2em 0}
+.checkd{background:#7d3c98;color:#fff;font-size:.8em;padding:.25em .5em;border-radius:4px;margin:.2em 0}
+.arity{background:#b9770e;color:#fff;font-size:.8em;padding:.25em .5em;border-radius:4px;margin:.2em 0}
 tr.collide{background:#fdebd0} tr.collide td.mark{color:#b9770e}
 td.absent{color:#bbb} td.nocompare{color:#8a6ea0;font-style:italic}
 .toc a{display:block;font-size:.9em;line-height:1.5}

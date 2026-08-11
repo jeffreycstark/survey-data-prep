@@ -48,10 +48,20 @@ question text and the raw variable label. Below it, one row per response code:
 | `—` | code absent in that source (neutral) |
 | purple italic YAML cell | non-identity wave: the YAML column describes the *harmonized* target scale and is deliberately **not compared** to the raw wave |
 
-Cards also carry a red **Check A** badge when
-`audit/reports/<survey>/04-label-reconciliation.csv` has an `error` row for
-that variable × wave — that's the polarity check the dumb text comparison
-cannot do (paraphrase vs. opposite). Run the audit first if you want badges.
+Cards also carry badges (all flag the card):
+
+- red **Check A** — `audit/reports/<survey>/04-label-reconciliation.csv` has an
+  `error` row for this variable × wave: the polarity check the dumb text
+  comparison cannot do (paraphrase vs. opposite). Run the audit first.
+- purple **Check D** — bin-width `parity_error`: this wave's harmonized bins
+  hold a different number of native categories than its siblings (pole-merge /
+  collapse seams).
+- orange **ARITY** — the raw wave's substantive code set (contiguous run) has a
+  different size than the harmonized target scale's span: the format-seam
+  signature (e.g. a Yes/No wave fed through a 4-pt transform, or a 5-category
+  wave identity-mapped onto a 6-category scale). Exempt: explicit `recode`
+  mappings and nominal-under-transform (deliberate collapses); non-contiguous
+  label sets (endpoint-labelled 0–10 scales) don't fire.
 
 `--disagreements-only` keeps only flagged cards (DIFF, M!, or Check A error).
 ABS full render: ~1,170 cards / ~115 flagged, i.e. the triage pack is ~10% of
