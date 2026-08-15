@@ -19,6 +19,23 @@ exemptions:
       2026-08-10; two people giving byte-identical answers to 300+
       questions is not credible, but dropping rows changes samples and
       weight totals.
+      RE-VERIFIED INDEPENDENTLY 2026-08-15 against the raw release
+      (data/abs/raw/wave5/20230505_W5_merge_15.sav), because the original
+      write-up's "it's upstream" claim had never been checked a second time.
+      It holds, and three further facts came out of it. (a) Each pair sits in
+      ADJACENT file rows — 1453/1454 and 1459/1460 — which is the signature of
+      a row copied during file assembly, not of two respondents coincidentally
+      agreeing on 300+ items. (b) These are the ONLY duplicated
+      country+idnumber keys anywhere in raw W5, and raw W5 has no NA
+      idnumbers. (c) Hong Kong W5 is exactly 1200 rows carrying 1198 distinct
+      idnumbers, and its weights sum to exactly 1200.0000 — i.e. ABS
+      normalized the weights WITH the duplicate rows inside the denominator.
+      That is the concrete cost of the "drop" option: deleting the two copies
+      leaves n=1198 against sum(w)=1197.7253, breaking the sum(w)==n
+      convention every other country in the wave follows, so a drop would have
+      to re-scale HK weights by 1198/1197.7253 (a 0.02% adjustment). Keeping
+      them costs nothing as long as nothing keys on country+wave+idnumber,
+      which row_uid now makes unnecessary.
   - survey: afro
     max_dup_rows: 24
     reason: >

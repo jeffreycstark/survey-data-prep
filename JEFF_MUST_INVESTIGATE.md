@@ -77,6 +77,41 @@ that do report one spread across 2004–2008 (Mongolia/Taiwan/Indonesia/Vietnam 
 `data/lookups/abs_fieldwork_years.csv` keyed country×wave with a `source` column, coalesced after
 `ir9_3`, so the provenance stays visible rather than becoming constants buried in a spec.
 
+**Re-verified 2026-08-15 by exhaustive sweep, not by regex. Every data-internal route is closed.**
+The earlier "verified column-by-column" claim rested on a name/label search, which is the same
+silent-prefilter pattern the audits keep catching, so it was redone against all 252 columns of
+`data/abs/raw/wave2/Wave2_20250609.sav`:
+
+1. `ir9_1/_2/_3` (day/month/year) are populated for exactly nine countries and hold **zero** non-NA
+   values for Korea, Philippines, Singapore and Thailand. This also confirms `ir9_*` as the source
+   of the 74.6% that IS populated — answering the "arriving from somewhere else that has not been
+   traced" question in the original finding below.
+2. The file contains **no Date/POSIXct column at all**, and **no character column at all**.
+3. **No column** whose Korea values are year-like (1990–2030) or of SPSS-datetime magnitude
+   (>1e9). The identical scan run over the nine dated countries returns exactly one hit —
+   `ir9_3`, "Date of interview: year", range 2004–2008 — so the scan demonstrably finds the thing
+   when the thing is there; the Korea result is a real absence, not a broken filter.
+4. **No birth-year variable exists anywhere in W2.** The file carries `se3a` (Age; Korea 1,212
+   non-NA, range 19–80) and nothing else age-related, so the `int_year = birth_year + age`
+   inversion is unavailable.
+5. **No Korea-answered column carries a value or variable label naming a year**, so there is not
+   even a dated-event lower bound to be had from the metadata.
+6. The W2 codebook (`AsianBarometer/Wave2_20250609/Wave II_Variable comparison(Codebook).doc`) has
+   country-specific dated wordings only for **Indonesia** ("presidential election held in 2004")
+   and **Japan** ("2005 General Election") — none for Korea. `AsianBarometer/Wave Coverage.xlsx` is
+   a country×wave presence matrix with no dates.
+
+The only documentary signal is ABS's own shorthand — the codebook calls it "the 2006 questionnaire"
+and "the 2006 merged dataset" — but that is a label for the WAVE, and the data refutes applying it
+per country: the nine dated countries spread 2004–2008, with **Malaysia splitting 2004/2007** and
+**Mainland China splitting 2007/2008** inside a single country.
+
+W2 Korea is unfixable from the release. The remaining path is external and already staged:
+`data/lookups/abs_fieldwork_years.csv` carries Korea W2 = **2006, June–August,
+`status: provisional`, `evidence_tier: B`** from a GHDx catalogue record whose primary document
+returned HTTP 403, with its own note saying do not write it into the spec until the ABS Korea
+country report is read directly. **That document — not the data — is the whole remaining task.**
+
 Original finding below for the record.
 
 - **What:** `int_year` is missing in **six country×wave cells**, not in any whole wave or year. Wave-level coverage is W1 78.3%, W2 74.6%, W3 94.8%, W4–W6 100%. The zero cells:
