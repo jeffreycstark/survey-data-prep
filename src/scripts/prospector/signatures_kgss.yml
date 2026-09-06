@@ -1,0 +1,142 @@
+# Signature registry for the Slope Prospector — KGSS (Korea, 2003–2025).
+#
+# WHY A SEPARATE FILE: signatures.yml is written in the ABS concept-group
+# vocabulary (democracy_support_normative, institutional_trust_executive,
+# authoritarian_support, …). KGSS shares only three of those names, so pointing a
+# KGSS run at that registry produced a permanently empty narrative_patterns.csv —
+# which reads as "Korea matches no known pattern" when it actually means "the
+# matcher had nothing to match on." The groups below are the ones defined in
+# src/scripts/concept_groups_kgss.yml.
+#
+# Enum values and clause semantics are identical to signatures.yml — see its
+# header. Briefly: `required` groups must be present and satisfied; `supporting`
+# groups are skipped when absent but must hold when present; `within` names
+# individual variables inside a group; `ordered` compares structural-break waves.
+#
+# CALIBRATION NOTE: a KGSS wave is a calendar year, so a group direction of
+# RISING/FALLING means |mean slope| > FLAT_THRESHOLD per YEAR, on the variable's
+# own min-max-normalized range. Most KGSS groups sit inside that band, so
+# expect few matches; a signature that fires here is describing a trend that
+# holds up over two decades, not a wave-to-wave wobble.
+#
+# These are prospecting heuristics, not tests. They were written from the
+# constructs KGSS measures, NOT tuned until they fired.
+signatures:
+
+  # ── INSTITUTIONAL CONFIDENCE ───────────────────────────────────────────────
+  confidence_collapse:
+    label: "Confidence Collapse"
+    description: "Political institutions and civic/service institutions losing confidence together"
+    required: { conf_political: FALLING, conf_civic_service: FALLING }
+    supporting: {}
+  systemic_delegitimation:
+    label: "Systemic Delegitimation"
+    description: "Confidence falling in political AND economic/security institutions — beyond politics"
+    required: { conf_political: FALLING, conf_economy_security: FALLING }
+    supporting: {}
+  selective_legitimation_kr:
+    label: "Selective Legitimation (Korea)"
+    description: "Confidence in the executive rising while the legislature and courts lose it"
+    within:
+      conf_political:
+        conf_bluehouse: RISING
+        conf_legislature: FALLING
+        conf_judiciary: FALLING
+  fractured_political_confidence:
+    label: "Fractured Political Confidence"
+    description: "conf_political splits — at least one institution clearly rising while another clearly falls"
+    required: { conf_political: { coherence: DIVERGENT } }
+  delegitimation_sequence:
+    label: "Delegitimation Sequence"
+    description: "Confidence in political institutions breaks downward before participation does"
+    ordered:
+      - { group: conf_political, dir: FALLING }
+      - { group: political_action, dir: FALLING }
+
+  # ── EFFICACY AND PARTICIPATION ─────────────────────────────────────────────
+  efficacy_trap_kr:
+    label: "Efficacy Trap (Korea)"
+    description: "Internal efficacy rising (citizens feel more competent) while external efficacy falls (government unresponsive)"
+    within:
+      political_efficacy:
+        pol_efficacy_internal: RISING
+        pol_efficacy_external: FALLING
+  alienation_withdrawal_kr:
+    label: "Alienation and Withdrawal"
+    description: "Political efficacy and political action falling together"
+    required: { political_efficacy: FALLING, political_action: FALLING }
+    supporting: {}
+
+  # ── DEMOCRACY ASSESSMENT (dem_now / dem_10yrs_past / dem_10yrs_future, 0-10) ─
+  democratic_disillusionment:
+    label: "Democratic Disillusionment"
+    description: "Democracy rated worse now AND expected to be worse in ten years — no anticipated recovery"
+    within:
+      democracy_assessment:
+        dem_now: FALLING
+        dem_10yrs_future: FALLING
+  nostalgic_declinism:
+    label: "Nostalgic Declinism"
+    description: "The remembered past is rated increasingly democratic while the present is rated less so"
+    within:
+      democracy_assessment:
+        dem_10yrs_past: RISING
+        dem_now: FALLING
+
+  # ── ECONOMY AND WELLBEING ──────────────────────────────────────────────────
+  economic_pessimism_kr:
+    label: "Economic Pessimism Decoupling"
+    description: "Forward-looking economic expectations fall while present evaluations hold up"
+    required: { economic_outlook: FALLING }
+    supporting: { political_evaluations: [RISING, FLAT] }
+  private_public_decoupling:
+    label: "Private-Public Decoupling"
+    description: "Subjective wellbeing holding or rising while evaluations of government and the economy fall"
+    required: { political_evaluations: FALLING }
+    supporting: { wellbeing: [RISING, FLAT] }
+  inequality_grievance:
+    label: "Inequality Grievance"
+    description: "Perceived and objected-to inequality rising while political evaluations do not improve"
+    required: { social_inequality: RISING }
+    supporting: { political_evaluations: [FALLING, FLAT] }
+
+  # ── CORRUPTION (the paper-17 decoupling thread) ────────────────────────────
+  anticorruption_decoupling:
+    label: "Anti-Corruption Decoupling"
+    description: "Perceived corruption rising even though the government's anti-corruption performance is rated the same or better"
+    required: { corruption_perceptions: RISING }
+    supporting: { corruption_performance: [RISING, FLAT] }
+  corruption_resignation:
+    label: "Corruption Resignation"
+    description: "Perceived corruption rising while confidence in political institutions falls"
+    required: { corruption_perceptions: RISING, conf_political: FALLING }
+    supporting: {}
+
+  # ── NATION, IMMIGRATION, EXTERNAL WORLD ────────────────────────────────────
+  immigration_hardening:
+    label: "Immigration Hardening"
+    description: "Immigration seen as more threatening while its perceived benefits decline"
+    required: { immigration_threat: RISING, immigration_benefit: FALLING }
+    supporting: {}
+  ethnic_closure:
+    label: "Ethnic Closure"
+    description: "Ascriptive criteria for being 'truly Korean' hardening alongside immigration threat perceptions"
+    required: { national_identity_criteria: RISING }
+    supporting: { immigration_threat: [RISING, FLAT] }
+  nationalist_turn:
+    label: "Nationalist Turn"
+    description: "Protectionist and nationalist positions on trade, land and culture rising, with national pride not falling"
+    required: { international_attitudes: RISING }
+    supporting: { national_pride_general: [RISING, FLAT] }
+
+  # ── ROLE OF GOVERNMENT ─────────────────────────────────────────────────────
+  statist_turn:
+    label: "Statist Turn"
+    description: "Demand for government spending rising, with demand for government responsibility not falling"
+    required: { govt_spending: RISING }
+    supporting: { govt_responsibility: [RISING, FLAT] }
+  civic_norm_erosion:
+    label: "Civic Norm Erosion"
+    description: "The importance attached to civic duties falling, with civic rights not rising to compensate"
+    required: { civic_virtues: FALLING }
+    supporting: { civic_rights: [FALLING, FLAT] }

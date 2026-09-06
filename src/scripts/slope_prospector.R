@@ -42,9 +42,30 @@ if (!exists("OUTPUT_DIR"))   OUTPUT_DIR  <- "output/prospecting"
 # Slope estimation
 if (!exists("MIN_WAVES"))           MIN_WAVES           <- 3
 if (!exists("Z_THRESHOLD"))         Z_THRESHOLD         <- 2.0
+# Reference distribution for the outlier z-score. "auto" = compare across
+# countries when the data has more than one, across variables when it has one
+# (a single-country run cannot be z-scored against other countries).
+if (!exists("Z_BASIS"))             Z_BASIS             <- "auto"
 if (!exists("CI_ALPHA"))            CI_ALPHA            <- 0.05     # CI level for slopes
 if (!exists("QUAD_MIN_WAVES"))      QUAD_MIN_WAVES      <- 4        # min waves to fit quadratic
 if (!exists("FLAT_THRESHOLD"))      FLAT_THRESHOLD      <- 0.05     # |slope| below = "FLAT"
+# Flat band for a GROUP's mean slope. Defaults to FLAT_THRESHOLD, but the two
+# are not the same quantity: a variable's slope is noise-dominated (min-max
+# normalization fills each series' range regardless of how long it is), whereas
+# averaging over group members strips that noise out and leaves the systematic
+# trend — which IS in the wave unit. A survey whose wave_num is a calendar year
+# therefore needs a proportionally smaller group band than one whose waves are
+# four years apart, or its groups all read FLAT and no signature can fire.
+if (!exists("GROUP_FLAT_THRESHOLD")) GROUP_FLAT_THRESHOLD <- FLAT_THRESHOLD
+# How a VARIABLE's direction (RISING/FALLING/FLAT) is decided. "slope" compares
+# |slope| to FLAT_THRESHOLD, which is in wave units and so means different things
+# in a survey whose waves are four years apart and one whose waves are a year
+# apart. "sd_units" compares the change across the observed window, in
+# respondent-level SDs, to DIRECTION_SD_THRESHOLD — comparable across response
+# scales and series lengths, but it needs an `sd_value` column in the means CSV.
+# Default "slope" keeps existing behaviour. See prospector/z_basis.R.
+if (!exists("DIRECTION_BASIS"))       DIRECTION_BASIS       <- "slope"
+if (!exists("DIRECTION_SD_THRESHOLD")) DIRECTION_SD_THRESHOLD <- 0.2
 if (!exists("FAST_THRESHOLD"))      FAST_THRESHOLD      <- 0.15     # |mean_slope| above = "FAST"
 if (!exists("ENDS_LOW"))            ENDS_LOW            <- 0.33     # normalized endpoint below = "LOW"
 if (!exists("ENDS_HIGH"))           ENDS_HIGH           <- 0.66     # normalized endpoint above = "HIGH"
@@ -90,7 +111,11 @@ if (!exists("TITLE"))               TITLE               <- NULL
 
 source(here::here("src", "scripts", "prospector", "signature_features.R"))
 source(here::here("src", "scripts", "prospector", "signature_match.R"))
-SIGNATURES_PATH <- here::here("src", "scripts", "prospector", "signatures.yml")
+source(here::here("src", "scripts", "prospector", "z_basis.R"))
+# Per-survey registries exist (signatures.yml is written in ABS group names);
+# a runner sets SIGNATURES_PATH before source()-ing this file to use its own.
+if (!exists("SIGNATURES_PATH"))
+  SIGNATURES_PATH <- here::here("src", "scripts", "prospector", "signatures.yml")
 
 # ── 1. LOAD AND PREPARE DATA ──────────────────────────────────────────────────
 
@@ -129,6 +154,7 @@ if (NORM_METHOD == "robust") {
     mutate(
       lo = quantile(mean_value, 0.05, na.rm = TRUE),
       hi = quantile(mean_value, 0.95, na.rm = TRUE),
+      norm_range = if_else(hi > lo, hi - lo, NA_real_),
       mean_value = if_else(
         hi > lo,
         pmin(pmax((mean_value - lo) / (hi - lo), 0), 1),
@@ -144,6 +170,7 @@ if (NORM_METHOD == "robust") {
     mutate(
       lo = min(mean_value, na.rm = TRUE),
       hi = max(mean_value, na.rm = TRUE),
+      norm_range = if_else(hi > lo, hi - lo, NA_real_),
       mean_value = if_else(hi > lo, (mean_value - lo) / (hi - lo), 0)
     ) %>%
     select(-lo, -hi) %>%
@@ -223,21 +250,47 @@ slopes <- slopes %>%
   mutate(nonlinear = replace_na(nonlinear, FALSE))
 
 # ── 3c. Z-score standardisation ───────────────────────────────────────────────
+# See prospector/z_basis.R: the reference distribution is other countries on the
+# same variable (cross_country) or other variables in the same country
+# (cross_variable). z_slope is NOT comparable across the two bases.
+# Per country-variable inputs to the z. sd_typ is the n-weighted mean of the
+# respondent-level SD; it is what lets a 1-3 item and a 0-10 item be compared,
+# and it is present only if the means CSV carries an `sd_value` column.
+z_inputs <- harmonized_data %>%
+  group_by(country, variable) %>%
+  summarise(
+    wave_span  = diff(range(wave_num)),
+    norm_range = first(norm_range),
+    sd_typ     = if ("sd_value" %in% names(harmonized_data))
+                   stats::weighted.mean(sd_value, w = if ("n" %in% names(harmonized_data)) n else 1,
+                                        na.rm = TRUE) else NA_real_,
+    .groups = "drop"
+  )
+
+z_basis_used <- resolve_z_basis(slopes, Z_BASIS)
 slopes <- slopes %>%
-  group_by(variable) %>%
+  left_join(z_inputs, by = c("country", "variable")) %>%
+  compute_slope_z(Z_BASIS)
+
+slopes <- slopes %>%
   mutate(
-    n_countries = n(),
-    mean_slope  = mean(slope, na.rm = TRUE),
-    sd_slope    = sd(slope,   na.rm = TRUE),
-    z_slope     = if_else(sd_slope > 0 & n_countries > 1,
-                          (slope - mean_slope) / sd_slope, 0)
-  ) %>%
-  ungroup() %>%
-  mutate(direction = case_when(
-    slope >  FLAT_THRESHOLD ~ "RISING",
-    slope < -FLAT_THRESHOLD ~ "FALLING",
-    TRUE                    ~ "FLAT"
-  ))
+    change_sd = if (all(c("wave_span","norm_range","sd_typ") %in% names(slopes)))
+                  compute_change_sd(slopes) else NA_real_,
+    direction = classify_direction(slopes, DIRECTION_BASIS,
+                                   flat_threshold = FLAT_THRESHOLD,
+                                   sd_threshold   = DIRECTION_SD_THRESHOLD)
+  )
+
+direction_blurb <- if (DIRECTION_BASIS == "sd_units")
+  sprintf("change over the observed window > %.2f respondent SD", DIRECTION_SD_THRESHOLD) else
+  sprintf("|slope| > %.3f per wave", FLAT_THRESHOLD)
+cat(sprintf("── Direction rule: %s (%s) ──\n", DIRECTION_BASIS, direction_blurb))
+if (DIRECTION_BASIS == "sd_units") {
+  n_unscored_dir <- sum(is.na(slopes$change_sd))
+  if (n_unscored_dir > 0)
+    cat(sprintf("   NOTE: %d of %d pairs have no respondent SD and default to FLAT\n",
+                n_unscored_dir, nrow(slopes)))
+}
 
 # ── 4. OUTLIER DETECTION ──────────────────────────────────────────────────────
 
@@ -245,8 +298,22 @@ outliers <- slopes %>%
   filter(abs(z_slope) > Z_THRESHOLD) %>%
   arrange(desc(abs(z_slope)))
 
-cat(sprintf("\n── Outlier slopes (|z| > %.1f): %d found ──\n",
-            Z_THRESHOLD, nrow(outliers)))
+z_stat_used <- slopes$z_stat[1]
+basis_blurb <- switch(z_stat_used,
+  raw_slope = "raw slope vs. other countries on the same variable",
+  sd_units  = "change over the window in respondent SDs, vs. the same country's other variables",
+  traversal = "share of own range traversed, vs. the same country's other variables")
+if (identical(z_stat_used, "traversal"))
+  cat("\n   WARNING: no `sd_value` column in the means table, so cross-variable z ranks how\n",
+      "  STEADILY each variable moved, not how far — per-variable min-max normalization\n",
+      "  stretches every series to [0, 1]. Add sd_value to the means CSV for a magnitude\n",
+      "  ranking (change in respondent SDs). See prospector/z_basis.R.\n", sep = "")
+cat(sprintf("\n── Outlier slopes (|z| > %.1f, basis: %s — %s): %d found ──\n",
+            Z_THRESHOLD, z_basis_used, basis_blurb, nrow(outliers)))
+n_no_ref <- n_unscoreable(slopes)
+if (n_no_ref > 0)
+  cat(sprintf("   NOTE: %d of %d country-variable pairs had no usable reference distribution (z forced to 0)\n",
+              n_no_ref, nrow(slopes)))
 if (nrow(outliers) > 0) {
   outliers %>%
     select(country, variable, slope, z_slope, direction, sig, nonlinear) %>%
@@ -300,13 +367,18 @@ if (nrow(significant_breaks) > 0)
 write_csv(significant_breaks, file.path(OUTPUT_DIR, "structural_breaks.csv"))
 
 # ── 6. DIVERGENCE DETECTION ──────────────────────────────────────────────────
-# Pre-filter before self-join: only include variables with |slope| > FLAT_THRESHOLD
-# This cuts the pair count by ~(filtered_n / total_n)^2, typically 60-80%.
+# Pre-filter before self-join: only variables the direction rule counts as
+# moving. This cuts the pair count by ~(filtered_n / total_n)^2, typically
+# 60-80%. `direction` is the single source of truth for "is this moving" — do
+# not re-derive it from `slope` here, or DIRECTION_BASIS stops taking effect.
 
-slope_wide <- slopes %>% select(country, variable, slope)
+slope_wide <- slopes %>% select(country, variable, slope, direction)
 
 slope_wide_filtered <- slope_wide %>%
-  filter(abs(slope) > FLAT_THRESHOLD)
+  filter(direction != "FLAT") %>%
+  select(-direction)
+
+slope_wide <- slope_wide %>% select(-direction)
 
 divergence <- slope_wide_filtered %>%
   rename(var1 = variable, slope1 = slope) %>%
@@ -419,25 +491,30 @@ if (file.exists(CONCEPT_GROUPS_PATH)) {
       n_vars          = n(),
       mean_slope      = mean(slope),
       sd_slope        = sd(slope),
-      n_rising        = sum(slope >  FLAT_THRESHOLD),
-      n_falling       = sum(slope < -FLAT_THRESHOLD),
-      n_flat          = sum(abs(slope) <= FLAT_THRESHOLD),
+      # Member counts come from `direction`, not from a fresh slope comparison,
+      # so they follow DIRECTION_BASIS. The group MEAN is classified separately
+      # against GROUP_FLAT_THRESHOLD just below.
+      n_rising        = sum(direction == "RISING"),
+      n_falling       = sum(direction == "FALLING"),
+      n_flat          = sum(direction == "FLAT"),
       all_same_sign   = all(slope > 0) | all(slope < 0),
       coherence_score = max(n_rising, n_falling, n_flat) / n(),
-      rising_vars     = paste(variable[slope >  FLAT_THRESHOLD], collapse = "; "),
-      falling_vars    = paste(variable[slope < -FLAT_THRESHOLD], collapse = "; "),
+      rising_vars     = paste(variable[direction == "RISING"], collapse = "; "),
+      falling_vars    = paste(variable[direction == "FALLING"], collapse = "; "),
       .groups         = "drop"
     ) %>%
     mutate(
+      # n_rising / n_falling / n_flat above classify MEMBERS via `direction`;
+      # these two classify the group MEAN — see GROUP_FLAT_THRESHOLD, section 0.
       coherence_flag = case_when(
-        all_same_sign & mean_slope >  FLAT_THRESHOLD ~ "COHERENT_RISING",
-        all_same_sign & mean_slope < -FLAT_THRESHOLD ~ "COHERENT_FALLING",
-        TRUE                                         ~ "DIVERGENT"
+        all_same_sign & mean_slope >  GROUP_FLAT_THRESHOLD ~ "COHERENT_RISING",
+        all_same_sign & mean_slope < -GROUP_FLAT_THRESHOLD ~ "COHERENT_FALLING",
+        TRUE                                               ~ "DIVERGENT"
       ),
       group_direction = case_when(
-        mean_slope >  FLAT_THRESHOLD ~ "RISING",
-        mean_slope < -FLAT_THRESHOLD ~ "FALLING",
-        TRUE                         ~ "FLAT"
+        mean_slope >  GROUP_FLAT_THRESHOLD ~ "RISING",
+        mean_slope < -GROUP_FLAT_THRESHOLD ~ "FALLING",
+        TRUE                               ~ "FLAT"
       )
     ) %>%
     arrange(group, country)
@@ -659,8 +736,8 @@ if (nrow(outliers) > 0) {
     mutate(label = paste(country, variable, sep = " | "),
            shape = if_else(nonlinear, "Non-linear", "Linear")) %>%
     ggplot(aes(x = z_slope, y = reorder(label, z_slope))) +
-    geom_errorbarh(aes(xmin = (ci_lo - mean_slope) / sd_slope,
-                       xmax = (ci_hi - mean_slope) / sd_slope),
+    geom_errorbarh(aes(xmin = (ci_lo * z_scale - mean_ref) / sd_ref,
+                       xmax = (ci_hi * z_scale - mean_ref) / sd_ref),
                    height = 0.3, alpha = 0.4) +
     geom_point(aes(color = direction, shape = shape), size = 3) +
     geom_vline(xintercept = 0, linetype = "dashed", alpha = 0.5) +
@@ -795,6 +872,8 @@ summary_lines <- c(
   "",
   "## Findings — Individual Variables",
   sprintf("- Outlier slopes (|z| > %.1f): %d", Z_THRESHOLD, nrow(outliers)),
+  sprintf("- z-score basis: %s / %s (%s)", z_basis_used, z_stat_used, basis_blurb),
+  sprintf("- direction rule: %s (%s)", DIRECTION_BASIS, direction_blurb),
   sprintf("- Of which non-linear trajectory: %d", sum(outliers$nonlinear, na.rm = TRUE)),
   sprintf("- Structural breaks (p < .05): %d", nrow(significant_breaks)),
   sprintf("- Opposite-direction variable pairs: %d", nrow(opposite_movers)),

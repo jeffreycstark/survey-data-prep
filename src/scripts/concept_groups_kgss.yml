@@ -171,11 +171,13 @@ concept_groups:
 
   # ── NATIONAL PRIDE (ISSP) ─────────────────────────────────────────────────
   # General national identification items. 1-5 reversed so higher = more agreement.
-  # natid_shame is inversely valenced — see its variable note.
   # 2003/2013/2023 only.
+  # natid_shame is EXCLUDED: it is inversely valenced (higher = more shame =
+  # less pride), so inside the group it cancels its mates and makes both the
+  # group mean slope and the coherence score uninterpretable. It still gets a
+  # variable-level slope, break test and divergent-pair entry on its own.
   national_pride_general:
     - natid_korean_over_other
-    - natid_shame
     - natid_world_like_kr
     - natid_kr_better_than_most
     - natid_right_or_wrong
@@ -209,24 +211,32 @@ concept_groups:
   # ── INTERNATIONAL ATTITUDES (ISSP) ────────────────────────────────────────
   # Trade protectionism, world government, sovereignty, foreign investment.
   # 1-5 reversed so higher = agreement. 2003/2013/2021/2023.
+  # Direction after this edit: higher = MORE nationalist/protectionist, uniformly.
+  # intl_world_govt_env is EXCLUDED as the lone pro-globalism item (higher = more
+  # pro-globalism); leaving it in made a uniform nationalist shift read as an
+  # incoherent group. It keeps its own variable-level slope.
   international_attitudes:
     - intl_limit_imports
-    - intl_world_govt_env
     - intl_own_way
     - intl_no_foreign_land
     - intl_kr_tv
     - intl_foreign_co_harmful
 
   # ── IMMIGRATION ATTITUDES (ISSP) ──────────────────────────────────────────
-  # Views on immigration's effects and desired levels.
-  # NOTE: imm_limit_number uses identity direction (higher=fewer immigrants wanted);
-  # all others reversed (higher=more positive about immigration). 2003/2010/2013/2023.
-  immigration_attitudes:
+  # 2003/2010/2013/2023. SPLIT BY VALENCE (was one mixed `immigration_attitudes`
+  # group): three items run higher=more ANTI-immigrant and two run higher=more
+  # PRO-immigrant, so pooling them made a uniform hardening of opinion cancel to
+  # a near-flat, permanently "DIVERGENT" group. Split, the same shift shows up
+  # as threat RISING while benefit FALLS — which is what the signature registry
+  # keys on (see immigration_hardening in signatures_kgss.yml).
+  immigration_threat:
     - imm_crime
-    - imm_help_econ
     - imm_take_jobs
-    - imm_cultural_contrib
     - imm_limit_number
+
+  immigration_benefit:
+    - imm_help_econ
+    - imm_cultural_contrib
 
   # ── CORRUPTION PERCEPTIONS ────────────────────────────────────────────────
   # Beliefs about how corrupt politicians, officials, and society are.
