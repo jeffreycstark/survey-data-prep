@@ -44,6 +44,32 @@ box (KOSSDA's TLS chain blocked a direct fetch from the prep environment). `TODO
 Questionnaires held locally: `kipa_2021_questionnaire.pdf`, `kipa_2022_questionnaire.pdf`,
 `한국행정연구원_사회통합실태조사_설문지_2025.hwp`, `..._설문조사 개요서_2025.hwp`.
 
+## Excel twins with a machine-readable codebook (added 2026-09-07)
+
+`한국행정연구원_사회통합실태조사_데이터_<YYYY>.xlsx`, 2014–2025, one per year, sit
+beside the `.sav`. Each is a three-sheet workbook: the microdata plus **two
+codebook sheets** — variable names/labels and value codes/labels — which is the
+first machine-readable KSIS codebook in the repo. Sheet names drift across years
+(`변수정보`/`변수값정보`, `항목`/`코드`, and 2018 folds both into a single `코드북`;
+2025 names the data sheet `DATA`), so read them by position or by pattern, not by
+a fixed name.
+
+They are the **same vintage as the registered `.sav`** — rows and columns match
+exactly on every year spot-checked (2014: 7,500×214 · 2018: 8,000×265 · 2022:
+8,294×330 · 2025: 8,305×292), and the 2017 and 2018 `.sav` that came in the same
+download were byte-identical to `kipa_2017.sav` / `kipa_2018.sav`. So the
+codebook sheets can be trusted as ground truth for what is already registered.
+
+⚠ Their naming convention (`한국행정연구원_<survey>_<kind>_<year>`) is NOT KOSSDA's
+`kor_data_<YYYY><id>.sav` packaging and no README came with them, so this is a
+**second distribution route** whose distributor is unconfirmed. It does not
+resolve any DOI in the table above. Confirm the source before citing it.
+
+⚠ The same download also carried **공직생활실태조사** (Public Service Life Survey)
+files, a third KIPA survey that is neither this one nor `kipa_corruption`. They
+were filed here by mistake and now live in `data/kipa_public_service_life/` —
+see its `SOURCE.md`.
+
 ## ⚠ Provenance flags to resolve
 
 - **2011–2012**: KIPA/KOSSDA document the 사회통합실태조사 as running **annually since
